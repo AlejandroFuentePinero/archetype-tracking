@@ -1,0 +1,27 @@
+# archetype-tracking
+
+## Session start
+
+Read `CONTEXT.md` and `HEURISTICS.md` before the first analysis of a session. The glossary fixes the vocabulary every answer uses; the heuristics file carries the pilot knowledge that decides how the numbers are read. If its `Proposed, awaiting pilot verdict` section holds anything, run `mtg-heuristics` and triage through it before getting on with the session.
+
+## Agent skills
+
+### Issue tracker
+
+Issues and PRDs live as GitHub issues on `AlejandroFuentePinero/archetype-tracking`, managed via the `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default canonical vocabulary: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: `CONTEXT.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.
+
+### Weekly tracked-deck report
+
+The Monday run that produces the team meeting's report: refresh, freeze, render, then write the summary to a fixed clause order. See `.claude/skills/weekly-report/SKILL.md`.
+
+### Heuristics capture
+
+`HEURISTICS.md` at the repo root, maintained by the `mtg-heuristics` skill. See `.claude/skills/mtg-heuristics/SKILL.md`.
