@@ -39,6 +39,16 @@ CREATE OR REPLACE TABLE configurations (
 )
 """
 
+# Every card the payloads have typed as a land, so a list fetched without types,
+# which is what a melee decklist page yields, can be given the same land count
+# the MTGO lists carry. A name and nothing else: the type is the fact kept.
+LANDS_SCHEMA = """
+CREATE OR REPLACE TABLE lands (
+    card VARCHAR
+)
+"""
+
+
 def _load(con: duckdb.DuckDBPyConnection, table: str, rows: Iterable[tuple]) -> None:
     """Bulk-load `rows` into `table`.
 
@@ -76,6 +86,7 @@ def build(raw_dir: Path = config.RAW_DIR, db_path: Path = config.DB_PATH) -> Pat
         con.execute("BEGIN TRANSACTION")
         con.execute(DECKLISTS_SCHEMA)
         con.execute(CONFIGURATIONS_SCHEMA)
+        con.execute(LANDS_SCHEMA)
         _load(
             con,
             "decklists",
@@ -106,9 +117,16 @@ def build(raw_dir: Path = config.RAW_DIR, db_path: Path = config.DB_PATH) -> Pat
                 for card in d.mainboard | d.sideboard
             ),
         )
+        _load(con, "lands", ((card,) for card in sorted(set().union(*(d.land_names for _, d in lists)))))
         con.execute("COMMIT")
     index.write([d for _, d in lists], db_path)
     return db_path
+
+
+def land_names(db_path: Path = config.DB_PATH) -> frozenset[str]:
+    """Every card the MTGO payloads have typed as a land."""
+    with duckdb.connect(db_path, read_only=True) as con:
+        return frozenset(row[0] for row in con.execute("SELECT card FROM lands").fetchall())
 
 
 def _rows(cursor: duckdb.DuckDBPyConnection) -> list[dict]:

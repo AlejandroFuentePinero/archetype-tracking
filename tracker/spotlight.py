@@ -35,7 +35,7 @@ from datetime import date, timedelta
 from pathlib import Path
 from types import SimpleNamespace
 
-from . import classify, config, timeline
+from . import classify, config, store, timeline
 
 # The band a Spotlight is read against the weekly report on. Thirty-two because
 # that is what a challenge publishes, so it is the one slice of a paper event
@@ -214,18 +214,16 @@ def chain(
 
     Every event is read against whatever came immediately before it in the
     storyline, which is a paper event where one was played since the last
-    fortnight closed and the MTGO fortnight itself otherwise. A major event is
-    not a separate story that may only be compared with other major events: MTGO
-    moves what pilots take to a Pro Tour and a Pro Tour moves what turns up on
-    MTGO the fortnight after. It gets its own row because it deserves the focus,
-    not because it is decoupled from the rows around it.
+    fortnight closed and the last closed MTGO fortnight otherwise. A major event
+    is not a separate story that may only be compared with other major events:
+    MTGO moves what pilots take to a Pro Tour and a Pro Tour moves what turns up
+    on MTGO after it. So the chain runs through the event in both directions:
+    the event is read against the fortnight before it here, and the fortnight it
+    fell in is read against the event in `timeline.findings`.
 
     Each entry is one room and never a blend of two. A paper event is never
     folded into a fortnight's own numbers: its week sits inside a fortnight
-    rather than beside one, so the two cannot be put in a sequence, and pooled
-    it would be most of the bin. The MTGO response to an event reaches the
-    timeline by the calendar instead, the fortnight holding an event running on
-    past it and the one after being read against that.
+    rather than beside one, and pooled it would be most of the bin.
 
     A row against MTGO is a cross-population reading and says so. The Australian
     field, the American field and the MTGO field are three populations, so a card
@@ -234,6 +232,7 @@ def chain(
     report = report or config.REPORTS["blink"]
     archetype, camp, build = report["archetype"], report["camp"], report["build_camp"]
     played = list(spotlights or config.MAJOR_EVENTS)
+    typed = store.land_names(db_path) if report["manabase"] else frozenset()
     entries = []
     previous: tuple[str, str, list[dict]] | None = None
     for spot in played:
@@ -266,7 +265,7 @@ def chain(
                 "constructed": payload["tournament"].get("format"),
                 "build_lists": len(ours),
                 "baseline_lists": len(baseline),
-                "found": findings(ours, baseline, report),
+                "found": findings(ours, baseline, report, typed),
             }
         )
         previous = (closed(spot), spot["label"], ours)
@@ -311,10 +310,15 @@ def _moved(n: int, size: int, was: int, was_size: int) -> bool:
     return timeline.shifted(n, size, was, was_size)
 
 
-def findings(current: list[dict], baseline: list[dict], report: dict | None = None) -> list[dict]:
+def findings(
+    current: list[dict],
+    baseline: list[dict],
+    report: dict | None = None,
+    land_names: frozenset[str] = frozenset(),
+) -> list[dict]:
     """What the Spotlight's lists changed against the reading before it.
 
-    Adoption and copies only. A return says a card the deck had stopped playing
+    Adoption, copies and the manabase. A return says a card the deck had stopped playing
     came back, which is a claim about one population's history over months, and a
     paper field is not that population: a card absent from MTGO for a month and
     present at Brisbane is the Australian field building differently, not the
@@ -325,27 +329,23 @@ def findings(current: list[dict], baseline: list[dict], report: dict | None = No
     pilots will produce noisy rows, and the caller says so rather than this
     silently raising the bar for paper.
 
-    The manabase reading is absent for the same reason a return is: the cache
-    cannot answer it. Melee publishes a decklist page grouped under type
-    headings and the fetch keeps the cards, not the headings, so a paper list
-    carries no land count to compare.
+    The manabase is read off `land_names`, the cards MTGO has typed as lands,
+    because melee's fetch keeps the cards and not the type headings. A land no
+    MTGO list has ever registered is therefore not counted, which at this
+    deck's manabase is no land at all.
     """
     report = report or config.REPORTS["blink"]
     size, was_size = len(current), len(baseline)
     if not size or not was_size:
         return []
     held, was_held = _held(current), _held(baseline)
-    drift, watched = set(report["copy_drift"]), set(report["watch"])
+    watched = set(report["watch"])
     found = timeline.watched_rows(watched, held, was_held, size, was_size)
+    found += timeline.copies_rows(held, was_held, size, was_size, watched)
     for (card, zone), copies in sorted(held.items()):
         n, was = len(copies), len(was_held.get((card, zone), []))
         if not (zone == "main" and card in watched) and _moved(n, size, was, was_size):
             found.append(timeline.adoption_row(card, zone, n, size, was, was_size))
-        if zone == "main" and card in drift and was:
-            now = sum(copies) / n
-            before = sum(was_held[(card, zone)]) / was
-            if abs(now - before) >= config.TRACK_COPY_DELTA:
-                found.append(timeline.copies_row(card, zone, now, before))
     # A card the deck dropped entirely shows up in neither loop above, having no
     # row of its own in the current bin, so it is read from the baseline's side.
     for (card, zone), copies in sorted(was_held.items()):
@@ -353,7 +353,20 @@ def findings(current: list[dict], baseline: list[dict], report: dict | None = No
             continue
         if _moved(0, size, len(copies), was_size):
             found.append(timeline.adoption_row(card, zone, 0, size, len(copies), was_size))
+    if report["manabase"] and land_names:
+        found += timeline.manabase_rows(
+            lands(current, land_names), lands(baseline, land_names), size, was_size
+        )
     return _migrations(found, held, size)
+
+
+def lands(rows: list[dict], land_names: frozenset[str]) -> dict[int, int]:
+    """Lists by mainboard land count, the shape `timeline.manabase_rows` reads."""
+    counts: dict[int, int] = {}
+    for row in rows:
+        count = sum(copies for card, copies in row["main"].items() if card in land_names)
+        counts[count] = counts.get(count, 0) + 1
+    return counts
 
 
 def _migrations(found: list[dict], held: dict, size: int) -> list[dict]:

@@ -158,16 +158,17 @@ Rules for the prose:
   A past week's numbers can genuinely move when a league dump fills in, and the
   frozen row is what was reported.
 - Do not rewrite an old summary. If one was wrong, say so in this week's.
-- Do not add a card to `copy_drift` or `watch` because it moved once. Those
-  tuples decide which slots earn a row for a count change, and they read the
-  same slots every fortnight on purpose. `watch` is the sharper of the two and
-  the more tempting: it reads a slot at ten points rather than twenty, and by
-  copy count rather than by presence, so it says that two copies went to three
-  in a fifth of the camp where no mean could. That bar only holds because the
-  list is short and every entry on it is a question Alejandro asked. Widened by
-  a scan it doubles the storyline and finds nothing: unfiltered at ten points
-  this population gives 78 rows across eight fortnights against 41 at twenty,
-  and 38% of them reverse in the next fortnight either way.
+- Do not add a card to `watch` because it moved once. The tuple decides which
+  slots earn a row at the finer bar, and it reads the same slots every
+  fortnight on purpose: it reads a slot at ten points rather than twenty, and
+  by copy count rather than by presence, so it says that two copies went to
+  three in a fifth of the camp where no mean could. That bar only holds because
+  the list is short and every entry on it is a question Alejandro asked.
+  Widened by a scan it doubles the storyline and finds nothing: unfiltered at
+  ten points this population gives 78 rows across eight fortnights against 41
+  at twenty, and 38% of them reverse in the next fortnight either way. The
+  copies reading needs no naming: it reads every staple, a card held by seven
+  lists in ten on both sides, and nothing under that bar.
 - Do not widen the membership rule to catch a list that looks like the deck.
   Raise it with Alejandro; it is his call, and `HEURISTICS.md` is where the
   answer goes.
@@ -202,21 +203,23 @@ run changes.
   constructed rounds by themselves, taken as the difference between the
   standings either side of each run. The finishing positions still carry the
   draft rounds, which no arithmetic can undo.
-- **A major event is a storyline entry like any other.** It is read against
-  whatever came immediately before it: the paper event played since the last
-  fortnight closed, and the fortnight itself where there was none. MTGO moves
-  what pilots take to a Pro Tour and a Pro Tour moves what turns up on MTGO the
-  fortnight after, so it gets its own row for the focus and never because it is
-  decoupled from the rows around it.
+- **A major event is a storyline entry like any other.** Every entry is read
+  against the one immediately before it, the event included. The event is read
+  against the last fortnight that closed before it (or the paper event played
+  since, where there was one), and the fortnight the event fell in is read
+  against the event, never against the fortnight before. MTGO moves what pilots
+  take to a Pro Tour and a Pro Tour moves what turns up on MTGO after it, and
+  that response is the whole point of carrying paper events. Each row says
+  under its period what it was read against.
 - **Its lists are never folded into a fortnight's own numbers.** Each entry is
-  one room. An event week sits inside a fortnight rather than beside one, so the
-  two cannot be put in a sequence: the entry after Pro Tour Amsterdam would be
-  the fortnight the Pro Tour was played in. Pooled it would also be most of the
-  bin, the fortnight to 6 September holding 87 MTGO lists of Goryo's against 106
-  from Brisbane and Dallas, and the bin's row read against a pure MTGO bin would
-  report the American field as the deck changing its mind. The MTGO response
-  reaches the timeline by the calendar: the fortnight holding an event runs on
-  past it, and the one after is read against that.
+  one room. An event week sits inside a fortnight rather than beside one, and
+  pooled it would be most of the bin, the fortnight to 6 September holding 87
+  MTGO lists of Goryo's against 106 from Brisbane and Dallas. The fortnight is
+  read against the event as a whole population, its lists before the event
+  included: the bin stays fixed on the calendar.
+- **A paper list's land count** is read off the names MTGO has typed as lands,
+  melee publishing the cards without their types, so the manabase reading runs
+  through the event in both directions like every other.
 - **Do not put a Spotlight in the store.** The challenge-class readings are
   defined as every event class except league, so a paper event in `decklists`
   would be counted as challenge-class by default and would swamp the week.

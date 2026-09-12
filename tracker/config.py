@@ -172,14 +172,6 @@ REPORTS = {
         "camp": "esper",
         "build_camp": "esper",
         "observe": ("orzhov",),
-        # The cards the deck argues about the number of, and the only ones a
-        # count change earns a timeline row for. Named rather than found by a
-        # scan, so the timeline reads the same slots every fortnight and a card
-        # arriving is a decision somebody made. All three sit at near-total
-        # adoption, which is why no adoption reading sees them: the whole of the
-        # disagreement is how many, and it has moved about a copy since mid-June
-        # while every other slot held.
-        "copy_drift": ("Flickerwisp", "Emperor of Bones", "Witch Enchanter"),
         "watch": (),
         "manabase": False,
         "membership": (
@@ -196,10 +188,6 @@ REPORTS = {
         "camp": None,
         "build_camp": "non-fallaji",
         "observe": ("non-fallaji", "fallaji", "hybrid"),
-        # Nothing. The copies reading below is the sharper instrument on every
-        # slot this deck argues about, and running both would report one
-        # decision twice, once as a mean and once as a distribution.
-        "copy_drift": (),
         # The slots the pilot argues about, read at the finer bar below and by
         # copy count rather than by presence. Both halves of the land swap are
         # here because a slot lost is the other half of a slot won, and a
@@ -223,8 +211,6 @@ REPORTS = {
         "camp": None,
         "build_camp": None,
         "observe": (),
-        # Nothing yet. Which slots the deck argues about is the pilot's call.
-        "copy_drift": (),
         "watch": (),
         "manabase": False,
         "membership": (
@@ -265,12 +251,23 @@ TRACK_BIN_DAYS = 14
 TRACK_ADOPTION_DELTA = 0.20
 TRACK_MIN_LISTS = 5
 
-# How far a card's mean copy count has to move to be the camp changing its mind
-# rather than the week's lists differing. Read on the mean and never the mode:
-# the modal count of the cards that actually move oscillates every other week
-# and every oscillation reverses, because the mode is held by a plurality one
-# pilot can flip.
+# How far a staple's mean copy count has to move to be the camp changing its
+# mind rather than the week's lists differing. Read on the mean and never the
+# mode: the modal count of the cards that actually move oscillates every other
+# week and every oscillation reverses, because the mode is held by a plurality
+# one pilot can flip.
 TRACK_COPY_DELTA = 0.4
+
+# What makes a card a staple, the share of lists holding it on both sides of a
+# comparison, and so a card whose copies are read. The reading is for the slots
+# the deck argues about the number of rather than the presence of, and a card
+# under the bar is one the adoption reading is already answering for: its mean
+# moves when different pilots arrive, not when the same pilots change a count.
+# Found and not named, so a deck's staples are whatever it is playing at four
+# this month. Seven in ten is where the scan stops being sensitive to the bar:
+# on the three tracked decks it returns the same rows at eight, and five adds
+# one marginal row.
+TRACK_STAPLE_SHARE = 0.7
 
 # Returning-card gates, per zone. A sideboard churns about seven times harder
 # than a mainboard, so one gate cannot serve both: two thirds of the sideboard

@@ -36,6 +36,9 @@ class Decklist:
     lands: int
     archetype: str | None = None
     camp: str | None = None
+    # The names behind `lands`. Kept so a paper list, whose fetch carries no
+    # types, can be given the same land count off the names MTGO has typed.
+    land_names: frozenset[str] = frozenset()
 
 
 def _cards(entries: list[dict]) -> dict[str, int]:
@@ -70,10 +73,22 @@ def _lands(entries: list[dict]) -> int:
     A split card carries no type at all, which is no loss: the site publishes
     none whose halves are lands.
     """
-    return sum(
-        int(entry["qty"])
+    return sum(int(entry["qty"]) for entry in _typed_lands(entries))
+
+
+def _typed_lands(entries: list[dict]) -> list[dict]:
+    return [
+        entry
         for entry in entries
         if (entry["card_attributes"].get("card_type") or "").strip() == LAND_TYPE
+    ]
+
+
+def _land_names(entries: list[dict]) -> frozenset[str]:
+    """The lands of `_lands`, by the name `_cards` files them under."""
+    return frozenset(
+        config.CARD_ALIASES.get(name, name)
+        for name in (entry["card_attributes"]["card_name"] for entry in _typed_lands(entries))
     )
 
 
@@ -129,6 +144,7 @@ def parse_event(payload: dict) -> list[Decklist]:
                 mainboard=_cards(raw["main_deck"]),
                 sideboard=_cards(raw["sideboard_deck"]),
                 lands=_lands(raw["main_deck"]),
+                land_names=_land_names(raw["main_deck"]),
             )
         )
     return lists

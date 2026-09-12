@@ -16,6 +16,14 @@ six weeks ago still describes the same fortnight. Bins before the boundary carry
 negative indices and are never reported: they exist so that a card's history
 reaches back past the boundary, which is what tells a return from a cold start.
 
+Each row is read against the entry before it in the storyline, and a major paper
+event is an entry. The fortnight an event falls in is therefore read against the
+event's own lists and not against the fortnight before, and the event is read
+against that fortnight (see `spotlight.chain`). MTGO moves what pilots take to a
+Pro Tour and a Pro Tour moves what turns up on MTGO after it, and a chain that
+skipped the event on the way back would report the response without the thing
+it responded to.
+
 Findings are written mechanically, from the numbers, in fixed forms. The
 interpretation layer is the weekly summary written over the top of this; a row
 that phrased itself differently on a later run would make the committed history
@@ -30,7 +38,7 @@ from pathlib import Path
 import duckdb
 
 from . import config
-from .store import _rows, population
+from .store import _rows, land_names, population
 
 
 def bin_of(day: str, since: str = config.REGIME_BOUNDARY) -> int:
@@ -42,6 +50,11 @@ def bin_of(day: str, since: str = config.REGIME_BOUNDARY) -> int:
 def bin_start(index: int, since: str = config.REGIME_BOUNDARY) -> str:
     """The first day of bin `index`."""
     return (date.fromisoformat(since) + timedelta(days=index * config.TRACK_BIN_DAYS)).isoformat()
+
+
+def bin_end(index: int, since: str = config.REGIME_BOUNDARY) -> str:
+    """The last day of bin `index`."""
+    return (date.fromisoformat(bin_start(index + 1, since)) - timedelta(days=1)).isoformat()
 
 
 def _history(db_path: Path, archetype: str, camp: str | None) -> tuple[list[dict], list[dict]]:
@@ -219,19 +232,49 @@ def watched_rows(
     return rows
 
 
-def _manabase(lands: dict, index: int, size: int, was_size: int) -> list[dict]:
+def copies_rows(
+    held: dict, was_held: dict, size: int, was_size: int, watched: set[str]
+) -> list[dict]:
+    """The staples whose mean copies moved, in the shape `watched_rows` reads.
+
+    A staple is a mainboard card held by TRACK_STAPLE_SHARE of both sides, which
+    is the slot the deck argues about the number of rather than the presence of
+    and the only one a mean can answer for. Under that bar the mean moves when
+    a different set of pilots arrives, and adoption already reports the
+    arrival. Every staple, lands included: a change in any card of the deck is
+    what the timeline is for. Watched slots are read by count elsewhere.
+    """
+    rows = []
+    for (card, zone), copies in sorted(held.items()):
+        before = was_held.get((card, zone), [])
+        if zone != "main" or card in watched:
+            continue
+        if not (_staple(len(copies), size) and _staple(len(before), was_size)):
+            continue
+        now, was = sum(copies) / len(copies), sum(before) / len(before)
+        if abs(now - was) >= config.TRACK_COPY_DELTA:
+            rows.append(copies_row(card, zone, now, was))
+    return rows
+
+
+def _staple(n: int, size: int) -> bool:
+    return n >= config.TRACK_MIN_LISTS and n / size >= config.TRACK_STAPLE_SHARE
+
+
+def manabase_rows(now: dict, was: dict, size: int, was_size: int) -> list[dict]:
     """Whether the camp moved its manabase, land count by land count.
 
-    A land count is a configuration of the list as a whole rather than of a card
-    in it. Nothing in the weekly report read it that way, so a camp walking from
-    21 lands to 22 over a regime was invisible to it: the land added is a different card in
-    every list, so no card's adoption moves and no card's copies move either.
+    Both sides are `{land count: lists on it}`, which a fortnight and a paper
+    event both reduce to. A land count is a configuration of the list as a whole
+    rather than of a card in it. Nothing in the weekly report read it that way,
+    so a camp walking from 21 lands to 22 over a regime was invisible to it: the
+    land added is a different card in every list, so no card's adoption moves
+    and no card's copies move either.
 
     Read at the standard bar rather than the watched one. The values are few,
     a camp registering three or four land counts in a fortnight, so this is not
     the scan over a hundred cards that the finer bar exists to refuse.
     """
-    now, was = lands.get(index, {}), lands.get(index - 1, {})
     rows = []
     for count in sorted(set(now) | set(was)):
         n, before = now.get(count, 0), was.get(count, 0)
@@ -244,11 +287,13 @@ def findings(
     db_path: Path = config.DB_PATH,
     report: dict | None = None,
     since: str = config.REGIME_BOUNDARY,
+    spotlights: tuple[dict, ...] = config.MAJOR_EVENTS,
+    directory: Path | None = None,
 ) -> list[dict]:
     """One row per fortnight from `since`: what moved, phrased in fixed forms.
 
     Five readings, answering different questions. Adoption says the deck took a
-    card up or put it down. Copies says it kept the card and changed its mind
+    card up or put it down. Copies says it kept a staple and changed its mind
     about how many, which no adoption reading can see, because the cards that
     happens to sit at total adoption and never move a share. Returns say a card
     the deck had stopped playing came back, and came back larger than it has
@@ -262,16 +307,20 @@ def findings(
     a camp arriving reads as the deck changing its mind about every card the two
     camps disagree on.
 
-    MTGO alone, a major paper event never being folded in. Its week sits inside
-    a fortnight rather than beside one, so there is no sequence to put the two
-    in, and pooled it would be most of the bin: the fortnight to 6 September
-    holds 87 MTGO lists of Goryo's against 106 from Brisbane and Dallas. The
-    bin would stop being a fortnight and its row, read against a pure MTGO bin,
-    would report the American field as the deck changing its mind. A paper event
-    is its own storyline entry, in `spotlight.chain`, and the MTGO response to it
-    reaches this chain by the calendar: the fortnight holding an event runs on
-    past it, and the one after is read against that.
+    Each fortnight is read against the entry before it in the storyline. That is
+    the fortnight before, unless a major paper event in `spotlights` fell inside
+    this one, in which case it is the event: the latest one where two did. A
+    fortnight read against paper is a cross-population reading and the entry
+    says so. The event's own lists are never folded into the fortnight's
+    numbers, each entry being one room, and the gate on a paper baseline is
+    `shifted` rather than `moved`, the two populations being nowhere near one
+    size. A card the event played is not a return when MTGO takes it up after,
+    the entry before having held it; one the event did not play is read as a
+    return off the deck's own MTGO history, how long a card has been gone being
+    a fact about the deck.
     """
+    from . import spotlight  # noqa: PLC0415, spotlight reads this module's rows
+
     report = report or config.REPORTS["blink"]
     registered, lists = _history(db_path, report["archetype"], report["build_camp"])
     sizes: dict[int, int] = {}
@@ -290,26 +339,37 @@ def findings(
         held.setdefault(key, {}).setdefault(index, []).append(row["list_id"])
         copies.setdefault(key, {}).setdefault(index, []).append(row["main"])
 
-    drift_cards, watched = set(report["copy_drift"]), set(report["watch"])
+    paper = _paper(spotlights, directory, report, since)
+    typed = land_names(db_path) if paper and report["manabase"] else frozenset()
+    watched = set(report["watch"])
     first = bin_of(since, since)
     timeline = []
     for index in sorted(i for i in sizes if i >= first):
-        size, was_size = sizes[index], sizes.get(index - 1, 0)
-        # A delta may not cross the regime boundary: the fortnight before the
-        # first post-regime bin belongs to a different era, so what it played is
-        # not what this deck put down. Returns still read past it, since how
-        # long a card has been gone is a fact about the deck and not the regime.
-        comparable = index - 1 >= first
-        start = bin_start(index, since)
-        end = (date.fromisoformat(start) + timedelta(days=config.TRACK_BIN_DAYS - 1)).isoformat()
+        size = sizes[index]
+        start, end = bin_start(index, since), bin_end(index, since)
+        if index in paper:
+            label, rows = paper[index]
+            against, crossed, comparable, gate = label, True, True, shifted
+            was_held = spotlight._held(rows)
+            was_size, was_lands = len(rows), spotlight.lands(rows, typed)
+        else:
+            # A delta may not cross the regime boundary: the fortnight before
+            # the first post-regime bin belongs to a different era, so what it
+            # played is not what this deck put down. Returns still read past it,
+            # since how long a card has been gone is a fact about the deck and
+            # not the regime.
+            against, crossed, comparable, gate = (
+                f"the fortnight to {bin_end(index - 1, since)}", False, index - 1 >= first, moved
+            )
+            was_held = {key: bins[index - 1] for key, bins in copies.items() if index - 1 in bins}
+            was_size, was_lands = sizes.get(index - 1, 0), lands.get(index - 1, {})
         found = []
 
         for (card, zone), bins in sorted(held.items()):
             if index not in bins:
                 continue
-            n, was = len(bins[index]), len(bins.get(index - 1, []))
+            n, was = len(bins[index]), len(was_held.get((card, zone), []))
             share = n / size
-            was_share = was / was_size if was_size else 0.0
 
             other = held.get((card, "side" if zone == "main" else "main"), {})
             if not was and _is_return(bins, index, sizes, zone, share):
@@ -329,35 +389,63 @@ def findings(
             elif (
                 comparable
                 and not (zone == "main" and card in watched)
-                and moved(n, size, was, was_size)
+                and gate(n, size, was, was_size)
             ):
                 found.append(adoption_row(card, zone, n, size, was, was_size))
 
-            if comparable and zone == "main" and card in drift_cards and (card, zone) in copies:
-                bin_copies = copies[(card, zone)]
-                if index in bin_copies and index - 1 in bin_copies:
-                    now = sum(bin_copies[index]) / len(bin_copies[index])
-                    before = sum(bin_copies[index - 1]) / len(bin_copies[index - 1])
-                    if abs(now - before) >= config.TRACK_COPY_DELTA:
-                        found.append(copies_row(card, zone, now, before))
+        # A card the bin dropped entirely has no row of its own above, so it is
+        # read from the baseline's side. Watched slots are read by copy count
+        # below, where zero copies is a row like any other.
+        for (card, zone), before_copies in sorted(was_held.items()):
+            if index in held.get((card, zone), {}) or (zone == "main" and card in watched):
+                continue
+            if comparable and gate(0, size, len(before_copies), was_size):
+                found.append(adoption_row(card, zone, 0, size, len(before_copies), was_size))
 
         if comparable:
-            found += watched_rows(
-                watched,
-                {key: bins[index] for key, bins in copies.items() if index in bins},
-                {key: bins[index - 1] for key, bins in copies.items() if index - 1 in bins},
-                size,
-                was_size,
-            )
+            now_held = {key: bins[index] for key, bins in copies.items() if index in bins}
+            found += watched_rows(watched, now_held, was_held, size, was_size)
+            found += copies_rows(now_held, was_held, size, was_size, watched)
             if report["manabase"]:
-                found += _manabase(lands, index, size, was_size)
+                found += manabase_rows(lands.get(index, {}), was_lands, size, was_size)
 
         for event in events():
             if start <= event["date"] <= end:
                 found.append({"kind": "event", "zone": None, "card": None, "text": event["label"]})
 
-        timeline.append({"bin": index, "start": start, "end": end, "lists": size, "found": found})
+        timeline.append(
+            {
+                "bin": index,
+                "start": start,
+                "end": end,
+                "lists": size,
+                "against": against,
+                "cross_population": crossed,
+                "found": found,
+            }
+        )
     return timeline
+
+
+def _paper(
+    spotlights: tuple[dict, ...], directory: Path | None, report: dict, since: str
+) -> dict[int, tuple[str, list[dict]]]:
+    """The major event each bin is read against: the latest one inside it.
+
+    The build camp's lists at the event, shaped as `spotlight.findings` reads
+    them. Only events fetched by now count, a report having to render on a
+    machine that has never pulled a paper event.
+    """
+    from . import spotlight  # noqa: PLC0415
+
+    latest = {}
+    for spot in sorted(spotlights, key=lambda s: s["date"]):
+        if not spotlight.cached(spot, directory).exists():
+            continue
+        payload = spotlight.load(spot, directory)
+        rows = spotlight.members(payload, report["archetype"], report["build_camp"])
+        latest[bin_of(spot["date"], since)] = (spot["label"], rows)
+    return latest
 
 
 def _is_return(

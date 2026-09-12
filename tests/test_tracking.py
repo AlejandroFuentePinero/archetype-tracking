@@ -10,6 +10,7 @@ particular fortnights either side of the regime boundary, and no captured day
 holds one of those disentangled from everything else the deck was doing.
 """
 
+import json
 from pathlib import Path
 
 import duckdb
@@ -259,8 +260,33 @@ def test_a_watched_slot_reports_a_copy_count_the_mean_would_hide(tmp_path):
         "Spell Snare at 2 copies fell, 20/20 to 14/20 lists (100% to 70%)",
         "Spell Snare at 3 copies climbed, 0/20 to 6/20 lists (0% to 30%)",
     ]
-    averaged = timeline.findings(db, _report(copy_drift=("Spell Snare",)))[1]["found"]
+    averaged = timeline.findings(db, _report())[1]["found"]
     assert not [row for row in averaged if row["card"] == "Spell Snare"]
+
+
+def test_a_staple_changing_its_count_is_a_row_and_a_fringe_card_is_not(tmp_path):
+    """The copies reading finds the deck's staples rather than being told them.
+
+    A card every list holds cannot move a share, so a count change is the whole
+    of what the deck decided about it. A card a few lists hold is one the
+    adoption reading answers for, and its mean moves when different pilots turn
+    up rather than when anybody changes a number. A land is a staple like any
+    other: a change in any card of the deck is what the timeline is for.
+    """
+    db = _built(
+        tmp_path,
+        [
+            _mixed(FIRST, [{"Fatal Push": (4, 0), "Spell Snare": (1, 0), "Polluted Delta": (4, 0)}] * 3
+                   + [{"Fatal Push": (4, 0), "Polluted Delta": (4, 0)}] * 7, "e1"),
+            _mixed(SECOND, [{"Fatal Push": (3, 0), "Spell Snare": (2, 0), "Polluted Delta": (2, 0)}] * 3
+                   + [{"Fatal Push": (3, 0), "Polluted Delta": (2, 0)}] * 7, "e2"),
+        ],
+    )
+    found = timeline.findings(db, _report())[1]["found"]
+    assert [row["text"] for row in found if row["kind"] == "copies"] == [
+        "Fatal Push down from 4.0 to 3.0 copies on average",
+        "Polluted Delta down from 4.0 to 2.0 copies on average",
+    ]
 
 
 def test_the_fortnight_closing_with_the_reported_week_is_frozen(tmp_path, monkeypatch):
@@ -451,3 +477,90 @@ def test_the_report_renders_the_rows_it_froze(tmp_path, monkeypatch):
     fuller = _built(tmp_path / "again", [league(FIRST, [blink("a"), blink("b"), blink("c")])])
     rendered = weekly.weeks_through(fuller, "blink", config.REPORTS["blink"], "2026-05-18")
     assert [row["trophies"] for row in rendered] == [1]
+
+
+def _paper_event(day: str, entries: list[dict]) -> tuple[dict, dict]:
+    """A major event and its payload, the lists shaped as melee publishes them."""
+    spot = {"id": 99, "label": "Pro Tour Test", "date": day}
+    lists = [
+        {
+            "decklist_id": f"d{rank}", "rank": rank, "pilot": e["pilot"], "name": "Esper Blink",
+            "record": "8-4-0", "wins": 8, "losses": 4, "draws": 0, "points": 24,
+            "main": e["main"], "side": e["side"],
+        }
+        for rank, e in enumerate(entries, start=1)
+    ]
+    payload = {
+        "tournament": {"id": 99, "name": spot["label"], "organiser": "t", "start": day,
+                       "round": "Finals", "players": len(lists)},
+        "lists": lists,
+    }
+    return spot, payload
+
+
+def test_the_fortnight_holding_a_major_event_is_read_against_the_event(tmp_path):
+    """A Pro Tour moves what turns up on MTGO, so the chain runs through it.
+
+    The fortnight before, then the event, then the fortnight the event fell in:
+    each read against the one before. A card the whole field sideboarded at the
+    event and every MTGO list sideboarded after it is the field copying the
+    event, which read against the fortnight before would be the deck discovering
+    the card a fortnight late. The reverse holds for a card the event dropped.
+    """
+    from tracker import spotlight
+
+    adopted = {"Clarion Conqueror": (0, 3)}
+    db = _built(tmp_path, [_lists(FIRST, 10), _lists(SECOND, 10, cards=adopted)])
+    spot, payload = _paper_event("2026-06-06", [blink(f"pt{i}", cards=adopted) for i in range(10)])
+    spotlight.cached(spot, tmp_path).write_text(json.dumps(payload), encoding="utf-8")
+
+    plain = timeline.findings(db, config.REPORTS["blink"], spotlights=())[1]
+    assert plain["against"] == "the fortnight to 2026-05-31"
+    assert [row["card"] for row in plain["found"] if row["kind"] == "return"] == ["Clarion Conqueror"]
+
+    chained = timeline.findings(db, config.REPORTS["blink"], spotlights=(spot,), directory=tmp_path)[1]
+    assert chained["against"] == "Pro Tour Test"
+    assert chained["cross_population"] is True
+    assert not [row for row in chained["found"] if row["card"] == "Clarion Conqueror"]
+
+    # And the event itself is read against the fortnight that closed before it.
+    event = spotlight.chain(db, config.REPORTS["blink"], (spot,), tmp_path)[0]
+    assert event["against"] == "the fortnight to 2026-05-31"
+    assert [row["card"] for row in event["found"] if row["kind"] == "adoption"] == ["Clarion Conqueror"]
+
+
+def test_a_paper_event_carries_a_land_count_off_the_names_mtgo_has_typed(tmp_path):
+    """Melee publishes the cards without their types, and the lands are still lands.
+
+    A camp walking to 13 lands at the Pro Tour is the manabase reading's whole
+    question, and the fetch not keeping the type headings is no reason to leave
+    it unanswered: MTGO has typed every land the deck plays.
+    """
+    from tracker import spotlight
+
+    db = _built(tmp_path, [_lists(FIRST, 10), _lists(SECOND, 10)])
+    spot, payload = _paper_event(
+        "2026-06-06", [blink(f"pt{i}", cards={"Plains": (3, 0)}) for i in range(10)]
+    )
+    spotlight.cached(spot, tmp_path).write_text(json.dumps(payload), encoding="utf-8")
+
+    event = spotlight.chain(db, _report(manabase=True), (spot,), tmp_path)[0]
+    assert any(row["text"].startswith("13 lands climbed") for row in event["found"])
+    after = timeline.findings(db, _report(manabase=True), spotlights=(spot,), directory=tmp_path)[1]
+    assert any(row["text"].startswith("13 lands fell") for row in after["found"])
+
+
+def test_a_card_the_fortnight_dropped_entirely_is_a_row(tmp_path):
+    """Putting a card down is as much a decision as taking one up.
+
+    Read only over the cards the bin registers, a card at every list one
+    fortnight and no list the next has nowhere to be seen from, and the largest
+    move a deck can make goes unreported.
+    """
+    db = _built(tmp_path, [
+        _lists(FIRST, 10, cards={"Orcish Bowmasters": (4, 0)}),
+        _lists(SECOND, 10),
+    ])
+    second = timeline.findings(db, config.REPORTS["blink"], spotlights=())[1]
+    texts = [row["text"] for row in second["found"] if row["card"] == "Orcish Bowmasters"]
+    assert texts == ["Orcish Bowmasters fell in the mainboard, 10/10 to 0/10 lists (100% to 0%)"]

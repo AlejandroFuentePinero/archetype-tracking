@@ -27,7 +27,7 @@ WEEKLY_COLUMNS = (
     "week", "lists", "chal", "chal_field", "chal_share", "top8", "top8_field",
     "top8_share", "top16", "trophies", "league_field", "trophy_share",
 )
-TIMELINE_COLUMNS = ("start", "end", "lists", "kind", "zone", "card", "text")
+TIMELINE_COLUMNS = ("start", "end", "lists", "against", "kind", "zone", "card", "text")
 
 
 def deck_dir(deck: str = "blink") -> Path:
@@ -147,7 +147,7 @@ def freeze(
     # reporting on as in progress, and freeze it a week late under a later run's
     # phrasing.
     closed = week_label(through)
-    for entry in timeline.findings(db_path, report):
+    for entry in timeline.findings(db_path, report, spotlights=spotlights_through(through)):
         if entry["end"] > closed or entry["start"] in held_bins:
             continue
         found = entry["found"] or [{"kind": "stable", "zone": "", "card": "", "text": ""}]
@@ -340,14 +340,19 @@ tbody tr:hover { background: var(--panel); }
 """
 
 
-def _found(found: list[dict], stable: str = "Stable against the fortnight before.") -> str:
-    """A fortnight's findings as cells, or the sentence that says there were none."""
+def _found(found: list[dict], stable: str) -> str:
+    """A period's findings as cells, or the sentence that says there were none."""
     marks = "".join(
         f'<div><span class="tag">{row["kind"]}</span>{row["text"]}</div>'
         for row in found
         if row.get("text")
     )
     return marks or f'<span class="none">{stable}</span>'
+
+
+def _against(against: str) -> str:
+    """What a storyline row was read against, said under its period."""
+    return f'<div class="open">against {against}</div>'
 
 
 def _stable(entry: dict) -> str:
@@ -538,35 +543,40 @@ def render(
     # what it is: a reading that can still move, unlike every row above it.
     running = [
         entry
-        for entry in timeline.findings(db_path, report)
+        for entry in timeline.findings(db_path, report, spotlights=played)
         if entry["start"] <= week and (entry["start"], entry["end"]) not in frozen
     ]
-    # Fortnights and Spotlights in one sequence, ordered by the day each closed.
-    # A Spotlight is a week rather than a fortnight and is read against the entry
-    # before it rather than against the bin it falls inside, so it enters the
-    # storyline as its own row instead of being folded into one.
-    # Ordered on the day each period closed, then on the day it opened, so a
-    # Spotlight week and the fortnight it falls inside sort by their own dates
-    # rather than by however their labels happen to compare.
+    # Fortnights and Spotlights in one sequence, in the order the chain reads
+    # them: each row sits above the entry it was read against. A Spotlight is a
+    # week rather than a fortnight and enters the storyline as its own row
+    # instead of being folded into the fortnight it falls inside; that fortnight
+    # is then read against it, so where the two close on the same day the
+    # fortnight sits above the Spotlight. Ordered on the day each period closed,
+    # then fortnight over Spotlight, then on the day it opened, so two
+    # Spotlights in one fortnight keep their own order.
     entries = [
-        (entry["end"], entry["start"],
-         f"{entry['start']} to {entry['end']}<div class=\"open\">in progress</div>",
-         _found(entry["found"]))
+        (entry["end"], True, entry["start"],
+         f"{entry['start']} to {entry['end']}<div class=\"open\">in progress</div>"
+         f"{_against(entry['against'])}",
+         _found(entry["found"], f"Stable against {entry['against']}."))
         for entry in running
     ] + [
-        (end, start, f"{start} to {end}", _found(found)) for (start, end), found in frozen.items()
+        (end, True, start, f"{start} to {end}{_against(found[0]['against'])}",
+         _found(found, f"Stable against {found[0]['against']}."))
+        for (start, end), found in frozen.items()
     ] + [
         (
             week_label(entry["week"]),
+            False,
             entry["week"],
-            f'<span class="major">{entry["label"]}</span>',
+            f'<span class="major">{entry["label"]}</span>{_against(entry["against"])}',
             _found(entry["found"], _stable(entry)),
         )
         for entry in spotlights
     ]
     timeline_rows = [
         [period, found]
-        for _, _, period, found in sorted(entries, key=lambda row: row[:2], reverse=True)
+        for *_, period, found in sorted(entries, key=lambda row: row[:3], reverse=True)
     ]
 
     body = f"""<div class="page">
