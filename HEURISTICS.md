@@ -153,3 +153,24 @@ Heuristic candidates, held here until Alejandro rules on them. Nothing in this
 section is adopted knowledge and nothing here may steer an analysis. Each entry
 cites the evidence that raised it and counts the sessions it has been put to
 him in. See `.claude/skills/mtg-heuristics/SKILL.md`.
+
+**Simic Neoform is four cards, and Planar Genesis is the one that names it**
+(raised 2026-09-12, surfaced 0×):
+Membership drawn on Neoform, Allosaurus Rider, Eldritch Evolution and Planar
+Genesis, all four in the mainboard, with no count and no colour rule. The
+Glittering Wish build on Gemstone Mine shares the first three and reads as a
+different deck.
+*Evidence*: of the 471 MTGO lists since February mainboarding any of Neoform,
+Allosaurus Rider or Planar Genesis, 439 answer to all four, and every one of
+the 439 runs Rider, Evolution and Summoner's Pact at four copies. The 32 that
+do not are the Glittering Wish build (MyPotatoes and GriselSram, on Gemstone
+Mine with no Planar Genesis; four lists since the bans, all MyPotatoes's),
+Birthing Ritual lists on two Neoform, and Planar Genesis in Omnath, Amulet and
+Wilderness Reclamation shells. At the three paper events the rule finds 14, 13
+and 23 lists where melee's own deck names find 14, 9 and 23, the Brisbane four
+being registered as Simic Necro, Simic Midrange and Simic Combo over the same
+75.
+*Applies if adopted*: the rule stands as written in `config.TRACKED_DECKS`.
+Rejected or widened, every frozen row under `data/tracking/neoform/` was read
+on the wrong population and the directory is rebuilt before anything is
+reported.

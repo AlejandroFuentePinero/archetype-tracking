@@ -49,7 +49,7 @@ The committed record of every published list the raw cache holds, one row each, 
 ### Deck concepts
 
 **Archetype**:
-A family of decks recognised by its signature cards. Goryo's and Blink are the two here.
+A family of decks recognised by its signature cards. Goryo's, Blink and Neoform are the three here.
 
 **Signature card**:
 A card whose presence in a list identifies its archetype.
@@ -74,13 +74,16 @@ A deck the engine classifies and reports on weekly without optimising. It has no
 _Avoid_: archetype on its own (Goryo's is one too, and the difference between them is the whole distinction)
 
 **Blink**:
-The tracked Modern archetype: a mainboard holding Phelia, Exuberant Shepherd, Flickerwisp, Overlord of the Balemurk and Witch Enchanter, all four, and no source that produces red or green. The four are required together because no smaller set is the deck: Phelia alone admits a white energy build and a Boros build, and Ephemerate alone is half Goryo's. Membership is tested after Goryo's, so a list holding both signatures takes one name and it is Goryo's.
+The first tracked Modern archetype: a mainboard holding Phelia, Exuberant Shepherd, Flickerwisp, Overlord of the Balemurk and Witch Enchanter, all four, and no source that produces red or green. The four are required together because no smaller set is the deck: Phelia alone admits a white energy build and a Boros build, and Ephemerate alone is half Goryo's. Membership is tested after Goryo's, so a list holding both signatures takes one name and it is Goryo's.
 
 **Off-colour exclusion**:
 The colour half of Blink's membership rule. A Mardu build shares all four signature cards and is a different deck, so a mainboard source that actually produces red or green puts a list outside the archetype rather than into a third variant. Read on sources and never on fetchlands, most of the Orzhov half fetching with Flooded Strand, which produces neither. The rule is a hand-written list of card names and is the one part of membership that can go stale silently, so the count it turned away is printed every week: a red build on a source nobody listed would otherwise read as a member and nothing would say so.
 
 **Esper Blink / Orzhov Blink**:
 Blink's two variants, split on mainboard Watery Grave. Presence and not a count, a variant here being which colours the deck is, which one copy settles. The card partitions the archetype exactly, where a rule drawn on blue sources throws away the Orzhov lists that fetch and one drawn on blue spells drops any Esper list that cut Teferi. Every reading in the weekly report is the Esper variant alone; Orzhov is carried as bare numbers in the summary, its challenge-class population being single figures over the whole post-regime history, which is enough to say it exists and nowhere near enough to read a build or a conversion rate off.
+
+**Neoform**:
+The second tracked Modern archetype: a mainboard holding Neoform, Allosaurus Rider, Eldritch Evolution and Planar Genesis, all four. Planar Genesis is the card that says which deck: the other three are the engine of the four-colour Glittering Wish build on Gemstone Mine as well, and that is a different deck. No colour rule, nothing sharing the four being another colour of this one, and no variant, nothing in the history forking it: its members carry no camp and every reading in its report is the whole archetype's. Tested after Goryo's and Blink, like every tracked rule. The report calls it **Simic Neoform**, the pilots' name for it.
 
 **Report subject**:
 What one weekly report is computed over, named once in `config.REPORTS` rather than passed as a flag. It fixes the archetype, the camp the volume and performance figures are pooled over, the camp the build readings are taken on, and the slots it watches. One subject per directory under `data/tracking/`, because a pooled row and a one-camp row in the same `weekly.csv` are two measurements under one column heading and nothing in the file says which a row is. Kept apart from the membership rules: a rule says what a list is, a subject says which of those lists a report reads, and Goryo's has a rule already without being a tracked deck.

@@ -123,7 +123,27 @@ TRACKED_DECKS = {
         "variant_card": "Watery Grave",
         "variant_with": "esper",
         "variant_without": "orzhov",
-    }
+    },
+    "neoform": {
+        # The four together are the deck, and Planar Genesis is the one that
+        # says which deck. Rider, Neoform and Eldritch Evolution alone admit the
+        # four-colour Glittering Wish build on Gemstone Mine, a different deck
+        # that shares the engine; every Simic list in the history runs all four
+        # at four copies, so the count is not in the rule.
+        "signature": (
+            "Neoform",
+            "Allosaurus Rider",
+            "Eldritch Evolution",
+            "Planar Genesis",
+        ),
+        # No colour rule: nothing sharing the four is another colour of this
+        # deck, so there is nothing for a source list to turn away.
+        "off_colour": (),
+        # No variant rule either. Nothing in the history forks the deck: the
+        # only mid-adoption mainboard cards are which basics and fetches fill
+        # the manabase. One population, so the camp is unset and every reading
+        # pools it.
+    },
 }
 
 # The weekly report's subjects: which lists a report is computed over, what it
@@ -193,6 +213,24 @@ REPORTS = {
             "membership, and there is no colour rule. The camps are pooled: volume and "
             "performance are the archetype's, and the build readings are the "
             "non-fallaji camp's."
+        ),
+    },
+    "neoform": {
+        "name": "Simic Neoform",
+        "archetype": "neoform",
+        # One population: the deck has no variant rule, so there is nothing to
+        # pool or to split, and every reading is the whole archetype's.
+        "camp": None,
+        "build_camp": None,
+        "observe": (),
+        # Nothing yet. Which slots the deck argues about is the pilot's call.
+        "copy_drift": (),
+        "watch": (),
+        "manabase": False,
+        "membership": (
+            "mainboard holds all four of Neoform, Allosaurus Rider, Eldritch Evolution "
+            "and Planar Genesis. No colour rule and no versions: every reading is the "
+            "whole archetype's."
         ),
     },
 }
@@ -282,7 +320,8 @@ TRACK_SPIKE_WEEKS = BASELINE_WINDOW_DAYS // 7
 EVENTS_PATH = REPO_ROOT / "data" / "events.csv"
 
 # The major paper events, by their melee tournament id, in the order they were
-# played. One-off events rather than a feed, so they are named here rather than
+# played. The id is the one in the event's page, https://melee.gg/Tournament/View/<id>,
+# and `melee.tournament` builds every request from it. One-off events rather than a feed, so they are named here rather than
 # discovered: an event enters the analysis because the pilot says it matters,
 # the same way `events.csv` works. The date is the local day the event started,
 # which is the day `events.csv` marks it on and the day its week is taken from;

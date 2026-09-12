@@ -1,6 +1,6 @@
 ---
 name: weekly-report
-description: Ingest the week's MTGO data and build a tracked deck's weekly report. Use whenever Alejandro asks for this week's report, for the Esper Blink or Goryo's report, to prepare for the team meeting, or to ingest new data and report on a tracked deck.
+description: Ingest the week's MTGO data and build a tracked deck's weekly report. Use whenever Alejandro asks for this week's report, for the Esper Blink, Goryo's or Simic Neoform report, to prepare for the team meeting, or to ingest new data and report on a tracked deck.
 ---
 
 # The weekly tracked-deck report
@@ -22,6 +22,7 @@ how it was measured.
 uv run tracker refresh --since <the Monday two weeks back>
 uv run tracker weekly --deck blink
 uv run tracker weekly --deck goryos
+uv run tracker weekly --deck neoform
 ```
 
 `refresh` fetches every Modern event published since that date and rebuilds the
@@ -49,7 +50,10 @@ and nothing in the file would say which a row was. Adding a subject is an entry
 there and a first run; changing an existing subject's population invalidates
 every frozen row it has, so it is Alejandro's call and not a tidy-up.
 
-The two subjects differ in that Goryo's pools its camps and Blink does not. Its
+Simic Neoform has one population: no variant rule, so nothing to pool or to
+split, no versions to observe and no clause 6 to write beyond saying so.
+
+Goryo's and Blink differ in that Goryo's pools its camps and Blink does not. Its
 volume and performance are the whole archetype's, which is what a metagame share
 is, and its storyline, goldfishing figure and Spotlight findings are the
 non-fallaji camp's. Pooled, a card at nine tenths of one camp and none of

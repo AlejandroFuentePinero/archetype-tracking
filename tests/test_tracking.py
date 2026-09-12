@@ -319,6 +319,25 @@ def test_a_week_is_stored_by_its_monday_and_read_by_its_sunday():
     assert weekly.week_label("2026-08-31") == "2026-09-06"
 
 
+def test_a_deck_with_no_variant_rule_is_one_population(tmp_path):
+    """Simic Neoform forks on nothing, so its members carry no camp and the
+    pooled reading is the whole of the deck."""
+    rule = config.TRACKED_DECKS["neoform"]
+    pilot = {
+        "pilot": "simic",
+        "points": 15,
+        "placement": 1,
+        "main": {card: 4 for card in rule["signature"]} | synthetic.FILLER_MAIN | synthetic.FILLER_LANDS,
+        "side": dict(synthetic.FILLER_SIDE),
+    }
+    db = _built(tmp_path, [challenge(FIRST, [pilot], "e1")])
+    assert sum(row["chal"] for row in tracking.weekly(db, "neoform", None, since=FIRST)) == 1
+    with duckdb.connect(db, read_only=True) as con:
+        assert con.execute(
+            "SELECT camp FROM decklists WHERE archetype = 'neoform'"
+        ).fetchall() == [(None,)]
+
+
 def test_membership_is_read_off_the_rule_and_not_a_list_of_names(tmp_path):
     """A rule that grows a card takes effect everywhere, including here."""
     raw = synthetic.write_cache(tmp_path / "raw", [_lists(FIRST, 1)])

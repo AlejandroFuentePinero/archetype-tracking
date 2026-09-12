@@ -211,15 +211,19 @@ def presence(weeks: list[dict], events: list[dict], versions: list[tuple]) -> st
     versions are trading places is a different week from a flat archetype that
     did not move. Observability only, and MTGO only. It carries no verdict, and
     a version this deck barely publishes plots as the floor rather than being
-    left off, a version nobody is playing being a reading in itself.
+    left off, a version nobody is playing being a reading in itself. A deck
+    with no versions to split gets the two panels and no third.
     """
     series = SERIES[0]
     days = _days(weeks)
     # Wider than the two-panel gap was: the third panel carries a key as well as
     # a title, and at the old spacing the title landed on the axis above it.
-    fig, (top, middle, bottom) = plt.subplots(
-        3, 1, figsize=(9, 7), sharex=True, gridspec_kw={"hspace": 0.46}
+    panels = 3 if versions else 2
+    fig, axes = plt.subplots(
+        panels, 1, figsize=(9, 7 if versions else 5), sharex=True,
+        gridspec_kw={"hspace": 0.46},
     )
+    top, middle = axes[0], axes[1]
 
     shares = [(row["chal_share"] or 0) * 100 for row in weeks]
     top.plot(days, shares, color=series, linewidth=2, marker="o", markersize=4)
@@ -234,7 +238,10 @@ def presence(weeks: list[dict], events: list[dict], versions: list[tuple]) -> st
                      loc="left", fontsize=10, pad=6)
     _frame(middle, days, events, "% of 5-0s")
     _end_labels(middle, [(trophies[-1], f"{trophies[-1]:.1f}%", series)])
+    if not versions:
+        return _svg(fig)
 
+    bottom = axes[2]
     labelled = []
     for slot, (name, rows) in enumerate(versions):
         colour = SERIES[slot % len(SERIES)]

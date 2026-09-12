@@ -36,16 +36,19 @@ def camp(mainboard: dict[str, int]) -> str:
     return config.HYBRID_CAMP
 
 
-def variant(name: str, mainboard: dict[str, int]) -> str:
+def variant(name: str, mainboard: dict[str, int]) -> str | None:
     """The camp a member of `name` belongs to, by that archetype's own rule.
 
     Goryo's forks on how many copies of one card a list runs;
     a tracked deck forks on whether it runs the card at all, which is what a
-    colour split is. Both read the mainboard alone.
+    colour split is. Both read the mainboard alone. A tracked deck with no
+    variant rule is one population, and its members carry no camp.
     """
     if name == config.ARCHETYPE:
         return camp(mainboard)
     rule = config.TRACKED_DECKS[name]
+    if "variant_card" not in rule:
+        return None
     if mainboard.get(rule["variant_card"], 0):
         return rule["variant_with"]
     return rule["variant_without"]

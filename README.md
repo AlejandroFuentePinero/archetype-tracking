@@ -50,6 +50,7 @@ uv run tracker refresh
 # Freeze the closed weeks and render last week's report for each tracked deck.
 uv run tracker weekly --deck blink
 uv run tracker weekly --deck goryos
+uv run tracker weekly --deck neoform
 ```
 
 Later runs are cheap: `refresh` refetches only the unsettled window, the last
@@ -115,7 +116,7 @@ tracker/            the package
   plots.py          the report's figures, as inline SVG
   config.py         every named threshold, in one file
 data/               index.csv, events.csv, raw-melee/ and tracking/ are committed
-tests/              78 tests over committed MTGO payload fixtures
+tests/              79 tests over committed MTGO payload fixtures
 ```
 
 ## Data
@@ -151,7 +152,7 @@ backfill is slow by construction. Please keep it that way.
 uv run pytest
 ```
 
-78 tests over committed MTGO payload fixtures. The network layer is excluded
+79 tests over committed MTGO payload fixtures. The network layer is excluded
 from the test seam by design and is verified by spot-checking fetched counts
 against the live site; the calendar rule deciding which month may legitimately
 have no index yet is not network, and is tested.
