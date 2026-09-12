@@ -75,8 +75,18 @@ HYBRID_CAMP = "hybrid"
 # it, which says what the rule tests and not what the deck is: the half on none
 # of them is the Riddler build to everybody who plays it. Display only. The camp
 # is keyed by its rule name in the store and in every reading, so renaming this
-# moves a label and invalidates nothing.
-VERSION_NAMES = {"non-fallaji": "Riddler"}
+# moves a label and invalidates nothing. The tracked decks' versions are keyed
+# lowercase and printed capitalised.
+VERSION_NAMES = {
+    "non-fallaji": "Riddler",
+    "esper": "Esper",
+    "orzhov": "Orzhov",
+    "frog": "Frog",
+    "traditional": "Traditional",
+    "lab": "Lab",
+    "gruul": "Gruul",
+    "mono-green": "Mono-green",
+}
 
 
 def version_name(camp: str) -> str:
@@ -120,9 +130,8 @@ TRACKED_DECKS = {
         # lists that fetch and a rule drawn on blue spells drops any Esper list
         # that cut Teferi. Presence and not a count: a variant here is which
         # colours the deck is, which one copy settles.
-        "variant_card": "Watery Grave",
-        "variant_with": "esper",
-        "variant_without": "orzhov",
+        "variants": (("esper", ("Watery Grave",)),),
+        "variant_default": "orzhov",
     },
     "neoform": {
         # The four together are the deck, and Planar Genesis is the one that
@@ -144,50 +153,126 @@ TRACKED_DECKS = {
         # the manabase. One population, so the camp is unset and every reading
         # pools it.
     },
+    "oswald": {
+        # Grinding Station is what makes an Oswald list this deck: the Tezzeret
+        # and Krang build shares Oswald, Emry and the Saga shell and is a
+        # different deck. No colour rule. A green source is a splash, usually
+        # for Haywire Mite, and the pilot reads it as the same deck.
+        "signature": ("Oswald Fiddlebender", "Grinding Station"),
+        "off_colour": (),
+    },
+    "zoo": {
+        # The two together are the deck and nothing else in the history shares
+        # them. Five colours, so no colour rule: the manabase is the part of
+        # this deck that moves most.
+        "signature": ("Territorial Kavu", "Scion of Draco"),
+        "off_colour": (),
+        # The Frog version is the bluer build and the one the report reads.
+        "variants": (("frog", ("Psychic Frog",)),),
+        "variant_default": "traditional",
+    },
+    "broodscale": {
+        # Basking Broodscale and the Blade are the combo and the deck. Mono-Green
+        # Eldrazi shares the Eldrazi shell and neither card; Eldrazi Tron shares
+        # Devourer of Destiny and Ugin's Labyrinth and neither card.
+        "signature": ("Basking Broodscale", "Blade of the Bloodchief"),
+        "off_colour": (),
+        # Three versions, read in this order. The red spells name the Gruul
+        # build: Stomping Ground would too, but Grove of the Burnwillows sits
+        # in nine of ten mono-green lists, so a source is not the line. Ugin's
+        # Labyrinth names the Lab build, every Devourer of Destiny list running
+        # it and nine in ten of its lists running Devourer. A list holding both
+        # is a Gruul list on a couple of Labyrinths, 27 of 1000 since the bans,
+        # and reads as Gruul.
+        "variants": (
+            ("gruul", ("Unholy Heat", "Writhing Chrysalis")),
+            ("lab", ("Ugin's Labyrinth",)),
+        ),
+        "variant_default": "mono-green",
+    },
+    "devoted": {
+        # Devoted Druid alone admits a handful of lists on Quirion Ranger and
+        # Eladamri; Tyvar is the combo the deck is built around.
+        "signature": ("Devoted Druid", "Tyvar, Jubilant Brawler"),
+        "off_colour": (),
+    },
+    "affinity": {
+        # Kappa Cannoneer alone admits the Hammer build; Pinnacle Emissary is
+        # what the affinity deck plays and Hammer does not. Weapons Manufacturing
+        # and Engineered Explosives keep out the Krang, Tamiyo and Song of
+        # Creation artifact decks, which share the two creatures and the Saga
+        # shell and are a different deck.
+        "signature": ("Kappa Cannoneer", "Pinnacle Emissary", "Weapons Manufacturing",
+                      "Engineered Explosives"),
+        "off_colour": (),
+    },
+    "prowess": {
+        # Cori-Steel Cutter alone admits the artifact decks on Emry and Tamiyo,
+        # 121 lists since the bans; the two creatures are what make it prowess.
+        # Steam Vents is what makes it Izzet: the red and Boros prowess lists on
+        # Lava Spike and Skewer share the three creatures and never the land.
+        "signature": ("Cori-Steel Cutter", "Monastery Swiftspear", "Dragon's Rage Channeler",
+                      "Steam Vents"),
+        "off_colour": (),
+    },
+    "trudge": {
+        "signature": ("Slumbering Trudge", "Fanatic of Rhonas"),
+        "off_colour": (),
+    },
+    "tron": {
+        # The three lands and Karn. The lands alone admit a blue Tron on Force
+        # of Negation and Stock Up, 53 lists since the bans, which is a
+        # different deck; every list with Karn is the Eldrazi build.
+        "signature": ("Urza's Tower", "Urza's Mine", "Urza's Power Plant", "Karn, the Great Creator"),
+        "off_colour": (),
+    },
 }
+
+
+def versions(archetype: str) -> tuple[str, ...]:
+    """Every camp of an archetype in rule order, or nothing for one population."""
+    if archetype == ARCHETYPE:
+        return (*CAMPS, HYBRID_CAMP)
+    rule = TRACKED_DECKS[archetype]
+    if "variants" not in rule:
+        return ()
+    return (*(name for name, _ in rule["variants"]), rule["variant_default"])
 
 # The weekly report's subjects: which lists a report is computed over, what it
 # calls itself, and which slots it watches. Kept apart from the membership rules
 # above because the two answer different questions. A rule says what a list is,
 # and Goryo's has one already, drawn on copy counts where a tracked deck's is
 # drawn on presence, so it stays above `TRACKED_DECKS` and is tested first. A
-# report says which
-# of those lists it reads, and that is a separate decision made once per report.
+# report says which of those lists it reads, and that is a separate decision
+# made once per report.
 #
-# `camp` is the population every volume and performance figure is taken over,
-# and `None` pools every camp: a metagame share is a share of the whole
-# archetype, and read on one camp of three it is a third of the answer.
-# `build_camp` is the one camp the build readings are taken on, and the two
-# differ for exactly the reason the glossary gives for never reading novelty
-# across camps. Pooled, Goryo's looks like it drifted a copy of Quantum Riddler
-# over the regime; inside the non-fallaji camp the card is flat at four, and the
-# drift is the fallaji camp arriving rather than anybody changing their mind.
-#
-# `observe` names the camps whose bare counts the summary prints and nothing
-# else: no plot, no verdict, the pooled figures having already counted them.
+# Two populations, and the split is fixed rather than a field. Presence is the
+# whole archetype, every version pooled: a metagame share is a share of the
+# whole deck, and read on one version of three it is a third of the answer.
+# `camp` is the version everything else is read on, conversion and goldfishing
+# and the storyline and the numbers table, and `None` where the deck has one
+# population. Pooled, Goryo's looks like it drifted a copy of Quantum Riddler
+# over the regime; inside the non-fallaji camp the card is flat at four, and
+# the drift is the fallaji camp arriving rather than anybody changing their
+# mind. The versions the report does not read are printed as bare counts and on
+# the presence figure's third panel, and are every other camp the rule names.
 REPORTS = {
     "blink": {
         "name": "Esper Blink",
         "archetype": "blink",
         "camp": "esper",
-        "build_camp": "esper",
-        "observe": ("orzhov",),
         "watch": (),
         "manabase": False,
         "membership": (
             "mainboard holds Phelia, Exuberant Shepherd, Flickerwisp, Overlord of the "
-            "Balemurk and Witch Enchanter, and no red or green source. The esper variant "
-            "mainboards Watery Grave; the orzhov variant does not."
+            "Balemurk and Witch Enchanter, and no red or green source. The esper version "
+            "mainboards Watery Grave; the orzhov version does not."
         ),
     },
     "goryos": {
         "name": "Goryo's",
         "archetype": ARCHETYPE,
-        # Pooled. Every camp is the archetype, and the report is asked for the
-        # archetype's presence in the field rather than one camp's.
-        "camp": None,
-        "build_camp": "non-fallaji",
-        "observe": ("non-fallaji", "fallaji", "hybrid"),
+        "camp": "non-fallaji",
         # The slots the pilot argues about, read at the finer bar below and by
         # copy count rather than by presence. Both halves of the land swap are
         # here because a slot lost is the other half of a slot won, and a
@@ -198,25 +283,110 @@ REPORTS = {
         "membership": (
             "mainboard holds all four of Goryo's Vengeance, Atraxa, Grand Unifier, "
             "Psychic Frog and Ephemerate. Green sources for casting Atraxa do not change "
-            "membership, and there is no colour rule. The camps are pooled: volume and "
-            "performance are the archetype's, and the build readings are the "
-            "non-fallaji camp's."
+            "membership, and there is no colour rule. The non-fallaji version is the one read."
         ),
     },
     "neoform": {
         "name": "Simic Neoform",
         "archetype": "neoform",
-        # One population: the deck has no variant rule, so there is nothing to
-        # pool or to split, and every reading is the whole archetype's.
         "camp": None,
-        "build_camp": None,
-        "observe": (),
         "watch": (),
         "manabase": False,
         "membership": (
             "mainboard holds all four of Neoform, Allosaurus Rider, Eldritch Evolution "
             "and Planar Genesis. No colour rule and no versions: every reading is the "
             "whole archetype's."
+        ),
+    },
+    "oswald": {
+        "name": "UW Oswald",
+        "archetype": "oswald",
+        "camp": None,
+        "watch": (),
+        "manabase": False,
+        "membership": (
+            "mainboard holds Oswald Fiddlebender and Grinding Station. No colour rule: a "
+            "green splash is the same deck. No versions."
+        ),
+    },
+    "zoo": {
+        "name": "Domain Zoo",
+        "archetype": "zoo",
+        "camp": "traditional",
+        "watch": (),
+        "manabase": False,
+        "membership": (
+            "mainboard holds Territorial Kavu and Scion of Draco. No colour rule. The frog "
+            "version mainboards Psychic Frog and is the one read; the traditional version "
+            "does not."
+        ),
+    },
+    "broodscale": {
+        "name": "Broodscale",
+        "archetype": "broodscale",
+        "camp": "lab",
+        "watch": (),
+        "manabase": False,
+        "membership": (
+            "mainboard holds Basking Broodscale and Blade of the Bloodchief. No colour rule. "
+            "The gruul version mainboards Unholy Heat or Writhing Chrysalis, the lab version "
+            "mainboards Ugin's Labyrinth and is the one read, and the mono-green version "
+            "holds neither."
+        ),
+    },
+    "devoted": {
+        "name": "Devoted Combo",
+        "archetype": "devoted",
+        "camp": None,
+        "watch": (),
+        "manabase": False,
+        "membership": (
+            "mainboard holds Devoted Druid and Tyvar, Jubilant Brawler. No colour rule and "
+            "no versions."
+        ),
+    },
+    "affinity": {
+        "name": "Affinity",
+        "archetype": "affinity",
+        "camp": None,
+        "watch": (),
+        "manabase": False,
+        "membership": (
+            "mainboard holds Kappa Cannoneer and Pinnacle Emissary. No colour rule and no "
+            "versions."
+        ),
+    },
+    "prowess": {
+        "name": "Izzet Prowess",
+        "archetype": "prowess",
+        "camp": None,
+        "watch": (),
+        "manabase": False,
+        "membership": (
+            "mainboard holds Cori-Steel Cutter, Monastery Swiftspear and Dragon's Rage "
+            "Channeler. No colour rule and no versions."
+        ),
+    },
+    "trudge": {
+        "name": "Trudge",
+        "archetype": "trudge",
+        "camp": None,
+        "watch": (),
+        "manabase": False,
+        "membership": (
+            "mainboard holds Slumbering Trudge and Fanatic of Rhonas. No colour rule and no "
+            "versions."
+        ),
+    },
+    "tron": {
+        "name": "Tron",
+        "archetype": "tron",
+        "camp": None,
+        "watch": (),
+        "manabase": False,
+        "membership": (
+            "mainboard holds Urza's Tower, Urza's Mine, Urza's Power Plant and Karn, the "
+            "Great Creator. No colour rule and no versions."
         ),
     },
 }
@@ -352,3 +522,8 @@ RETURN_ABSENCE_DAYS = 28
 # The rendered reports. Derived from the cache and the frozen rows, and so
 # rebuildable: kept out of the repository like the store.
 REPORT_DIR = REPO_ROOT / "reports"
+
+# The Space's staging directory: the index and one report per deck, built by
+# `tracker site` from REPORT_DIR and pushed as-is. Derived, so not committed.
+SITE_DIR = REPO_ROOT / "site"
+SITE_TITLE = "MTG Archetype Tracking"

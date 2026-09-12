@@ -95,9 +95,9 @@ def unread(entry: dict) -> bool:
 def members(payload: dict, archetype: str = "blink", camp: str | None = "esper") -> list[dict]:
     """The Spotlight's lists that answer to the deck's rule, in finishing order.
 
-    `camp` of None pools every camp, which is what the volume and performance
-    readings want. The build readings pass the report's build camp, for the
-    reason `store.population` gives.
+    `camp` of None pools every camp, which is what the presence and paper
+    figures want. The build readings pass the report's camp, for the reason
+    `store.population` gives.
 
     The rule and not the name melee publishes. A decklist name is typed by its
     pilot: this field carried "Esper Blink", "Azorius Blink" and a bare "Esper"
@@ -210,7 +210,7 @@ def chain(
     Two populations, as everywhere else in the report. The numbers are the whole
     archetype's, a metagame share of a paper field being the one quantity MTGO
     cannot produce and no use read on a third of the deck. The findings are the
-    build camp's, and the chain they are read along is that camp's too.
+    report's camp's, and the chain they are read along is that camp's too.
 
     Every event is read against whatever came immediately before it in the
     storyline, which is a paper event where one was played since the last
@@ -230,7 +230,7 @@ def chain(
     at nine tenths of one and half of another is not the deck changing its mind.
     """
     report = report or config.REPORTS["blink"]
-    archetype, camp, build = report["archetype"], report["camp"], report["build_camp"]
+    archetype, build = report["archetype"], report["camp"]
     played = list(spotlights or config.MAJOR_EVENTS)
     typed = store.land_names(db_path) if report["manabase"] else frozenset()
     entries = []
@@ -253,7 +253,7 @@ def chain(
             against, crossed = f"the fortnight to {end}", True
         entries.append(
             {
-                **reading(payload, archetype, camp),
+                **reading(payload, archetype, None),
                 "label": spot["label"],
                 "date": spot["date"],
                 "week": week(spot),

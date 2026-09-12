@@ -1,6 +1,6 @@
 ---
 name: weekly-report
-description: Ingest the week's MTGO data and build a tracked deck's weekly report. Use whenever Alejandro asks for this week's report, for the Esper Blink, Goryo's or Simic Neoform report, to prepare for the team meeting, or to ingest new data and report on a tracked deck.
+description: Ingest the week's MTGO data and build a tracked deck's weekly report. Use whenever Alejandro asks for this week's report, for any tracked deck's report (Esper Blink, Goryo's, Simic Neoform, UW Oswald, Domain Zoo, Broodscale, Devoted Combo, Affinity, Izzet Prowess, Trudge, Tron), to prepare for the team meeting, or to ingest new data and report on a tracked deck.
 ---
 
 # The weekly tracked-deck report
@@ -20,9 +20,9 @@ how it was measured.
 
 ```bash
 uv run tracker refresh --since <the Monday two weeks back>
-uv run tracker weekly --deck blink
-uv run tracker weekly --deck goryos
-uv run tracker weekly --deck neoform
+for deck in blink goryos neoform oswald zoo broodscale devoted affinity prowess trudge tron; do
+  uv run tracker weekly --deck $deck
+done
 ```
 
 `refresh` fetches every Modern event published since that date and rebuilds the
@@ -38,28 +38,29 @@ serves every deck at once, so it runs once and `weekly` runs per deck.
 If it prints `NO SUMMARY`, that is the next step and the whole of it.
 
 **Which lists a report reads is not a flag.** It is the report's own entry in
-`config.REPORTS`: the archetype, the camp its volume and performance figures are
-pooled over, the camp its build readings are taken on, the slots it watches. The
-report calls a camp a **version of the deck** and names it from
-`config.VERSION_NAMES` where the pilot's word is not the rule's, so the
-non-fallaji camp prints as **Riddler**; the code and every reading outside this
-report still key it by the rule name. One report per directory under `data/tracking/`,
-because a pooled row and a one-camp
-row in the same `weekly.csv` would be two measurements under one column heading
-and nothing in the file would say which a row was. Adding a subject is an entry
-there and a first run; changing an existing subject's population invalidates
-every frozen row it has, so it is Alejandro's call and not a tidy-up.
+`config.REPORTS`: the archetype, the version its performance and build readings
+are taken on, the slots it watches. The report calls a camp a **version of the
+deck** and names it from `config.VERSION_NAMES` where the pilot's word is not
+the rule's, so the non-fallaji camp prints as **Riddler**; the code and every
+reading outside this report still key it by the rule name. One report per
+directory under `data/tracking/` and one population per file in it: `weekly.csv`
+is the whole archetype and `version.csv` its tracked version, because a pooled
+row and a one-camp row in one file would be two measurements under one column
+heading and nothing in the file would say which a row was. Adding a subject is
+an entry there and a first run; changing an existing subject's version
+invalidates every frozen row it has, so it is Alejandro's call and not a
+tidy-up.
 
-Simic Neoform has one population: no variant rule, so nothing to pool or to
-split, no versions to observe and no clause 6 to write beyond saying so.
-
-Goryo's and Blink differ in that Goryo's pools its camps and Blink does not. Its
-volume and performance are the whole archetype's, which is what a metagame share
-is, and its storyline, goldfishing figure and Spotlight findings are the
-non-fallaji camp's. Pooled, a card at nine tenths of one camp and none of
-another reads as the deck at half of it, and a camp arriving reads as the deck
-changing its mind. The report labels both populations where they appear; the
-summary should not contradict the labels.
+**Every report reads two populations, and the split is the same for all.**
+Presence, which is the presence figure and clauses 1 and 2, is the whole deck,
+every version pooled, because a metagame share is a share of the whole deck.
+Conversion, goldfishing, the numbers table and the storyline are the tracked
+version's alone: Esper for Blink, Riddler for Goryo's, Traditional for Domain Zoo, Lab
+for Broodscale. A finish is one build's, and pooled, a card at nine tenths of
+one version and none of another reads as the deck at half of it. A deck with
+one population, which is the other seven, reads the same lists everywhere and
+has no clause 6 to write beyond saying so. The report labels the version
+wherever it is read; the summary should not contradict the labels.
 
 ## Writing the summary
 
@@ -91,8 +92,11 @@ counted it.
    clause: a deck can be well above its regime median and level against where it
    has just been, which is what a deck that moved to a new level looks like.
 3. **Conversion.** `conversion.top8` and `conversion.top8_share` against
-   `challenge.share`. When `conversion.over_converting` is true the deck is
-   holding more of the top 8 than of the top 32, and that is the sentence.
+   `conversion.share`, which is the tracked version's own top-32 share and not
+   the pooled one in clause 1; `conversion.lists` is its n. Where the report
+   reads a version, name it. When `conversion.over_converting` is true the
+   version is holding more of the top 8 than of the top 32, and that is the
+   sentence.
 4. **Innovation.** What `timeline_latest` holds, named, and the fortnight it
    covers. When it is empty, say the fortnight was stable. Never dress up a
    stable fortnight. A card climbing in one board and falling in the other is
@@ -109,8 +113,8 @@ counted it.
    against the week before it.
 6. **The other versions of the deck.** `versions`, one entry per version the
    report names but does not read, as bare numbers. Observability only. They get
-   no verdict, and where the report's figures are pooled they are already
-   counted in them. The presence figure's third panel plots the same split.
+   no verdict, and the presence figures already count them. The presence
+   figure's third panel plots the same split.
 
 Rules for the prose:
 
@@ -126,9 +130,9 @@ Rules for the prose:
   so does the engine's own vocabulary outside this report.
 - **Every claim comes from the JSON.** No matchup opinions, no predictions, no
   "suggesting that". If the numbers do not say it, it does not go in.
-- **Print the n beside a share.** A week can be nine lists. Where the report
-  reads one camp, the paper figures are that camp's and the clause says so:
-  Esper Blink took 63 lists to Dallas and the row says 61.
+- **Print the n beside a share.** A week can be nine lists. The paper figures
+  are the whole deck's, like presence; only the storyline's paper rows are the
+  tracked version's.
 - **`goldfishing` is read per pilot per 60**, so its share is over
   `builds` and not over `lists`. A league publishes every 5-0, so one grinder
   can be five of a week's lists and is one of its builds.
@@ -151,6 +155,20 @@ Rules for the prose:
   Commit those: they are the report's memory, and without them the timeline
   cannot be rebuilt.
 - The rendered HTML is under `reports/` and is deliberately not committed.
+
+## Deploy
+
+Once every tracked deck has its summary rendered in, push the week to the Space:
+
+```bash
+scripts/deploy_space.sh Alejandrofupi/mtg-archetype-tracking
+```
+
+It stages the index and the latest report per deck with `tracker site`, which
+refuses a report still on the pending line or reports that disagree on the
+week, checks the Space is protected, and uploads the lot as one commit. The
+Space holds the rendered pages and nothing else; the source repo is not linked
+from it.
 
 ## What not to do
 

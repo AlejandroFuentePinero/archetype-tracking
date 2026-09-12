@@ -12,10 +12,11 @@ are carried beside the shares regardless, because a share off two lists is a
 figure nobody should read without seeing the two.
 
 Which camps a reading is taken over is the report's decision and is made once,
-in `config.REPORTS`. Volume and performance pool every camp, a metagame share
-being a share of the whole archetype. A build reading never does: two camps are
-different decks in the sense that matters to how a list is built, and pooled,
-a camp arriving reads as the deck changing its mind.
+in `config.REPORTS`. Presence pools every camp, a metagame share being a share
+of the whole archetype. Every other reading is the report's own camp: two camps
+are different decks in the sense that matters to how a list is built and to
+how it finishes, and pooled, a camp arriving reads as the deck changing its
+mind.
 """
 
 from collections import Counter

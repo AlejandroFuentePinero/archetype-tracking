@@ -2,8 +2,9 @@
 
 import argparse
 import json
+from pathlib import Path
 
-from . import config, index, melee, spotlight, weekly
+from . import config, index, melee, site, spotlight, weekly
 from .refresh import refresh
 from .store import arrivals
 
@@ -64,6 +65,9 @@ def main(argv=None) -> None:
     tracked.add_argument("--deck", default="blink", choices=sorted(config.REPORTS))
     tracked.add_argument("--week", help="the Monday keying the week to report, defaults to the last full week")
 
+    stage = commands.add_parser("site", help="stage the Space: an index over the latest report per deck")
+    stage.add_argument("--out", type=Path, default=config.SITE_DIR)
+
     spot = commands.add_parser("event-fetch", help="cache a major paper event's standings and lists")
     spot.add_argument("--id", type=int, help="melee tournament id, defaults to every one configured")
 
@@ -118,6 +122,11 @@ def main(argv=None) -> None:
         summary = weekly.deck_dir(args.deck) / "summary" / f"{week}.md"
         if not summary.exists():
             print(f"  NO SUMMARY: write {summary} and re-run to render it in")
+        return
+
+    if args.command == "site":
+        week = site.build(args.out)
+        print(f"week ending {weekly.week_label(week)}, staged at {args.out}")
         return
 
     if args.command == "refresh":

@@ -564,3 +564,44 @@ def test_a_card_the_fortnight_dropped_entirely_is_a_row(tmp_path):
     second = timeline.findings(db, config.REPORTS["blink"], spotlights=())[1]
     texts = [row["text"] for row in second["found"] if row["card"] == "Orcish Bowmasters"]
     assert texts == ["Orcish Bowmasters fell in the mainboard, 10/10 to 0/10 lists (100% to 0%)"]
+
+
+def test_presence_is_the_whole_deck_and_conversion_is_the_version(tmp_path, monkeypatch):
+    """A metagame share is the whole deck's; a finish is the version's.
+
+    Read on one version of two, presence answers half the question. Read pooled,
+    conversion credits the tracked version with the other version's finishes.
+    So the two are frozen as two populations in two files, and the summary's
+    volume clause and conversion clause come from different rows.
+    """
+    monkeypatch.setattr(config, "TRACKING_DIR", tmp_path / "tracking")
+    both = challenge(FIRST, [
+        blink("esper_pilot", variant="esper", placement=9, points=12),
+        blink("orzhov_pilot", variant="orzhov", placement=1, points=15),
+    ], "e1")
+    db = _built(tmp_path, [both])
+    weekly.freeze(db, "blink", through="2026-05-18")
+
+    reading = weekly.facts(db, "blink", "2026-05-18")
+    assert reading["challenge"]["lists"] == 2
+    assert (reading["conversion"]["lists"], reading["conversion"]["top8"]) == (1, 0)
+    assert reading["versions"] == {"Orzhov": {"lists": 1, "challenge": 1, "trophies": 0}}
+    assert [row["chal"] for row in weekly.version_weeks_through(db, "blink", config.REPORTS["blink"], "2026-05-18")] == [1]
+
+
+@pytest.mark.parametrize("mainboard,expected", [
+    ({"Unholy Heat": 2, "Ugin's Labyrinth": 2}, "gruul"),
+    ({"Writhing Chrysalis": 3}, "gruul"),
+    ({"Ugin's Labyrinth": 4, "Devourer of Destiny": 3}, "lab"),
+    ({"Grove of the Burnwillows": 4}, "mono-green"),
+])
+def test_a_three_way_variant_rule_reads_in_order(mainboard, expected):
+    """The first version whose cards the list holds names it; none is the default.
+
+    A Gruul list on a couple of Labyrinths is a Gruul list, so the red spells
+    are tested before the Labyrinth. A red source is not the line: Grove of the
+    Burnwillows sits in nine of ten mono-green lists.
+    """
+    from tracker import classify
+
+    assert classify.variant("broodscale", mainboard) == expected

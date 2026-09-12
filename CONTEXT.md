@@ -65,7 +65,7 @@ _Avoid_: Reanimator (broader family), Grixis Reanimator (a different archetype, 
 For a card in a list, the pair (mainboard copies, sideboard copies). The unit at which adoption is tracked: a main↔side migration is a configuration change even when total copies are constant. Deck-level counts (e.g. lands) are configurations of the list as a whole.
 
 **Variant**:
-A recognised camp within the archetype, defined by a divergence card. Currently: Fallaji camp (3-4 copies) vs non-Fallaji camp (0 copies); 1-2 copies is a hybrid experiment belonging to neither consensus. Consensus builds and novelty are computed per variant, never across camps. The weekly report calls a camp a **version of the deck**, that being the pilot's word for it, and prints the name in `config.VERSION_NAMES` where the rule's name is not the pilot's: the non-fallaji camp is the **Riddler** build. Display only. Everything else here, every identifier in the code and every stored record keys the camp by its rule name.
+A recognised camp within the archetype, defined by a divergence card. Currently: Fallaji camp (3-4 copies) vs non-Fallaji camp (0 copies); 1-2 copies is a hybrid experiment belonging to neither consensus. A tracked deck's rule is ordered instead: each version names the cards that commit a list to it, the first version the mainboard holds any card of takes the list, and a list holding none is the default version. Presence and never a count. Consensus builds and novelty are computed per variant, never across camps. The weekly report calls a camp a **version of the deck**, that being the pilot's word for it, and prints the name in `config.VERSION_NAMES` where the rule's name is not the pilot's: the non-fallaji camp is the **Riddler** build. Display only. Everything else here, every identifier in the code and every stored record keys the camp by its rule name.
 
 ### Tracked decks
 
@@ -80,20 +80,45 @@ The first tracked Modern archetype: a mainboard holding Phelia, Exuberant Shephe
 The colour half of Blink's membership rule. A Mardu build shares all four signature cards and is a different deck, so a mainboard source that actually produces red or green puts a list outside the archetype rather than into a third variant. Read on sources and never on fetchlands, most of the Orzhov half fetching with Flooded Strand, which produces neither. The rule is a hand-written list of card names and is the one part of membership that can go stale silently, so the count it turned away is printed every week: a red build on a source nobody listed would otherwise read as a member and nothing would say so.
 
 **Esper Blink / Orzhov Blink**:
-Blink's two variants, split on mainboard Watery Grave. Presence and not a count, a variant here being which colours the deck is, which one copy settles. The card partitions the archetype exactly, where a rule drawn on blue sources throws away the Orzhov lists that fetch and one drawn on blue spells drops any Esper list that cut Teferi. Every reading in the weekly report is the Esper variant alone; Orzhov is carried as bare numbers in the summary, its challenge-class population being single figures over the whole post-regime history, which is enough to say it exists and nowhere near enough to read a build or a conversion rate off.
+Blink's two variants, split on mainboard Watery Grave. Presence and not a count, a variant here being which colours the deck is, which one copy settles. The card partitions the archetype exactly, where a rule drawn on blue sources throws away the Orzhov lists that fetch and one drawn on blue spells drops any Esper list that cut Teferi. Presence is the whole deck's and every other reading in the weekly report is the Esper variant's; Orzhov is carried as bare numbers in the summary, its challenge-class population being single figures over the whole post-regime history, which is enough to say it exists and nowhere near enough to read a build or a conversion rate off.
 
 **Neoform**:
 The second tracked Modern archetype: a mainboard holding Neoform, Allosaurus Rider, Eldritch Evolution and Planar Genesis, all four. Planar Genesis is the card that says which deck: the other three are the engine of the four-colour Glittering Wish build on Gemstone Mine as well, and that is a different deck. No colour rule, nothing sharing the four being another colour of this one, and no variant, nothing in the history forking it: its members carry no camp and every reading in its report is the whole archetype's. Tested after Goryo's and Blink, like every tracked rule. The report calls it **Simic Neoform**, the pilots' name for it.
 
+**UW Oswald**:
+A mainboard holding Oswald Fiddlebender and Grinding Station. The Station is the card that says which deck: the Tezzeret and Krang build shares Oswald, Emry and the Saga shell and is a different one. No colour rule, a green source being a splash for Haywire Mite inside the same deck. One population.
+
+**Domain Zoo**:
+A mainboard holding Territorial Kavu and Scion of Draco. No colour rule: the deck is five colours and its manabase is the part that moves. Two versions, split on mainboard Psychic Frog: **Frog**, the bluer build, and **Traditional**, the tracked version.
+
+**Broodscale**:
+A mainboard holding Basking Broodscale and Blade of the Bloodchief, the combo. Mono-Green Eldrazi and Eldrazi Tron share the shell and neither card. Three versions, read in order: **Gruul** on Unholy Heat or Writhing Chrysalis, **Lab** on Ugin's Labyrinth, and **mono-green** on neither. Red is read on spells and not sources, Grove of the Burnwillows sitting in nine of ten mono-green lists; a list on both red spells and the Labyrinth is Gruul. The Lab version is tracked, chosen from the data on 2026-09-12 when it had become most of the deck.
+
+**Devoted Combo**:
+A mainboard holding Devoted Druid and Tyvar, Jubilant Brawler. One population.
+
+**Affinity**:
+A mainboard holding Kappa Cannoneer, Pinnacle Emissary, Weapons Manufacturing and Engineered Explosives; the Cannoneer alone admits the Hammer build, and the two four-ofs keep out the Krang and Song of Creation artifact decks on the same creatures. One population.
+
+**Izzet Prowess**:
+A mainboard holding Cori-Steel Cutter, Monastery Swiftspear, Dragon's Rage Channeler and Steam Vents; the Cutter alone admits the artifact decks on Emry and Tamiyo, and the land keeps out the red and Boros prowess lists. One population.
+
+**Eldrazi Trudge**:
+A mainboard holding Slumbering Trudge and Fanatic of Rhonas. The report calls it **Trudge**. One population.
+
+**Tron**:
+A mainboard holding Urza's Tower, Urza's Mine, Urza's Power Plant and Karn, the Great Creator. The lands alone admit a blue Tron on Force of Negation and Stock Up, a different deck. One population.
+
 **Report subject**:
-What one weekly report is computed over, named once in `config.REPORTS` rather than passed as a flag. It fixes the archetype, the camp the volume and performance figures are pooled over, the camp the build readings are taken on, and the slots it watches. One subject per directory under `data/tracking/`, because a pooled row and a one-camp row in the same `weekly.csv` are two measurements under one column heading and nothing in the file says which a row is. Kept apart from the membership rules: a rule says what a list is, a subject says which of those lists a report reads, and Goryo's has a rule already without being a tracked deck.
+What one weekly report is computed over, named once in `config.REPORTS` rather than passed as a flag. It fixes the archetype, the version its performance and build readings are taken on, and the slots it watches; presence is always the whole archetype's. One subject per directory under `data/tracking/`, and one population per file in it, `weekly.csv` for the archetype and `version.csv` for its tracked version, because a pooled row and a one-camp row in one file are two measurements under one column heading and nothing in the file says which a row is. Kept apart from the membership rules: a rule says what a list is, a subject says which of those lists a report reads, and Goryo's has a rule already without being a tracked deck.
 _Avoid_: deck, where the population is what matters (Blink is one deck and one subject; Goryo's is one deck read as two populations)
 
 **Pooled camps**:
-Every camp of an archetype counted as one population, which is what the volume and performance figures of the Goryo's report are taken over. A metagame share is a share of the whole deck, and read on one camp of three it answers a third of the question. Never the build readings: pooled, a card at nine tenths of one camp and none of another reads as the deck at half of it, and a camp arriving reads as the deck changing its mind. Goryo's pooled looks like it drifted a copy of Quantum Riddler over the regime, where inside the non-fallaji camp the card is flat at four.
+Every camp of an archetype counted as one population, which is what every report's presence figures are taken over. A metagame share is a share of the whole deck, and read on one camp of three it answers a third of the question. Never the performance or build readings, a finish being one build's: pooled, a card at nine tenths of one camp and none of another reads as the deck at half of it, and a camp arriving reads as the deck changing its mind. Goryo's pooled looks like it drifted a copy of Quantum Riddler over the regime, where inside the non-fallaji camp the card is flat at four.
 
-**Build camp**:
-The one camp a subject's storyline, goldfishing figure and Spotlight findings are read on, where its weekly figures may be pooled. The non-fallaji camp for Goryo's, the Esper variant for Blink. Labelled in the report wherever the two populations differ, because the figures above a storyline row would otherwise put a list count beside it that the row was never read against.
+**Tracked version**:
+The one camp a subject's conversion, goldfishing figure, numbers table, storyline and Spotlight findings are read on, where its presence figures are pooled. The non-fallaji camp for Goryo's, the Esper variant for Blink, the Traditional version for Domain Zoo, the Lab version for Broodscale. Labelled in the report wherever it is read, because the presence figures above would otherwise put a list count beside a row it was never read against.
+_Avoid_: build camp (the earlier name, from when only the build readings were read on it)
 
 **Week**:
 Monday to Sunday, the bucket every weekly reading groups on. Keyed by its Monday wherever it is stored, that being what the store's `date_trunc` returns and the name every frozen row and summary file carries. Named by its Sunday wherever it is read, on the report's header, its table and the x-axis of every figure, because a week labelled with the day it opened reads as the day the data stops and puts the reader a week behind the figures.

@@ -9,6 +9,7 @@ data/engine.duckdb
 # rather than served by an API, for an event that is over: the same reason the
 # frozen tracking rows are committed.
 reports/
+site/
 .pytest_cache/
 *.egg-info/
 dist/

@@ -40,18 +40,21 @@ def variant(name: str, mainboard: dict[str, int]) -> str | None:
     """The camp a member of `name` belongs to, by that archetype's own rule.
 
     Goryo's forks on how many copies of one card a list runs;
-    a tracked deck forks on whether it runs the card at all, which is what a
-    colour split is. Both read the mainboard alone. A tracked deck with no
-    variant rule is one population, and its members carry no camp.
+    a tracked deck forks on whether it runs a card at all, which is what a
+    colour split is. Its rule is ordered: the first version whose cards the
+    mainboard holds any of names the camp, and a list holding none takes the
+    default. Both read the mainboard alone. A tracked deck with no variant rule
+    is one population, and its members carry no camp.
     """
     if name == config.ARCHETYPE:
         return camp(mainboard)
     rule = config.TRACKED_DECKS[name]
-    if "variant_card" not in rule:
+    if "variants" not in rule:
         return None
-    if mainboard.get(rule["variant_card"], 0):
-        return rule["variant_with"]
-    return rule["variant_without"]
+    for camp_name, cards in rule["variants"]:
+        if any(mainboard.get(card, 0) for card in cards):
+            return camp_name
+    return rule["variant_default"]
 
 
 def classify_cache(raw_dir: Path) -> list[Decklist]:

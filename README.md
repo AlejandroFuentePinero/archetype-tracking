@@ -48,9 +48,9 @@ The store and the raw cache are not committed, so a fresh clone builds them:
 uv run tracker refresh
 
 # Freeze the closed weeks and render last week's report for each tracked deck.
-uv run tracker weekly --deck blink
-uv run tracker weekly --deck goryos
-uv run tracker weekly --deck neoform
+for deck in blink goryos neoform oswald zoo broodscale devoted affinity prowess trudge tron; do
+  uv run tracker weekly --deck $deck
+done
 ```
 
 Later runs are cheap: `refresh` refetches only the unsettled window, the last
@@ -63,6 +63,7 @@ few days that are still gaining lists, plus anything new.
 | `refresh [--since D] [--until D]` | Cache published MTGO events into `data/raw/`, rebuild the store, update the ingest index |
 | `weekly [--deck D] [--week D]` | Freeze the closed weeks and fortnights of a tracked deck, write the week's numbers as JSON, render the HTML |
 | `event-fetch [--id N]` | Cache a major paper event's standings and decklists from Melee into `data/raw-melee/` |
+| `site [--out D]` | Stage the Space: an index over the latest rendered report per deck, under `site/` |
 
 `weekly` defaults to Esper Blink and to the last complete week; run it on a
 Monday for the week that closed on Sunday. It prints the numbers, where they
@@ -79,6 +80,10 @@ the week an event lands and never again. Paper lists never enter the store and
 never share an axis with MTGO figures: a Spotlight publishes every finisher
 where a challenge publishes a cut, so the two are different populations.
 
+`site` builds what `scripts/deploy_space.sh <user>/<space>` pushes to a
+protected Hugging Face Space: the rendered pages under stable names and an
+index over them, nothing else. It refuses a report with no summary written in.
+
 Which lists a report reads is not a flag. It is the report's own entry in
 `config.REPORTS`: the archetype, the camp its volume figures are pooled over,
 the camp its build readings are taken on, and the slots it watches. Adding a
@@ -94,7 +99,7 @@ subject is an entry there and a first run.
 | [`docs/agents/`](docs/agents/) | Conventions for the coding agents that work on this repo |
 
 `CONTEXT.md` is not optional reading. The vocabulary is load-bearing: "detection
-bin", "watched slot", "build camp" and "frozen row" all mean one specific thing
+bin", "watched slot", "tracked version" and "frozen row" all mean one specific thing
 here, and several terms carry an explicit `_Avoid_` line naming the near-synonym
 that would blur a real distinction.
 
@@ -114,9 +119,10 @@ tracker/            the package
   spotlight.py      a paper event read as a storyline entry
   weekly.py         freeze the closed weeks, then render the report
   plots.py          the report's figures, as inline SVG
+  site.py           the Space: an index over the current week's reports
   config.py         every named threshold, in one file
 data/               index.csv, events.csv, raw-melee/ and tracking/ are committed
-tests/              79 tests over committed MTGO payload fixtures
+tests/              tests over committed MTGO payload fixtures
 ```
 
 ## Data

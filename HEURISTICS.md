@@ -82,6 +82,75 @@ the move that matters is smaller than the ordinary bar: non-Fallaji Hedge Maze
 went 11% to 30% in the fortnight to 6 September, which the twenty-point bar
 missed by one point.
 
+**Simic Neoform is four cards, and Planar Genesis is the one that names it**
+(2026-09-12):
+Membership is Neoform, Allosaurus Rider, Eldritch Evolution and Planar Genesis,
+all four in the mainboard, with no count and no colour rule. The four-colour
+Glittering Wish build on Gemstone Mine plays the first three and never Planar
+Genesis, and it is a different deck. Raised from the data and adopted by
+Alejandro on 2026-09-12: of the 471 MTGO lists since February mainboarding any
+of Neoform, Allosaurus Rider or Planar Genesis, 439 answer to all four.
+*Applies*: the rule stands as written in `config.TRACKED_DECKS`; the Glittering
+Wish lists stay outside the population.
+
+**UW Oswald is Oswald Fiddlebender with Grinding Station, and a green splash
+is the same deck** (2026-09-12):
+The deck to track is the blue-white build on Grinding Station and Oswald. The
+Tezzeret and Krang build shares Oswald, Emry and the Saga shell without the
+Station and is a different deck. A green source in an Oswald list is a splash,
+usually for Haywire Mite, and does not make it another deck.
+*Applies*: membership is the two cards in the mainboard with no colour rule, so
+the 18 of 56 lists since the bans on one Breeding Pool stay in. One population,
+no versions.
+
+**Domain Zoo forks on Psychic Frog, and the traditional version is the one we
+track** (2026-09-12):
+Two versions: the bluer build on Psychic Frog and the traditional one. Being
+five colours the deck moves a lot, and that is expected rather than a finding.
+Frog was first chosen on the perception that Frog with Quantum Riddler had
+become the popular build; the data said otherwise (Frog 13 of 85 MTGO lists
+and 6 of 22 at Spotlight Dallas since 10 August, every list since 7 September
+traditional, and Riddler in four fifths of traditional lists), so the tracked
+version moved to traditional the same day.
+*Applies*: membership is Territorial Kavu and Scion of Draco with no colour
+rule. The version rule is mainboard Psychic Frog. The report reads the
+traditional version for conversion, goldfishing and the storyline; the Frog
+version is a bare count and a line on the presence figure's version panel.
+
+**Broodscale has three versions, and the most popular one is tracked**
+(2026-09-12):
+Mono-green; Gruul, on red cards like Unholy Heat and Writhing Chrysalis; and
+Lab, on Devourer of Destiny and Ugin's Labyrinth over the mono-green shell.
+Which to track was left to the data: in the week to 13 September the Lab
+version was 73 of 84 lists and 33 of 37 swiss-like finishes, having been level
+with Gruul over the regime as a whole.
+*Applies*: the version rule reads the red spells first, then Ugin's Labyrinth,
+and a list on neither is mono-green. A list on both is Gruul. The report reads
+the Lab version, and moving it to another version is Alejandro's call, since
+it invalidates every frozen row under `data/tracking/broodscale/`.
+
+**Affinity is Kappa Cannoneer with Weapons Manufacturing and Engineered
+Explosives** (2026-09-12):
+The deck runs Weapons Manufacturing, Kappa Cannoneer and Engineered Explosives
+as four-ofs. The Krang, Tamiyo and Song of Creation artifact decks share Kappa,
+Pinnacle Emissary and the Urza's Saga shell, and cards like Song of Creation
+and Undercity Sewers have nothing to do with Affinity. The report is called
+Affinity, not Grixis Affinity.
+*Applies*: Weapons Manufacturing and Engineered Explosives join the two
+creatures in the mainboard signature. The 34 lists since the bans without both,
+16 of them in the fortnight to 6 September, leave the population; that rise is
+what put Song of Creation and Undercity Sewers in the storyline as arrivals.
+One population, no versions.
+
+**Izzet Prowess is only the blue and red deck** (2026-09-12):
+The deck is Izzet: Cori-Steel Cutter, Dragon's Rage Channeler, Mutagenic
+Growth, Slickshot Show-Off and the rest of the blue and red shell. The red and
+Boros prowess lists on Lava Spike and Skewer the Critics share the creatures
+and are a different deck.
+*Applies*: Steam Vents joins the three creatures in the mainboard signature.
+Every Izzet list since the bans runs it, and the 32 lists with no blue card,
+19 of them with white, leave the population. One population, no versions.
+
 **Ephemerate is part of what makes the deck Esper** (2026-08-07):
 The trio alone (Goryo's Vengeance, Atraxa, Psychic Frog) admits Grixis
 reanimator builds, which are a different deck with a different manabase, a
@@ -93,6 +162,21 @@ those that keep Goryo's Vengeance land on the near-miss watchlist, which is
 where a different construction direction belongs.
 
 ## Data interpretation
+
+**Presence is the whole deck; performance and builds are the tracked version**
+(2026-09-12):
+A metagame share is a share of the whole deck, versions included, so presence
+is read pooled for every report. A finish, a copied list or a card moving is a
+fact about one build, so conversion, goldfishing, the storyline and the numbers
+table are read on the tracked version alone. A major paper event shows the deck
+as a whole, its build rows on the tracked version like the storyline.
+*Applies*: every subject in `config.REPORTS` freezes two populations, the
+archetype in `weekly.csv` and its version in `version.csv`, and the summary's
+volume clauses come from the first and its conversion clause from the second.
+This replaced the earlier state where Esper Blink read everything on Esper and
+Goryo's read everything pooled, so the frozen weekly rows of both were rebuilt
+on 2026-09-12 and their summaries for the week to 6 September quote a Blink
+volume and a Goryo's conversion the tables no longer show.
 
 **Kavaero, Mind-Bitten and Superior Spider-Man are one card** (2026-08-07):
 Superior Spider-Man is the Marvel printing of Kavaero; mechanically they are
@@ -153,24 +237,3 @@ Heuristic candidates, held here until Alejandro rules on them. Nothing in this
 section is adopted knowledge and nothing here may steer an analysis. Each entry
 cites the evidence that raised it and counts the sessions it has been put to
 him in. See `.claude/skills/mtg-heuristics/SKILL.md`.
-
-**Simic Neoform is four cards, and Planar Genesis is the one that names it**
-(raised 2026-09-12, surfaced 0×):
-Membership drawn on Neoform, Allosaurus Rider, Eldritch Evolution and Planar
-Genesis, all four in the mainboard, with no count and no colour rule. The
-Glittering Wish build on Gemstone Mine shares the first three and reads as a
-different deck.
-*Evidence*: of the 471 MTGO lists since February mainboarding any of Neoform,
-Allosaurus Rider or Planar Genesis, 439 answer to all four, and every one of
-the 439 runs Rider, Evolution and Summoner's Pact at four copies. The 32 that
-do not are the Glittering Wish build (MyPotatoes and GriselSram, on Gemstone
-Mine with no Planar Genesis; four lists since the bans, all MyPotatoes's),
-Birthing Ritual lists on two Neoform, and Planar Genesis in Omnath, Amulet and
-Wilderness Reclamation shells. At the three paper events the rule finds 14, 13
-and 23 lists where melee's own deck names find 14, 9 and 23, the Brisbane four
-being registered as Simic Necro, Simic Midrange and Simic Combo over the same
-75.
-*Applies if adopted*: the rule stands as written in `config.TRACKED_DECKS`.
-Rejected or widened, every frozen row under `data/tracking/neoform/` was read
-on the wrong population and the directory is rebuilt before anything is
-reported.

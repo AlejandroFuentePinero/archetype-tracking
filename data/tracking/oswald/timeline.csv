@@ -1,0 +1,54 @@
+start,end,lists,against,kind,zone,card,text
+2026-07-13,2026-07-26,7,Pro Tour Amsterdam,return,main,Breeding Pool,"Breeding Pool appears for the first time, 3 of 7 lists (43%)"
+2026-07-13,2026-07-26,7,Pro Tour Amsterdam,return,main,Haywire Mite,"Haywire Mite appears for the first time, 2 of 7 lists (29%)"
+2026-07-13,2026-07-26,7,Pro Tour Amsterdam,return,main,Tormod's Crypt,"Tormod's Crypt appears for the first time, 2 of 7 lists (29%)"
+2026-07-13,2026-07-26,7,Pro Tour Amsterdam,event,,,Pro Tour Amsterdam
+2026-07-27,2026-08-09,21,the fortnight to 2026-07-26,return,side,"Aang, Swift Savior","Aang, Swift Savior appears for the first time, 6 of 21 lists (29%)"
+2026-07-27,2026-08-09,21,the fortnight to 2026-07-26,adoption,main,Cryogen Relic,"Cryogen Relic climbed in the mainboard, 1/7 to 9/21 lists (14% to 43%)"
+2026-07-27,2026-08-09,21,the fortnight to 2026-07-26,return,side,Ethersworn Canonist,"Ethersworn Canonist appears for the first time, 3 of 21 lists (14%)"
+2026-07-27,2026-08-09,21,the fortnight to 2026-07-26,return,main,Jeskai Ascendancy,"Jeskai Ascendancy appears for the first time, 2 of 21 lists (10%)"
+2026-07-27,2026-08-09,21,the fortnight to 2026-07-26,adoption,main,Metallic Rebuke,"Metallic Rebuke fell in the mainboard, 6/7 to 11/21 lists (86% to 52%)"
+2026-07-27,2026-08-09,21,the fortnight to 2026-07-26,adoption,main,Nettlecyst,"Nettlecyst climbed in the mainboard, 1/7 to 9/21 lists (14% to 43%)"
+2026-07-27,2026-08-09,21,the fortnight to 2026-07-26,adoption,main,Polluted Delta,"Polluted Delta fell in the mainboard, 6/7 to 12/21 lists (86% to 57%)"
+2026-07-27,2026-08-09,21,the fortnight to 2026-07-26,return,main,Sacred Foundry,"Sacred Foundry appears for the first time, 2 of 21 lists (10%)"
+2026-07-27,2026-08-09,21,the fortnight to 2026-07-26,return,main,Scrabbling Claws,"Scrabbling Claws appears for the first time, 4 of 21 lists (19%)"
+2026-07-27,2026-08-09,21,the fortnight to 2026-07-26,adoption,side,Shadowspear,"Shadowspear climbed in the sideboard, 4/7 to 17/21 lists (57% to 81%)"
+2026-07-27,2026-08-09,21,the fortnight to 2026-07-26,adoption,side,"Teferi, Time Raveler","Teferi, Time Raveler climbed in the sideboard, 1/7 to 15/21 lists (14% to 71%)"
+2026-07-27,2026-08-09,21,the fortnight to 2026-07-26,return,side,Test of Talents,"Test of Talents appears for the first time, 4 of 21 lists (19%)"
+2026-07-27,2026-08-09,21,the fortnight to 2026-07-26,adoption,main,"Urza, Lord High Artificer","Urza, Lord High Artificer climbed in the mainboard, 1/7 to 8/21 lists (14% to 38%)"
+2026-07-27,2026-08-09,21,the fortnight to 2026-07-26,return,main,Vexing Bauble,"Vexing Bauble moves to the mainboard, 2 of 21 lists (10%)"
+2026-07-27,2026-08-09,21,the fortnight to 2026-07-26,copies,main,Flooded Strand,Flooded Strand down from 2.2 to 1.6 copies on average
+2026-07-27,2026-08-09,21,the fortnight to 2026-07-26,copies,main,Hallowed Fountain,Hallowed Fountain up from 2.0 to 2.5 copies on average
+2026-07-27,2026-08-09,21,the fortnight to 2026-07-26,copies,main,Scalding Tarn,Scalding Tarn down from 2.0 to 1.5 copies on average
+2026-07-27,2026-08-09,21,the fortnight to 2026-07-26,copies,main,Sewer-veillance Cam,Sewer-veillance Cam up from 1.7 to 2.4 copies on average
+2026-08-10,2026-08-23,5,the fortnight to 2026-08-09,adoption,main,Cryogen Relic,"Cryogen Relic fell in the mainboard, 9/21 to 1/5 lists (43% to 20%)"
+2026-08-10,2026-08-23,5,the fortnight to 2026-08-09,adoption,side,Disruptor Flute,"Disruptor Flute fell in the sideboard, 17/21 to 2/5 lists (81% to 40%)"
+2026-08-10,2026-08-23,5,the fortnight to 2026-08-09,adoption,side,Haywire Mite,"Haywire Mite climbed in the sideboard, 8/21 to 3/5 lists (38% to 60%)"
+2026-08-10,2026-08-23,5,the fortnight to 2026-08-09,adoption,main,"Loki, God of Mischief","Loki, God of Mischief climbed in the mainboard, 14/21 to 5/5 lists (67% to 100%)"
+2026-08-10,2026-08-23,5,the fortnight to 2026-08-09,adoption,main,Metallic Rebuke,"Metallic Rebuke climbed in the mainboard, 11/21 to 5/5 lists (52% to 100%)"
+2026-08-10,2026-08-23,5,the fortnight to 2026-08-09,adoption,main,Meticulous Archive,"Meticulous Archive climbed in the mainboard, 11/21 to 5/5 lists (52% to 100%)"
+2026-08-10,2026-08-23,5,the fortnight to 2026-08-09,adoption,main,Misty Rainforest,"Misty Rainforest fell in the mainboard, 14/21 to 2/5 lists (67% to 40%)"
+2026-08-10,2026-08-23,5,the fortnight to 2026-08-09,adoption,side,Mystical Dispute,"Mystical Dispute climbed in the sideboard, 11/21 to 4/5 lists (52% to 80%)"
+2026-08-10,2026-08-23,5,the fortnight to 2026-08-09,adoption,main,Nettlecyst,"Nettlecyst fell in the mainboard, 9/21 to 1/5 lists (43% to 20%)"
+2026-08-10,2026-08-23,5,the fortnight to 2026-08-09,adoption,side,Shadowspear,"Shadowspear fell in the sideboard, 17/21 to 3/5 lists (81% to 60%)"
+2026-08-10,2026-08-23,5,the fortnight to 2026-08-09,adoption,side,"Teferi, Time Raveler","Teferi, Time Raveler fell in the sideboard, 15/21 to 1/5 lists (71% to 20%)"
+2026-08-10,2026-08-23,5,the fortnight to 2026-08-09,adoption,side,Tormod's Crypt,"Tormod's Crypt climbed in the sideboard, 9/21 to 4/5 lists (43% to 80%)"
+2026-08-10,2026-08-23,5,the fortnight to 2026-08-09,adoption,side,"Aang, Swift Savior","Aang, Swift Savior fell in the sideboard, 6/21 to 0/5 lists (29% to 0%)"
+2026-08-10,2026-08-23,5,the fortnight to 2026-08-09,adoption,side,Soul-Guide Lantern,"Soul-Guide Lantern fell in the sideboard, 8/21 to 0/5 lists (38% to 0%)"
+2026-08-10,2026-08-23,5,the fortnight to 2026-08-09,adoption,main,Sword of the Meek,"Sword of the Meek fell in the mainboard, 7/21 to 0/5 lists (33% to 0%)"
+2026-08-10,2026-08-23,5,the fortnight to 2026-08-09,adoption,main,Thopter Foundry,"Thopter Foundry fell in the mainboard, 7/21 to 0/5 lists (33% to 0%)"
+2026-08-10,2026-08-23,5,the fortnight to 2026-08-09,copies,main,Oswald Fiddlebender,Oswald Fiddlebender down from 3.8 to 3.2 copies on average
+2026-08-10,2026-08-23,5,the fortnight to 2026-08-09,copies,main,Sewer-veillance Cam,Sewer-veillance Cam down from 2.4 to 1.4 copies on average
+2026-08-24,2026-09-06,17,Spotlight Dallas,return,side,Grafdigger's Cage,"Grafdigger's Cage appears for the first time, 3 of 17 lists (18%)"
+2026-08-24,2026-09-06,17,Spotlight Dallas,return,main,Isochron Scepter,"Isochron Scepter appears for the first time, 2 of 17 lists (12%)"
+2026-08-24,2026-09-06,17,Spotlight Dallas,return,main,Kappa Cannoneer,"Kappa Cannoneer appears for the first time, 2 of 17 lists (12%)"
+2026-08-24,2026-09-06,17,Spotlight Dallas,return,main,Key to the Side-Door,"Key to the Side-Door appears for the first time, 4 of 17 lists (24%)"
+2026-08-24,2026-09-06,17,Spotlight Dallas,return,main,"Krang, Master Mind","Krang, Master Mind appears for the first time, 2 of 17 lists (12%)"
+2026-08-24,2026-09-06,17,Spotlight Dallas,return,side,Metallic Rebuke,"Metallic Rebuke moves to the sideboard, 3 of 17 lists (18%)"
+2026-08-24,2026-09-06,17,Spotlight Dallas,return,main,Orim's Chant,"Orim's Chant moves to the mainboard, 2 of 17 lists (12%)"
+2026-08-24,2026-09-06,17,Spotlight Dallas,return,main,Pinnacle Emissary,"Pinnacle Emissary appears for the first time, 2 of 17 lists (12%)"
+2026-08-24,2026-09-06,17,Spotlight Dallas,return,main,"Skrelv, Defector Mite","Skrelv, Defector Mite appears for the first time, 2 of 17 lists (12%)"
+2026-08-24,2026-09-06,17,Spotlight Dallas,return,main,Soul-Guide Lantern,"Soul-Guide Lantern appears for the first time, 2 of 17 lists (12%)"
+2026-08-24,2026-09-06,17,Spotlight Dallas,return,main,Welding Jar,"Welding Jar moves to the mainboard, 2 of 17 lists (12%)"
+2026-08-24,2026-09-06,17,Spotlight Dallas,event,,,Spotlight Brisbane
+2026-08-24,2026-09-06,17,Spotlight Dallas,event,,,Spotlight Dallas

@@ -78,9 +78,9 @@ def _numbers(row: dict) -> dict:
     return {**row, **{k: int(row[k]) for k in _COUNTS}, **{k: float(row[k] or 0) for k in _SHARES}}
 
 
-def weeks_through(db_path: Path, deck: str, report: dict, week: str) -> list[dict]:
-    """The weekly rows a report renders: the frozen ones, and the store only for
-    a week no run has frozen yet.
+def _through(db_path: Path, deck: str, archetype: str, camp: str | None, file: str, week: str) -> list[dict]:
+    """One population's weekly rows: the frozen ones, and the store only for a
+    week no run has frozen yet.
 
     The split this module opens on is only half kept while the plots and the
     table are computed live: the summary is then written from the frozen file
@@ -88,12 +88,31 @@ def weeks_through(db_path: Path, deck: str, report: dict, week: str) -> list[dic
     behind a past week moves one and not the other with no diff to show for it.
     A run whose weeks are all frozen reads nothing from the store at all.
     """
-    frozen = {row["week"]: _numbers(row) for row in _read(deck_dir(deck) / "weekly.csv")}
+    frozen = {row["week"]: _numbers(row) for row in _read(deck_dir(deck) / file)}
     return [
         frozen.get(row["week"], row)
-        for row in tracking.weekly(db_path, report["archetype"], report["camp"])
+        for row in tracking.weekly(db_path, archetype, camp)
         if row["week"] <= week
     ]
+
+
+def weeks_through(db_path: Path, deck: str, report: dict, week: str) -> list[dict]:
+    """The presence rows: the whole archetype, every version pooled."""
+    return _through(db_path, deck, report["archetype"], None, "weekly.csv", week)
+
+
+def version_weeks_through(db_path: Path, deck: str, report: dict, week: str) -> list[dict]:
+    """The performance rows: the report's own version, where it reads one.
+
+    A second file rather than a second set of columns, so that `weekly.csv` is
+    one measurement per column heading everywhere: a pooled row and a one-camp
+    row in one file would be two measurements under one heading and nothing in
+    the file would say which a row was. A deck with one population has one
+    file, and reads it here too.
+    """
+    if report["camp"] is None:
+        return weeks_through(db_path, deck, report, week)
+    return _through(db_path, deck, report["archetype"], report["camp"], "version.csv", week)
 
 
 def _append(path: Path, columns: tuple[str, ...], rows: list[dict]) -> int:
@@ -122,22 +141,27 @@ def freeze(
     still gaining lists. Weeks already on file are not recomputed: what was
     reported is what stands.
 
-    One report per directory, which is why the population is the subject's and
-    never an argument: a pooled row and a one-camp row in the same `weekly.csv`
-    would be two measurements under one column heading, and nothing in the file
-    would say which a row was.
+    One report per directory, and one population per file: `weekly.csv` is the
+    whole archetype and `version.csv` the report's own version, for the reason
+    `version_weeks_through` gives.
     """
     through = through or last_complete_week()
     report = config.REPORTS[deck]
     root = deck_dir(deck)
-    weekly_path, timeline_path = root / "weekly.csv", root / "timeline.csv"
+    timeline_path = root / "timeline.csv"
 
-    held = {row["week"] for row in _read(weekly_path)}
-    weeks = [
-        row
-        for row in tracking.weekly(db_path, report["archetype"], report["camp"])
-        if row["week"] <= through and row["week"] not in held
-    ]
+    populations = [(root / "weekly.csv", None)]
+    if report["camp"] is not None:
+        populations.append((root / "version.csv", report["camp"]))
+    weeks_added = 0
+    for path, camp in populations:
+        held = {row["week"] for row in _read(path)}
+        weeks = [
+            row
+            for row in tracking.weekly(db_path, report["archetype"], camp)
+            if row["week"] <= through and row["week"] not in held
+        ]
+        weeks_added += _append(path, WEEKLY_COLUMNS, weeks)
 
     held_bins = {row["start"] for row in _read(timeline_path)}
     rows = []
@@ -155,7 +179,7 @@ def freeze(
 
     return {
         "through": through,
-        "weeks_added": _append(weekly_path, WEEKLY_COLUMNS, weeks),
+        "weeks_added": weeks_added,
         "timeline_added": _append(timeline_path, TIMELINE_COLUMNS, rows),
     }
 
@@ -207,6 +231,13 @@ def facts(
     this = next((row for row in numbered if row["week"] == week), None)
     if this is None:
         return {"week": week, "error": "no frozen week on file; run freeze first"}
+    # The version's own row, where the report reads one: conversion is read on
+    # it and against its own top-32 share, never against the pooled one.
+    version = this
+    if report["camp"] is not None:
+        version = next(
+            _numbers(row) for row in _read(deck_dir(deck) / "version.csv") if row["week"] == week
+        )
 
     history = sorted((row for row in numbered if row["week"] < week), key=lambda r: r["week"])
     previous = history[-1] if history else None
@@ -221,10 +252,10 @@ def facts(
     recent = [row["chal"] for row in history[-config.TRACK_SPIKE_WEEKS :]]
     recent_median = statistics.median(recent) if recent else median
 
-    # The versions of the deck the report names but does not read: observability,
-    # and already counted in the figures above wherever the population is pooled.
+    # The versions of the deck the report does not read: observability, and
+    # already counted in the presence figures.
     observed = {}
-    for name in report["observe"]:
+    for name in _others(report):
         rows_ = tracking.weekly(db_path, report["archetype"], name)
         row = next((r for r in rows_ if r["week"] == week), None)
         observed[config.version_name(name)] = {
@@ -236,7 +267,7 @@ def facts(
     frozen = _read(deck_dir(deck) / "timeline.csv")
     latest = max((row["start"] for row in frozen), default=None)
     copying = [row for row in tracking.goldfishing(db_path, report["archetype"],
-                                                   report["build_camp"])
+                                                   report["camp"])
                if row["week"] == week]
     played = spotlights_through(week)
     paper = _paper(spotlight.chain(db_path, report, played), week) if played else None
@@ -254,10 +285,12 @@ def facts(
             "spiking": this["chal"] >= config.TRACK_SPIKE_MULTIPLE * max(median, recent_median),
         },
         "conversion": {
-            "top8": this["top8"],
-            "top8_share": this["top8_share"],
-            "top16": this["top16"],
-            "over_converting": this["top8_share"] > this["chal_share"],
+            "lists": version["chal"],
+            "share": version["chal_share"],
+            "top8": version["top8"],
+            "top8_share": version["top8_share"],
+            "top16": version["top16"],
+            "over_converting": version["top8_share"] > version["chal_share"],
         },
         "leagues": {
             "trophies": this["trophies"],
@@ -280,6 +313,7 @@ _STYLE = """
   --series-1: #2a78d6; --series-2: #eb6834; --series-3: #1baf7a;
   --flag: #fdf3e7; --flag-line: #eda100;
   --major: #c2410c;
+  --accent: #d97757;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -306,9 +340,14 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 .page { max-width: 940px; margin: 0 auto; padding: 40px 24px 72px; }
+.site { font-size: 30px; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 18px; }
+.site a { color: var(--ink); text-decoration: none; }
+.site a:hover { color: var(--ink-2); }
 header { border-bottom: 1px solid var(--line); padding-bottom: 20px; margin-bottom: 28px; }
-h1 { font-size: 26px; letter-spacing: -0.02em; margin: 0 0 4px; }
+h1 { font-size: 22px; letter-spacing: -0.02em; margin: 0 0 4px; color: var(--accent); }
 .dek { color: var(--ink-3); font-size: 13px; margin: 0; }
+.tracked { color: var(--major); font-size: 15px; font-weight: 700; margin: 8px 0 0; }
+.tracked span { font-size: 13px; font-weight: 500; }
 h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em;
      color: var(--ink-3); font-weight: 600; margin: 40px 0 14px; }
 .summary { background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
@@ -393,7 +432,7 @@ def spotlights_through(week: str) -> tuple[dict, ...]:
     )
 
 
-def _spotlights(entries: list[dict], camp: str | None = None, build: str = "") -> str:
+def _spotlights(entries: list[dict], camp: str | None = None) -> str:
     """The paper section: where the deck finished, and the numbers behind it.
 
     Its own section and its own axis, never the weekly one. A major paper event
@@ -405,20 +444,12 @@ def _spotlights(entries: list[dict], camp: str | None = None, build: str = "") -
     """
     if not entries:
         return ""
-    # Which lists the counts are over, said whether or not the report splits its
-    # populations. A report reading one version publishes that version's field
-    # share under the deck's name, and unsaid it reads as the whole archetype's:
-    # Esper Blink took 63 lists to Dallas and the row says 61, the two Orzhov
-    # lists being outside the population and nowhere on the page.
-    said = " The lists counted here are " + (
-        "every version of the archetype"
-        if camp is None
-        else f"the {config.version_name(camp)} version"
-    )
-    said += "."
-    if build and build != camp:
+    # Which lists the counts are over, and which the storyline's paper rows are,
+    # said because the two differ wherever the report reads one version.
+    said = " The lists counted here are every version of the archetype."
+    if camp:
         said += (
-            f" The paper rows in the storyline below are the {config.version_name(build)} "
+            f" The paper rows in the storyline below are the {config.version_name(camp)} "
             f"version's build readings, "
             f"{entries[-1]['build_lists']} of the {entries[-1]['lists']} at the latest event."
         )
@@ -466,22 +497,23 @@ def _table(columns: list[str], rows: list[list[str]], klass: str = "") -> str:
     )
 
 
-def _population(build: str, built: list[dict]) -> str:
-    """Which version a build reading was taken on, said where the reader is looking.
+def _others(report: dict) -> list[str]:
+    """The versions the report names but does not read."""
+    return [name for name in config.versions(report["archetype"]) if name != report["camp"]]
 
-    Empty where the report reads one population throughout, which is every
-    report whose pooled figures and build figures are the same lists. Where they
-    differ the note is not optional: the figures above a storyline row would
-    otherwise put a list count beside it that the row was never read against.
+
+def _population(camp: str | None, lists: int) -> str:
+    """Which version a reading was taken on, said where the reader is looking.
+
+    Empty where the deck is one population. Where it is not the note is not
+    optional: the presence figures above are the whole deck's, and a reader
+    would otherwise put their list count beside a row it was never read against.
     """
-    if not build:
+    if camp is None:
         return ""
     return (
-        f'<p class="note">Read on the {config.version_name(build)} version alone, '
-        f"{sum(row['lists'] for row in built)} lists since the Modern bans, where the volume "
-        f"and performance figures are the whole archetype's. Pooled, a card at nine tenths of "
-        f"one version and none of another would read as the deck at half of it, and a version "
-        f"arriving would read as the deck changing its mind.</p>"
+        f'<p class="note">Read on the {config.version_name(camp)} version alone, '
+        f"{lists} lists since the Modern bans. The presence figures are the whole deck's.</p>"
     )
 
 
@@ -493,28 +525,25 @@ def render(
     """Build the week's HTML from the frozen rows, the store and the summary."""
     week = week or last_complete_week()
     report = config.REPORTS[deck]
-    archetype, camp, build = report["archetype"], report["camp"], report["build_camp"]
+    archetype, camp = report["archetype"], report["camp"]
     root, name = deck_dir(deck), report["name"]
     weeks = weeks_through(db_path, deck, report, week)
+    version_weeks = version_weeks_through(db_path, deck, report, week)
     copying = [
-        row for row in tracking.goldfishing(db_path, archetype, build) if row["week"] <= week
+        row for row in tracking.goldfishing(db_path, archetype, camp) if row["week"] <= week
     ]
     marks = timeline.events()
-    # Every version of the deck the subject names: the one its figures are read
-    # on, where it reads one, and the ones it only observes. Split out for the
-    # presence figure and nowhere else, no reading in the report being taken
-    # over a version the subject does not name.
+    # Every version of the deck: the one the report reads first, then the ones
+    # it only observes. Split out for the presence figure and nowhere else.
     versions = [
         (config.version_name(name),
          [row for row in tracking.weekly(db_path, archetype, name) if row["week"] <= week])
-        for name in ((camp, *report["observe"]) if camp else report["observe"])
+        for name in ([camp, *_others(report)] if camp else _others(report))
     ]
     reading = facts(db_path, deck, week)
     played = spotlights_through(week)
     spotlights = spotlight.chain(db_path, report, played) if played else []
-    # Named only where the two differ, which is where a reader would otherwise
-    # have to guess which population a figure was taken over.
-    split = build if camp != build else ""
+    note = _population(camp, sum(row["lists"] for row in version_weeks))
 
     summary_path = root / "summary" / f"{week}.md"
     summary = (
@@ -579,11 +608,20 @@ def render(
         for *_, period, found in sorted(entries, key=lambda row: row[:3], reverse=True)
     ]
 
+    # Named under the title so a reader knows which version the performance
+    # sections read before reaching them. Presence is the whole deck.
+    tracked = (
+        f"  <p class=\"tracked\">Tracked version: {config.version_name(camp)} "
+        "<span>(Conversion, Goldfishing, The numbers and What changed read this version alone; "
+        "Presence and the major event counts are the whole deck)</span></p>\n"
+        if camp else ""
+    )
     body = f"""<div class="page">
+<nav class="site"><a href="index.html">{config.SITE_TITLE}</a></nav>
 <header>
   <h1>{name}</h1>
   <p class="dek">Week ending {week_label(week)} &middot; built {date.today().isoformat()}</p>
-</header>
+{tracked}</header>
 
 <h2>This week</h2>
 {banner}<div class="summary">{summary}</div>
@@ -592,12 +630,11 @@ def render(
 <figure>{plots.presence(weeks, marks, versions)}</figure>
 
 <h2>Conversion</h2>
-<figure>{plots.conversion(weeks, marks)}</figure>
-
+<figure>{plots.conversion(version_weeks, marks)}</figure>
+{note}
 <h2>Goldfishing</h2>
 <figure>{plots.goldfishing(copying, marks)}</figure>
-{_population(split, copying)}
-
+{note}
 <h2>The numbers (MTGO)</h2>
 {_table(
     ["Week ending", "Lists", "Top 32", "of field", "Top 8", "of field",
@@ -606,12 +643,13 @@ def render(
         week_label(row["week"]), str(row["lists"]), str(row["chal"]), f'{(row["chal_share"] or 0):.1%}',
         str(row["top8"]), f'{(row["top8_share"] or 0):.1%}', str(row["top16"]),
         str(row["trophies"]), f'{(row["trophy_share"] or 0):.1%}',
-    ] for row in reversed(weeks)],
+    ] for row in reversed(version_weeks)],
 )}
-{_spotlights(spotlights, camp, build)}
+{note}
+{_spotlights(spotlights, camp)}
 <h2>What changed</h2>
 {_table(["Period", "Findings"], timeline_rows, "tl")}
-{_population(split, copying)}
+{note}
 
 </div>"""
 

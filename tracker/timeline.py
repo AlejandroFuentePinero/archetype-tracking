@@ -303,8 +303,8 @@ def findings(
     by copy count. Manabase says the camp moved its land count, which is a
     configuration of the whole list and which no card-level reading can see.
 
-    Read on the report's build camp and never on its pooled population: pooled,
-    a camp arriving reads as the deck changing its mind about every card the two
+    Read on the report's camp and never on its pooled population: pooled, a
+    camp arriving reads as the deck changing its mind about every card the two
     camps disagree on.
 
     Each fortnight is read against the entry before it in the storyline. That is
@@ -322,7 +322,7 @@ def findings(
     from . import spotlight  # noqa: PLC0415, spotlight reads this module's rows
 
     report = report or config.REPORTS["blink"]
-    registered, lists = _history(db_path, report["archetype"], report["build_camp"])
+    registered, lists = _history(db_path, report["archetype"], report["camp"])
     sizes: dict[int, int] = {}
     lands: dict[int, dict[int, int]] = {}
     for row in lists:
@@ -432,8 +432,8 @@ def _paper(
 ) -> dict[int, tuple[str, list[dict]]]:
     """The major event each bin is read against: the latest one inside it.
 
-    The build camp's lists at the event, shaped as `spotlight.findings` reads
-    them. Only events fetched by now count, a report having to render on a
+    The report's camp's lists at the event, shaped as `spotlight.findings`
+    reads them. Only events fetched by now count, a report having to render on a
     machine that has never pulled a paper event.
     """
     from . import spotlight  # noqa: PLC0415
@@ -443,7 +443,7 @@ def _paper(
         if not spotlight.cached(spot, directory).exists():
             continue
         payload = spotlight.load(spot, directory)
-        rows = spotlight.members(payload, report["archetype"], report["build_camp"])
+        rows = spotlight.members(payload, report["archetype"], report["camp"])
         latest[bin_of(spot["date"], since)] = (spot["label"], rows)
     return latest
 
