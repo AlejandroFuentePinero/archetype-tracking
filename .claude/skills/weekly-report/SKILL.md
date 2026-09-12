@@ -1,6 +1,6 @@
 ---
 name: weekly-report
-description: Ingest the week's MTGO data and build a tracked deck's weekly report. Use whenever Alejandro asks for this week's report, for any tracked deck's report (Esper Blink, Goryo's, Simic Neoform, UW Oswald, Domain Zoo, Broodscale, Devoted Combo, Affinity, Izzet Prowess, Trudge, Tron), to prepare for the team meeting, or to ingest new data and report on a tracked deck.
+description: Ingest the week's MTGO data and build a tracked deck's weekly report. Use whenever Alejandro asks for this week's report, for any tracked deck's report (Esper Blink, Goryo's, Simic Neoform, UW Oswald, Domain Zoo, Broodscale, Devoted Combo, Affinity, Izzet Prowess, Trudge, Tron, Boros Energy, Boros Ponza, Dimir Midrange, Jeskai Control, Storm, Temur Living End), to prepare for the team meeting, or to ingest new data and report on a tracked deck.
 ---
 
 # The weekly tracked-deck report
@@ -20,7 +20,7 @@ how it was measured.
 
 ```bash
 uv run tracker refresh --since <the Monday two weeks back>
-for deck in blink goryos neoform oswald zoo broodscale devoted affinity prowess trudge tron; do
+for deck in blink goryos neoform oswald zoo broodscale devoted affinity prowess trudge tron energy ponza dimir jeskai storm livingend; do
   uv run tracker weekly --deck $deck
 done
 ```
@@ -58,7 +58,7 @@ Conversion, goldfishing, the numbers table and the storyline are the tracked
 version's alone: Esper for Blink, Riddler for Goryo's, Traditional for Domain Zoo, Lab
 for Broodscale. A finish is one build's, and pooled, a card at nine tenths of
 one version and none of another reads as the deck at half of it. A deck with
-one population, which is the other seven, reads the same lists everywhere and
+one population, which is the other thirteen, reads the same lists everywhere and
 has no clause 6 to write beyond saying so. The report labels the version
 wherever it is read; the summary should not contradict the labels.
 

@@ -109,6 +109,24 @@ A mainboard holding Slumbering Trudge and Fanatic of Rhonas. The report calls it
 **Tron**:
 A mainboard holding Urza's Tower, Urza's Mine, Urza's Power Plant and Karn, the Great Creator. The lands alone admit a blue Tron on Force of Negation and Stock Up, a different deck. One population.
 
+**Boros Energy**:
+A mainboard holding Guide of Souls, Ocelot Pride, Ajani, Nacatl Pariah and Goblin Bombardment, and no source that produces blue, black or green. The two creatures alone admit the Azorius blink and Selesnya Birthing Ritual decks; Mardu and Jeskai energy share all four and are different decks, so the colour rule is Blink's, read on sources and never on fetchlands. One population.
+
+**Boros Ponza**:
+A mainboard holding Erode and Cleansing Wildfire, and no source that produces blue, black or green. Erode alone admits the mono-white lists on Crucible of Worlds and the control decks that splash it; the Wildfire is the red half of the plan. One population.
+
+**Dimir Midrange**:
+A mainboard holding Psychic Frog and Quantum Riddler, and no source that produces white, red or green. Frog alone admits Dimir Oculus, which never runs the Riddler; the Esper and Grixis Frog decks share the pair and are different decks. Tested after Goryo's, Blink and Domain Zoo, which share the pair too. One population.
+
+**Jeskai Control**:
+A mainboard holding Consult the Star Charts, Teferi, Time Raveler, Wrath of the Skies and Galvanic Discharge. The Discharge is the card that says which deck: the Azorius control lists share the shell and run off-colour shocklands for Prismatic Ending without casting a red spell off them, so the colour is read on the spell and never on sources. One population.
+
+**Storm**:
+A mainboard holding Ral, Monsoon Mage, Ruby Medallion and Past in Flames. Ruby alone admits Belcher and Ral alone an Izzet storm on Stormcatch Mentor. No colour rule, the sideboard colours being the Wish targets. One population.
+
+**Temur Living End**:
+A mainboard holding Living End, Shardless Agent and Violent Outburst. The Sultai build on Formidable Speaker shares the first two and never the Outburst. No colour rule: Temple Garden sits in most lists beside no white spell. One population.
+
 **Report subject**:
 What one weekly report is computed over, named once in `config.REPORTS` rather than passed as a flag. It fixes the archetype, the version its performance and build readings are taken on, and the slots it watches; presence is always the whole archetype's. One subject per directory under `data/tracking/`, and one population per file in it, `weekly.csv` for the archetype and `version.csv` for its tracked version, because a pooled row and a one-camp row in one file are two measurements under one column heading and nothing in the file says which a row is. Kept apart from the membership rules: a rule says what a list is, a subject says which of those lists a report reads, and Goryo's has a rule already without being a tracked deck.
 _Avoid_: deck, where the population is what matters (Blink is one deck and one subject; Goryo's is one deck read as two populations)

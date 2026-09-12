@@ -1,0 +1,55 @@
+start,end,lists,against,kind,zone,card,text
+2026-05-18,2026-05-31,29,the fortnight to 2026-05-17,return,main,Toxic Deluge,"Toxic Deluge moves to the mainboard, 2 of 29 lists (7%)"
+2026-06-01,2026-06-14,21,the fortnight to 2026-05-31,adoption,main,Bloodstained Mire,"Bloodstained Mire fell in the mainboard, 8/29 to 1/21 lists (28% to 5%)"
+2026-06-01,2026-06-14,21,the fortnight to 2026-05-31,adoption,side,Chalice of the Void,"Chalice of the Void climbed in the sideboard, 2/29 to 8/21 lists (7% to 38%)"
+2026-06-01,2026-06-14,21,the fortnight to 2026-05-31,adoption,main,Waterlogged Teachings,"Waterlogged Teachings climbed in the mainboard, 1/29 to 6/21 lists (3% to 29%)"
+2026-06-01,2026-06-14,21,the fortnight to 2026-05-31,adoption,side,Surgical Extraction,"Surgical Extraction fell in the sideboard, 9/29 to 0/21 lists (31% to 0%)"
+2026-06-15,2026-06-28,35,the fortnight to 2026-06-14,adoption,side,Consign to Memory,"Consign to Memory climbed in the sideboard, 12/21 to 31/35 lists (57% to 89%)"
+2026-06-15,2026-06-28,35,the fortnight to 2026-06-14,adoption,main,"Kaito, Bane of Nightmares","Kaito, Bane of Nightmares fell in the mainboard, 20/21 to 26/35 lists (95% to 74%)"
+2026-06-15,2026-06-28,35,the fortnight to 2026-06-14,return,side,Requiting Hex,"Requiting Hex appears for the first time, 4 of 35 lists (11%)"
+2026-06-15,2026-06-28,35,the fortnight to 2026-06-14,copies,main,Spell Snare,Spell Snare up from 2.1 to 2.6 copies on average
+2026-06-15,2026-06-28,35,the fortnight to 2026-06-14,copies,main,Subtlety,Subtlety up from 2.2 to 2.7 copies on average
+2026-06-29,2026-07-12,31,the fortnight to 2026-06-28,adoption,main,Drown in the Loch,"Drown in the Loch fell in the mainboard, 31/35 to 10/31 lists (89% to 32%)"
+2026-06-29,2026-07-12,31,the fortnight to 2026-06-28,adoption,main,Gloomlake Verge,"Gloomlake Verge fell in the mainboard, 23/35 to 14/31 lists (66% to 45%)"
+2026-06-29,2026-07-12,31,the fortnight to 2026-06-28,adoption,main,Misty Rainforest,"Misty Rainforest climbed in the mainboard, 9/35 to 15/31 lists (26% to 48%)"
+2026-06-29,2026-07-12,31,the fortnight to 2026-06-28,adoption,main,Murktide Regent,"Murktide Regent climbed in the mainboard, 6/35 to 14/31 lists (17% to 45%)"
+2026-06-29,2026-07-12,31,the fortnight to 2026-06-28,adoption,main,Preordain,"Preordain climbed in the mainboard, 3/35 to 9/31 lists (9% to 29%)"
+2026-06-29,2026-07-12,31,the fortnight to 2026-06-28,adoption,main,Scalding Tarn,"Scalding Tarn climbed in the mainboard, 7/35 to 13/31 lists (20% to 42%)"
+2026-06-29,2026-07-12,31,the fortnight to 2026-06-28,adoption,main,Sheoldred's Edict,"Sheoldred's Edict climbed in the mainboard, 14/35 to 24/31 lists (40% to 77%)"
+2026-06-29,2026-07-12,31,the fortnight to 2026-06-28,adoption,side,Sheoldred's Edict,"Sheoldred's Edict fell in the sideboard, 17/35 to 5/31 lists (49% to 16%)"
+2026-06-29,2026-07-12,31,the fortnight to 2026-06-28,adoption,side,Surgical Extraction,"Surgical Extraction climbed in the sideboard, 2/35 to 10/31 lists (6% to 32%)"
+2026-06-29,2026-07-12,31,the fortnight to 2026-06-28,adoption,side,Toxic Deluge,"Toxic Deluge climbed in the sideboard, 17/35 to 23/31 lists (49% to 74%)"
+2026-06-29,2026-07-12,31,the fortnight to 2026-06-28,copies,main,Flooded Strand,Flooded Strand down from 2.7 to 2.1 copies on average
+2026-06-29,2026-07-12,31,the fortnight to 2026-06-28,copies,main,Spell Snare,Spell Snare down from 2.6 to 2.0 copies on average
+2026-06-29,2026-07-12,31,the fortnight to 2026-06-28,copies,main,"Tamiyo, Inquisitive Student","Tamiyo, Inquisitive Student up from 2.1 to 2.6 copies on average"
+2026-07-13,2026-07-26,54,Pro Tour Amsterdam,return,main,The Wondrous Wasp,"The Wondrous Wasp appears for the first time, 2 of 54 lists (4%)"
+2026-07-13,2026-07-26,54,Pro Tour Amsterdam,event,,,Pro Tour Amsterdam
+2026-07-27,2026-08-09,79,the fortnight to 2026-07-26,return,main,Abhorrent Oculus,"Abhorrent Oculus returns after 8 weeks away, 6 of 79 lists (8%)"
+2026-07-27,2026-08-09,79,the fortnight to 2026-07-26,adoption,side,Break the Ice,"Break the Ice climbed in the sideboard, 5/54 to 40/79 lists (9% to 51%)"
+2026-07-27,2026-08-09,79,the fortnight to 2026-07-26,adoption,side,Chalice of the Void,"Chalice of the Void fell in the sideboard, 17/54 to 1/79 lists (31% to 1%)"
+2026-07-27,2026-08-09,79,the fortnight to 2026-07-26,adoption,main,Consign to Memory,"Consign to Memory climbed in the mainboard, 3/54 to 45/79 lists (6% to 57%)"
+2026-07-27,2026-08-09,79,the fortnight to 2026-07-26,adoption,side,Consign to Memory,"Consign to Memory fell in the sideboard, 51/54 to 34/79 lists (94% to 43%)"
+2026-07-27,2026-08-09,79,the fortnight to 2026-07-26,adoption,main,Darkslick Shores,"Darkslick Shores fell in the mainboard, 51/54 to 58/79 lists (94% to 73%)"
+2026-07-27,2026-08-09,79,the fortnight to 2026-07-26,return,main,Essence Flux,"Essence Flux appears for the first time, 2 of 79 lists (3%)"
+2026-07-27,2026-08-09,79,the fortnight to 2026-07-26,return,side,Extirpate,"Extirpate appears for the first time, 4 of 79 lists (5%)"
+2026-07-27,2026-08-09,79,the fortnight to 2026-07-26,adoption,side,Ghost Vacuum,"Ghost Vacuum climbed in the sideboard, 3/54 to 30/79 lists (6% to 38%)"
+2026-07-27,2026-08-09,79,the fortnight to 2026-07-26,adoption,main,Harbinger of the Seas,"Harbinger of the Seas climbed in the mainboard, 3/54 to 21/79 lists (6% to 27%)"
+2026-07-27,2026-08-09,79,the fortnight to 2026-07-26,return,main,"Narset, Parter of Veils","Narset, Parter of Veils appears for the first time, 2 of 79 lists (3%)"
+2026-07-27,2026-08-09,79,the fortnight to 2026-07-26,return,main,Nulldrifter,"Nulldrifter appears for the first time, 2 of 79 lists (3%)"
+2026-07-27,2026-08-09,79,the fortnight to 2026-07-26,return,side,Pithing Needle,"Pithing Needle appears for the first time, 8 of 79 lists (10%)"
+2026-07-27,2026-08-09,79,the fortnight to 2026-07-26,return,main,Thought Scour,"Thought Scour returns after 8 weeks away, 4 of 79 lists (5%)"
+2026-07-27,2026-08-09,79,the fortnight to 2026-07-26,return,main,Unearth,"Unearth returns after 8 weeks away, 6 of 79 lists (8%)"
+2026-07-27,2026-08-09,79,the fortnight to 2026-07-26,copies,main,Counterspell,Counterspell down from 3.7 to 3.1 copies on average
+2026-07-27,2026-08-09,79,the fortnight to 2026-07-26,copies,main,Flooded Strand,Flooded Strand down from 2.3 to 1.9 copies on average
+2026-07-27,2026-08-09,79,the fortnight to 2026-07-26,copies,main,Orcish Bowmasters,Orcish Bowmasters down from 3.4 to 2.9 copies on average
+2026-07-27,2026-08-09,79,the fortnight to 2026-07-26,copies,main,Sheoldred's Edict,Sheoldred's Edict up from 1.1 to 1.6 copies on average
+2026-08-10,2026-08-23,62,the fortnight to 2026-08-09,return,main,"Bilbo, Thief in the Night","Bilbo, Thief in the Night appears for the first time, 2 of 62 lists (3%)"
+2026-08-10,2026-08-23,62,the fortnight to 2026-08-09,adoption,side,Ghost Vacuum,"Ghost Vacuum fell in the sideboard, 30/79 to 11/62 lists (38% to 18%)"
+2026-08-10,2026-08-23,62,the fortnight to 2026-08-09,return,side,Grafdigger's Cage,"Grafdigger's Cage returns after 14 weeks away, 5 of 62 lists (8%)"
+2026-08-10,2026-08-23,62,the fortnight to 2026-08-09,return,main,Lórien Revealed,"Lórien Revealed appears for the first time, 2 of 62 lists (3%)"
+2026-08-10,2026-08-23,62,the fortnight to 2026-08-09,return,side,"Narset, Parter of Veils","Narset, Parter of Veils moves to the sideboard, 5 of 62 lists (8%)"
+2026-08-10,2026-08-23,62,the fortnight to 2026-08-09,copies,main,Counterspell,Counterspell down from 3.1 to 2.7 copies on average
+2026-08-24,2026-09-06,61,Spotlight Dallas,adoption,main,Drown in the Loch,"Drown in the Loch fell in the mainboard, 17/21 to 31/61 lists (81% to 51%)"
+2026-08-24,2026-09-06,61,Spotlight Dallas,return,main,Requiting Hex,"Requiting Hex moves to the mainboard, 4 of 61 lists (7%)"
+2026-08-24,2026-09-06,61,Spotlight Dallas,event,,,Spotlight Brisbane
+2026-08-24,2026-09-06,61,Spotlight Dallas,event,,,Spotlight Dallas

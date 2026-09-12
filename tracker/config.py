@@ -226,6 +226,115 @@ TRACKED_DECKS = {
         "signature": ("Urza's Tower", "Urza's Mine", "Urza's Power Plant", "Karn, the Great Creator"),
         "off_colour": (),
     },
+    "energy": {
+        # Guide of Souls and Ocelot Pride are the engine of every energy deck,
+        # and Ajani and Goblin Bombardment are what the Boros build does with
+        # it. The Azorius and Selesnya lists on the two creatures are blink and
+        # Birthing Ritual decks and hold neither. Mardu and Jeskai energy share
+        # all four and are different decks, so a source that produces blue,
+        # black or green puts a list outside, read on sources and never on
+        # fetchlands: Marsh Flats fetches Sacred Foundry in nearly every Boros
+        # list. Since the bans the four with no such source are 1036 lists,
+        # against 117 Mardu and 134 Jeskai.
+        "signature": ("Guide of Souls", "Ocelot Pride", "Ajani, Nacatl Pariah",
+                      "Goblin Bombardment"),
+        "off_colour": (
+            "Island", "Snow-Covered Island", "Swamp", "Snow-Covered Swamp",
+            "Forest", "Snow-Covered Forest",
+            "Hallowed Fountain", "Meticulous Archive", "Mystic Gate", "Floodfarm Verge",
+            "Seachrome Coast", "Godless Shrine", "Shadowy Backstreet", "Bleachbone Verge",
+            "Concealed Courtyard", "Blood Crypt", "Raucous Theater", "Blazemire Verge",
+            "Blackcleave Cliffs", "Steam Vents", "Thundering Falls", "Riverpyre Verge",
+            "Spirebluff Canal", "Watery Grave", "Undercity Sewers", "Gloomlake Verge",
+            "Darkslick Shores", "Temple Garden", "Lush Portico", "Hushwood Verge",
+            "Razorverge Thicket", "Stomping Ground", "Commercial District", "Thornspire Verge",
+            "Copperline Gorge", "Breeding Pool", "Hedge Maze", "Willowrush Verge",
+            "Botanical Sanctum", "Overgrown Tomb", "Underground Mortuary", "Wastewood Verge",
+            "Blooming Marsh", "Boseiju, Who Endures", "Otawara, Soaring City",
+            "Takenuma, Abandoned Mire",
+        ),
+    },
+    "ponza": {
+        # Erode is in nearly every land-destruction list, and Cleansing
+        # Wildfire is the red half of the plan: the five mono-white lists on
+        # Crucible of Worlds and Ghost Quarter hold Erode and not the Wildfire,
+        # and the Boros energy lists that splash Erode hold neither Wildfire
+        # nor the rest. The control decks on Erode, Jeskai and Azorius, are
+        # different decks, so a blue, black or green source puts a list
+        # outside, like energy. Since the bans that is 466 lists of the 474
+        # on both cards.
+        "signature": ("Erode", "Cleansing Wildfire"),
+        "off_colour": (
+            "Island", "Snow-Covered Island", "Swamp", "Snow-Covered Swamp",
+            "Forest", "Snow-Covered Forest",
+            "Hallowed Fountain", "Meticulous Archive", "Mystic Gate", "Floodfarm Verge",
+            "Seachrome Coast", "Godless Shrine", "Shadowy Backstreet", "Bleachbone Verge",
+            "Concealed Courtyard", "Blood Crypt", "Raucous Theater", "Blazemire Verge",
+            "Blackcleave Cliffs", "Steam Vents", "Thundering Falls", "Riverpyre Verge",
+            "Spirebluff Canal", "Watery Grave", "Undercity Sewers", "Gloomlake Verge",
+            "Darkslick Shores", "Temple Garden", "Lush Portico", "Hushwood Verge",
+            "Razorverge Thicket", "Stomping Ground", "Commercial District", "Thornspire Verge",
+            "Copperline Gorge", "Breeding Pool", "Hedge Maze", "Willowrush Verge",
+            "Botanical Sanctum", "Overgrown Tomb", "Underground Mortuary", "Wastewood Verge",
+            "Blooming Marsh", "Boseiju, Who Endures", "Otawara, Soaring City",
+            "Takenuma, Abandoned Mire",
+        ),
+    },
+    "dimir": {
+        # Psychic Frog and Quantum Riddler together are the midrange deck. Frog
+        # alone admits the Dimir Oculus lists on Unearth, 60 since the bans,
+        # which never run Riddler; Goryo's, Blink and Domain Zoo share the pair
+        # and are tested first. The Esper and Grixis Frog decks share the pair
+        # too and are different decks, so a source that produces white, red or
+        # green puts a list outside: Plains sits in 127 of the Esper lists and
+        # Steam Vents in every Grixis one. Since the bans that is 394 lists.
+        "signature": ("Psychic Frog", "Quantum Riddler"),
+        "off_colour": (
+            "Plains", "Snow-Covered Plains", "Mountain", "Snow-Covered Mountain",
+            "Forest", "Snow-Covered Forest",
+            "Hallowed Fountain", "Meticulous Archive", "Mystic Gate", "Floodfarm Verge",
+            "Seachrome Coast", "Godless Shrine", "Shadowy Backstreet", "Bleachbone Verge",
+            "Concealed Courtyard", "Sacred Foundry", "Elegant Parlor", "Sunbillow Verge",
+            "Inspiring Vantage", "Arena of Glory", "Steam Vents", "Thundering Falls",
+            "Riverpyre Verge", "Spirebluff Canal", "Blood Crypt", "Raucous Theater",
+            "Blazemire Verge", "Blackcleave Cliffs", "Stomping Ground", "Commercial District",
+            "Thornspire Verge", "Copperline Gorge", "Temple Garden", "Lush Portico",
+            "Hushwood Verge", "Razorverge Thicket", "Breeding Pool", "Hedge Maze",
+            "Willowrush Verge", "Botanical Sanctum", "Overgrown Tomb", "Underground Mortuary",
+            "Wastewood Verge", "Blooming Marsh", "Boseiju, Who Endures",
+        ),
+    },
+    "jeskai": {
+        # Consult the Star Charts, Teferi and Wrath of the Skies are the control
+        # shell, and Galvanic Discharge is what makes it Jeskai. A colour rule
+        # on sources fails here: the Azorius control lists run Steam Vents,
+        # Watery Grave and Breeding Pool as extra colours for Prismatic
+        # Ending and cast no red spell off them, 120 of the 123 lists on a
+        # black source holding none. Read on the spell, the deck is 155 lists
+        # since the bans, and a Breeding Pool beside the Discharge is a splash
+        # inside it.
+        "signature": ("Consult the Star Charts", "Teferi, Time Raveler", "Wrath of the Skies",
+                      "Galvanic Discharge"),
+        "off_colour": (),
+    },
+    "storm": {
+        # Ral, Ruby Medallion and Past in Flames together. Ruby alone admits
+        # the Belcher lists on Pinnacle Monk, which never run Ral or Past in
+        # Flames; Ral alone admits an Izzet storm on Stormcatch Mentor with no
+        # Medallion. No colour rule: the sideboard colours are the Wish
+        # targets, and every list is the same red deck under them.
+        "signature": ("Ral, Monsoon Mage", "Ruby Medallion", "Past in Flames"),
+        "off_colour": (),
+    },
+    "livingend": {
+        # Living End with the two cascade spells. The Sultai build on
+        # Formidable Speaker and Overlord of the Balemurk shares Living End
+        # and Shardless Agent and never runs Violent Outburst, and it is a
+        # different deck. No colour rule: Temple Garden sits in 187 of the 326
+        # lists beside no white spell, a fetchable land of the Temur shell.
+        "signature": ("Living End", "Shardless Agent", "Violent Outburst"),
+        "off_colour": (),
+    },
 }
 
 
@@ -387,6 +496,72 @@ REPORTS = {
         "membership": (
             "mainboard holds Urza's Tower, Urza's Mine, Urza's Power Plant and Karn, the "
             "Great Creator. No colour rule and no versions."
+        ),
+    },
+    "energy": {
+        "name": "Boros Energy",
+        "archetype": "energy",
+        "camp": None,
+        "watch": (),
+        "manabase": False,
+        "membership": (
+            "mainboard holds Guide of Souls, Ocelot Pride, Ajani, Nacatl Pariah and Goblin "
+            "Bombardment, and no blue, black or green source. No versions."
+        ),
+    },
+    "ponza": {
+        "name": "Boros Ponza",
+        "archetype": "ponza",
+        "camp": None,
+        "watch": (),
+        "manabase": False,
+        "membership": (
+            "mainboard holds Erode and Cleansing Wildfire, and no blue, black or green "
+            "source. No versions."
+        ),
+    },
+    "dimir": {
+        "name": "Dimir Midrange",
+        "archetype": "dimir",
+        "camp": None,
+        "watch": (),
+        "manabase": False,
+        "membership": (
+            "mainboard holds Psychic Frog and Quantum Riddler, and no white, red or green "
+            "source. No versions."
+        ),
+    },
+    "jeskai": {
+        "name": "Jeskai Control",
+        "archetype": "jeskai",
+        "camp": None,
+        "watch": (),
+        "manabase": False,
+        "membership": (
+            "mainboard holds Consult the Star Charts, Teferi, Time Raveler, Wrath of the "
+            "Skies and Galvanic Discharge. No colour rule and no versions."
+        ),
+    },
+    "storm": {
+        "name": "Storm",
+        "archetype": "storm",
+        "camp": None,
+        "watch": (),
+        "manabase": False,
+        "membership": (
+            "mainboard holds Ral, Monsoon Mage, Ruby Medallion and Past in Flames. No colour "
+            "rule and no versions."
+        ),
+    },
+    "livingend": {
+        "name": "Temur Living End",
+        "archetype": "livingend",
+        "camp": None,
+        "watch": (),
+        "manabase": False,
+        "membership": (
+            "mainboard holds Living End, Shardless Agent and Violent Outburst. No colour rule "
+            "and no versions."
         ),
     },
 }

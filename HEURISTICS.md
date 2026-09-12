@@ -161,6 +161,68 @@ four and not the three. Grixis lists leave the archetype's population entirely;
 those that keep Goryo's Vengeance land on the near-miss watchlist, which is
 where a different construction direction belongs.
 
+**Boros Energy is the red and white deck on Guide, Ocelot, Ajani and
+Bombardment** (2026-09-13):
+Drawn from Alejandro's example list and the data. Guide of Souls and Ocelot
+Pride are the engine of every energy deck, and the Azorius blink and Selesnya
+Birthing Ritual lists on them run neither Ajani nor Goblin Bombardment. Mardu
+and Jeskai energy run all four and are different decks, the way a Mardu Blink
+list is.
+*Applies*: the four in the mainboard and no blue, black or green source, read
+on sources and never fetchlands, since Marsh Flats fetches Sacred Foundry in
+nearly every Boros list. Since the bans that is 1033 lists, with 117 Mardu and
+134 Jeskai lists outside. One population, no versions.
+
+**Boros Ponza is Erode with Cleansing Wildfire** (2026-09-13):
+Drawn from Alejandro's example list and the data. Erode is the deck's card, in
+611 of the 620 land-destruction lists since the bans, and the Wildfire is the
+red half of the plan: the five mono-white lists on Crucible of Worlds hold
+Erode alone, and the Boros energy lists that splash Erode hold neither. The
+Jeskai and Azorius control lists that splash Erode are control decks.
+*Applies*: both cards in the mainboard and no blue, black or green source,
+466 lists since the bans. One population, no versions.
+
+**Dimir Midrange is Frog with Riddler, and only the blue and black deck**
+(2026-09-13):
+Drawn from Alejandro's example list and the data. Frog alone admits the Dimir
+Oculus lists on Unearth, 60 since the bans, which never run Quantum Riddler.
+The Esper Frog decks on Plains and the Grixis ones on Steam Vents share the pair
+and are different decks; Goryo's, Blink and Domain Zoo share it too and are
+tested first.
+*Applies*: both cards in the mainboard and no white, red or green source, 395
+lists since the bans. One population, no versions.
+
+**Jeskai Control is the Consult shell with Galvanic Discharge, and the colour
+is read on the spell** (2026-09-13):
+Drawn from Alejandro's example list and the data. Consult the Star Charts,
+Teferi and Wrath of the Skies are the control shell. A colour rule on sources
+fails it: the Azorius control lists run Steam Vents, Watery Grave and Breeding
+Pool as extra colours for Prismatic Ending and cast no red spell off them, 120
+of the 123 shell lists on a black source holding none. Galvanic Discharge is
+the red card the Jeskai lists actually play, in 137 of the 162 red-white-blue
+shell lists.
+*Applies*: the four in the mainboard and no colour rule, 155 lists since the
+bans; a Breeding Pool beside the Discharge is a splash inside the deck. The 25
+red-white-blue shell lists with no red spell are Azorius control on a Steam
+Vents and stay outside. One population, no versions.
+
+**Storm is Ral, Ruby Medallion and Past in Flames** (2026-09-13):
+Drawn from Alejandro's example list and the data. Ruby alone admits the Belcher
+lists on Pinnacle Monk, which never run Ral or Past in Flames; Ral alone admits
+an Izzet storm on Stormcatch Mentor with no Medallion. The sideboard colours
+are the Wish targets and every list is the same red deck under them.
+*Applies*: the three in the mainboard, no colour rule, 472 lists since the
+bans. One population, no versions.
+
+**Temur Living End is Living End with both cascade spells** (2026-09-13):
+Drawn from Alejandro's example list and the data. The Sultai build on
+Formidable Speaker and Overlord of the Balemurk shares Living End and Shardless
+Agent and never runs Violent Outburst, and it is a different deck. Temple
+Garden sits in 187 of the 326 lists beside no white spell, a fetchable land of
+the Temur shell and not a colour, and Alejandro's own list runs one.
+*Applies*: the three in the mainboard, no colour rule, 326 lists since the
+bans. One population, no versions.
+
 ## Data interpretation
 
 **Presence is the whole deck; performance and builds are the tracked version**
@@ -237,3 +299,18 @@ Heuristic candidates, held here until Alejandro rules on them. Nothing in this
 section is adopted knowledge and nothing here may steer an analysis. Each entry
 cites the evidence that raised it and counts the sessions it has been put to
 him in. See `.claude/skills/mtg-heuristics/SKILL.md`.
+
+**Jeskai Control is read on a red spell and not a red source** (raised
+2026-09-13, surfaced 0×):
+The rule above keys Jeskai on Galvanic Discharge because a source rule cannot
+tell it from Azorius control. Whether the team calls the four-colour control
+lists on Watery Grave and Breeding Pool a different deck, and whether the Boros
+energy rule should keep Mardu and Jeskai energy outside, were decided from the
+deck names alone.
+*Evidence*: since the bans, 123 Consult shell lists on a black source and 74 on
+a green one, of which 3 and 15 cast Galvanic Discharge; 25 red-white-blue
+shell lists cast no red spell at all. Energy: 1033 Boros lists against 117
+Mardu and 134 Jeskai.
+*Applies if adopted*: the rules stand. If rejected, Jeskai drops the Discharge
+and reads the whole Consult shell, or Energy folds Mardu and Jeskai in as
+versions; either invalidates every frozen row under that deck's directory.
