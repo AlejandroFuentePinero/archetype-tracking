@@ -1,37 +1,41 @@
 start,end,lists,against,kind,zone,card,text
-2026-05-18,2026-05-31,102,the fortnight to 2026-05-17,return,side,Eddymurk Crab,"Eddymurk Crab returns after 10 weeks away, 3 of 102 lists (3%)"
-2026-05-18,2026-05-31,102,the fortnight to 2026-05-17,return,side,Fatal Push,"Fatal Push appears for the first time, 3 of 102 lists (3%)"
-2026-05-18,2026-05-31,102,the fortnight to 2026-05-17,return,side,Flusterstorm,"Flusterstorm appears for the first time, 3 of 102 lists (3%)"
-2026-06-01,2026-06-14,149,the fortnight to 2026-05-31,return,side,Abandon Attachments,"Abandon Attachments returns after 16 weeks away, 17 of 149 lists (11%)"
-2026-06-01,2026-06-14,149,the fortnight to 2026-05-31,return,side,Prismari Charm,"Prismari Charm appears for the first time, 25 of 149 lists (17%)"
-2026-06-01,2026-06-14,149,the fortnight to 2026-05-31,adoption,side,Tormod's Crypt,"Tormod's Crypt climbed in the sideboard, 46/102 to 102/149 lists (45% to 68%)"
-2026-06-01,2026-06-14,149,the fortnight to 2026-05-31,copies,main,Scalding Tarn,Scalding Tarn up from 2.3 to 2.8 copies on average
-2026-06-15,2026-06-28,93,the fortnight to 2026-06-14,return,main,Experimental Synthesizer,"Experimental Synthesizer appears for the first time, 2 of 93 lists (2%)"
-2026-06-15,2026-06-28,93,the fortnight to 2026-06-14,return,main,Jeskai Ascendancy,"Jeskai Ascendancy appears for the first time, 3 of 93 lists (3%)"
-2026-06-15,2026-06-28,93,the fortnight to 2026-06-14,return,main,Legion Leadership,"Legion Leadership appears for the first time, 3 of 93 lists (3%)"
-2026-06-15,2026-06-28,93,the fortnight to 2026-06-14,return,main,Light Up the Stage,"Light Up the Stage appears for the first time, 2 of 93 lists (2%)"
-2026-06-15,2026-06-28,93,the fortnight to 2026-06-14,return,main,Murktide Regent,"Murktide Regent moves to the mainboard, 2 of 93 lists (2%)"
-2026-06-15,2026-06-28,93,the fortnight to 2026-06-14,return,side,Prismatic Ending,"Prismatic Ending returns after 6 weeks away, 5 of 93 lists (5%)"
+2026-05-18,2026-05-31,94,"no fortnight before it, the history opening on 2026-05-19",stable,,,
+2026-06-01,2026-06-14,151,the fortnight to 2026-05-31,return,side,Abandon Attachments,"Abandon Attachments appears for the first time, 17 of 151 lists (11%)"
+2026-06-01,2026-06-14,151,the fortnight to 2026-05-31,return,side,Boomerang Basics,"Boomerang Basics moves to the sideboard, 4 of 151 lists (3%)"
+2026-06-01,2026-06-14,151,the fortnight to 2026-05-31,return,main,Gut Shot,"Gut Shot appears for the first time, 8 of 151 lists (5%)"
+2026-06-01,2026-06-14,151,the fortnight to 2026-05-31,return,side,Heritage Reclamation,"Heritage Reclamation appears for the first time, 4 of 151 lists (3%)"
+2026-06-01,2026-06-14,151,the fortnight to 2026-05-31,return,main,Misty Rainforest,"Misty Rainforest appears for the first time, 3 of 151 lists (2%)"
+2026-06-01,2026-06-14,151,the fortnight to 2026-05-31,adoption,side,Murktide Regent,"Murktide Regent fell in the sideboard, 69/94 to 75/151 lists (73% to 50%)"
+2026-06-01,2026-06-14,151,the fortnight to 2026-05-31,return,side,Prismari Charm,"Prismari Charm appears for the first time, 25 of 151 lists (17%)"
+2026-06-01,2026-06-14,151,the fortnight to 2026-05-31,return,main,Riverpyre Verge,"Riverpyre Verge appears for the first time, 2 of 151 lists (1%)"
+2026-06-01,2026-06-14,151,the fortnight to 2026-05-31,adoption,side,Tormod's Crypt,"Tormod's Crypt climbed in the sideboard, 45/94 to 103/151 lists (48% to 68%)"
+2026-06-01,2026-06-14,151,the fortnight to 2026-05-31,copies,main,Scalding Tarn,Scalding Tarn up from 2.4 to 2.8 copies on average
+2026-06-15,2026-06-28,91,the fortnight to 2026-06-14,return,main,Experimental Synthesizer,"Experimental Synthesizer appears for the first time, 2 of 91 lists (2%)"
+2026-06-15,2026-06-28,91,the fortnight to 2026-06-14,return,main,Jeskai Ascendancy,"Jeskai Ascendancy appears for the first time, 3 of 91 lists (3%)"
+2026-06-15,2026-06-28,91,the fortnight to 2026-06-14,return,main,Legion Leadership,"Legion Leadership appears for the first time, 3 of 91 lists (3%)"
+2026-06-15,2026-06-28,91,the fortnight to 2026-06-14,return,main,Light Up the Stage,"Light Up the Stage appears for the first time, 2 of 91 lists (2%)"
+2026-06-15,2026-06-28,91,the fortnight to 2026-06-14,return,main,Murktide Regent,"Murktide Regent moves to the mainboard, 2 of 91 lists (2%)"
+2026-06-15,2026-06-28,91,the fortnight to 2026-06-14,return,side,Prismatic Ending,"Prismatic Ending appears for the first time, 5 of 91 lists (5%)"
 2026-06-29,2026-07-12,105,the fortnight to 2026-06-28,return,main,Blood Crypt,"Blood Crypt returns after 6 weeks away, 4 of 105 lists (4%)"
 2026-06-29,2026-07-12,105,the fortnight to 2026-06-28,return,side,End of the Hunt,"End of the Hunt returns after 6 weeks away, 3 of 105 lists (3%)"
-2026-06-29,2026-07-12,105,the fortnight to 2026-06-28,adoption,side,Into the Flood Maw,"Into the Flood Maw climbed in the sideboard, 8/93 to 35/105 lists (9% to 33%)"
+2026-06-29,2026-07-12,105,the fortnight to 2026-06-28,return,side,End the Festivities,"End the Festivities appears for the first time, 5 of 105 lists (5%)"
+2026-06-29,2026-07-12,105,the fortnight to 2026-06-28,adoption,side,Into the Flood Maw,"Into the Flood Maw climbed in the sideboard, 8/91 to 35/105 lists (9% to 33%)"
 2026-06-29,2026-07-12,105,the fortnight to 2026-06-28,return,side,Nihil Spellbomb,"Nihil Spellbomb appears for the first time, 4 of 105 lists (4%)"
-2026-06-29,2026-07-12,105,the fortnight to 2026-06-28,adoption,side,Prismari Charm,"Prismari Charm climbed in the sideboard, 15/93 to 45/105 lists (16% to 43%)"
+2026-06-29,2026-07-12,105,the fortnight to 2026-06-28,adoption,side,Prismari Charm,"Prismari Charm climbed in the sideboard, 15/91 to 45/105 lists (16% to 43%)"
 2026-06-29,2026-07-12,105,the fortnight to 2026-06-28,return,main,Pym Particles,"Pym Particles appears for the first time, 3 of 105 lists (3%)"
 2026-06-29,2026-07-12,105,the fortnight to 2026-06-28,return,side,Thoughtseize,"Thoughtseize returns after 6 weeks away, 4 of 105 lists (4%)"
-2026-07-13,2026-07-26,80,Pro Tour Amsterdam,adoption,main,Boomerang Basics,"Boomerang Basics fell in the mainboard, 10/25 to 13/80 lists (40% to 16%)"
-2026-07-13,2026-07-26,80,Pro Tour Amsterdam,adoption,side,Spell Pierce,"Spell Pierce fell in the sideboard, 23/25 to 56/80 lists (92% to 70%)"
-2026-07-13,2026-07-26,80,Pro Tour Amsterdam,adoption,main,Stormchaser's Talent,"Stormchaser's Talent fell in the mainboard, 16/25 to 26/80 lists (64% to 32%)"
-2026-07-13,2026-07-26,80,Pro Tour Amsterdam,copies,main,Bloodstained Mire,Bloodstained Mire up from 2.4 to 2.8 copies on average
-2026-07-13,2026-07-26,80,Pro Tour Amsterdam,copies,main,Expressive Iteration,Expressive Iteration up from 3.3 to 3.8 copies on average
-2026-07-13,2026-07-26,80,Pro Tour Amsterdam,event,,,Pro Tour Amsterdam
-2026-07-27,2026-08-09,80,the fortnight to 2026-07-26,adoption,side,Heritage Reclamation,"Heritage Reclamation climbed in the sideboard, 0/80 to 17/80 lists (0% to 21%)"
-2026-07-27,2026-08-09,80,the fortnight to 2026-07-26,adoption,side,Pick Your Poison,"Pick Your Poison climbed in the sideboard, 1/80 to 20/80 lists (1% to 25%)"
-2026-07-27,2026-08-09,80,the fortnight to 2026-07-26,adoption,main,Stomping Ground,"Stomping Ground climbed in the mainboard, 1/80 to 20/80 lists (1% to 25%)"
-2026-07-27,2026-08-09,80,the fortnight to 2026-07-26,adoption,main,Surgical Extraction,"Surgical Extraction climbed in the mainboard, 0/80 to 17/80 lists (0% to 21%)"
-2026-08-10,2026-08-23,121,the fortnight to 2026-08-09,adoption,side,Abhorrent Oculus,"Abhorrent Oculus climbed in the sideboard, 0/80 to 29/121 lists (0% to 24%)"
-2026-08-24,2026-09-06,154,Spotlight Dallas,adoption,main,Unholy Heat,"Unholy Heat climbed in the mainboard, 23/95 to 71/154 lists (24% to 46%)"
-2026-08-24,2026-09-06,154,Spotlight Dallas,adoption,side,Unholy Heat,"Unholy Heat fell in the sideboard, 70/95 to 82/154 lists (74% to 53%)"
-2026-08-24,2026-09-06,154,Spotlight Dallas,adoption,main,Violent Urge,"Violent Urge fell in the mainboard, 76/95 to 92/154 lists (80% to 60%)"
-2026-08-24,2026-09-06,154,Spotlight Dallas,event,,,Spotlight Brisbane
-2026-08-24,2026-09-06,154,Spotlight Dallas,event,,,Spotlight Dallas
+2026-07-13,2026-07-26,82,Pro Tour Amsterdam,adoption,main,Boomerang Basics,"Boomerang Basics fell in the mainboard, 10/25 to 14/82 lists (40% to 17%)"
+2026-07-13,2026-07-26,82,Pro Tour Amsterdam,adoption,side,Spell Pierce,"Spell Pierce fell in the sideboard, 23/25 to 56/82 lists (92% to 68%)"
+2026-07-13,2026-07-26,82,Pro Tour Amsterdam,adoption,main,Stormchaser's Talent,"Stormchaser's Talent fell in the mainboard, 16/25 to 28/82 lists (64% to 34%)"
+2026-07-13,2026-07-26,82,Pro Tour Amsterdam,copies,main,Bloodstained Mire,Bloodstained Mire up from 2.4 to 2.8 copies on average
+2026-07-13,2026-07-26,82,Pro Tour Amsterdam,copies,main,Expressive Iteration,Expressive Iteration up from 3.3 to 3.8 copies on average
+2026-07-13,2026-07-26,82,Pro Tour Amsterdam,event,,,Pro Tour Amsterdam
+2026-07-27,2026-08-09,81,the fortnight to 2026-07-26,return,side,Heritage Reclamation,"Heritage Reclamation returns after 6 weeks away, 17 of 81 lists (21%)"
+2026-07-27,2026-08-09,81,the fortnight to 2026-07-26,adoption,side,Pick Your Poison,"Pick Your Poison climbed in the sideboard, 1/82 to 20/81 lists (1% to 25%)"
+2026-07-27,2026-08-09,81,the fortnight to 2026-07-26,adoption,main,Stomping Ground,"Stomping Ground climbed in the mainboard, 1/82 to 20/81 lists (1% to 25%)"
+2026-07-27,2026-08-09,81,the fortnight to 2026-07-26,adoption,main,Surgical Extraction,"Surgical Extraction climbed in the mainboard, 0/82 to 17/81 lists (0% to 21%)"
+2026-08-10,2026-08-23,121,the fortnight to 2026-08-09,adoption,side,Abhorrent Oculus,"Abhorrent Oculus climbed in the sideboard, 0/81 to 29/121 lists (0% to 24%)"
+2026-08-24,2026-09-06,156,Spotlight Dallas,adoption,main,Unholy Heat,"Unholy Heat climbed in the mainboard, 23/95 to 71/156 lists (24% to 46%)"
+2026-08-24,2026-09-06,156,Spotlight Dallas,adoption,main,Violent Urge,"Violent Urge fell in the mainboard, 76/95 to 92/156 lists (80% to 59%)"
+2026-08-24,2026-09-06,156,Spotlight Dallas,event,,,Spotlight Brisbane
+2026-08-24,2026-09-06,156,Spotlight Dallas,event,,,Spotlight Dallas

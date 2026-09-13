@@ -256,6 +256,16 @@ def test_a_delta_never_crosses_the_regime_boundary(tmp_path):
     assert not [row for row in opening["found"] if row["card"] == "Orcish Bowmasters"]
 
 
+def test_the_opening_fortnight_names_no_fortnight_before_it(tmp_path):
+    """The history opens the day after the boundary, so nothing sits behind its
+    first fortnight. A row saying it was read against the fortnight to 17 May
+    names a fortnight the store does not hold and a date before the bans."""
+    db = _built(tmp_path, [_lists(FIRST, 8)])
+    opening = timeline.findings(db, config.REPORTS["blink"])[0]
+    assert "2026-05-17" not in opening["against"]
+    assert config.HISTORY_START in opening["against"]
+
+
 def test_a_card_that_only_skipped_a_fortnight_is_not_a_return(tmp_path):
     """A staple missing one thin bin is a dropout, not the field rediscovering it.
 

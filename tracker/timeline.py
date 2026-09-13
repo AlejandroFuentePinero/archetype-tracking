@@ -355,12 +355,16 @@ def findings(
         else:
             # A delta may not cross the regime boundary: the fortnight before
             # the first post-regime bin belongs to a different era, so what it
-            # played is not what this deck put down. Returns still read past it,
-            # since how long a card has been gone is a fact about the deck and
-            # not the regime.
-            against, crossed, comparable, gate = (
-                f"the fortnight to {bin_end(index - 1, since)}", False, index - 1 >= first, moved
+            # played is not what this deck put down. The store opens the day
+            # after the boundary and holds no such fortnight, so the opening
+            # row names none rather than a date before the bans.
+            comparable = index - 1 >= first
+            against = (
+                f"the fortnight to {bin_end(index - 1, since)}"
+                if comparable
+                else f"no fortnight before it, the history opening on {config.HISTORY_START}"
             )
+            crossed, gate = False, moved
             was_held = {key: bins[index - 1] for key, bins in copies.items() if index - 1 in bins}
             was_size, was_lands = sizes.get(index - 1, 0), lands.get(index - 1, {})
         found = []

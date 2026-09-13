@@ -1,23 +1,16 @@
 start,end,lists,against,kind,zone,card,text
-2026-05-18,2026-05-31,33,the fortnight to 2026-05-17,return,main,Abhorrent Oculus,"Abhorrent Oculus returns after 14 weeks away, 2 of 33 lists (6%)"
-2026-05-18,2026-05-31,33,the fortnight to 2026-05-17,return,side,"Boromir, Warden of the Tower","Boromir, Warden of the Tower appears for the first time, 5 of 33 lists (15%)"
-2026-05-18,2026-05-31,33,the fortnight to 2026-05-17,return,side,Chalice of the Void,"Chalice of the Void appears for the first time, 8 of 33 lists (24%)"
-2026-05-18,2026-05-31,33,the fortnight to 2026-05-17,return,main,Consign to Memory,"Consign to Memory moves to the mainboard, 12 of 33 lists (36%)"
-2026-05-18,2026-05-31,33,the fortnight to 2026-05-17,return,side,Drannith Magistrate,"Drannith Magistrate appears for the first time, 3 of 33 lists (9%)"
-2026-05-18,2026-05-31,33,the fortnight to 2026-05-17,return,side,End of the Hunt,"End of the Hunt appears for the first time, 5 of 33 lists (15%)"
-2026-05-18,2026-05-31,33,the fortnight to 2026-05-17,return,main,Graveyard Trespasser,"Graveyard Trespasser appears for the first time, 2 of 33 lists (6%)"
-2026-05-18,2026-05-31,33,the fortnight to 2026-05-17,return,main,"Kavaero, Mind-Bitten","Kavaero, Mind-Bitten appears for the first time, 8 of 33 lists (24%)"
-2026-05-18,2026-05-31,33,the fortnight to 2026-05-17,return,side,Nihil Spellbomb,"Nihil Spellbomb returns after 8 weeks away, 4 of 33 lists (12%)"
-2026-05-18,2026-05-31,33,the fortnight to 2026-05-17,return,main,Northampton Farm,"Northampton Farm appears for the first time, 2 of 33 lists (6%)"
+2026-05-18,2026-05-31,30,"no fortnight before it, the history opening on 2026-05-19",stable,,,
 2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,return,side,Cling to Dust,"Cling to Dust appears for the first time, 4 of 59 lists (7%)"
-2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,return,side,Deafening Silence,"Deafening Silence returns after 10 weeks away, 4 of 59 lists (7%)"
-2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,adoption,side,Drannith Magistrate,"Drannith Magistrate climbed in the sideboard, 3/33 to 18/59 lists (9% to 31%)"
+2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,return,side,Deafening Silence,"Deafening Silence appears for the first time, 4 of 59 lists (7%)"
+2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,adoption,side,Drannith Magistrate,"Drannith Magistrate climbed in the sideboard, 3/30 to 18/59 lists (10% to 31%)"
 2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,return,main,Emeritus of Ideation,"Emeritus of Ideation appears for the first time, 4 of 59 lists (7%)"
-2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,adoption,side,Nihil Spellbomb,"Nihil Spellbomb climbed in the sideboard, 4/33 to 25/59 lists (12% to 42%)"
+2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,return,side,March of Otherworldly Light,"March of Otherworldly Light moves to the sideboard, 3 of 59 lists (5%)"
+2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,adoption,side,Nihil Spellbomb,"Nihil Spellbomb climbed in the sideboard, 4/30 to 25/59 lists (13% to 42%)"
+2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,return,side,Prismatic Ending,"Prismatic Ending moves to the sideboard, 3 of 59 lists (5%)"
 2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,return,main,Wrath of the Skies,"Wrath of the Skies moves to the mainboard, 15 of 59 lists (25%)"
-2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,adoption,side,Wrath of the Skies,"Wrath of the Skies fell in the sideboard, 33/33 to 44/59 lists (100% to 75%)"
-2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,adoption,side,Chalice of the Void,"Chalice of the Void fell in the sideboard, 8/33 to 0/59 lists (24% to 0%)"
-2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,adoption,main,"Kavaero, Mind-Bitten","Kavaero, Mind-Bitten fell in the mainboard, 8/33 to 0/59 lists (24% to 0%)"
+2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,adoption,side,Wrath of the Skies,"Wrath of the Skies fell in the sideboard, 30/30 to 44/59 lists (100% to 75%)"
+2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,adoption,side,Chalice of the Void,"Chalice of the Void fell in the sideboard, 8/30 to 0/59 lists (27% to 0%)"
+2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,adoption,main,"Kavaero, Mind-Bitten","Kavaero, Mind-Bitten fell in the mainboard, 8/30 to 0/59 lists (27% to 0%)"
 2026-06-15,2026-06-28,37,the fortnight to 2026-06-14,adoption,main,Psychic Frog,"Psychic Frog climbed in the mainboard, 8/59 to 15/37 lists (14% to 41%)"
 2026-06-15,2026-06-28,37,the fortnight to 2026-06-14,copies,main,Fatal Push,Fatal Push down from 3.7 to 3.3 copies on average
 2026-06-15,2026-06-28,37,the fortnight to 2026-06-14,copies,main,Flickerwisp,Flickerwisp down from 2.4 to 2.0 copies on average
@@ -33,20 +26,22 @@ start,end,lists,against,kind,zone,card,text
 2026-06-29,2026-07-12,27,the fortnight to 2026-06-28,copies,main,Flickerwisp,Flickerwisp up from 2.0 to 2.6 copies on average
 2026-06-29,2026-07-12,27,the fortnight to 2026-06-28,copies,main,Polluted Delta,Polluted Delta down from 1.9 to 1.5 copies on average
 2026-06-29,2026-07-12,27,the fortnight to 2026-06-28,copies,main,Witch Enchanter,Witch Enchanter up from 2.8 to 3.3 copies on average
-2026-07-13,2026-07-26,21,Pro Tour Amsterdam,event,,,Pro Tour Amsterdam
-2026-07-27,2026-08-09,28,the fortnight to 2026-07-26,adoption,main,Bleachbone Verge,"Bleachbone Verge fell in the mainboard, 6/21 to 1/28 lists (29% to 4%)"
-2026-07-27,2026-08-09,28,the fortnight to 2026-07-26,adoption,side,Damping Sphere,"Damping Sphere climbed in the sideboard, 13/21 to 23/28 lists (62% to 82%)"
-2026-07-27,2026-08-09,28,the fortnight to 2026-07-26,adoption,main,March of Otherworldly Light,"March of Otherworldly Light fell in the mainboard, 11/21 to 6/28 lists (52% to 21%)"
-2026-07-27,2026-08-09,28,the fortnight to 2026-07-26,adoption,side,Nihil Spellbomb,"Nihil Spellbomb fell in the sideboard, 7/21 to 2/28 lists (33% to 7%)"
-2026-07-27,2026-08-09,28,the fortnight to 2026-07-26,adoption,main,Orcish Bowmasters,"Orcish Bowmasters fell in the mainboard, 9/21 to 0/28 lists (43% to 0%)"
+2026-07-13,2026-07-26,20,Pro Tour Amsterdam,event,,,Pro Tour Amsterdam
+2026-07-27,2026-08-09,28,the fortnight to 2026-07-26,adoption,main,Bleachbone Verge,"Bleachbone Verge fell in the mainboard, 6/20 to 1/28 lists (30% to 4%)"
+2026-07-27,2026-08-09,28,the fortnight to 2026-07-26,adoption,main,March of Otherworldly Light,"March of Otherworldly Light fell in the mainboard, 11/20 to 6/28 lists (55% to 21%)"
+2026-07-27,2026-08-09,28,the fortnight to 2026-07-26,adoption,side,Nihil Spellbomb,"Nihil Spellbomb fell in the sideboard, 7/20 to 2/28 lists (35% to 7%)"
+2026-07-27,2026-08-09,28,the fortnight to 2026-07-26,adoption,main,Orcish Bowmasters,"Orcish Bowmasters fell in the mainboard, 9/20 to 0/28 lists (45% to 0%)"
 2026-07-27,2026-08-09,28,the fortnight to 2026-07-26,copies,main,Flickerwisp,Flickerwisp up from 2.4 to 2.9 copies on average
 2026-08-10,2026-08-23,112,the fortnight to 2026-08-09,adoption,side,Clarion Conqueror,"Clarion Conqueror climbed in the sideboard, 17/28 to 111/112 lists (61% to 99%)"
-2026-08-10,2026-08-23,112,the fortnight to 2026-08-09,return,side,Containment Priest,"Containment Priest returns after 24 weeks away, 21 of 112 lists (19%)"
+2026-08-10,2026-08-23,112,the fortnight to 2026-08-09,return,side,Containment Priest,"Containment Priest appears for the first time, 21 of 112 lists (19%)"
+2026-08-10,2026-08-23,112,the fortnight to 2026-08-09,return,main,"Elesh Norn, Mother of Machines","Elesh Norn, Mother of Machines appears for the first time, 5 of 112 lists (4%)"
 2026-08-10,2026-08-23,112,the fortnight to 2026-08-09,return,side,Geist of Saint Traft,"Geist of Saint Traft appears for the first time, 6 of 112 lists (5%)"
+2026-08-10,2026-08-23,112,the fortnight to 2026-08-09,return,main,Inquisition of Kozilek,"Inquisition of Kozilek appears for the first time, 3 of 112 lists (3%)"
 2026-08-10,2026-08-23,112,the fortnight to 2026-08-09,return,main,Spell Snare,"Spell Snare appears for the first time, 2 of 112 lists (2%)"
-2026-08-24,2026-09-06,133,Spotlight Dallas,adoption,main,Consign to Memory,"Consign to Memory fell in the mainboard, 47/61 to 55/133 lists (77% to 41%)"
-2026-08-24,2026-09-06,133,Spotlight Dallas,adoption,side,Consign to Memory,"Consign to Memory climbed in the sideboard, 14/61 to 78/133 lists (23% to 59%)"
-2026-08-24,2026-09-06,133,Spotlight Dallas,adoption,side,Containment Priest,"Containment Priest fell in the sideboard, 29/61 to 27/133 lists (48% to 20%)"
-2026-08-24,2026-09-06,133,Spotlight Dallas,adoption,side,"Elesh Norn, Mother of Machines","Elesh Norn, Mother of Machines fell in the sideboard, 37/61 to 50/133 lists (61% to 38%)"
-2026-08-24,2026-09-06,133,Spotlight Dallas,event,,,Spotlight Brisbane
-2026-08-24,2026-09-06,133,Spotlight Dallas,event,,,Spotlight Dallas
+2026-08-24,2026-09-06,132,Spotlight Dallas,adoption,main,Consign to Memory,"Consign to Memory fell in the mainboard, 47/61 to 55/132 lists (77% to 42%)"
+2026-08-24,2026-09-06,132,Spotlight Dallas,adoption,side,Consign to Memory,"Consign to Memory climbed in the sideboard, 14/61 to 77/132 lists (23% to 58%)"
+2026-08-24,2026-09-06,132,Spotlight Dallas,adoption,side,Containment Priest,"Containment Priest fell in the sideboard, 29/61 to 27/132 lists (48% to 20%)"
+2026-08-24,2026-09-06,132,Spotlight Dallas,adoption,side,"Elesh Norn, Mother of Machines","Elesh Norn, Mother of Machines fell in the sideboard, 37/61 to 50/132 lists (61% to 38%)"
+2026-08-24,2026-09-06,132,Spotlight Dallas,return,side,Grafdigger's Cage,"Grafdigger's Cage appears for the first time, 5 of 132 lists (4%)"
+2026-08-24,2026-09-06,132,Spotlight Dallas,event,,,Spotlight Brisbane
+2026-08-24,2026-09-06,132,Spotlight Dallas,event,,,Spotlight Dallas
