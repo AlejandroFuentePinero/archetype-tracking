@@ -81,7 +81,9 @@ def build(raw_dir: Path = config.RAW_DIR, db_path: Path = config.DB_PATH) -> Pat
     records is worse than none.
     """
     db_path.parent.mkdir(parents=True, exist_ok=True)
-    lists = list(enumerate(classify_cache(raw_dir)))
+    # Numbered before the history start is applied, so a list keeps its id
+    # whatever the start is set to.
+    lists = [(i, d) for i, d in enumerate(classify_cache(raw_dir)) if d.date >= config.HISTORY_START]
     with duckdb.connect(db_path) as con:
         con.execute("BEGIN TRANSACTION")
         con.execute(DECKLISTS_SCHEMA)

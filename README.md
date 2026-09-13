@@ -43,8 +43,9 @@ uv sync
 The store and the raw cache are not committed, so a fresh clone builds them:
 
 ```bash
-# Fetch every published Modern event since HISTORY_START and rebuild the store.
-# The first run is a six-month backfill: hundreds of events, expect it to be slow.
+# Fetch every published Modern event since HISTORY_START, the regime boundary, and
+# rebuild the store. The first run is a months-long backfill: hundreds of events,
+# expect it to be slow.
 uv run tracker refresh
 
 # Freeze the closed weeks and render last week's report for each tracked deck.
@@ -121,7 +122,7 @@ tracker/            the package
   plots.py          the report's figures, as inline SVG
   site.py           the Space: an index over the current week's reports
   config.py         every named threshold, in one file
-data/               index.csv, events.csv, raw-melee/ and tracking/ are committed
+data/               index.csv, events.csv, examples/, raw-melee/ and tracking/ are committed
 tests/              tests over committed MTGO payload fixtures
 ```
 
@@ -129,8 +130,10 @@ tests/              tests over committed MTGO payload fixtures
 
 **Committed:** the ingest index (`data/index.csv`, one row per published list
 the cache holds), the major-event marks (`data/events.csv`), the Melee payloads
-(`data/raw-melee/`), and the frozen tracking rows and summaries
-(`data/tracking/`). Each of these is either the engine's own memory, which no
+(`data/raw-melee/`), the frozen tracking rows and summaries
+(`data/tracking/`), and the example lists the membership rules were drawn from
+(`data/examples/`, one per tracked deck, keyed by its `config` name; Goryo's
+has none). Each of these is either the engine's own memory, which no
 cache can rebuild, or a capture that should not be fetched twice: a paper event
 is fifteen hundred decklist pages scraped from a third-party site.
 

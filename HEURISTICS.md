@@ -135,21 +135,30 @@ The deck runs Weapons Manufacturing, Kappa Cannoneer and Engineered Explosives
 as four-ofs. The Krang, Tamiyo and Song of Creation artifact decks share Kappa,
 Pinnacle Emissary and the Urza's Saga shell, and cards like Song of Creation
 and Undercity Sewers have nothing to do with Affinity. The report is called
-Affinity, not Grixis Affinity.
+Affinity, not Grixis Affinity. A list holding the full Affinity four under the
+Song engine is a hybrid brew, and out for now (2026-09-13).
 *Applies*: Weapons Manufacturing and Engineered Explosives join the two
 creatures in the mainboard signature. The 34 lists since the bans without both,
 16 of them in the fortnight to 6 September, leave the population; that rise is
 what put Song of Creation and Undercity Sewers in the storyline as arrivals.
-One population, no versions.
+A mainboard Song of Creation puts a list outside (the rule's `excluded`
+cards), which moves exactly GinkoHS's 10673 of 5 September. One population, no
+versions.
 
 **Izzet Prowess is only the blue and red deck** (2026-09-12):
 The deck is Izzet: Cori-Steel Cutter, Dragon's Rage Channeler, Mutagenic
 Growth, Slickshot Show-Off and the rest of the blue and red shell. The red and
 Boros prowess lists on Lava Spike and Skewer the Critics share the creatures
-and are a different deck.
+and are a different deck. So is Izzet Phoenix, which answers the rule through
+Cutter, Swiftspear, DRC and Vents, and the prowess core with Phoenix and
+Looting grafted on is a hybrid brew, out for now (2026-09-13). A Gruul list
+holds one Vents for its sideboard Consign; every Izzet list holds two or more.
 *Applies*: Steam Vents joins the three creatures in the mainboard signature.
 Every Izzet list since the bans runs it, and the 32 lists with no blue card,
-19 of them with white, leave the population. One population, no versions.
+19 of them with white, leave the population. A mainboard Arclight Phoenix
+puts a list outside (the rule's `excluded` cards), 9 lists, 8 of them pre-ban,
+and Steam Vents has a floor of 2 copies, which moves Duduk123's 18177 alone.
+One population, no versions.
 
 **Ephemerate is part of what makes the deck Esper** (2026-08-07):
 The trio alone (Goryo's Vengeance, Atraxa, Psychic Frog) admits Grixis
@@ -161,6 +170,99 @@ four and not the three. Grixis lists leave the archetype's population entirely;
 those that keep Goryo's Vengeance land on the near-miss watchlist, which is
 where a different construction direction belongs.
 
+**Persist reanimator is its own deck, not a Goryo's version** (2026-09-13):
+Goryo's is Goryo's Vengeance and the legendary Atraxa it pairs with. Persist
+runs a different package (Persist, Archon of Cruelty, Emeritus of Ideation,
+Dina's Guidance), so a list holding both is the Persist deck with Goryo's as a
+second angle, not a Goryo's build. The Shifting Woodland Omniscience combo
+wearing the Goryo's core is read the same way. A Goryo's list carrying Blink's
+creatures is different: it is a hybrid whose engine is still the Goryo's
+package, so it stays Goryo's.
+*Applies*: a mainboard Persist, Omniscience or Shifting Woodland puts a list
+outside Goryo's (`EXCLUDED_CARDS`). That moves the two July league lists
+19894 and 20074 and the Dallas Spotlight list registered as Esper Goryo's;
+ador's 9004 with Phelia and Overlord stays. Frozen Goryo's rows for the weeks
+of 14 and 17 July counted the two league lists.
+
+**Esper Blink is the four creatures on their own colours, and not the decks
+built around them** (2026-09-13):
+The Guide of Souls and Ocelot Pride energy engine on the blink creatures is
+energy, a different deck; so are the Estrid's Invocation Overlords deck, the
+Stoneforge Mystic Stoneblade build and the Tidehollow Sculler Vial taxes deck.
+The Orzhov Aether Vial lists on Ephemerate are a version of Blink, so Vial on
+its own says nothing.
+*Applies*: a mainboard Guide of Souls, Ocelot Pride, Estrid's Invocation,
+Stoneforge Mystic or Tidehollow Sculler puts a list outside Blink (the rule's
+`excluded` cards). That moves exactly seven lists: 12705, 13848, 14405, 16492,
+20578, 1376 and 177, the last two challenge lists of 2 March and 5 September.
+Frozen Blink rows for the weeks holding 16492 (22 May), 20578 (25 July) and
+177 (5 September) counted them.
+
+**Oswald with Kappa Cannoneer in the mainboard is the Kappa artifact deck**
+(2026-09-13):
+The Kappa Cannoneer, Pinnacle Emissary, Welding Jar and Krang deck bolted two
+Oswald and a Grinding Station on for a fortnight and then cut them again; it
+was never the Oswald deck. Oswald lists side Kappa, so the card is read in the
+mainboard only.
+*Applies*: a mainboard Kappa Cannoneer puts a list outside Oswald (the rule's
+`excluded` cards). That moves exactly chinotron23's 22362 and 22763, the
+leagues of 27 August and 4 September, whose frozen Oswald rows counted them.
+
+**Domain Zoo is Kavu and Scion as the deck, not as domain bodies in another**
+(2026-09-13):
+Persist reanimator (Persist, Archon of Cruelty, Faithless Looting), the
+five-colour Living End build (Living End, Bloodbraid Marauder, Malevolent
+Rumble) and the five-colour energy build (Guide of Souls, Ocelot Pride, Ajani,
+Goblin Bombardment) each run Kavu and Scion as bodies and are their own decks.
+The Persist lists were 22 of the 25 pre-ban Frog camp lists, so that camp's
+pre-ban consensus was never Zoo's.
+*Applies*: a mainboard Persist, Living End, Guide of Souls or Ocelot Pride puts
+a list outside Zoo (the rule's `excluded` cards). That moves 39 lists: 24
+Persist (21 pre-ban), 8 Living End (Katla's build, one of them gyurme's
+Spotlight Brisbane list) and the 7 energy lists of 26 May to 6 June, which sat
+in the traditional camp's opening two post-ban bins. Frozen Zoo rows across
+those weeks counted them.
+
+**Broodscale is the combo on the Eldrazi Temple shell, and a hybrid brew on
+that shell is out for now** (2026-09-13):
+The Golgari Yawgmoth and Cauldron decks run Broodscale and the Blade as one
+combo among theirs, with no Temple, Kozilek's Command or Fleshraker, and are
+different decks. On the intact shell, the Cauldron and Young Wolf package
+under Dredger's Insight and the Karn, Mox Opal, Mystic Forge package are
+hybrid brews, and the ruling for now is that hybrid brews leave the population
+rather than being read as a pilot's version.
+*Applies*: Eldrazi Temple joins the mainboard signature, which moves exactly
+12560, 1350, 15946 and Dimmer's Spotlight Brisbane list; a mainboard Dredger's
+Insight or Mystic Forge puts a list outside (the rule's `excluded` cards),
+which moves exactly 13274, 14207, 9360, 1541 and 12945. Only 9360 (31 July)
+is post-ban, so one frozen Broodscale row counted a moved list.
+
+**Trudge is the Eldrazi ramp shell on Ugin's Labyrinth** (2026-09-13):
+The mono-green Springheart Nantuko decks on Quirion Ranger, Badgermole Cub and
+Summoner's Pact run Slumbering Trudge and Fanatic of Rhonas as mana dorks and
+none of the Labyrinth, Temple, Kozilek's Command or Fight Rigging shell; they
+are a different deck.
+*Applies*: Ugin's Labyrinth joins the two creatures in the mainboard
+signature. Every other list in the history holds it, so that moves exactly
+6626, 6833, 15495, 15694 and 17784, four of them pre-ban. A clean 60 with an
+unpublished sideboard (AoFTW's 20592) stays.
+
+**Tron is Eldrazi Tron, and the other Tron decks on the lands and Karn are out**
+(2026-09-13):
+Mono-Green Tron proper digs with Chromatic Sphere, Chromatic Star and Sylvan
+Scrying and runs neither Temple nor Labyrinth; blue Tron is the Force of
+Negation and Stock Up control deck; the Malevolent Rumble green ramp build on
+the Tron lands is the neighbour shell; and a combo brew in the flex slots, such
+as Devoted Druid with Luxior, is a hybrid brew, out for now. Ancient Stirrings
+on a green splash inside the full Eldrazi engine is the same deck.
+*Applies*: a mainboard Chromatic Sphere, Chromatic Star, Stock Up, Malevolent
+Rumble or Devoted Druid puts a list outside Tron (the rule's `excluded`
+cards). That moves 11 lists: 13510, 11590, 2254, 14892, 15208, 11955, 2036,
+22941 and the Dallas lists of ClintonWillesen1 and simmmins and Brisbane's
+AlimTheBackpack. Only 22941 (7 September) is post-ban in the store, so one
+frozen Tron row counted a moved list; the paper readings for Dallas and
+Brisbane change by one and two lists.
+
 **Boros Energy is the red and white deck on Guide, Ocelot, Ajani and
 Bombardment** (2026-09-13):
 Drawn from Alejandro's example list and the data. Guide of Souls and Ocelot
@@ -171,7 +273,11 @@ list is.
 *Applies*: the four in the mainboard and no blue, black or green source, read
 on sources and never fetchlands, since Marsh Flats fetches Sacred Foundry in
 nearly every Boros list. Since the bans that is 1033 lists, with 117 Mardu and
-134 Jeskai lists outside. One population, no versions.
+134 Jeskai lists outside. A mainboard Eldrazi Temple, Cori-Steel Cutter or
+Agatha's Soul Cauldron puts a list outside (the rule's `excluded` cards): the
+Boros Eldrazi, Cutter prowess and Leonardo Cauldron hybrid brews, out for now
+(2026-09-13), exactly 13463, 13489 and 8284, the last post-ban (28 June).
+One population, no versions.
 
 **Boros Ponza is Erode with Cleansing Wildfire** (2026-09-13):
 Drawn from Alejandro's example list and the data. Erode is the deck's card, in
@@ -180,17 +286,28 @@ red half of the plan: the five mono-white lists on Crucible of Worlds hold
 Erode alone, and the Boros energy lists that splash Erode hold neither. The
 Jeskai and Azorius control lists that splash Erode are control decks.
 *Applies*: both cards in the mainboard and no blue, black or green source,
-466 lists since the bans. One population, no versions.
+466 lists since the bans. A mainboard Boom/Bust puts a list outside (the
+rule's `excluded` cards): EDHplayer's four pre-ban Boom/Bust and Magmatic
+Hellkite lists are a hybrid brew, out for now (2026-09-13). One population,
+no versions.
 
 **Dimir Midrange is Frog with Riddler, and only the blue and black deck**
 (2026-09-13):
 Drawn from Alejandro's example list and the data. Frog alone admits the Dimir
-Oculus lists on Unearth, 60 since the bans, which never run Quantum Riddler.
-The Esper Frog decks on Plains and the Grixis ones on Steam Vents share the pair
-and are different decks; Goryo's, Blink and Domain Zoo share it too and are
-tested first.
-*Applies*: both cards in the mainboard and no white, red or green source, 395
-lists since the bans. One population, no versions.
+Oculus lists on Unearth, and a third of those run Quantum Riddler too, so the
+pair is not enough on its own: Oculus, the Necrodominance deck on Soul Spike,
+Persist reanimator, Dimir Goryo's without Ephemerate and Death's Shadow all
+sit on Frog and Riddler in blue and black and are different decks. The Esper
+Frog decks on Plains and the Grixis ones on Steam Vents share the pair and are
+different decks; Goryo's, Blink and Domain Zoo share it too and are tested
+first. The Moonshadow and Street Wraith aggro build stays in: no single card
+names it without moving clean lists.
+*Applies*: both cards in the mainboard and no white, red or green source, and
+no mainboard Necrodominance, Persist, Abhorrent Oculus, Goryo's Vengeance or
+Death's Shadow (the rule's `excluded` cards). Since the bans that moves 24
+lists, 405 remaining, plus three of the Dallas and Brisbane paper lists. Every
+frozen row under `data/tracking/dimir/` counted them. One population, no
+versions.
 
 **Jeskai Control is the Consult shell with Galvanic Discharge, and the colour
 is read on the spell** (2026-09-13):
@@ -204,7 +321,11 @@ shell lists.
 *Applies*: the four in the mainboard and no colour rule, 155 lists since the
 bans; a Breeding Pool beside the Discharge is a splash inside the deck. The 25
 red-white-blue shell lists with no red spell are Azorius control on a Steam
-Vents and stay outside. One population, no versions.
+Vents and stay outside. A mainboard Wrenn and Six, Indomitable Creativity or
+Saheeli Rai puts a list outside (the rule's `excluded` cards): the four-colour
+Omnath control lists, the Creativity combo and the Saheeli combo inside the
+shell, a hybrid brew, out for now (2026-09-13); 7 store lists and Nicklinger's
+Dallas list, 148 remaining. One population, no versions.
 
 **Storm is Ral, Ruby Medallion and Past in Flames** (2026-09-13):
 Drawn from Alejandro's example list and the data. Ruby alone admits the Belcher
@@ -212,7 +333,9 @@ lists on Pinnacle Monk, which never run Ral or Past in Flames; Ral alone admits
 an Izzet storm on Stormcatch Mentor with no Medallion. The sideboard colours
 are the Wish targets and every list is the same red deck under them.
 *Applies*: the three in the mainboard, no colour rule, 472 lists since the
-bans. One population, no versions.
+bans. The Izzet Stormcatch shell carrying the three on an Island (Nilsfit,
+3 September) is a Storm build and stays (2026-09-13). One population, no
+versions.
 
 **Temur Living End is Living End with both cascade spells** (2026-09-13):
 Drawn from Alejandro's example list and the data. The Sultai build on
@@ -221,9 +344,32 @@ Agent and never runs Violent Outburst, and it is a different deck. Temple
 Garden sits in 187 of the 326 lists beside no white spell, a fetchable land of
 the Temur shell and not a colour, and Alejandro's own list runs one.
 *Applies*: the three in the mainboard, no colour rule, 326 lists since the
-bans. One population, no versions.
+bans. The four lists carrying the Sultai build's black suite beside Violent
+Outburst on black sources (16270, 18438, 8502 and marknorton at Brisbane) are
+Living End builds and stay (2026-09-13). One population, no versions.
 
 ## Data interpretation
+
+**The history opens on the regime boundary; pre-ban lists are not in the
+store** (2026-09-13):
+What was played under the old rules is a different era, and a list from it
+should not be in the database at all rather than merely outside every window.
+*Applies*: `HISTORY_START` is the boundary, the store build skips lists dated
+before it, and the index records only what the store holds. The raw cache keeps
+the earlier payloads. A storyline return can only remember as far back as the
+boundary.
+
+**A 75-card mainboard is a list published with its boards merged, and no
+member** (2026-09-13):
+Some lists arrive as 75 mainboard cards and an empty sideboard. The deck is
+ordinary, but its boards cannot be told apart, so reading it would count
+fifteen sideboard cards into a build. A 60 with an unpublished sideboard is
+still a list.
+*Applies*: a mainboard over `MAINBOARD_MAX` (62) answers to no membership rule,
+an oversize registration with a full sideboard included, since it distorts a
+copies reading the same way. That moves EvoPride's Prowess 4396 of 20 June,
+tao_bye_bye's 65-card Storm 1589 of 8 March and the Dallas Storm list;
+AoFTW's Trudge 20592, a clean 60 with no sideboard, stays.
 
 **Presence is the whole deck; performance and builds are the tracked version**
 (2026-09-12):
@@ -314,3 +460,16 @@ Mardu and 134 Jeskai.
 *Applies if adopted*: the rules stand. If rejected, Jeskai drops the Discharge
 and reads the whole Consult shell, or Energy folds Mardu and Jeskai in as
 versions; either invalidates every frozen row under that deck's directory.
+
+**The regime boundary day was played under the old rules** (raised
+2026-09-13, surfaced 0×):
+`REGIME_BOUNDARY` is 2026-05-18, the announcement date, and the window reads
+that day as post-ban. The events published that day were played before the
+bans took effect.
+*Evidence*: 25 lists dated 2026-05-18 mainboard Phlage, Titan of Fire's Fury
+(17 of 18 Boros Energy lists, 3 Boros Ponza challenge lists) and none after;
+60 of the day's 112 lists are members of a tracked deck and sit in every
+post-ban population, where a banned card reads as the deck's own variation.
+*Applies if adopted*: the boundary moves to 2026-05-19, or the boundary day is
+read as pre-ban; either moves those lists out of every post-ban population and
+every frozen row that read them is invalidated.

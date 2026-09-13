@@ -18,6 +18,7 @@ import pytest
 from tracker import index, mtgo, store
 from tracker.classify import classify_cache
 from tracker.refresh import refresh
+from tests import synthetic
 
 FIXTURE_RAW = Path(__file__).parent / "fixtures" / "raw"
 # One captured Last Chance: a Swiss-only event of a kind the day's cache lacks.
@@ -532,3 +533,34 @@ def test_a_grixis_build_on_the_trio_is_a_near_miss_and_not_the_archetype(tmp_pat
 
     members = {row["pilot"] for row in store.goryos_lists(db)}
     assert members == {"billskillz", "jussupinator", "DskBayWolf"}
+
+
+def test_a_persist_deck_on_the_four_is_its_own_deck_and_not_the_archetype(tmp_path):
+    """A card that names another deck puts a list outside, whatever else it holds.
+
+    GabbaAndrewTeam and chapaking8 went 5-0 in the July leagues on all four
+    signature cards under a Persist reanimator package, and Malikrobinson93
+    registered a Shifting Woodland Omniscience combo on the Goryo's core at
+    Spotlight Dallas. Both are their own deck with Goryo's as a second angle.
+    ador's list with Blink's creatures beside the whole Goryo's engine is not:
+    it stays.
+    """
+    raw = synthetic.write_cache(
+        tmp_path / "raw",
+        [
+            synthetic.league(
+                "2026-07-14",
+                [
+                    synthetic.entry("GabbaAndrewTeam", cards={"Persist": (3, 0)}),
+                    synthetic.entry(
+                        "Malikrobinson93", cards={"Omniscience": (3, 0), "Shifting Woodland": (4, 0)}
+                    ),
+                    synthetic.entry("ador", cards={"Phelia, Exuberant Shepherd": (3, 0)}),
+                ],
+            )
+        ],
+    )
+    db = tmp_path / "engine.duckdb"
+    store.build(raw, db)
+
+    assert {row["pilot"] for row in store.goryos_lists(db)} == {"ador"}

@@ -372,7 +372,11 @@ def findings(
             share = n / size
 
             other = held.get((card, "side" if zone == "main" else "main"), {})
-            if not was and _is_return(bins, index, sizes, zone, share):
+            # The population's first bin has nothing behind it to return from:
+            # read for returns it would open on every card appearing at once,
+            # a cold start rather than an innovation burst.
+            cold_start = not any(i < index for i in sizes)
+            if not was and not cold_start and _is_return(bins, index, sizes, zone, share):
                 phrase = (
                     f"moves to the {zone}board"
                     if index - 1 in other

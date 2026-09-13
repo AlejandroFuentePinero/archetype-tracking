@@ -78,6 +78,49 @@ def test_an_off_colour_source_is_a_different_deck(tmp_path):
     assert tracking.excluded(db, "blink", since=FIRST) == 1
 
 
+def test_a_card_that_names_another_deck_puts_a_list_outside(tmp_path):
+    """The four creatures also sit inside decks a blink pilot would name as others.
+
+    The energy engine (dabigatran, Jeppebc and TOP_AI in March to May), the
+    Estrid's Invocation Overlords deck (taku123, July), Stoneblade (JJ, March)
+    and the Tidehollow Sculler taxes deck (UomoComune26490, September) each held
+    every signature card on the deck's own colours. Aether Vial is not such a
+    card: JJ's Orzhov Vial lists are a version of this deck and stay.
+    """
+    clean = blink("vial_pilot", variant="orzhov", placement=1, points=15,
+                  cards={"Aether Vial": (4, 0)})
+    energy = blink("energy_pilot", variant="orzhov", placement=2, points=15,
+                   cards={"Guide of Souls": (4, 0), "Ocelot Pride": (4, 0)})
+    taxes = blink("taxes_pilot", variant="esper", placement=3, points=15,
+                  cards={"Aether Vial": (4, 0), "Tidehollow Sculler": (4, 0)})
+    db = _built(tmp_path, [challenge(FIRST, [clean, energy, taxes], "e1")])
+    with duckdb.connect(db, read_only=True) as con:
+        members = con.execute("SELECT pilot FROM decklists WHERE archetype = 'blink'").fetchall()
+    assert members == [("vial_pilot",)]
+
+
+def test_a_list_published_with_its_sideboard_in_the_main_is_no_member(tmp_path):
+    """EvoPride's 2026-06-20 challenge list arrived as 75 mainboard cards and none
+    in the side: an ordinary deck, but its boards cannot be read, so it joins no
+    population rather than putting fifteen sideboard cards into a build reading."""
+    clean = entry("clean_pilot", placement=1, points=15)
+    merged = entry("merged_pilot", placement=2, points=15, cards={"Consign to Memory": (15, 0)})
+    db = _built(tmp_path, [challenge(FIRST, [clean, merged], "e1")])
+    with duckdb.connect(db, read_only=True) as con:
+        members = con.execute("SELECT pilot FROM decklists WHERE archetype = 'goryos'").fetchall()
+    assert members == [("clean_pilot",)]
+
+
+def test_a_floor_on_a_signature_card_reads_its_copies():
+    """Duduk123's Gruul prowess list of 2026-06-15 held one Steam Vents for its
+    sideboard Consign to Memory and no blue card; every Izzet list runs two."""
+    from types import SimpleNamespace
+    from tracker import classify
+    shell = {card: 4 for card in config.TRACKED_DECKS["prowess"]["signature"]}
+    assert classify.archetype(SimpleNamespace(mainboard=shell)) == "prowess"
+    assert classify.archetype(SimpleNamespace(mainboard=shell | {"Steam Vents": 1})) is None
+
+
 @pytest.mark.parametrize("variant,expected", [("esper", 1), ("orzhov", 0)])
 def test_the_variant_rule_splits_on_the_one_card(tmp_path, variant, expected):
     """Presence of the blue source is the whole of the split, not a count."""
@@ -155,11 +198,11 @@ def test_a_return_has_to_beat_what_the_card_ever_held(tmp_path):
     vacuum, emrakul = {"Ghost Vacuum": (0, 3)}, {"Emrakul, the Aeons Torn": (0, 3)}
     db = _built(tmp_path, [
         # Before the gap: the vacuum is a two-list one-off, Emrakul is in every list.
-        _mixed(BEFORE, [vacuum | emrakul] * 2 + [emrakul] * 6, "e0"),
-        _lists(FIRST, 8),
+        _mixed(FIRST, [vacuum | emrakul] * 2 + [emrakul] * 6, "e0"),
         _lists(SECOND, 8),
+        _lists("2026-06-17", 8),
         # After it, they swap: the deck turned to one and remembered the other.
-        _mixed("2026-06-17", [vacuum] * 8 + [emrakul] * 4, "e3"),
+        _mixed("2026-07-01", [vacuum] * 8 + [emrakul] * 4, "e3"),
     ])
     returns = {
         row["card"]
