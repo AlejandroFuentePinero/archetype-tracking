@@ -357,13 +357,16 @@ def test_a_return_has_to_beat_what_the_card_ever_held(tmp_path):
 
     Both cards here are gone the same length of time and come back in the same
     bin. Only the one the deck actually turned to is a row.
+
+    The two fortnights of the gap are sized past `TRACK_RETURN_ABSENCE_LISTS`
+    between them, or neither card counts as having been gone from anything.
     """
     vacuum, emrakul = {"Ghost Vacuum": (0, 3)}, {"Emrakul, the Aeons Torn": (0, 3)}
     db = _built(tmp_path, [
         # Before the gap: the vacuum is a two-list one-off, Emrakul is in every list.
         _mixed(FIRST, [vacuum | emrakul] * 2 + [emrakul] * 6, "e0"),
-        _lists(SECOND, 8),
-        _lists("2026-06-17", 8),
+        _lists(SECOND, 13),
+        _lists("2026-06-17", 13),
         # After it, they swap: the deck turned to one and remembered the other.
         _mixed("2026-07-01", [vacuum] * 8 + [emrakul] * 4, "e3"),
     ])
@@ -375,6 +378,30 @@ def test_a_return_has_to_beat_what_the_card_ever_held(tmp_path):
     }
     assert "Ghost Vacuum" in returns
     assert "Emrakul, the Aeons Torn" not in returns
+
+
+def test_a_return_needs_enough_lists_behind_it_to_have_been_absent_from(tmp_path):
+    """A thin fortnight is the deck having been small, not the card having been gone.
+
+    The same card, the same appearance, and the only difference is how many
+    lists it was missing from. Read against a fortnight of five it is the deck's
+    opening weeks reporting themselves as an innovation burst, which is what the
+    live history did: Devoted Combo's bin to 2026-06-14 called 16 cards new off
+    a two-list baseline, Craterhoof Behemoth among them.
+    """
+    arrival = {"Ghost Vacuum": (0, 3)}
+    thin = _built(tmp_path / "thin", [_lists(FIRST, 5), _lists(SECOND, 10, cards=arrival)])
+    read = _built(tmp_path / "read", [_lists(FIRST, 30), _lists(SECOND, 10, cards=arrival)])
+
+    def returns(db):
+        return [
+            row["card"]
+            for row in timeline.findings(db, config.REPORTS["blink"])[1]["found"]
+            if row["kind"] == "return"
+        ]
+
+    assert returns(thin) == []
+    assert returns(read) == ["Ghost Vacuum"]
 
 
 def test_a_card_crossing_the_boards_is_a_migration_and_says_so(tmp_path):
@@ -716,7 +743,10 @@ def test_the_fortnight_holding_a_major_event_is_read_against_the_event(tmp_path)
     from tracker import spotlight
 
     adopted = {"Clarion Conqueror": (0, 3)}
-    db = _built(tmp_path, [_lists(FIRST, 10), _lists(SECOND, 10, cards=adopted)])
+    # The first fortnight carries `TRACK_RETURN_ABSENCE_LISTS`, so that the card
+    # the second one sideboards reads as new to the deck rather than as new to
+    # a population too thin to have shown it.
+    db = _built(tmp_path, [_lists(FIRST, 25), _lists(SECOND, 10, cards=adopted)])
     spot, payload = _paper_event("2026-06-06", [blink(f"pt{i}", cards=adopted) for i in range(10)])
     spotlight.cached(spot, tmp_path).write_text(json.dumps(payload), encoding="utf-8")
 

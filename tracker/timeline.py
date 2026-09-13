@@ -376,16 +376,16 @@ def findings(
             share = n / size
 
             other = held.get((card, "side" if zone == "main" else "main"), {})
-            # The population's first bin has nothing behind it to return from:
-            # read for returns it would open on every card appearing at once,
-            # a cold start rather than an innovation burst.
-            cold_start = not any(i < index for i in sizes)
-            if not was and not cold_start and _is_return(bins, index, sizes, zone, share):
-                phrase = (
-                    f"moves to the {zone}board"
-                    if index - 1 in other
-                    else _return_phrase(bins, index)
-                )
+            # A card the bin before held in the other board did not go
+            # anywhere, so where it turns up is observed rather than read off
+            # an absence, and the window below has nothing to say about it.
+            migrating = index - 1 in other
+            if (
+                not was
+                and (migrating or _readable_absence(index, sizes))
+                and _is_return(bins, index, sizes, zone, share)
+            ):
+                phrase = f"moves to the {zone}board" if migrating else _return_phrase(bins, index)
                 found.append(
                     {
                         "kind": "return",
@@ -472,6 +472,9 @@ def _is_return(
     and between them they carry four percent of its volume. And the appearance
     has to be a larger share than the card has ever held, which is what
     separates a card the field turned to from one that was always a one-off.
+
+    How long the card was gone is this function's question. Whether there were
+    enough lists for it to have been gone from is `_readable_absence`.
     """
     gate = config.TRACK_RETURN_MAIN_LISTS if zone == "main" else config.TRACK_RETURN_SIDE_LISTS
     if len(bins[index]) < gate:
@@ -486,6 +489,22 @@ def _is_return(
         default=0.0,
     )
     return share > peak
+
+
+def _readable_absence(index: int, sizes: dict[int, int]) -> bool:
+    """Whether the bins behind this one hold enough lists to read an absence over.
+
+    A return claims the deck was not playing the card, and the claim is only as
+    good as the population it is read over. A deck's opening fortnights are thin
+    because the deck was thin, not because the cards were absent: read against a
+    two-list fortnight, Devoted Combo's bin to 2026-06-14 reported 16 cards as
+    appearing for the first time, Craterhoof Behemoth among them, a card the
+    deck has never been without. The first bin of all has no window whatsoever
+    and is refused here rather than by a case of its own.
+    """
+    absence = config.RETURN_ABSENCE_DAYS // config.TRACK_BIN_DAYS
+    window = sum(sizes.get(index - back, 0) for back in range(1, absence + 1))
+    return window >= config.TRACK_RETURN_ABSENCE_LISTS
 
 
 def _return_phrase(bins: dict[int, list[int]], index: int) -> str:

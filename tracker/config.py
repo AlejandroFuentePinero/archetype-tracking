@@ -840,6 +840,18 @@ TRACK_STAPLE_SHARE = 0.7
 TRACK_RETURN_MAIN_LISTS = 2
 TRACK_RETURN_SIDE_LISTS = 3
 
+# And how many lists the absence itself has to be read over. A return claims the
+# deck was not playing the card, and the claim needs a window big enough to have
+# shown it: a deck's opening fortnights are thin because the deck was thin, not
+# because the cards were absent. Read against a two-list window, Devoted Combo's
+# fortnight to 2026-06-14 reported 16 cards as appearing for the first time,
+# Craterhoof Behemoth among them, a card the deck has never been without; Simic
+# Neoform reported Forest and Island, Oswald reported Hallowed Fountain and
+# Trudge reported Primeval Titan. Set in the gap the history leaves between the
+# two kinds of row: every window at or under 22 lists named the deck's own
+# staples, and every window at or above 29 read as a change somebody made.
+TRACK_RETURN_ABSENCE_LISTS = 25
+
 # A return also has to be bigger than the card has ever been, which is what
 # separates a card the field has turned to from a card that was always a
 # one-off and is a one-off again. Without it the gates admit both and the
