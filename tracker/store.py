@@ -9,7 +9,7 @@ from pathlib import Path
 import duckdb
 
 from . import config, index
-from .classify import classify_cache, fallout as fallout_of
+from .classify import classify_cache, fallout as fallout_of, version_boundary as boundary_of
 from .parse import Decklist
 
 DECKLISTS_SCHEMA = """
@@ -71,6 +71,23 @@ CREATE OR REPLACE TABLE fallout (
     list_id VARCHAR,
     archetype VARCHAR,
     reason VARCHAR
+)
+"""
+
+
+# Every member sitting in its deck's default version whose mainboard is a named
+# version's, with that version and what says so: a colour its population is
+# built in, or a card it holds. The default is the one version no list is read
+# into, everything holding no marker falling to it, so a rule gap there is
+# silent where every other misreading is loud. Kept so the gap is a printed
+# count rather than a sweep somebody remembers to run.
+VERSION_BOUNDARY_SCHEMA = """
+CREATE OR REPLACE TABLE version_boundary (
+    list_id VARCHAR,
+    archetype VARCHAR,
+    version VARCHAR,
+    kind VARCHAR,
+    marker VARCHAR
 )
 """
 
@@ -147,6 +164,7 @@ def build(raw_dir: Path = config.RAW_DIR, db_path: Path = config.DB_PATH) -> Pat
         con.execute(LANDS_SCHEMA)
         con.execute(CARDS_SCHEMA)
         con.execute(FALLOUT_SCHEMA)
+        con.execute(VERSION_BOUNDARY_SCHEMA)
         _load(
             con,
             "decklists",
@@ -187,6 +205,7 @@ def build(raw_dir: Path = config.RAW_DIR, db_path: Path = config.DB_PATH) -> Pat
             "fallout",
             ((list_id, deck, reason) for list_id, d in lists for deck, reason in fallout_of(d)),
         )
+        _load(con, "version_boundary", boundary_of(lists))
         con.execute("COMMIT")
     index.write([d for _, d in lists], db_path)
     return db_path
@@ -220,6 +239,22 @@ def fallout(db_path: Path = config.DB_PATH) -> list[dict]:
                 "SELECT f.archetype, f.reason, d.pilot, d.event, d.date, d.list_id"
                 " FROM fallout f JOIN decklists d USING (list_id)"
                 " ORDER BY d.date DESC, f.archetype, d.pilot"
+            )
+        )
+
+
+def version_boundary(db_path: Path = config.DB_PATH) -> list[dict]:
+    """Every member whose version label disagrees with its mainboard, with what says so.
+
+    Most recent first, then by deck, the way the fall-out reads.
+    """
+    with duckdb.connect(db_path, read_only=True) as con:
+        return _rows(
+            con.execute(
+                "SELECT b.archetype, b.version, b.kind, b.marker,"
+                " d.pilot, d.event, d.date, d.list_id"
+                " FROM version_boundary b JOIN decklists d USING (list_id)"
+                " ORDER BY d.date DESC, b.archetype, b.version, d.pilot, b.marker"
             )
         )
 

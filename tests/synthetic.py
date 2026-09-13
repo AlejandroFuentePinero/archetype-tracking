@@ -55,11 +55,27 @@ BLINK_VARIANT_LANDS = {"esper": {"Watery Grave": 2}, "orzhov": {}}
 # variant rule read a thing.
 BLINK_FILLER = {card: copies for card, copies in FILLER_MAIN.items() if card != "Faithful Mending"}
 
+# The Broodscale shell, for the version-boundary reading. Its own filler and
+# lands for the reason Blink's are its own: the shared block mains Thoughtseize
+# and Fatal Push, which are the Golgari version's markers, so every synthetic
+# list would be Golgari before the version rule read a thing. Malevolent Rumble
+# is the green spell every version of the deck casts, so green separates
+# nothing here, which is the shape the live deck has.
+BROODSCALE_SIGNATURE = {card: 2 for card in config.TRACKED_DECKS["broodscale"]["signature"]}
+BROODSCALE_FILLER = {"Malevolent Rumble": 4, "Kozilek's Command": 4}
+BROODSCALE_LANDS = {"Forest": 8}
+BROODSCALE_VERSION_CARDS = {"gruul": {"Unholy Heat": 2}, "mono-green": {}}
+
 # One challenge class throughout: every class but league is challenge-class, so
 # which of them a synthetic event is makes no difference to any reading here.
 CHALLENGE_KIND = "challenge-64"
 
-_LANDS = FILLER_LANDS | BLINK_LANDS | {"Watery Grave": 2, "Sacred Foundry": 2, "Mountain": 2}
+_LANDS = (
+    FILLER_LANDS
+    | BLINK_LANDS
+    | BROODSCALE_LANDS
+    | {"Watery Grave": 2, "Sacred Foundry": 2, "Mountain": 2, "Eldrazi Temple": 4}
+)
 
 # The colours the payload publishes for the cards these series use, in the
 # site's own spelling, so the splash line has something to read. A card not
@@ -92,6 +108,8 @@ _COLOURS = {
     "Consign to Memory": ["COLOR_BLUE"],
     "Wrath of the Skies": ["COLOR_WHITE"],
     "Mystical Dispute": ["COLOR_BLUE"],
+    "Unholy Heat": ["COLOR_RED"],
+    "Malevolent Rumble": ["COLOR_GREEN"],
 }
 
 FALLAJI_COPIES = {"fallaji": 4, "non-fallaji": 0, "hybrid": 2}
@@ -138,6 +156,32 @@ def blink(
     main = BLINK_SIGNATURE | BLINK_FILLER | BLINK_LANDS | BLINK_VARIANT_LANDS[variant]
     if off_colour:
         main[off_colour] = 2
+    side = dict(FILLER_SIDE)
+    for card, (in_main, in_side) in (cards or {}).items():
+        if in_main:
+            main[card] = in_main
+        else:
+            main.pop(card, None)
+        if in_side:
+            side[card] = in_side
+    return {"pilot": pilot, "points": points, "placement": placement, "main": main, "side": side}
+
+
+def broodscale(
+    pilot: str,
+    version: str = "mono-green",
+    cards: dict | None = None,
+    points: int | None = None,
+    placement: int | None = None,
+) -> dict:
+    """One list of the Broodscale deck, in one of its versions.
+
+    The second tracked deck written here, and the one the version boundary is
+    driven on: its default version is read by the absence of a marker rather
+    than by a colour, so a list of it can cast a named version's colour without
+    the rule catching it, which is what the boundary check is for.
+    """
+    main = BROODSCALE_SIGNATURE | BROODSCALE_FILLER | BROODSCALE_LANDS | BROODSCALE_VERSION_CARDS[version]
     side = dict(FILLER_SIDE)
     for card, (in_main, in_side) in (cards or {}).items():
         if in_main:

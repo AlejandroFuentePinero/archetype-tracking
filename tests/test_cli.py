@@ -112,3 +112,56 @@ def test_the_fall_out_prints_per_deck_and_per_reason_with_the_recent_count():
 
 def test_no_fall_out_says_so():
     assert cli._fallout_lines([], today="2026-09-13") == ["  no list holding a deck's core was turned away"]
+
+
+def _boundary(**over) -> dict:
+    """One boundary case as `store.boundaries` returns it."""
+    return {
+        "archetype": "broodscale",
+        "version": "gruul",
+        "kind": "colour",
+        "marker": "R",
+        "pilot": "KarplusanKid",
+        "event": "Modern Challenge 64",
+        "date": "2026-09-11",
+        "list_id": "modern-challenge-64-2026-09-1112849509#KarplusanKid",
+    } | over
+
+
+def test_the_version_boundary_names_the_lists_under_the_deck_and_version_they_disagree_with():
+    """A count alone would say a rule has a gap without saying where to look.
+
+    The boundary is read one list at a time, so the lists are named and each
+    carries what says it is the other version: the colour its population is
+    built in, or the card it holds.
+    """
+    lines = cli._version_boundary_lines(
+        [
+            _boundary(),
+            _boundary(kind="card", marker="Devourer of Destiny", version="lab"),
+            _boundary(pilot="ador", list_id="b", version="lab", kind="card", marker="Devourer of Destiny"),
+        ]
+    )
+
+    assert lines[0] == "  2 list(s) sitting in a version their mainboard disagrees with"
+    assert "  broodscale: 1 list(s) in mono-green that look gruul" in lines
+    assert "  broodscale: 2 list(s) in mono-green that look lab" in lines
+    assert "    2026-09-11  Modern Challenge 64        ador          on Devourer of Destiny" in lines
+    assert "    2026-09-11  Modern Challenge 64        KarplusanKid  casts R" in lines
+
+
+def test_a_deck_whose_versions_partition_cleanly_prints_a_zero_rather_than_going_unmentioned():
+    """Absence and a clean reading are different answers, and a deck missing from
+    the table is the first of them told as the second."""
+    lines = cli._version_boundary_lines([_boundary()])
+
+    assert "  blink: its versions partition cleanly" in lines
+    assert "  tron: its versions partition cleanly" in lines
+
+
+def test_a_deck_of_one_population_has_no_boundary_to_print_and_is_left_out():
+    """A deck with no versions has no default version to fall into, so there is
+    nothing here to say about it either way."""
+    lines = cli._version_boundary_lines([])
+
+    assert not [line for line in lines if "affinity" in line or "neoform" in line]

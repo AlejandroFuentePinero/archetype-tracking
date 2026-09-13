@@ -1,5 +1,6 @@
 """Archetype membership: the mainboard rules, then the camp within one."""
 
+from collections import Counter
 from pathlib import Path
 
 from . import config
@@ -125,6 +126,131 @@ def fallout(decklist: Decklist) -> list[tuple[str, str]]:
         for name, rule in _rules().items()
         if _holds_core(rule, decklist.mainboard) and (reason := _reason(rule, decklist))
     ]
+
+
+def _cast(decklist: Decklist) -> frozenset[str]:
+    """The colours the mainboard casts, read on its spells and never on its sources."""
+    return frozenset().union(
+        *(
+            decklist.colours.get(card, frozenset())
+            for card in decklist.mainboard
+            if card not in decklist.land_names
+        ),
+        frozenset(),
+    )
+
+
+def _spells(decklist: Decklist) -> frozenset[str]:
+    """The mainboard's spells, its sources saying nothing about which version it is."""
+    return frozenset(decklist.mainboard) - decklist.land_names
+
+
+def _rule_colours(rule: dict, version: str, published: dict[str, frozenset[str]]) -> set[str]:
+    """The colours a version's rule is drawn on: its markers' own, and any it names.
+
+    Read off the rule and not off the population, which is the one place the two
+    readings part. Broodscale's Gruul half casts red in 339 of its 387 lists and
+    colourless Writhing Chrysalis holds the other 48, so a population bar set at
+    `config.VERSION_MARKER_SHARE` throws red away by two points and the version
+    drawn on red has no colour at all. The rule says red, and red is what no
+    other version of that deck casts.
+    """
+    cards = next((cards for name, cards in rule.get("variants", ()) if name == version), ())
+    return {colour for name, colour in rule.get("colour_variants", ()) if name == version}.union(
+        *(published.get(card, frozenset()) for card in cards), frozenset()
+    )
+
+
+def _carrying(population: list[Decklist], feature) -> Counter:
+    """How many lists of a population carry each feature any of them has."""
+    return Counter(f for decklist in population for f in feature(decklist))
+
+
+def _carried(population: list[Decklist], feature) -> set[str]:
+    """What `config.VERSION_MARKER_SHARE` of a population carries."""
+    counted = _carrying(population, feature)
+    return {
+        f for f, count in counted.items() if count >= config.VERSION_MARKER_SHARE * len(population)
+    }
+
+
+def _absent(candidates: set[str], default: list[Decklist], feature) -> list[str]:
+    """Those candidates the default version's population does without.
+
+    The half that does the work. Black is in three quarters of mono-green
+    Broodscale off Dismember, which Phyrexian mana casts, and blue and black are
+    in every traditional Zoo list because the deck is five colours: read without
+    this, a version's own colours would be read as its neighbour's and the table
+    would name whole populations.
+    """
+    counted = _carrying(default, feature)
+    return sorted(
+        f for f in candidates if counted[f] < (1 - config.VERSION_MARKER_SHARE) * len(default)
+    )
+
+
+def version_boundary(lists: list[tuple[str, Decklist]]) -> list[tuple[str, str, str, str, str]]:
+    """Every default-version member whose mainboard is a named version's, and what says so.
+
+    A version rule reads its markers in order and drops everything else into the
+    default, so the default is the one version no list is ever read into: a list
+    that is a named version on every other reading but happens to hold no marker
+    takes it silently and its storyline is read as the default's. Pass three
+    found five such lists by hand, two Pro Tour Broodscale lists casting
+    Lightning Bolt and SuperCow12653's two Blink lists casting Teferi, and
+    nothing in the build would have found either.
+
+    What the sweep read is read here: the colours a named version is drawn on,
+    and the cards nine tenths of its population holds. The two are read
+    differently on purpose. A colour comes off the rule, which names the cards a
+    version is drawn on and sometimes the colour itself, because a version can
+    be drawn on a colour without its whole population casting it: 48 of the 387
+    Gruul Broodscale lists are on colourless Writhing Chrysalis alone. A card
+    has no such rule to come off, so it comes off the population, and a version
+    thinner than `config.TRACK_MIN_LISTS` has no population to read: nine tenths
+    of a one-list version is every card in one decklist, which is how green Tron
+    alone raised 27 colourless lists on a card the rule calls a build.
+
+    Sources say nothing either way, the way they say nothing to the splash line,
+    or Blink's fetching Orzhov lists and Broodscale's Stomping Ground come back
+    as boundary cases that `CONTEXT.md` already rules out.
+    """
+    published: dict[str, frozenset[str]] = {}
+    for _, decklist in lists:
+        published.update(decklist.colours)
+    rows = []
+    for deck, rule in config.TRACKED_DECKS.items():
+        if not (default := rule.get("variant_default")):
+            continue
+        members: dict[str, list[tuple[str, Decklist]]] = {}
+        for list_id, decklist in lists:
+            if decklist.archetype == deck:
+                members.setdefault(decklist.camp, []).append((list_id, decklist))
+        fallen = [decklist for _, decklist in members.get(default, [])]
+        if not fallen:
+            continue
+        for version in config.versions(deck):
+            if version == default:
+                continue
+            named = [decklist for _, decklist in members.get(version, [])]
+            markers = [
+                ("colour", marker, _cast)
+                for marker in _absent(_rule_colours(rule, version, published), fallen, _cast)
+            ]
+            # The cards are a population reading where the colours are a rule
+            # reading, so they alone need a population to read.
+            if len(named) >= config.TRACK_MIN_LISTS:
+                markers += [
+                    ("card", marker, _spells)
+                    for marker in _absent(_carried(named, _spells), fallen, _spells)
+                ]
+            for kind, marker, feature in markers:
+                rows.extend(
+                    (list_id, deck, version, kind, marker)
+                    for list_id, decklist in members[default]
+                    if marker in feature(decklist)
+                )
+    return rows
 
 
 def camp(mainboard: dict[str, int]) -> str:

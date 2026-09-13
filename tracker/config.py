@@ -541,6 +541,19 @@ def versions(archetype: str) -> tuple[str, ...]:
     named = (*rule.get("variants", ()), *rule.get("colour_variants", ()))
     return (*dict.fromkeys(name for name, _ in named), rule["variant_default"])
 
+
+# What makes a card or a colour a version's marker rather than a card the deck
+# happens to play: the share of that version's lists holding it. The same bar
+# read the other way is what disqualifies it, the default version having to
+# hold it in under one list in ten, and the two are one number because they are
+# one question asked of both populations. The bar has to sit below three
+# quarters and above a twentieth on today's store: 166 of 221 mono-green
+# Broodscale lists cast black off Dismember and every one of the 261 traditional
+# Zoo lists casts blue and black, neither of which tells a version from a
+# version, and 28 of the 669 colourless Tron lists cast blue, which is the
+# reading this is for.
+VERSION_MARKER_SHARE = 0.9
+
 # The weekly report's subjects: which lists a report is computed over, what it
 # calls itself, and which slots it watches. Kept apart from the membership rules
 # above because the two answer different questions. A rule says what a list is,

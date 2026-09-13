@@ -8,7 +8,7 @@ from pathlib import Path
 
 from . import config, index, melee, site, spotlight, weekly
 from .refresh import refresh
-from .store import arrivals, fallout
+from .store import arrivals, fallout, version_boundary
 
 
 # How many of the archetype's arrivals are named before the rest become a count.
@@ -76,6 +76,53 @@ def _fallout_lines(rows: list[dict], today: str | None = None) -> list[str]:
     fresh = Counter((row["archetype"], row["reason"]) for row in recent)
     for key, count in sorted(total.items()):
         lines.append(f"  {key[0]}: {key[1]} {count} ({fresh[key]} recent)")
+    return lines
+
+
+def _version_boundary_lines(rows: list[dict]) -> list[str]:
+    """Every member sitting in a version its mainboard disagrees with, named.
+
+    A version rule drops everything holding no marker into the default, so the
+    default is the one version no list is ever read into and a gap in the rule
+    is silent there. Counts alone would say a deck has such a gap without saying
+    where to look, and the boundary is settled one list at a time, so each is
+    named with what says it is the other version.
+
+    A deck whose versions partition cleanly says so rather than going unlisted:
+    absence and a clean reading are different answers, and a deck missing from
+    the table is the first told as the second. A deck of one population has no
+    default to fall into and is no part of this either way.
+    """
+    if not rows:
+        lines = ["  no member sits in a version its mainboard disagrees with"]
+    else:
+        lines = [
+            f"  {len({row['list_id'] for row in rows})} list(s)"
+            " sitting in a version their mainboard disagrees with"
+        ]
+    for deck, rule in config.TRACKED_DECKS.items():
+        if not (default := rule.get("variant_default")):
+            continue
+        mine = [row for row in rows if row["archetype"] == deck]
+        if not mine:
+            lines.append(f"  {deck}: its versions partition cleanly")
+            continue
+        for version in config.versions(deck):
+            marked: dict[str, list[dict]] = {}
+            for row in (r for r in mine if r["version"] == version):
+                marked.setdefault(row["list_id"], []).append(row)
+            if not marked:
+                continue
+            lines.append(f"  {deck}: {len(marked)} list(s) in {default} that look {version}")
+            for found in marked.values():
+                says = ", ".join(
+                    f"casts {row['marker']}" if row["kind"] == "colour" else f"on {row['marker']}"
+                    for row in found
+                )
+                lines.append(
+                    f"    {found[0]['date']}  {found[0]['event']:<26}"
+                    f" {found[0]['pilot']:<12}  {says}"
+                )
     return lines
 
 
@@ -163,4 +210,6 @@ def main(argv=None) -> None:
         print("\n".join(_ingest_lines(change, arrivals(change.added))))
         print("fall-out, every list holding a tracked deck's core that no rule claimed:")
         print("\n".join(_fallout_lines(fallout())))
+        print("version boundary, every member whose label disagrees with its mainboard:")
+        print("\n".join(_version_boundary_lines(version_boundary())))
         return

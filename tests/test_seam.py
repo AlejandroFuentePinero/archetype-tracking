@@ -17,7 +17,7 @@ from pathlib import Path
 import duckdb
 import pytest
 
-from tracker import index, mtgo, store
+from tracker import config, index, mtgo, store
 from tracker.classify import classify_cache
 from tracker.refresh import refresh
 from tests import synthetic
@@ -719,3 +719,144 @@ def test_a_list_turned_away_by_another_decks_engine_is_named_in_the_fall_out(tmp
     assert [(row["archetype"], row["reason"], row["pilot"]) for row in store.fallout(db)] == [
         ("goryos", "persist", "GabbaAndrewTeam")
     ]
+
+
+def test_a_default_version_member_casting_a_named_versions_colour_is_a_boundary_case(tmp_path):
+    """A version rule drops everything it holds no marker of into the default, so
+    a list that is a named version on every other reading takes the default and
+    its storyline is read as the default's, with nothing saying it happened.
+
+    KarplusanKid's list is the shape pass three found by hand: a Broodscale list
+    casting red off a card the Gruul rule does not name, which reads mono-green.
+    The Gruul population is built in red and the mono-green population is not,
+    so the colour is what says the label disagrees with the mainboard.
+    """
+    raw = synthetic.write_cache(
+        tmp_path / "raw",
+        [
+            synthetic.league(
+                "2026-07-14",
+                [
+                    *(synthetic.broodscale(f"gruul{n}", "gruul") for n in range(5)),
+                    *(synthetic.broodscale(f"green{n}") for n in range(10)),
+                    synthetic.broodscale("KarplusanKid", cards={"Galvanic Discharge": (2, 0)}),
+                ],
+            )
+        ],
+    )
+    db = tmp_path / "engine.duckdb"
+    store.build(raw, db)
+
+    assert [
+        (row["archetype"], row["version"], row["kind"], row["marker"], row["pilot"])
+        for row in store.version_boundary(db)
+    ] == [("broodscale", "gruul", "colour", "R", "KarplusanKid")]
+
+
+def test_a_default_version_member_holding_a_named_versions_card_is_a_boundary_case(tmp_path):
+    """A colour is not the only thing a version is built on.
+
+    Blink's Esper half is drawn on Watery Grave, and a list can be that half on
+    every card it plays without casting a blue spell at all, which is the reading
+    a colour alone would miss. So the cards the named version's population holds
+    are read beside the colours it casts, and a default-version list holding one
+    is named the same way.
+    """
+    raw = synthetic.write_cache(
+        tmp_path / "raw",
+        [
+            synthetic.league(
+                "2026-07-14",
+                [
+                    *(
+                        synthetic.blink(f"esper{n}", cards={"Shadowspear": (2, 0)})
+                        for n in range(5)
+                    ),
+                    *(synthetic.blink(f"orzhov{n}", "orzhov") for n in range(10)),
+                    synthetic.blink("SuperCow12653", "orzhov", cards={"Shadowspear": (2, 0)}),
+                ],
+            )
+        ],
+    )
+    db = tmp_path / "engine.duckdb"
+    store.build(raw, db)
+
+    assert [
+        (row["archetype"], row["version"], row["kind"], row["marker"], row["pilot"])
+        for row in store.version_boundary(db)
+    ] == [("blink", "esper", "card", "Shadowspear", "SuperCow12653")]
+
+
+def test_a_card_the_default_version_plays_too_is_not_a_marker_of_the_other(tmp_path):
+    """What a version's population holds is only half of what makes a marker.
+
+    Aether Vial is the case the rule already names: the Orzhov Vial lists on
+    Ephemerate are a version of this deck, so a card both halves play says
+    nothing about which half a list is. Read on the named version alone, every
+    card the deck plays would be a marker of whichever version was looked at
+    first, and the table would name its whole default population.
+    """
+    raw = synthetic.write_cache(
+        tmp_path / "raw",
+        [
+            synthetic.league(
+                "2026-07-14",
+                [
+                    *(
+                        synthetic.blink(
+                            f"esper{n}", cards={"Aether Vial": (4, 0), "Shadowspear": (2, 0)}
+                        )
+                        for n in range(5)
+                    ),
+                    *(
+                        synthetic.blink(f"vial{n}", "orzhov", cards={"Aether Vial": (4, 0)})
+                        for n in range(4)
+                    ),
+                    *(synthetic.blink(f"orzhov{n}", "orzhov") for n in range(6)),
+                    synthetic.blink(
+                        "SuperCow12653",
+                        "orzhov",
+                        cards={"Aether Vial": (4, 0), "Shadowspear": (2, 0)},
+                    ),
+                ],
+            )
+        ],
+    )
+    db = tmp_path / "engine.duckdb"
+    store.build(raw, db)
+
+    assert [(row["marker"], row["pilot"]) for row in store.version_boundary(db)] == [
+        ("Shadowspear", "SuperCow12653")
+    ]
+
+
+def test_a_version_too_thin_to_read_a_population_off_has_its_cards_left_unread(tmp_path):
+    """A card is a marker because nine tenths of a version's lists hold it, so a
+    version with no population to speak of has no cards to read.
+
+    Green Tron is the live case: one list, whose every card the bar would take
+    for a marker, and it alone raised 27 colourless lists on Malevolent Rumble,
+    which the rule already calls a build and not a version. This is the fixture
+    above with one Esper list fewer, and the card it found there goes unread
+    here.
+    """
+    raw = synthetic.write_cache(
+        tmp_path / "raw",
+        [
+            synthetic.league(
+                "2026-07-14",
+                [
+                    *(
+                        synthetic.blink(f"esper{n}", cards={"Shadowspear": (2, 0)})
+                        for n in range(config.TRACK_MIN_LISTS - 1)
+                    ),
+                    *(synthetic.blink(f"orzhov{n}", "orzhov") for n in range(10)),
+                    synthetic.blink("SuperCow12653", "orzhov", cards={"Shadowspear": (2, 0)}),
+                ],
+            )
+        ],
+    )
+    db = tmp_path / "engine.duckdb"
+    store.build(raw, db)
+
+    assert store.version_boundary(db) == []
