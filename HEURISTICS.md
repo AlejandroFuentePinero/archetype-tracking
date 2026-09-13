@@ -665,7 +665,7 @@ cites the evidence that raised it and counts the sessions it has been put to
 him in. See `.claude/skills/mtg-heuristics/SKILL.md`.
 
 **A fortnight of fewer than ten lists is too thin to read a card-level row off**
-(raised 2026-09-13, surfaced 0×):
+(raised 2026-09-13, surfaced 1×):
 The storyline reads each fortnight against the one before it whatever either
 holds, so a bin of 8 lists prints the same kind of claim as a bin of 130, and
 the reader has only the counts beside the row to tell them apart.
