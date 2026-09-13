@@ -1,6 +1,6 @@
 ---
 name: weekly-report
-description: Ingest the week's MTGO data and build a tracked deck's weekly report. Use whenever Alejandro asks for this week's report, for any tracked deck's report (Esper Blink, Goryo's, Simic Neoform, UW Oswald, Domain Zoo, Broodscale, Devoted Combo, Affinity, Izzet Prowess, Trudge, Tron, Boros Energy, Boros Ponza, Dimir Midrange, Jeskai Control, Storm, Temur Living End), to prepare for the team meeting, or to ingest new data and report on a tracked deck.
+description: Ingest the week's MTGO data and build a tracked deck's weekly report. Use whenever Alejandro asks for this week's report, for any tracked deck's report (Esper Blink, Goryo's, Simic Neoform, Grinding Station, Domain Zoo, Broodscale, Devoted Combo, Affinity, Izzet Prowess, Trudge, Tron, Boros Energy, Boros Ponza, Dimir Midrange, UWr Control, Storm, Temur Living End), to prepare for the team meeting, or to ingest new data and report on a tracked deck.
 ---
 
 # The weekly tracked-deck report
@@ -123,7 +123,7 @@ Rules for the prose:
   comparison next to the figure it qualifies rather than four clauses later.
   Six numbers in one sentence is a table, and there is a table further down.
 - **The words are fixed too.** A placement-publishing event is a **swiss-like
-  tournament**, never "challenge-class". The history since 2026-05-18 is
+  tournament**, never "challenge-class". The history since 2026-05-19 is
   **since the Modern bans**, never "post-regime". The deck **achieves finishes
   in swiss-like tournaments**; it does not "take lists". Those are the reader's
   words. The JSON keys stay as they are (`challenge.lists` and the rest), and
@@ -268,6 +268,10 @@ run changes.
 A new major event goes in `data/events.csv` as `date,label`. It becomes a
 vertical line on every figure and a timeline row in the fortnight it falls in.
 
-If the run reports off-colour exclusions climbing, the colour rule has gone
-stale: a red or green source nobody listed is letting a Mardu build in, or
-turning a real list away. Name the count and ask.
+`refresh` ends with the fall-out: every list that holds a tracked deck's core
+and no rule claimed, per deck and per reason, with the last fortnight's count
+beside the total. A reason is an engine's name from `config.ENGINES`, the splash
+line, a floor or a supporting tier. A count climbing week on week is a deck
+adopting another deck's engine card, or a colour rule gone stale on a card the
+site published no colour for. Name the deck and the count and ask; do not widen
+the rule.

@@ -7,7 +7,7 @@ event carries standings that have to be joined onto the lists by pilot login.
 
 import json
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 from . import config
@@ -17,6 +17,15 @@ DATED_SUFFIX_RE = re.compile(r"-\d{4}-\d{2}-\d{2}\d+$")
 
 # How the payload types a land, in the fixed-width column it publishes types in.
 LAND_TYPE = "LAND"
+
+# How the payload spells a colour.
+COLOURS = {
+    "COLOR_WHITE": "W",
+    "COLOR_BLUE": "U",
+    "COLOR_BLACK": "B",
+    "COLOR_RED": "R",
+    "COLOR_GREEN": "G",
+}
 
 
 @dataclass
@@ -39,6 +48,12 @@ class Decklist:
     # The names behind `lands`. Kept so a paper list, whose fetch carries no
     # types, can be given the same land count off the names MTGO has typed.
     land_names: frozenset[str] = frozenset()
+    # The colours of each mainboard card, as the payload publishes them, for
+    # the splash line: which of a list's spells sit outside its deck's colours.
+    # The front face, like the type. A card the payload gives no colour, which
+    # is every split card, reads from `config.SPLIT_COLOURS` and is otherwise
+    # absent here, which the line reads as colourless.
+    colours: dict[str, frozenset[str]] = field(default_factory=dict)
 
 
 def _cards(entries: list[dict]) -> dict[str, int]:
@@ -90,6 +105,20 @@ def _land_names(entries: list[dict]) -> frozenset[str]:
         config.CARD_ALIASES.get(name, name)
         for name in (entry["card_attributes"]["card_name"] for entry in _typed_lands(entries))
     )
+
+
+def _colours(entries: list[dict]) -> dict[str, frozenset[str]]:
+    """Each card's colours, by the name `_cards` files it under."""
+    colours = {}
+    for entry in entries:
+        attributes = entry["card_attributes"]
+        name = config.CARD_ALIASES.get(attributes["card_name"], attributes["card_name"])
+        published = attributes.get("colors")
+        if published is not None:
+            colours[name] = frozenset(COLOURS[c] for c in published if c in COLOURS)
+        elif name in config.SPLIT_COLOURS:
+            colours[name] = frozenset(config.SPLIT_COLOURS[name])
+    return colours
 
 
 def _event_class(payload: dict) -> str:
@@ -145,6 +174,7 @@ def parse_event(payload: dict) -> list[Decklist]:
                 sideboard=_cards(raw["sideboard_deck"]),
                 lands=_lands(raw["main_deck"]),
                 land_names=_land_names(raw["main_deck"]),
+                colours=_colours(raw["main_deck"]),
             )
         )
     return lists

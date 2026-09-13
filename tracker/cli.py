@@ -57,8 +57,9 @@ def _ingest_lines(change: index.Change, ours: list[dict]) -> list[str]:
 def _fallout_lines(rows: list[dict], today: str | None = None) -> list[str]:
     """Every list a rule turned away though it holds the deck's core, as counts.
 
-    Per deck and per reason, the reason being the engine's name or the colour
-    or floor rule, with the last fortnight's share beside the total: a deck
+    Per deck and per reason, the reason being the engine's name, the splash
+    line, a floor or a supporting tier, with the last fortnight's share beside
+    the total: a deck
     adopting another deck's engine card is a count growing here week on week,
     where its own report would only show a decline.
     """

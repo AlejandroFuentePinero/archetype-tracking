@@ -65,7 +65,7 @@ _Avoid_: Reanimator (broader family), Grixis Reanimator (a different archetype, 
 For a card in a list, the pair (mainboard copies, sideboard copies). The unit at which adoption is tracked: a main↔side migration is a configuration change even when total copies are constant. Deck-level counts (e.g. lands) are configurations of the list as a whole.
 
 **Variant**:
-A recognised camp within the archetype, defined by a divergence card. Currently: Fallaji camp (3-4 copies) vs non-Fallaji camp (0 copies); 1-2 copies is a hybrid experiment belonging to neither consensus. A tracked deck's rule is ordered instead: each version names the cards that commit a list to it, the first version the mainboard holds any card of takes the list, and a list holding none is the default version. Presence and never a count. Consensus builds and novelty are computed per variant, never across camps. The weekly report calls a camp a **version of the deck**, that being the pilot's word for it, and prints the name in `config.VERSION_NAMES` where the rule's name is not the pilot's: the non-fallaji camp is the **Riddler** build. Display only. Everything else here, every identifier in the code and every stored record keys the camp by its rule name.
+A recognised camp within the archetype, defined by a divergence card. Currently: Fallaji camp (3-4 copies) vs non-Fallaji camp (0 copies); 1-2 copies is a hybrid experiment belonging to neither consensus. A tracked deck's rule is ordered instead: each version names the cards that commit a list to it, the first version the mainboard holds any card of takes the list, and a list holding none is the default version. Presence and never a count, except where a version is a colour, which Tron's are and which the splash line reads. Consensus builds and novelty are computed per variant, never across camps. The weekly report calls a camp a **version of the deck**, that being the pilot's word for it, and prints the name in `config.VERSION_NAMES` where the rule's name is not the pilot's: the non-fallaji camp is the **Riddler** build. Display only. Everything else here, every identifier in the code and every stored record keys the camp by its rule name.
 
 ### Tracked decks
 
@@ -74,10 +74,20 @@ A deck the engine classifies and reports on weekly without optimising. It has no
 _Avoid_: archetype on its own (Goryo's is one too, and the difference between them is the whole distinction)
 
 **Blink**:
-The first tracked Modern archetype: a mainboard holding Phelia, Exuberant Shepherd, Flickerwisp, Overlord of the Balemurk and Witch Enchanter, all four, and no source that produces red or green. The four are required together because no smaller set is the deck: Phelia alone admits a white energy build and a Boros build, and Ephemerate alone is half Goryo's. Membership is tested after Goryo's, so a list holding both signatures takes one name and it is Goryo's.
+The first tracked Modern archetype: a mainboard holding Phelia, Exuberant Shepherd, Flickerwisp, Overlord of the Balemurk and Witch Enchanter, all four, cast on white, blue and black by the splash line. The four are required together because no smaller set is the deck: Phelia alone admits a white energy build and a Boros build, and Ephemerate alone is half Goryo's. A Mardu build shares all four and is a different deck, and the splash line is what says so. Membership is tested after Goryo's, so a list holding both signatures takes one name and it is Goryo's.
 
-**Off-colour exclusion**:
-The colour half of Blink's membership rule. A Mardu build shares all four signature cards and is a different deck, so a mainboard source that actually produces red or green puts a list outside the archetype rather than into a third variant. Read on sources and never on fetchlands, most of the Orzhov half fetching with Flooded Strand, which produces neither. The rule is a hand-written list of card names and is the one part of membership that can go stale silently, so the count it turned away is printed every week: a red build on a source nobody listed would otherwise read as a member and nothing would say so.
+**Splash line**:
+The colour half of a membership rule, and Tron's version rule. Read on the spells the mainboard casts and never on its sources, a Sacred Foundry held for a sideboard card saying nothing: under five off-colour nonland cards is a splash inside the deck, five or more is a deck that goes deeper into the colour, and a full playset of one off-colour card is the other deck's card whatever the total, so 4 Quantum Riddler is Jeskai Energy and 4 Flame of Anor is Grixis Frog. Blink, Boros Energy, Boros Ponza, Dimir Midrange and UWr Control read it; Tron reads it the other way round, a list deeper than a splash into blue or green being that colour's version. A card the site published no colour for reads as colourless, which is the one way the line can go stale silently, so the count it turned away is printed every week and every list it turned away is in the fall-out.
+_Avoid_: off-colour exclusion (the earlier rule, read on sources, which turned away six Blink lists on one land)
+
+**Engine**:
+A deck a membership rule has to turn away, named once in `config.ENGINES` with the mainboard cards that mark it. A list answering to a deck's core and carrying an engine its rule names as another deck's carries more than one engine and belongs to nothing; variation inside an intact engine stays, and a hybrid brew on an intact shell is out for now. Which engines count as another deck's is the rule's to say, deck by deck, because a marker names a deck only beside a shell it does not belong to: Eldrazi Temple names the Boros Eldrazi brew beside the energy four and sits in every Trudge and Tron list.
+
+**Core and supporting**:
+A rule's core is the cards every list of the deck holds. A staple the shell can test without is supporting rather than core, Channeler in Prowess, Manufacturing in Affinity, Erode in Ponza, Karn in Tron, and a list that cuts one of those is the same deck in a different build. A rule reads its supporting tier as a count where the count is what says which deck, four of six in Prowess and Ponza and one of two in Grinding Station and Devoted Combo, and otherwise reads nothing of it: Karn and Manufacturing are no part of their rules. Blink is the opposite case, its four creatures being the deck only together.
+
+**Fall-out**:
+Every list that holds a deck's core and belongs to nothing, with the deck and the reason its rule turned it away: an engine's name, the splash line, a floor, a supporting tier. Written to the store on every rebuild and printed by `tracker refresh` per deck and reason with the fortnight's count beside the total, so a deck adopting another deck's engine card shows up as a growing count rather than as a silent decline in its storyline.
 
 **Esper Blink / Orzhov Blink**:
 Blink's two variants, split on mainboard Watery Grave. Presence and not a count, a variant here being which colours the deck is, which one copy settles. The card partitions the archetype exactly, where a rule drawn on blue sources throws away the Orzhov lists that fetch and one drawn on blue spells drops any Esper list that cut Teferi. Presence is the whole deck's and every other reading in the weekly report is the Esper variant's; Orzhov is carried as bare numbers in the summary, its challenge-class population being single figures over the whole post-regime history, which is enough to say it exists and nowhere near enough to read a build or a conversion rate off.
@@ -85,41 +95,41 @@ Blink's two variants, split on mainboard Watery Grave. Presence and not a count,
 **Neoform**:
 The second tracked Modern archetype: a mainboard holding Neoform, Allosaurus Rider, Eldritch Evolution and Planar Genesis, all four. Planar Genesis is the card that says which deck: the other three are the engine of the four-colour Glittering Wish build on Gemstone Mine as well, and that is a different deck. No colour rule, nothing sharing the four being another colour of this one, and no variant, nothing in the history forking it: its members carry no camp and every reading in its report is the whole archetype's. Tested after Goryo's and Blink, like every tracked rule. The report calls it **Simic Neoform**, the pilots' name for it.
 
-**UW Oswald**:
-A mainboard holding Oswald Fiddlebender and Grinding Station. The Station is the card that says which deck: the Tezzeret and Krang build shares Oswald, Emry and the Saga shell and is a different one. No colour rule, a green source being a splash for Haywire Mite inside the same deck. One population.
+**Grinding Station**:
+A mainboard holding Grinding Station, Emry, Lurker of the Loch and Sewer-veillance Cam, with Oswald Fiddlebender or Loki, God of Mischief over them. The trio is what no other deck runs together; Oswald appears in this deck alone, but the mono-blue build on Loki has no Fiddlebender, and forcing the card would leave half the deck outside. The Kethis combo and the Song of Creation deck run the trio and neither, and the Kappa Cannoneer artifact deck that bolted Oswald on is a different one. No colour rule, a green source being a splash for Haywire Mite inside the same deck. One population. Keyed `oswald` in the store and under `data/tracking/`, the name it was tracked under first.
 
 **Domain Zoo**:
-A mainboard holding Territorial Kavu and Scion of Draco. No colour rule: the deck is five colours and its manabase is the part that moves. Two versions, split on mainboard Psychic Frog: **Frog**, the bluer build, and **Traditional**, the tracked version.
+A mainboard holding Scion of Draco with Territorial Kavu, or with Leyline of the Guildpact and Psychic Frog, a Kavu-less Frog list being the deck's Frog version and not another deck. No colour rule: the deck is five colours and its manabase is the part that moves. Two versions, split on mainboard Psychic Frog: **Frog**, the bluer build, and **Traditional**, the tracked version.
 
 **Broodscale**:
 A mainboard holding Basking Broodscale and Blade of the Bloodchief, the combo. Mono-Green Eldrazi and Eldrazi Tron share the shell and neither card. Three versions, read in order: **Gruul** on Unholy Heat or Writhing Chrysalis, **Lab** on Ugin's Labyrinth, and **mono-green** on neither. Red is read on spells and not sources, Grove of the Burnwillows sitting in nine of ten mono-green lists; a list on both red spells and the Labyrinth is Gruul. The Lab version is tracked, chosen from the data on 2026-09-12 when it had become most of the deck.
 
 **Devoted Combo**:
-A mainboard holding Devoted Druid and Tyvar, Jubilant Brawler. One population.
+A mainboard holding Devoted Druid with Tyvar, Jubilant Brawler or Tyvar, the Pummeler, both unique to the deck; Springheart Nantuko and Quirion Ranger are its own cards too, and the Druid-less Nantuko deck is a different one. One population.
 
 **Affinity**:
-A mainboard holding Kappa Cannoneer, Pinnacle Emissary, Weapons Manufacturing and Engineered Explosives; the Cannoneer alone admits the Hammer build, and the two four-ofs keep out the Krang and Song of Creation artifact decks on the same creatures. One population.
+A mainboard holding Kappa Cannoneer, Pinnacle Emissary and Engineered Explosives, the shell; the Cannoneer alone admits the Hammer build. Weapons Manufacturing is in nearly every list and is supporting, some lists testing without it. Basim Ibn Ishaq, Sewer-veillance Cam and Song of Creation each name a different deck, and Tamiyo beside Mox Amber is the Tamiyo artifact deck unless Manufacturing sits beside them. One population.
 
 **Izzet Prowess**:
-A mainboard holding Cori-Steel Cutter, Monastery Swiftspear, Dragon's Rage Channeler and Steam Vents; the Cutter alone admits the artifact decks on Emry and Tamiyo, and the land keeps out the red and Boros prowess lists. One population.
+A mainboard holding at least two Steam Vents and Lava Dart with four of the six staples, Cori-Steel Cutter, Monastery Swiftspear, Dragon's Rage Channeler, Slickshot Show-Off, Mutagenic Growth and Stormchaser's Talent: a list that cuts Channeler is the same deck in a different build. The Cutter alone admits the artifact decks on Emry and Tamiyo, the land keeps out the red and Boros prowess lists, and Arclight Phoenix names another deck. One population.
 
 **Eldrazi Trudge**:
 A mainboard holding Slumbering Trudge and Fanatic of Rhonas. The report calls it **Trudge**. One population.
 
 **Tron**:
-A mainboard holding Urza's Tower, Urza's Mine, Urza's Power Plant and Karn, the Great Creator. The lands alone admit a blue Tron on Force of Negation and Stock Up, a different deck. One population.
+A mainboard holding Urza's Tower, Urza's Mine and Urza's Power Plant; Karn is supporting. Three versions by the splash line on blue and green: **Blue** on five blue cards or a playset of one, **Green** likewise, and **Colourless**, the tracked version, on neither. A black playset such as Dismember says nothing.
 
 **Boros Energy**:
-A mainboard holding Guide of Souls, Ocelot Pride, Ajani, Nacatl Pariah and Goblin Bombardment, and no source that produces blue, black or green. The two creatures alone admit the Azorius blink and Selesnya Birthing Ritual decks; Mardu and Jeskai energy share all four and are different decks, so the colour rule is Blink's, read on sources and never on fetchlands. One population.
+A mainboard holding Guide of Souls, Ocelot Pride, Ajani, Nacatl Pariah and Goblin Bombardment, cast on red and white by the splash line. The two creatures alone admit the Azorius blink and Selesnya Birthing Ritual decks; Mardu and Jeskai energy share all four and are different decks, Jeskai on a playset of Quantum Riddler and Mardu on five or more black cards. One population.
 
 **Boros Ponza**:
-A mainboard holding Erode and Cleansing Wildfire, and no source that produces blue, black or green. Erode alone admits the mono-white lists on Crucible of Worlds and the control decks that splash it; the Wildfire is the red half of the plan. One population.
+A mainboard holding Cleansing Wildfire with four of the six land-destruction staples, Erode, Field of Ruin, Demolition Field, Price of Freedom, Wrath of the Skies and Solitude, cast on red and white by the splash line. Erode is in almost every list and is supporting, the plan being the suite and not the card; the Pinnacle Monk red decks on Wildfire and Price run nothing else of it, and a list on a playset of Teferi is the Jeskai deck. One population.
 
 **Dimir Midrange**:
-A mainboard holding Psychic Frog and Quantum Riddler, and no source that produces white, red or green. Frog alone admits Dimir Oculus, which never runs the Riddler; the Esper and Grixis Frog decks share the pair and are different decks. Tested after Goryo's, Blink and Domain Zoo, which share the pair too. One population.
+A mainboard holding Psychic Frog and Quantum Riddler, cast on blue and black by the splash line: Meltdown in the sideboard off one Steam Vents is still Dimir, a playset of Flame of Anor is Grixis Frog. Frog alone admits Dimir Oculus, which never runs the Riddler. Tested after Goryo's, Blink and Domain Zoo, which share the pair too. One population.
 
-**Jeskai Control**:
-A mainboard holding Consult the Star Charts, Teferi, Time Raveler, Wrath of the Skies and Galvanic Discharge. The Discharge is the card that says which deck: the Azorius control lists share the shell and run off-colour shocklands for Prismatic Ending without casting a red spell off them, so the colour is read on the spell and never on sources. One population.
+**UWr Control**:
+A mainboard holding Teferi, Time Raveler and Wrath of the Skies with any of the seven draw engines, Consult the Star Charts, Isochron Scepter, Narset, Day's Undoing, Orim's Chant, Thundertrap Trainer or Flow State, cast on blue, white and red by the splash line. The blue and white control shell tracked as one deck: control adapts its interaction to the meta, so Galvanic Discharge is a build reading and not a membership rule, and Jeskai and Azorius are the same deck. One population. Keyed `jeskai` in the store and under `data/tracking/`, the name it was tracked under first.
 
 **Storm**:
 A mainboard holding Ral, Monsoon Mage, Ruby Medallion and Past in Flames. Ruby alone admits Belcher and Ral alone an Izzet storm on Stormcatch Mentor. No colour rule, the sideboard colours being the Wish targets. One population.
@@ -135,7 +145,7 @@ _Avoid_: deck, where the population is what matters (Blink is one deck and one s
 Every camp of an archetype counted as one population, which is what every report's presence figures are taken over. A metagame share is a share of the whole deck, and read on one camp of three it answers a third of the question. Never the performance or build readings, a finish being one build's: pooled, a card at nine tenths of one camp and none of another reads as the deck at half of it, and a camp arriving reads as the deck changing its mind. Goryo's pooled looks like it drifted a copy of Quantum Riddler over the regime, where inside the non-fallaji camp the card is flat at four.
 
 **Tracked version**:
-The one camp a subject's conversion, goldfishing figure, numbers table, storyline and Spotlight findings are read on, where its presence figures are pooled. The non-fallaji camp for Goryo's, the Esper variant for Blink, the Traditional version for Domain Zoo, the Lab version for Broodscale. Labelled in the report wherever it is read, because the presence figures above would otherwise put a list count beside a row it was never read against.
+The one camp a subject's conversion, goldfishing figure, numbers table, storyline and Spotlight findings are read on, where its presence figures are pooled. The non-fallaji camp for Goryo's, the Esper variant for Blink, the Traditional version for Domain Zoo, the Lab version for Broodscale, the Colourless version for Tron. Labelled in the report wherever it is read, because the presence figures above would otherwise put a list count beside a row it was never read against.
 _Avoid_: build camp (the earlier name, from when only the build readings were read on it)
 
 **Week**:

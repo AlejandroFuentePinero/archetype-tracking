@@ -56,6 +56,39 @@ CHALLENGE_KIND = "challenge-64"
 
 _LANDS = FILLER_LANDS | BLINK_LANDS | {"Watery Grave": 2, "Sacred Foundry": 2, "Mountain": 2}
 
+# The colours the payload publishes for the cards these series use, in the
+# site's own spelling, so the splash line has something to read. A card not
+# named here is published colourless, which is what the site does to a split
+# card and nothing else.
+_COLOURS = {
+    "Goryo's Vengeance": ["COLOR_BLACK"],
+    "Atraxa, Grand Unifier": ["COLOR_WHITE", "COLOR_BLUE", "COLOR_BLACK", "COLOR_GREEN"],
+    "Psychic Frog": ["COLOR_BLUE", "COLOR_BLACK"],
+    "Ephemerate": ["COLOR_WHITE"],
+    "Fallaji Archaeologist": ["COLOR_BLUE"],
+    "Thoughtseize": ["COLOR_BLACK"],
+    "Grief": ["COLOR_BLACK"],
+    "Unmask": ["COLOR_BLACK"],
+    "Fatal Push": ["COLOR_BLACK"],
+    "Faithful Mending": ["COLOR_WHITE", "COLOR_BLUE"],
+    "Phelia, Exuberant Shepherd": ["COLOR_WHITE"],
+    "Flickerwisp": ["COLOR_WHITE"],
+    "Overlord of the Balemurk": ["COLOR_BLACK"],
+    "Witch Enchanter": ["COLOR_WHITE"],
+    "Lightning Bolt": ["COLOR_RED"],
+    "Galvanic Discharge": ["COLOR_RED"],
+    "Guide of Souls": ["COLOR_WHITE"],
+    "Ocelot Pride": ["COLOR_WHITE"],
+    "Tidehollow Sculler": ["COLOR_WHITE", "COLOR_BLACK"],
+    "Persist": ["COLOR_BLACK"],
+    "Omniscience": ["COLOR_BLUE"],
+    "Kavaero, Mind-Bitten": ["COLOR_BLUE", "COLOR_BLACK"],
+    "Superior Spider-Man": ["COLOR_BLUE", "COLOR_BLACK"],
+    "Consign to Memory": ["COLOR_BLUE"],
+    "Wrath of the Skies": ["COLOR_WHITE"],
+    "Mystical Dispute": ["COLOR_BLUE"],
+}
+
 FALLAJI_COPIES = {"fallaji": 4, "non-fallaji": 0, "hybrid": 2}
 
 
@@ -93,9 +126,9 @@ def blink(
 ) -> dict:
     """One list of the tracked deck, in one of its variants.
 
-    `off_colour` names a source outside the deck's two colours, which is the
-    only way to write the build that holds every signature card and is a
-    different deck for it.
+    `off_colour` names a source outside the deck's two colours, which the
+    splash line ignores: the way to write a list holding a red land and
+    casting nothing red off it, which is the same deck.
     """
     main = BLINK_SIGNATURE | FILLER_MAIN | BLINK_LANDS | BLINK_VARIANT_LANDS[variant]
     if off_colour:
@@ -119,6 +152,7 @@ def _card_rows(cards: dict[str, int]) -> list[dict]:
             "card_attributes": {
                 "card_name": name,
                 "card_type": "LAND" if name in _LANDS else "CREATURE",
+                "colors": _COLOURS.get(name, ["COLOR_COLORLESS"]),
             },
         }
         for name, qty in cards.items()

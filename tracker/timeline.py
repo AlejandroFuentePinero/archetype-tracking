@@ -38,7 +38,7 @@ from pathlib import Path
 import duckdb
 
 from . import config
-from .store import _rows, land_names, population
+from .store import _rows, card_colours, land_names, population
 
 
 def bin_of(day: str, since: str = config.REGIME_BOUNDARY) -> int:
@@ -339,7 +339,7 @@ def findings(
         held.setdefault(key, {}).setdefault(index, []).append(row["list_id"])
         copies.setdefault(key, {}).setdefault(index, []).append(row["main"])
 
-    paper = _paper(spotlights, directory, report, since)
+    paper = _paper(db_path, spotlights, directory, report, since)
     typed = land_names(db_path) if paper and report["manabase"] else frozenset()
     watched = set(report["watch"])
     first = bin_of(since, since)
@@ -432,22 +432,25 @@ def findings(
 
 
 def _paper(
-    spotlights: tuple[dict, ...], directory: Path | None, report: dict, since: str
+    db_path: Path, spotlights: tuple[dict, ...], directory: Path | None, report: dict, since: str
 ) -> dict[int, tuple[str, list[dict]]]:
     """The major event each bin is read against: the latest one inside it.
 
     The report's camp's lists at the event, shaped as `spotlight.findings`
     reads them. Only events fetched by now count, a report having to render on a
-    machine that has never pulled a paper event.
+    machine that has never pulled a paper event. Membership reads the colours
+    and land names MTGO has published, off the store, like `spotlight.chain`.
     """
     from . import spotlight  # noqa: PLC0415
 
+    played = [s for s in sorted(spotlights, key=lambda s: s["date"]) if spotlight.cached(s, directory).exists()]
+    if not played:
+        return {}
+    colours, typed = card_colours(db_path), land_names(db_path)
     latest = {}
-    for spot in sorted(spotlights, key=lambda s: s["date"]):
-        if not spotlight.cached(spot, directory).exists():
-            continue
+    for spot in played:
         payload = spotlight.load(spot, directory)
-        rows = spotlight.members(payload, report["archetype"], report["camp"])
+        rows = spotlight.members(payload, report["archetype"], report["camp"], colours, typed)
         latest[bin_of(spot["date"], since)] = (spot["label"], rows)
     return latest
 

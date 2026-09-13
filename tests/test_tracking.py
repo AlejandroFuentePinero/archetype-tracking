@@ -62,20 +62,26 @@ def test_goryos_is_tested_first(tmp_path):
         assert con.execute("SELECT DISTINCT archetype FROM decklists").fetchall() == [("goryos",)]
 
 
-def test_an_off_colour_source_is_a_different_deck(tmp_path):
+def test_a_light_splash_stays_and_five_off_colour_spells_or_a_playset_leave(tmp_path):
     """Holding every signature card is not enough: the deck is Esper or Orzhov.
 
-    The build that shares the four and splashes red is a real population, not a
-    stray list, and reading it as a variant would put its numbers inside the
-    deck's own.
+    The line is the off-colour spells the mainboard casts, never its sources
+    (Alejandro, 2026-09-13): a Sacred Foundry held for a sideboard card says
+    nothing, two Bolts off it are a splash, five red cards are the Mardu deck
+    and a playset of one red card is the Mardu deck whatever the total.
     """
-    clean = blink("orzhov_pilot", variant="orzhov", placement=1, points=15)
-    red = blink("mardu_pilot", variant="orzhov", placement=2, points=15,
-                off_colour="Sacred Foundry")
-    db = _built(tmp_path, [challenge(FIRST, [clean, red], "e1")])
+    foundry = blink("foundry_pilot", variant="orzhov", placement=1, points=15,
+                    off_colour="Sacred Foundry")
+    splash = blink("splash_pilot", variant="orzhov", placement=2, points=15,
+                   cards={"Lightning Bolt": (2, 0), "Sacred Foundry": (2, 0)})
+    deep = blink("mardu_pilot", variant="orzhov", placement=3, points=15,
+                 cards={"Lightning Bolt": (3, 0), "Galvanic Discharge": (2, 0), "Sacred Foundry": (2, 0)})
+    playset = blink("playset_pilot", variant="orzhov", placement=4, points=15,
+                    cards={"Galvanic Discharge": (4, 0), "Sacred Foundry": (2, 0)})
+    db = _built(tmp_path, [challenge(FIRST, [foundry, splash, deep, playset], "e1")])
     rows = tracking.weekly(db, "blink", "orzhov", since=FIRST)
-    assert sum(row["chal"] for row in rows) == 1
-    assert tracking.excluded(db, "blink", since=FIRST) == 1
+    assert sum(row["chal"] for row in rows) == 2
+    assert tracking.excluded(db, "blink", since=FIRST) == 2
 
 
 def test_a_card_that_names_another_deck_puts_a_list_outside(tmp_path):
@@ -111,14 +117,91 @@ def test_a_list_published_with_its_sideboard_in_the_main_is_no_member(tmp_path):
     assert members == [("clean_pilot",)]
 
 
-def test_a_floor_on_a_signature_card_reads_its_copies():
-    """Duduk123's Gruul prowess list of 2026-06-15 held one Steam Vents for its
-    sideboard Consign to Memory and no blue card; every Izzet list runs two."""
+def _list_of(mainboard: dict[str, int]):
+    """A list as the classifier reads one, colourless and typed by the filler lands."""
+    from types import SimpleNamespace
+    return SimpleNamespace(mainboard=mainboard, colours={}, land_names=frozenset(synthetic.FILLER_LANDS))
+
+
+def test_a_supporting_tier_is_read_as_a_count_and_a_floor_reads_copies():
+    """Izzet Prowess is Steam Vents and Lava Dart with four of six staples
+    (Alejandro, 2026-09-13): a list that cuts Channeler is the same deck in a
+    different build, and Bosseidon's Talent decks on three staples are not.
+    Duduk123's Gruul list of 2026-06-15 held one Steam Vents for its sideboard
+    Consign to Memory; every Izzet list runs two.
+    """
+    from tracker import classify
+
+    staples = ("Cori-Steel Cutter", "Monastery Swiftspear", "Dragon's Rage Channeler",
+               "Slickshot Show-Off", "Mutagenic Growth", "Stormchaser's Talent")
+    shell = {"Steam Vents": 4, "Lava Dart": 4} | {card: 4 for card in staples[:4]}
+    assert classify.archetype(_list_of(shell)) == "prowess"
+    assert classify.archetype(_list_of(shell | {"Steam Vents": 1})) is None
+    three = {card: 4 for card in staples[:3]}
+    assert classify.archetype(_list_of({"Steam Vents": 4, "Lava Dart": 4} | three)) is None
+
+
+def test_a_deck_can_have_a_second_entry_path():
+    """A Kavu-less list on Scion, Leyline of the Guildpact and Psychic Frog is
+    Domain Zoo's Frog version (Alejandro, 2026-09-13); the Shardless Agent
+    cascade decks on the same two leylines are not.
+    """
+    from tracker import classify
+
+    frog = {"Scion of Draco": 4, "Leyline of the Guildpact": 4, "Psychic Frog": 4, "Ragavan, Nimble Pilferer": 4}
+    assert classify.archetype(_list_of(frog)) == "zoo"
+    assert classify.variant("zoo", _list_of(frog)) == "frog"
+    assert classify.archetype(_list_of(frog | {"Shardless Agent": 4})) is None
+    assert classify.archetype(_list_of({"Scion of Draco": 4, "Leyline of the Guildpact": 4})) is None
+
+
+def test_a_pair_that_names_another_deck_is_outweighed_by_the_shell_s_own_card():
+    """Tamiyo beside Mox Amber is the Tamiyo artifact deck, unless Weapons
+    Manufacturing sits beside them, when Manufacturing outweighs it and the list
+    is Affinity (Alejandro, 2026-09-13).
+    """
+    from tracker import classify
+
+    shell = {"Kappa Cannoneer": 4, "Pinnacle Emissary": 4, "Engineered Explosives": 4}
+    tamiyo = shell | {"Tamiyo, Inquisitive Student": 4, "Mox Amber": 4}
+    assert classify.archetype(_list_of(shell)) == "affinity"
+    assert classify.archetype(_list_of(tamiyo)) is None
+    assert classify.archetype(_list_of(tamiyo | {"Weapons Manufacturing": 2})) == "affinity"
+
+
+def test_tron_s_versions_are_read_on_the_splash_line_by_colour():
+    """The Tron lands are Tron; blue and green are versions and colourless is
+    tracked (Alejandro, 2026-09-13). Five blue cards or a playset of one is the
+    blue version; a black playset, like four Dismember, says nothing.
+    """
     from types import SimpleNamespace
     from tracker import classify
-    shell = {card: 4 for card in config.TRACKED_DECKS["prowess"]["signature"]}
-    assert classify.archetype(SimpleNamespace(mainboard=shell)) == "prowess"
-    assert classify.archetype(SimpleNamespace(mainboard=shell | {"Steam Vents": 1})) is None
+
+    lands = {"Urza's Tower": 4, "Urza's Mine": 4, "Urza's Power Plant": 4}
+    colours = {"Stock Up": frozenset("U"), "Counterspell": frozenset("U"), "Dismember": frozenset("B"),
+               "Sylvan Scrying": frozenset("G"), "Ancient Stirrings": frozenset("G")}
+
+    def tron(spells):
+        return SimpleNamespace(mainboard=lands | spells, colours=colours, land_names=frozenset(lands))
+
+    for spells, version in [
+        ({"Karn, the Great Creator": 4, "Dismember": 4}, "colourless"),
+        ({"Ancient Stirrings": 3}, "colourless"),
+        ({"Stock Up": 4}, "blue"),
+        ({"Stock Up": 3, "Counterspell": 2}, "blue"),
+        ({"Sylvan Scrying": 4, "Ancient Stirrings": 4}, "green"),
+    ]:
+        assert classify.archetype(tron(spells)) == "tron", spells
+        assert classify.variant("tron", tron(spells)) == version, spells
+
+
+def test_the_boundary_day_is_not_in_the_store(tmp_path):
+    """The events published on 2026-05-18, the announcement date, were played
+    under the old rules (Alejandro, 2026-09-13): the history opens the day after.
+    """
+    db = _built(tmp_path, [_lists("2026-05-18", 1), _lists("2026-05-19", 1)])
+    with duckdb.connect(db, read_only=True) as con:
+        assert con.execute("SELECT DISTINCT date FROM decklists").fetchall() == [("2026-05-19",)]
 
 
 @pytest.mark.parametrize("variant,expected", [("esper", 1), ("orzhov", 0)])
@@ -645,6 +728,15 @@ def test_a_three_way_variant_rule_reads_in_order(mainboard, expected):
     are tested before the Labyrinth. A red source is not the line: Grove of the
     Burnwillows sits in nine of ten mono-green lists.
     """
+    from types import SimpleNamespace
     from tracker import classify
 
-    assert classify.variant("broodscale", mainboard) == expected
+    assert classify.variant("broodscale", SimpleNamespace(mainboard=mainboard)) == expected
+
+
+def test_a_version_read_by_colour_is_one_the_report_names(tmp_path, monkeypatch):
+    """Blue and green Tron are read in the report as versions (Alejandro,
+    2026-09-13), so the report has to know they exist: the presence panel and
+    the bare counts list every version the rule names, colour ones included."""
+    assert config.versions("tron") == ("blue", "green", "colourless")
+    assert weekly._others(config.REPORTS["tron"]) == ["blue", "green"]

@@ -24,7 +24,7 @@ from pathlib import Path
 
 import duckdb
 
-from . import config
+from . import classify, config
 from .store import _rows, population
 
 # The week bucket. ISO weeks start Monday, and the report is generated Monday
@@ -196,44 +196,30 @@ def goldfishing(
 
 
 def excluded(
-    db_path: Path = config.DB_PATH, deck: str = "blink", since: str = config.REGIME_BOUNDARY
+    db_path: Path, deck: str, since: str = config.REGIME_BOUNDARY
 ) -> int | None:
-    """How many lists the colour rule turned away, so the rule stays visible.
+    """How many lists holding the deck's signature its colour rule turned away.
 
-    None where the deck has no colour rule to go stale. Goryo's is the case: it
-    is defined by four cards and green sources for casting Atraxa do not change
+    None for a deck with no colour rule, where colour is no part of
     membership, so there is nothing here for the report to keep an eye on.
 
-    A list holding every signature card and a red source is a different deck,
-    and the rule that says so is a hand-written list of card names. Printed
-    every week because it is the one part of membership that goes stale
-    silently: a red build on a source nobody listed reads as a member, and
-    nothing else in the report would say so.
-
-    Only a list nothing else claimed was turned away on colour. The signature
-    cards are tested in an order, so a list Goryo's rule took never reached
-    this one, and counting it here would report the colour rule as
-    excluding lists it was never asked about. None do today; the ordering is not
-    something this count should depend on noticing.
+    A list holding every signature card and five off-colour spells, or a
+    playset of one, is a different deck. Printed every week because it is the
+    one part of membership that can go stale silently: a card whose colour the
+    site never published reads as colourless, and nothing else in the report
+    would say so. Read off the fall-out, so only a list nothing else claimed
+    counts, and the tested order is not something this count depends on
+    noticing.
     """
     rule = config.TRACKED_DECKS.get(deck)
-    if not rule or not rule.get("off_colour"):
+    if not rule or not rule.get("colours"):
         return None
-    signature = ",".join("?" * len(rule["signature"]))
-    off_colour = ",".join("?" * len(rule["off_colour"]))
     with duckdb.connect(db_path, read_only=True) as con:
         return con.execute(
             f"""
-            WITH member AS (
-                SELECT list_id FROM configurations WHERE card IN ({signature}) AND main > 0
-                GROUP BY list_id HAVING count(DISTINCT card) = ?
-            ),
-            off AS (
-                SELECT DISTINCT list_id FROM configurations
-                WHERE card IN ({off_colour}) AND main > 0
-            )
-            SELECT count(*) FROM member JOIN decklists USING (list_id)
-            WHERE date >= ? AND archetype IS NULL AND list_id IN (SELECT list_id FROM off)
+            SELECT count(*) FROM fallout JOIN decklists USING (list_id)
+            WHERE fallout.archetype = ? AND reason IN ({",".join("?" * len(classify.COLOUR_REASONS))})
+            AND date >= ?
             """,
-            [*rule["signature"], len(rule["signature"]), *rule["off_colour"], since],
+            [deck, *classify.COLOUR_REASONS, since],
         ).fetchone()[0]

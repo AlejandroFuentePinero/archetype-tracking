@@ -330,7 +330,8 @@ green, else colourless. Since the bans that is 822 lists (713 MTGO, 109
 paper): 740 colourless, 77 blue, 5 green. Sphere, Star, Stock Up and Rumble
 stop being exclusions and become version markers; Devoted Druid stays
 excluded. Every frozen row under `data/tracking/tron/` reads the old
-population.
+population. Applied on 2026-09-13 (issue #3), with the boundary at
+2026-05-19: 821 lists (712 MTGO, 109 paper), 739 colourless, 77 blue, 5 green.
 
 **Boros Energy is the red and white deck on Guide, Ocelot, Ajani and
 Bombardment** (2026-09-13):
@@ -403,6 +404,8 @@ midrange, Zoo and energy decks that carry the two cards). Since the bans that
 is 486 lists (436 MTGO, 50 paper), the 179 Jeskai members and 307 more, 205
 on Discharge. The report is renamed UWr Control, one population, no versions,
 and every frozen row under `data/tracking/jeskai/` reads the old population.
+Applied on 2026-09-13 (issue #3), with the boundary at 2026-05-19 and the two
+oversize lists out, the store holds 476 (427 MTGO, 49 paper).
 
 **Storm is Ral, Ruby Medallion and Past in Flames** (2026-09-13):
 Drawn from Alejandro's example list and the data. Ruby alone admits the Belcher
@@ -434,11 +437,15 @@ should not be in the database at all rather than merely outside every window.
 The events published on 2026-05-18, the announcement date, were played before
 the bans took effect: 25 of that day's lists mainboard Phlage, 17 of its 18
 Boros Energy lists among them.
-*Applies*: `HISTORY_START` and `REGIME_BOUNDARY` are 2026-05-19, the store
-build skips lists dated before it, and the index records only what the store
-holds. The raw cache keeps the earlier payloads. The 60 boundary-day lists that
-sat in post-ban populations leave them, and every frozen row that read them is
-invalidated. A storyline return can only remember as far back as the boundary.
+*Applies*: `HISTORY_START` is 2026-05-19, the store build skips lists dated
+before it, and the index records only what the store holds. `REGIME_BOUNDARY`
+stays the announcement Monday, being the calendar every fortnight bin and
+window is anchored on: anchored on the Tuesday the bins would close on a
+Monday and the storyline would freeze each fortnight a week late, and no list
+on the boundary day is in the store for a window to read. The raw cache
+keeps the earlier payloads. The 60 boundary-day lists that sat in post-ban
+populations leave them, and every frozen row that read them is invalidated. A
+storyline return can only remember as far back as the boundary.
 
 **A 75-card mainboard is a list published with its boards merged, and no
 member** (2026-09-13):

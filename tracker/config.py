@@ -26,13 +26,19 @@ CARD_ALIASES = {
 }
 
 
-# How far back the analysis history reaches. The history opens on the regime boundary: what was played under the old rules
-# is a different era and is not in the store (Alejandro, 2026-09-13). The raw
-# cache keeps whatever was fetched before it.
-HISTORY_START = "2026-05-18"
+# How far back the analysis history reaches. The history opens on the regime
+# boundary: what was played under the old rules is a different era and is not
+# in the store (Alejandro, 2026-09-13). The boundary is the day after the
+# announcement, the events published on the announcement date having been
+# played under the old rules. The raw cache keeps whatever was fetched before it.
+HISTORY_START = "2026-05-19"
 
 # The regime boundary the history spans (see ADR 0001). Lists either side of it
-# belong to different eras, so every window is bounded by it.
+# belong to different eras, so every window is bounded by it. The announcement
+# Monday, a day before the history opens: it is the calendar every fortnight
+# bin and window is anchored on, and anchored on the Tuesday the bins would
+# close on a Monday and the storyline would freeze each fortnight a week late.
+# No list on the boundary day is in the store, so nothing reads across it.
 REGIME_BOUNDARY = "2026-05-18"
 
 
@@ -51,6 +57,24 @@ BASELINE_WINDOW_DAYS = 28
 # through its own day, and the site publishes on US time while we run on
 # Australian time, so the last few days are refetched rather than trusted.
 UNSETTLED_DAYS = 3
+
+# The colours of the split cards the history has played. The site publishes a
+# split card with no colour and no type, where every other card carries both,
+# so the splash line would read a Fire/Ice as colourless and count nothing. The
+# front-face reading Scryfall gives; a split card outside this table is read as
+# colourless, which is the one way the line can go stale silently.
+SPLIT_COLOURS = {
+    "Fire/Ice": "UR",
+    "Dead/Gone": "R",
+    "Repudiate/Replicate": "GU",
+    "Boom/Bust": "R",
+    "Incubation/Incongruity": "GU",
+    "Claim/Fame": "BR",
+    "Spring/Mind": "GU",
+    "Cease/Desist": "WBG",
+    "Wear/Tear": "RW",
+    "Rough/Tumble": "R",
+}
 
 # A mainboard over this many cards is a list published with its sideboard in
 # the main (75 and 0), and no rule reads it (Alejandro, 2026-09-13). A 60 with
@@ -99,13 +123,13 @@ ENGINES = {
     "taxes": ("Tidehollow Sculler",),
     "kappa": ("Kappa Cannoneer",),
     "livingend": ("Living End",),
+    "cascade": ("Shardless Agent", "Crashing Footfalls"),
     "dredger": ("Dredger's Insight",),
     "forge": ("Mystic Forge",),
     "song": ("Song of Creation",),
+    "basim": ("Basim Ibn Ishaq",),
+    "cam": ("Sewer-veillance Cam",),
     "phoenix": ("Arclight Phoenix",),
-    "greentron": ("Chromatic Sphere", "Chromatic Star"),
-    "bluetron": ("Stock Up",),
-    "ramp": ("Malevolent Rumble",),
     "devoted": ("Devoted Druid",),
     "eldrazi": ("Eldrazi Temple",),
     "prowess": ("Cori-Steel Cutter",),
@@ -118,6 +142,12 @@ ENGINES = {
     "omnath": ("Wrenn and Six",),
     "creativity": ("Indomitable Creativity",),
     "saheeli": ("Saheeli Rai",),
+    "ponza": ("Cleansing Wildfire",),
+    # Phelia beside the control shell is the Blink midrange deck; on its own
+    # she names nothing, a Goryo's list carrying Blink's creatures staying.
+    "blink": ("Phelia, Exuberant Shepherd",),
+    "ragavan": ("Ragavan, Nimble Pilferer",),
+    "zoo": ("Territorial Kavu",),
 }
 
 # Variant rule: the camps a member belongs to, by mainboard copies of the card
@@ -144,6 +174,9 @@ VERSION_NAMES = {
     "lab": "Lab",
     "gruul": "Gruul",
     "mono-green": "Mono-green",
+    "colourless": "Colourless",
+    "blue": "Blue",
+    "green": "Green",
 }
 
 
@@ -166,22 +199,12 @@ TRACKED_DECKS = {
             "Witch Enchanter",
         ),
         # The deck is Esper or Orzhov and nothing else. A Mardu build shares all
-        # four signature cards and is a different deck, so a mainboard source
-        # that actually produces red or green puts a list outside the archetype.
-        # Fetchlands are not colour evidence here: most of the Orzhov half
-        # fetches with Flooded Strand, which produces neither.
-        "off_colour": (
-            "Sacred Foundry",
-            "Blood Crypt",
-            "Raucous Theater",
-            "Elegant Parlor",
-            "Mountain",
-            "Snow-Covered Mountain",
-            "Arena of Glory",
-            "Overgrown Tomb",
-            "Temple Garden",
-            "Lush Portico",
-        ),
+        # four signature cards and is a different deck, and the line between
+        # them is the splash line (Alejandro, 2026-09-13): the off-colour
+        # spells the mainboard casts, never its sources. Six lists on one
+        # Sacred Foundry or Temple Garden with nothing red or green cast are
+        # Blink; five red cards, or a playset of one, are Mardu.
+        "colours": frozenset("WUB"),
         # Variant rule: the blue half against the two-colour half. Mainboard
         # Watery Grave partitions the archetype exactly, with no list between
         # the two, where a rule drawn on blue sources throws away the Orzhov
@@ -211,37 +234,44 @@ TRACKED_DECKS = {
         ),
         # No colour rule: nothing sharing the four is another colour of this
         # deck, so there is nothing for a source list to turn away.
-        "off_colour": (),
         # No variant rule either. Nothing in the history forks the deck: the
         # only mid-adoption mainboard cards are which basics and fetches fill
         # the manabase. One population, so the camp is unset and every reading
         # pools it.
     },
     "oswald": {
-        # Grinding Station is what makes an Oswald list this deck: the Tezzeret
-        # and Krang build shares Oswald, Emry and the Saga shell and is a
-        # different deck. No colour rule. A green source is a splash, usually
-        # for Haywire Mite, and the pilot reads it as the same deck.
-        "signature": ("Oswald Fiddlebender", "Grinding Station"),
-        "off_colour": (),
+        # Grinding Station on Emry, Sewer-veillance Cam and Mox Amber is the
+        # deck, which no other deck runs together, with either Oswald
+        # Fiddlebender or Loki, God of Mischief over it (Alejandro,
+        # 2026-09-13). Oswald appears in this deck alone, but the mono-blue
+        # build on Loki has no Fiddlebender, and forcing the card would leave
+        # half the deck outside. The Kethis combo and the Song of Creation
+        # deck run the trio and neither. No colour rule: a green source is a
+        # splash, usually for Haywire Mite. The key is the report's directory
+        # under `data/tracking/` and stays; the name moved.
+        "signature": ("Grinding Station", "Emry, Lurker of the Loch", "Sewer-veillance Cam"),
+        "supporting": (1, ("Oswald Fiddlebender", "Loki, God of Mischief")),
         # The Kappa Cannoneer and Pinnacle Emissary artifact deck bolted two
         # Oswald and a Station on for a fortnight and is a different deck
-        # (Alejandro, 2026-09-13). Mainboard only: Oswald lists side Kappa.
+        # (Alejandro, 2026-09-13). Mainboard only: Station lists side Kappa.
         "excluded_engines": ("kappa",),
     },
     "zoo": {
-        # The two together are the deck and nothing else in the history shares
-        # them. Five colours, so no colour rule: the manabase is the part of
-        # this deck that moves most.
-        "signature": ("Territorial Kavu", "Scion of Draco"),
-        "off_colour": (),
-        # Three other decks put Kavu and Scion in as domain bodies and are not
-        # this one (Alejandro, 2026-09-13): Persist reanimator on Archon of
-        # Cruelty and Faithless Looting, the five-colour Living End build on
-        # Bloodbraid Marauder and Malevolent Rumble, and the five-colour energy
-        # build on the Guide of Souls and Ocelot Pride engine.
-        "excluded_engines": ("persist", "livingend", "energy"),
-        # The Frog version is the bluer build and the one the report reads.
+        # Kavu and Scion together are the deck, and a Kavu-less list on Scion,
+        # Leyline of the Guildpact and Psychic Frog is its Frog version
+        # (Alejandro, 2026-09-13), exactly three lists since the bans. Five
+        # colours, so no colour rule: the manabase is the part of this deck
+        # that moves most.
+        "signature": ("Scion of Draco",),
+        "either": (("Territorial Kavu",), ("Leyline of the Guildpact", "Psychic Frog")),
+        # Four other decks put the domain bodies in and are not this one
+        # (Alejandro, 2026-09-13): Persist reanimator on Archon of Cruelty and
+        # Faithless Looting, the five-colour Living End build on Bloodbraid
+        # Marauder and Malevolent Rumble, the five-colour energy build on the
+        # Guide of Souls and Ocelot Pride engine, and the Shardless Agent
+        # cascade decks on the two leylines.
+        "excluded_engines": ("persist", "livingend", "energy", "cascade"),
+        # The Frog version is the bluer build; the traditional one is read.
         "variants": (("frog", ("Psychic Frog",)),),
         "variant_default": "traditional",
     },
@@ -253,7 +283,6 @@ TRACKED_DECKS = {
         # decks carry the combo without it and are different decks (Alejandro,
         # 2026-09-13). Every other list in the history holds it.
         "signature": ("Basking Broodscale", "Blade of the Bloodchief", "Eldrazi Temple"),
-        "off_colour": (),
         # A hybrid brew on the intact shell is out too, for now: Dredger's
         # Insight names the Yawgmoth-style Cauldron package and Mystic Forge the
         # Karn Forge package, and nothing else in the history holds either.
@@ -272,35 +301,44 @@ TRACKED_DECKS = {
         "variant_default": "mono-green",
     },
     "devoted": {
-        # Devoted Druid alone admits a handful of lists on Quirion Ranger and
-        # Eladamri; Tyvar is the combo the deck is built around.
-        "signature": ("Devoted Druid", "Tyvar, Jubilant Brawler"),
-        "off_colour": (),
+        # Devoted Druid with either Tyvar (Alejandro, 2026-09-13): both are
+        # unique to Druid combo, as are Springheart Nantuko and Quirion Ranger,
+        # and a list swapping one Tyvar for the other is a version of the same
+        # deck. Druid without a Tyvar is the Vizier of Remedies elves build,
+        # and the Druid-less Nantuko deck is a different deck.
+        "signature": ("Devoted Druid",),
+        "supporting": (1, ("Tyvar, Jubilant Brawler", "Tyvar, the Pummeler")),
     },
     "affinity": {
-        # Kappa Cannoneer alone admits the Hammer build; Pinnacle Emissary is
-        # what the affinity deck plays and Hammer does not. Weapons Manufacturing
-        # and Engineered Explosives keep out the Krang, Tamiyo and Song of
-        # Creation artifact decks, which share the two creatures and the Saga
-        # shell and are a different deck.
-        "signature": ("Kappa Cannoneer", "Pinnacle Emissary", "Weapons Manufacturing",
-                      "Engineered Explosives"),
-        "off_colour": (),
-        # The Song of Creation deck on the full Affinity four is a hybrid brew
-        # and out (Alejandro, 2026-09-13).
-        "excluded_engines": ("song",),
+        # Kappa Cannoneer, Pinnacle Emissary and Engineered Explosives are the
+        # shell, and Weapons Manufacturing supports it: some lists test
+        # without it and stay within the shell (Alejandro, 2026-09-13). Krang
+        # is supporting too. Kappa alone admits the Hammer build.
+        "signature": ("Kappa Cannoneer", "Pinnacle Emissary", "Engineered Explosives"),
+        # The Song of Creation deck, the Basim Ibn Ishaq aggro decks and the
+        # Sewer-veillance Cam decks are not Affinity (Alejandro, 2026-09-13).
+        "excluded_engines": ("song", "basim", "cam"),
+        # Tamiyo beside Mox Amber is the Tamiyo artifact deck unless
+        # Manufacturing sits beside them, when Manufacturing outweighs it
+        # (Alejandro, 2026-09-13): the name the fall-out reports, the pair,
+        # and the card that outweighs it.
+        "outweighed": ("tamiyo", ("Tamiyo, Inquisitive Student", "Mox Amber"), "Weapons Manufacturing"),
     },
     "prowess": {
-        # Cori-Steel Cutter alone admits the artifact decks on Emry and Tamiyo,
-        # 121 lists since the bans; the two creatures are what make it prowess.
-        # Steam Vents is what makes it Izzet: the red and Boros prowess lists on
-        # Lava Spike and Skewer share the three creatures and never the land.
-        "signature": ("Cori-Steel Cutter", "Monastery Swiftspear", "Dragon's Rage Channeler",
-                      "Steam Vents"),
-        "off_colour": (),
-        # Izzet Phoenix answers the rule through Cutter, Swiftspear, DRC and
-        # Vents and is another deck, and the prowess core with Phoenix grafted on
-        # is a hybrid brew (Alejandro, 2026-09-13).
+        # The deck is Izzet: Steam Vents and Lava Dart under the prowess
+        # staples, and a list that cuts Channeler, or Swiftspear, or sides its
+        # Cutters is the same deck in a different build (Alejandro,
+        # 2026-09-13). The red and Boros prowess lists on Lava Spike and Skewer
+        # share the creatures and never the land; Cori-Steel Cutter alone
+        # admits the artifact decks on Emry and Tamiyo.
+        "signature": ("Steam Vents", "Lava Dart"),
+        # Four of the six staples: Bosseidon's Talent decks on three stay out.
+        "supporting": (4, (
+            "Cori-Steel Cutter", "Monastery Swiftspear", "Dragon's Rage Channeler",
+            "Slickshot Show-Off", "Mutagenic Growth", "Stormchaser's Talent",
+        )),
+        # Izzet Phoenix answers the rule and is another deck, and the prowess
+        # core with Phoenix grafted on is a hybrid brew (Alejandro, 2026-09-13).
         "excluded_engines": ("phoenix",),
         # One Vents is a Gruul list fetching for its sideboard: every Izzet list
         # runs two or more.
@@ -311,130 +349,98 @@ TRACKED_DECKS = {
         # decks run Trudge and Fanatic as mana dorks and none of the shell
         # (Alejandro, 2026-09-13). Every other list in the history holds it.
         "signature": ("Slumbering Trudge", "Fanatic of Rhonas", "Ugin's Labyrinth"),
-        "off_colour": (),
     },
     "tron": {
-        # The three lands and Karn. The lands alone admit a blue Tron on Force
-        # of Negation and Stock Up, 53 lists since the bans, which is a
-        # different deck; every list with Karn is the Eldrazi build.
-        "signature": ("Urza's Tower", "Urza's Mine", "Urza's Power Plant", "Karn, the Great Creator"),
-        "off_colour": (),
-        # Engines that name another Tron deck (Alejandro, 2026-09-13): the
-        # Chromatic eggs are Mono-Green Tron proper, Stock Up the blue control
-        # build, Malevolent Rumble the green ramp build on the Tron lands, and
-        # Devoted Druid a combo brew in the flex slots. Ancient Stirrings is not
-        # one: clean Eldrazi Tron lists run it on a green splash.
-        "excluded_engines": ("greentron", "bluetron", "ramp", "devoted"),
+        # The three lands are Tron, and Karn is supporting (Alejandro,
+        # 2026-09-13): colourless Tron on Karn, Ugin's Labyrinth and the
+        # Eldrazi is the tracked version, and blue Tron on Stock Up and green
+        # Tron on the Chromatic eggs are versions of the same deck.
+        "signature": ("Urza's Tower", "Urza's Mine", "Urza's Power Plant"),
+        # A combo brew in the flex slots, Devoted Druid with Luxior, is a
+        # hybrid brew and out for now (Alejandro, 2026-09-13).
+        "excluded_engines": ("devoted",),
+        # Versions by colour, on the splash line: five blue cards or a playset
+        # of one is blue, likewise green, else colourless. Blue and green
+        # only, the 18 lists on a black playset such as Dismember being
+        # colourless Tron with removal. Ancient Stirrings on a green splash
+        # inside the Eldrazi engine is colourless with a splash.
+        "colour_variants": (("blue", "U"), ("green", "G")),
+        "variant_default": "colourless",
     },
     "energy": {
         # Guide of Souls and Ocelot Pride are the engine of every energy deck,
         # and Ajani and Goblin Bombardment are what the Boros build does with
         # it. The Azorius and Selesnya lists on the two creatures are blink and
         # Birthing Ritual decks and hold neither. Mardu and Jeskai energy share
-        # all four and are different decks, so a source that produces blue,
-        # black or green puts a list outside, read on sources and never on
-        # fetchlands: Marsh Flats fetches Sacred Foundry in nearly every Boros
-        # list. Since the bans the four with no such source are 1036 lists,
-        # against 117 Mardu and 134 Jeskai.
+        # all four and are different decks, told apart on the splash line
+        # (Alejandro, 2026-09-13): Jeskai on a playset of Quantum Riddler,
+        # Mardu on five or more black cards, where a Godless Shrine held for
+        # sideboard Thoughtseize is a splash.
         "signature": ("Guide of Souls", "Ocelot Pride", "Ajani, Nacatl Pariah",
                       "Goblin Bombardment"),
+        "colours": frozenset("RW"),
         # Hybrid brews on the energy four, out for now (Alejandro, 2026-09-13):
         # the Boros Eldrazi build on the Temple, the Cutter prowess build and
         # the Leonardo Cauldron combo. Nothing else in the history holds them.
         "excluded_engines": ("eldrazi", "prowess", "cauldron"),
-        "off_colour": (
-            "Island", "Snow-Covered Island", "Swamp", "Snow-Covered Swamp",
-            "Forest", "Snow-Covered Forest",
-            "Hallowed Fountain", "Meticulous Archive", "Mystic Gate", "Floodfarm Verge",
-            "Seachrome Coast", "Godless Shrine", "Shadowy Backstreet", "Bleachbone Verge",
-            "Concealed Courtyard", "Blood Crypt", "Raucous Theater", "Blazemire Verge",
-            "Blackcleave Cliffs", "Steam Vents", "Thundering Falls", "Riverpyre Verge",
-            "Spirebluff Canal", "Watery Grave", "Undercity Sewers", "Gloomlake Verge",
-            "Darkslick Shores", "Temple Garden", "Lush Portico", "Hushwood Verge",
-            "Razorverge Thicket", "Stomping Ground", "Commercial District", "Thornspire Verge",
-            "Copperline Gorge", "Breeding Pool", "Hedge Maze", "Willowrush Verge",
-            "Botanical Sanctum", "Overgrown Tomb", "Underground Mortuary", "Wastewood Verge",
-            "Blooming Marsh", "Boseiju, Who Endures", "Otawara, Soaring City",
-            "Takenuma, Abandoned Mire",
-        ),
     },
     "ponza": {
-        # Erode is in nearly every land-destruction list, and Cleansing
-        # Wildfire is the red half of the plan: the five mono-white lists on
-        # Crucible of Worlds and Ghost Quarter hold Erode and not the Wildfire,
-        # and the Boros energy lists that splash Erode hold neither Wildfire
-        # nor the rest. The control decks on Erode, Jeskai and Azorius, are
-        # different decks, so a blue, black or green source puts a list
-        # outside, like energy. Since the bans that is 466 lists of the 474
-        # on both cards.
-        "signature": ("Erode", "Cleansing Wildfire"),
+        # Boros land destruction is Cleansing Wildfire with the suite around
+        # it, and Erode supports it though nearly every list holds it
+        # (Alejandro, 2026-09-13): the plan is the suite and not the card. The
+        # Pinnacle Monk red decks on Wildfire and Price run nothing else of
+        # it. The Jeskai and Azorius control lists that splash Erode are
+        # control decks, told apart on the splash line, and a Ponza list on a
+        # playset of Teferi is the Jeskai deck.
+        "signature": ("Cleansing Wildfire",),
+        "supporting": (4, (
+            "Erode", "Field of Ruin", "Demolition Field", "Price of Freedom",
+            "Wrath of the Skies", "Solitude",
+        )),
+        "colours": frozenset("RW"),
         # The Boom/Bust and Magmatic Hellkite build in place of Field of Ruin
         # and Demolition Field is a hybrid brew, out for now (Alejandro,
         # 2026-09-13). Flagstones is not the marker: clean lists run it.
         "excluded_engines": ("boombust",),
-        "off_colour": (
-            "Island", "Snow-Covered Island", "Swamp", "Snow-Covered Swamp",
-            "Forest", "Snow-Covered Forest",
-            "Hallowed Fountain", "Meticulous Archive", "Mystic Gate", "Floodfarm Verge",
-            "Seachrome Coast", "Godless Shrine", "Shadowy Backstreet", "Bleachbone Verge",
-            "Concealed Courtyard", "Blood Crypt", "Raucous Theater", "Blazemire Verge",
-            "Blackcleave Cliffs", "Steam Vents", "Thundering Falls", "Riverpyre Verge",
-            "Spirebluff Canal", "Watery Grave", "Undercity Sewers", "Gloomlake Verge",
-            "Darkslick Shores", "Temple Garden", "Lush Portico", "Hushwood Verge",
-            "Razorverge Thicket", "Stomping Ground", "Commercial District", "Thornspire Verge",
-            "Copperline Gorge", "Breeding Pool", "Hedge Maze", "Willowrush Verge",
-            "Botanical Sanctum", "Overgrown Tomb", "Underground Mortuary", "Wastewood Verge",
-            "Blooming Marsh", "Boseiju, Who Endures", "Otawara, Soaring City",
-            "Takenuma, Abandoned Mire",
-        ),
     },
     "dimir": {
         # Psychic Frog and Quantum Riddler together are the midrange deck. Frog
-        # alone admits the Dimir Oculus lists on Unearth, 60 since the bans,
-        # which never run Riddler; Goryo's, Blink and Domain Zoo share the pair
-        # and are tested first. The Esper and Grixis Frog decks share the pair
-        # too and are different decks, so a source that produces white, red or
-        # green puts a list outside: Plains sits in 127 of the Esper lists and
-        # Steam Vents in every Grixis one. Since the bans that is 394 lists.
+        # alone admits the Dimir Oculus lists on Unearth, which never run
+        # Riddler; Goryo's, Blink and Domain Zoo share the pair and are tested
+        # first. The Esper and Grixis Frog decks share the pair too and are
+        # told apart on the splash line (Alejandro, 2026-09-13): Meltdown in
+        # the sideboard off one Steam Vents is still Dimir, a playset of Flame
+        # of Anor is Grixis Frog and five white cards are Esper Frog.
         "signature": ("Psychic Frog", "Quantum Riddler"),
+        "colours": frozenset("UB"),
         # The other Dimir decks on the pair (Alejandro, 2026-09-13): Necro on
         # Soul Spike, Persist reanimator, Oculus on Unearth (which does run
         # Riddler, in a third of its lists), Goryo's without Ephemerate, and
         # Death's Shadow. The Moonshadow aggro build is left in: no one card
         # names it without moving clean lists.
         "excluded_engines": ("necro", "persist", "oculus", "goryos", "shadow"),
-        "off_colour": (
-            "Plains", "Snow-Covered Plains", "Mountain", "Snow-Covered Mountain",
-            "Forest", "Snow-Covered Forest",
-            "Hallowed Fountain", "Meticulous Archive", "Mystic Gate", "Floodfarm Verge",
-            "Seachrome Coast", "Godless Shrine", "Shadowy Backstreet", "Bleachbone Verge",
-            "Concealed Courtyard", "Sacred Foundry", "Elegant Parlor", "Sunbillow Verge",
-            "Inspiring Vantage", "Arena of Glory", "Steam Vents", "Thundering Falls",
-            "Riverpyre Verge", "Spirebluff Canal", "Blood Crypt", "Raucous Theater",
-            "Blazemire Verge", "Blackcleave Cliffs", "Stomping Ground", "Commercial District",
-            "Thornspire Verge", "Copperline Gorge", "Temple Garden", "Lush Portico",
-            "Hushwood Verge", "Razorverge Thicket", "Breeding Pool", "Hedge Maze",
-            "Willowrush Verge", "Botanical Sanctum", "Overgrown Tomb", "Underground Mortuary",
-            "Wastewood Verge", "Blooming Marsh", "Boseiju, Who Endures",
-        ),
     },
     "jeskai": {
-        # Consult the Star Charts, Teferi and Wrath of the Skies are the control
-        # shell, and Galvanic Discharge is what makes it Jeskai. A colour rule
-        # on sources fails here: the Azorius control lists run Steam Vents,
-        # Watery Grave and Breeding Pool as extra colours for Prismatic
-        # Ending and cast no red spell off them, 120 of the 123 lists on a
-        # black source holding none. Read on the spell, the deck is 155 lists
-        # since the bans, and a Breeding Pool beside the Discharge is a splash
-        # inside it.
-        "signature": ("Consult the Star Charts", "Teferi, Time Raveler", "Wrath of the Skies",
-                      "Galvanic Discharge"),
-        "off_colour": (),
-        # Decks built on the shell that are not this one (Alejandro,
-        # 2026-09-13): four-colour Omnath control on Wrenn and Six, the
-        # Indomitable Creativity combo, and the Saheeli combo inside the
-        # control shell, a hybrid brew.
-        "excluded_engines": ("omnath", "creativity", "saheeli"),
+        # The blue and white control shell as one deck (Alejandro,
+        # 2026-09-13): Teferi and Wrath of the Skies over a draw engine,
+        # whichever of the seven it is. Control adapts its interaction to the
+        # meta, so Galvanic Discharge is a build reading and not a membership
+        # rule: Jeskai and Azorius are the same deck tracked together. The
+        # splash line on black and green. The key is the report's directory
+        # under `data/tracking/` and stays; the name moved.
+        "signature": ("Teferi, Time Raveler", "Wrath of the Skies"),
+        "supporting": (1, (
+            "Consult the Star Charts", "Isochron Scepter", "Narset, Parter of Veils",
+            "Day's Undoing", "Orim's Chant", "Thundertrap Trainer", "Flow State",
+        )),
+        "colours": frozenset("UWR"),
+        # Decks built on the two cards that are not this one (Alejandro,
+        # 2026-09-13): the four-colour Omnath, Creativity and Saheeli hybrids,
+        # out for now, and the Ponza, Blink midrange, Ragavan, Zoo and energy
+        # decks that carry the two cards.
+        "excluded_engines": (
+            "omnath", "creativity", "saheeli", "ponza", "blink", "ragavan", "zoo", "energy",
+        ),
     },
     "storm": {
         # Ral, Ruby Medallion and Past in Flames together. Ruby alone admits
@@ -443,7 +449,6 @@ TRACKED_DECKS = {
         # Medallion. No colour rule: the sideboard colours are the Wish
         # targets, and every list is the same red deck under them.
         "signature": ("Ral, Monsoon Mage", "Ruby Medallion", "Past in Flames"),
-        "off_colour": (),
     },
     "livingend": {
         # Living End with the two cascade spells. The Sultai build on
@@ -452,7 +457,6 @@ TRACKED_DECKS = {
         # different deck. No colour rule: Temple Garden sits in 187 of the 326
         # lists beside no white spell, a fetchable land of the Temur shell.
         "signature": ("Living End", "Shardless Agent", "Violent Outburst"),
-        "off_colour": (),
     },
 }
 
@@ -462,9 +466,10 @@ def versions(archetype: str) -> tuple[str, ...]:
     if archetype == ARCHETYPE:
         return (*CAMPS, HYBRID_CAMP)
     rule = TRACKED_DECKS[archetype]
-    if "variants" not in rule:
+    if "variants" not in rule and "colour_variants" not in rule:
         return ()
-    return (*(name for name, _ in rule["variants"]), rule["variant_default"])
+    named = (*rule.get("variants", ()), *rule.get("colour_variants", ()))
+    return (*(name for name, _ in named), rule["variant_default"])
 
 # The weekly report's subjects: which lists a report is computed over, what it
 # calls itself, and which slots it watches. Kept apart from the membership rules
@@ -492,10 +497,10 @@ REPORTS = {
         "watch": (),
         "manabase": False,
         "membership": (
-            "mainboard holds Phelia, Exuberant Shepherd, Flickerwisp, Overlord of the "
-            "Balemurk and Witch Enchanter, no red or green source, and none of Guide of "
-            "Souls, Ocelot Pride, Estrid's Invocation, Stoneforge Mystic or Tidehollow "
-            "Sculler. The esper version mainboards Watery Grave; the orzhov version does not."
+            "mainboard holds Phelia, Exuberant Shepherd, Flickerwisp, Overlord of the Balemurk "
+            "and Witch Enchanter, casts under five spells outside white, blue and black and no "
+            "playset of one, and carries none of the energy, Overlords, Stoneblade or taxes "
+            "engines. The esper version mainboards Watery Grave; the orzhov version does not."
         ),
     },
     "goryos": {
@@ -510,10 +515,10 @@ REPORTS = {
         "watch": ("Hedge Maze", "Breeding Pool", "Prismatic Ending", "Faithful Mending"),
         "manabase": True,
         "membership": (
-            "mainboard holds all four of Goryo's Vengeance, Atraxa, Grand Unifier, "
-            "Psychic Frog and Ephemerate, and none of Persist, Omniscience or Shifting "
-            "Woodland. Green sources for casting Atraxa do not change membership, and there "
-            "is no colour rule. The non-fallaji version is the one read."
+            "mainboard holds all four of Goryo's Vengeance, Atraxa, Grand Unifier, Psychic Frog "
+            "and Ephemerate, and neither the Persist nor the Omniscience engine. Green sources "
+            "for casting Atraxa do not change membership, and there is no colour rule. The "
+            "non-fallaji version is the one read."
         ),
     },
     "neoform": {
@@ -523,20 +528,20 @@ REPORTS = {
         "watch": (),
         "manabase": False,
         "membership": (
-            "mainboard holds all four of Neoform, Allosaurus Rider, Eldritch Evolution "
-            "and Planar Genesis. No colour rule and no versions: every reading is the "
-            "whole archetype's."
+            "mainboard holds all four of Neoform, Allosaurus Rider, Eldritch Evolution and Planar "
+            "Genesis. No colour rule and no versions: every reading is the whole archetype's."
         ),
     },
     "oswald": {
-        "name": "UW Oswald",
+        "name": "Grinding Station",
         "archetype": "oswald",
         "camp": None,
         "watch": (),
         "manabase": False,
         "membership": (
-            "mainboard holds Oswald Fiddlebender and Grinding Station and no Kappa "
-            "Cannoneer. No colour rule: a green splash is the same deck. No versions."
+            "mainboard holds Grinding Station, Emry, Lurker of the Loch and Sewer-veillance Cam "
+            "with Oswald Fiddlebender or Loki, God of Mischief, and no Kappa Cannoneer. No colour "
+            "rule: a green splash is the same deck. No versions."
         ),
     },
     "zoo": {
@@ -546,9 +551,10 @@ REPORTS = {
         "watch": (),
         "manabase": False,
         "membership": (
-            "mainboard holds Territorial Kavu and Scion of Draco and none of Persist, Living "
-            "End, Guide of Souls or Ocelot Pride. No colour rule. The frog version mainboards "
-            "Psychic Frog and is the one read; the traditional version does not."
+            "mainboard holds Scion of Draco with Territorial Kavu, or with Leyline of the "
+            "Guildpact and Psychic Frog, and none of the Persist, Living End, energy or cascade "
+            "engines. No colour rule. The frog version mainboards Psychic Frog; the traditional "
+            "version does not and is the one read."
         ),
     },
     "broodscale": {
@@ -558,10 +564,10 @@ REPORTS = {
         "watch": (),
         "manabase": False,
         "membership": (
-            "mainboard holds Basking Broodscale, Blade of the Bloodchief and Eldrazi Temple, "
-            "and neither Dredger's Insight nor Mystic Forge. No colour rule. The gruul version mainboards Unholy Heat or Writhing Chrysalis, the lab version "
-            "mainboards Ugin's Labyrinth and is the one read, and the mono-green version "
-            "holds neither."
+            "mainboard holds Basking Broodscale, Blade of the Bloodchief and Eldrazi Temple, and "
+            "neither the Dredger's Insight nor the Mystic Forge engine. No colour rule. The gruul "
+            "version mainboards Unholy Heat or Writhing Chrysalis, the lab version mainboards "
+            "Ugin's Labyrinth and is the one read, and the mono-green version holds neither."
         ),
     },
     "devoted": {
@@ -571,8 +577,8 @@ REPORTS = {
         "watch": (),
         "manabase": False,
         "membership": (
-            "mainboard holds Devoted Druid and Tyvar, Jubilant Brawler. No colour rule and "
-            "no versions."
+            "mainboard holds Devoted Druid with Tyvar, Jubilant Brawler or Tyvar, the Pummeler. "
+            "No colour rule and no versions."
         ),
     },
     "affinity": {
@@ -582,8 +588,10 @@ REPORTS = {
         "watch": (),
         "manabase": False,
         "membership": (
-            "mainboard holds Kappa Cannoneer, Pinnacle Emissary, Weapons Manufacturing and "
-            "Engineered Explosives and no Song of Creation. No colour rule and no versions."
+            "mainboard holds Kappa Cannoneer, Pinnacle Emissary and Engineered Explosives, none "
+            "of Song of Creation, Basim Ibn Ishaq or Sewer-veillance Cam, and not Tamiyo, "
+            "Inquisitive Student beside Mox Amber unless Weapons Manufacturing sits beside them. "
+            "No colour rule and no versions."
         ),
     },
     "prowess": {
@@ -593,9 +601,10 @@ REPORTS = {
         "watch": (),
         "manabase": False,
         "membership": (
-            "mainboard holds Cori-Steel Cutter, Monastery Swiftspear, Dragon's Rage "
-            "Channeler and at least two Steam Vents, and no Arclight Phoenix. No colour rule "
-            "and no versions."
+            "mainboard holds at least two Steam Vents and Lava Dart with four of Cori-Steel "
+            "Cutter, Monastery Swiftspear, Dragon's Rage Channeler, Slickshot Show-Off, Mutagenic "
+            "Growth and Stormchaser's Talent, and no Arclight Phoenix. No colour rule and no "
+            "versions."
         ),
     },
     "trudge": {
@@ -605,20 +614,20 @@ REPORTS = {
         "watch": (),
         "manabase": False,
         "membership": (
-            "mainboard holds Slumbering Trudge, Fanatic of Rhonas and Ugin's Labyrinth. No "
-            "colour rule and no versions."
+            "mainboard holds Slumbering Trudge, Fanatic of Rhonas and Ugin's Labyrinth. No colour "
+            "rule and no versions."
         ),
     },
     "tron": {
         "name": "Tron",
         "archetype": "tron",
-        "camp": None,
+        "camp": "colourless",
         "watch": (),
         "manabase": False,
         "membership": (
-            "mainboard holds Urza's Tower, Urza's Mine, Urza's Power Plant and Karn, the "
-            "Great Creator, and none of Chromatic Sphere, Chromatic Star, Stock Up, "
-            "Malevolent Rumble or Devoted Druid. No colour rule and no versions."
+            "mainboard holds Urza's Tower, Urza's Mine and Urza's Power Plant, and no Devoted "
+            "Druid. The blue version casts five blue cards or a playset of one, the green version "
+            "likewise in green, and the colourless version neither and is the one read."
         ),
     },
     "energy": {
@@ -629,8 +638,9 @@ REPORTS = {
         "manabase": False,
         "membership": (
             "mainboard holds Guide of Souls, Ocelot Pride, Ajani, Nacatl Pariah and Goblin "
-            "Bombardment, no blue, black or green source, and none of Eldrazi Temple, "
-            "Cori-Steel Cutter or Agatha's Soul Cauldron. No versions."
+            "Bombardment, casts under five spells outside red and white and no playset of one, "
+            "and none of Eldrazi Temple, Cori-Steel Cutter or Agatha's Soul Cauldron. No "
+            "versions."
         ),
     },
     "ponza": {
@@ -640,8 +650,9 @@ REPORTS = {
         "watch": (),
         "manabase": False,
         "membership": (
-            "mainboard holds Erode and Cleansing Wildfire and no Boom/Bust, and no blue, "
-            "black or green source. No versions."
+            "mainboard holds Cleansing Wildfire with four of Erode, Field of Ruin, Demolition "
+            "Field, Price of Freedom, Wrath of the Skies and Solitude, casts under five spells "
+            "outside red and white and no playset of one, and no Boom/Bust. No versions."
         ),
     },
     "dimir": {
@@ -651,21 +662,24 @@ REPORTS = {
         "watch": (),
         "manabase": False,
         "membership": (
-            "mainboard holds Psychic Frog and Quantum Riddler, no white, red or green "
-            "source, and none of Necrodominance, Persist, Abhorrent Oculus, Goryo's Vengeance "
-            "or Death's Shadow. No versions."
+            "mainboard holds Psychic Frog and Quantum Riddler, casts under five spells outside "
+            "blue and black and no playset of one, and none of the Necrodominance, Persist, "
+            "Oculus, Goryo's or Death's Shadow engines. No versions."
         ),
     },
     "jeskai": {
-        "name": "Jeskai Control",
+        "name": "UWr Control",
         "archetype": "jeskai",
         "camp": None,
         "watch": (),
         "manabase": False,
         "membership": (
-            "mainboard holds Consult the Star Charts, Teferi, Time Raveler, Wrath of the "
-            "Skies and Galvanic Discharge, and none of Wrenn and Six, Indomitable Creativity "
-            "or Saheeli Rai. No colour rule and no versions."
+            "mainboard holds Teferi, Time Raveler and Wrath of the Skies with any of Consult the "
+            "Star Charts, Isochron Scepter, Narset, Parter of Veils, Day's Undoing, Orim's Chant, "
+            "Thundertrap Trainer or Flow State, casts under five spells outside blue, white and "
+            "red and no playset of one, and none of Wrenn and Six, Indomitable Creativity, "
+            "Saheeli Rai, Cleansing Wildfire, Phelia, Exuberant Shepherd, Ragavan, Nimble "
+            "Pilferer, Territorial Kavu, Guide of Souls or Ocelot Pride. No versions."
         ),
     },
     "storm": {
@@ -675,8 +689,8 @@ REPORTS = {
         "watch": (),
         "manabase": False,
         "membership": (
-            "mainboard holds Ral, Monsoon Mage, Ruby Medallion and Past in Flames. No colour "
-            "rule and no versions."
+            "mainboard holds Ral, Monsoon Mage, Ruby Medallion and Past in Flames. No colour rule "
+            "and no versions."
         ),
     },
     "livingend": {
@@ -686,8 +700,8 @@ REPORTS = {
         "watch": (),
         "manabase": False,
         "membership": (
-            "mainboard holds Living End, Shardless Agent and Violent Outburst. No colour rule "
-            "and no versions."
+            "mainboard holds Living End, Shardless Agent and Violent Outburst. No colour rule and "
+            "no versions."
         ),
     },
 }

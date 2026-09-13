@@ -1,7 +1,7 @@
 # Contamination review, pass 2
 
 **Reviewed:** 2026-09-13, six angles over the store (13843 MTGO lists from the regime boundary, 8919 members of the 17 tracked decks, 4924 unclassified) and the 1861 paper lists of Pro Tour Amsterdam, Spotlight Brisbane and Spotlight Dallas (3 unread). Pass one (`data/reviews/2026-09-13-contamination-pass1.md`) reviewed member lists against the example lists; this pass does not repeat that angle.
-**Outcome:** resolved. 125 lists quarantined, all ruled by Alejandro on 2026-09-13: 101 in, 24 out. Every ruling is a pilot entry in `HEURISTICS.md` and the per-deck lines under `Rulings` say which proposed rule was adopted, changed or refused. No change to the classifier or `tracker/config.py` in this pass; the rules are applied in the next ticket. Every proposed rule below was measured over the store and the paper lists, and the headline counts were re-measured independently of the finder.
+**Outcome:** resolved. 125 lists quarantined, all ruled by Alejandro on 2026-09-13: 101 in, 24 out. Every ruling is a pilot entry in `HEURISTICS.md` and the per-deck lines under `Rulings` say which proposed rule was adopted, changed or refused. The rules were applied in `tracker/config.py` and `tracker/classify.py` on 2026-09-13 (issue #3), and every row lands as ruled. Every proposed rule below was measured over the store and the paper lists, and the headline counts were re-measured independently of the finder.
 
 ---
 

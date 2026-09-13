@@ -92,12 +92,22 @@ def unread(entry: dict) -> bool:
     return not entry["side"] and sum(entry["main"].values()) > 60
 
 
-def members(payload: dict, archetype: str = "blink", camp: str | None = "esper") -> list[dict]:
+def members(
+    payload: dict,
+    archetype: str = "blink",
+    camp: str | None = "esper",
+    colours: dict[str, frozenset[str]] | None = None,
+    land_names: frozenset[str] = frozenset(),
+) -> list[dict]:
     """The Spotlight's lists that answer to the deck's rule, in finishing order.
 
     `camp` of None pools every camp, which is what the presence and paper
     figures want. The build readings pass the report's camp, for the reason
     `store.population` gives.
+
+    `colours` and `land_names` are what MTGO has published for the same names,
+    read off the store, because melee publishes a list's cards and nothing
+    else and the splash line has to read a paper list as it reads an MTGO one.
 
     The rule and not the name melee publishes. A decklist name is typed by its
     pilot: this field carried "Esper Blink", "Azorius Blink" and a bare "Esper"
@@ -109,10 +119,11 @@ def members(payload: dict, archetype: str = "blink", camp: str | None = "esper")
     for entry in payload["lists"]:
         if unread(entry):
             continue
-        name = classify.archetype(SimpleNamespace(mainboard=entry["main"]))
+        decklist = SimpleNamespace(mainboard=entry["main"], colours=colours or {}, land_names=land_names)
+        name = classify.archetype(decklist)
         if name != archetype:
             continue
-        if camp is not None and classify.variant(name, entry["main"]) != camp:
+        if camp is not None and classify.variant(name, decklist) != camp:
             continue
         found.append(entry)
     return sorted(found, key=lambda row: row["rank"])
@@ -127,7 +138,13 @@ def _rate(rows: list[dict]) -> tuple[float | None, int, int, int]:
     return (wins / played if played else None), wins, losses, draws
 
 
-def reading(payload: dict, archetype: str = "blink", camp: str | None = "esper") -> dict:
+def reading(
+    payload: dict,
+    archetype: str = "blink",
+    camp: str | None = "esper",
+    colours: dict[str, frozenset[str]] | None = None,
+    land_names: frozenset[str] = frozenset(),
+) -> dict:
     """Everything the report says about one Spotlight.
 
     `field_share` is the true metagame share the MTGO data cannot produce, and
@@ -139,7 +156,7 @@ def reading(payload: dict, archetype: str = "blink", camp: str | None = "esper")
     """
     lists = payload["lists"]
     field = len(lists)
-    ours = members(payload, archetype, camp)
+    ours = members(payload, archetype, camp, colours, land_names)
     cut = [row for row in ours if row["rank"] <= CUT]
     rate, wins, losses, draws = _rate(ours)
     field_rate, *_ = _rate(lists)
@@ -232,12 +249,13 @@ def chain(
     report = report or config.REPORTS["blink"]
     archetype, build = report["archetype"], report["camp"]
     played = list(spotlights or config.MAJOR_EVENTS)
-    typed = store.land_names(db_path) if report["manabase"] else frozenset()
+    typed = store.land_names(db_path)
+    colours = store.card_colours(db_path)
     entries = []
     previous: tuple[str, str, list[dict]] | None = None
     for spot in played:
         payload = load(spot, directory)
-        ours = members(payload, archetype, build)
+        ours = members(payload, archetype, build, colours, typed)
         index = timeline.bin_of(spot["date"]) - 1
         start = timeline.bin_start(index)
         end = (
@@ -253,7 +271,7 @@ def chain(
             against, crossed = f"the fortnight to {end}", True
         entries.append(
             {
-                **reading(payload, archetype, None),
+                **reading(payload, archetype, None, colours, typed),
                 "label": spot["label"],
                 "date": spot["date"],
                 "week": week(spot),

@@ -48,9 +48,20 @@ CREATE OR REPLACE TABLE lands (
 )
 """
 
+# Every card the payloads have published a colour for, with its colours as
+# letters, so a paper list can be read on the splash line the way the MTGO
+# lists are. Melee publishes names and nothing else, like the land count.
+CARDS_SCHEMA = """
+CREATE OR REPLACE TABLE cards (
+    card VARCHAR,
+    colours VARCHAR
+)
+"""
+
 # Every list that holds a deck's core and belongs to nothing, with the deck and
 # the reason its rule turned it away: an engine's name from `config.ENGINES`,
-# or the colour or floor rule. One row per deck the list resembles. Kept so
+# the splash line, a floor or a supporting tier. One row per deck the list
+# resembles. Kept so
 # every exclusion is visible, and a deck adopting another deck's engine card
 # reads as a growing count here rather than as a silent decline in its report.
 FALLOUT_SCHEMA = """
@@ -102,6 +113,7 @@ def build(raw_dir: Path = config.RAW_DIR, db_path: Path = config.DB_PATH) -> Pat
         con.execute(DECKLISTS_SCHEMA)
         con.execute(CONFIGURATIONS_SCHEMA)
         con.execute(LANDS_SCHEMA)
+        con.execute(CARDS_SCHEMA)
         con.execute(FALLOUT_SCHEMA)
         _load(
             con,
@@ -134,6 +146,10 @@ def build(raw_dir: Path = config.RAW_DIR, db_path: Path = config.DB_PATH) -> Pat
             ),
         )
         _load(con, "lands", ((card,) for card in sorted(set().union(*(d.land_names for _, d in lists)))))
+        published = {}
+        for _, d in lists:
+            published.update(d.colours)
+        _load(con, "cards", ((card, "".join(sorted(colours))) for card, colours in sorted(published.items())))
         _load(
             con,
             "fallout",
@@ -148,6 +164,16 @@ def land_names(db_path: Path = config.DB_PATH) -> frozenset[str]:
     """Every card the MTGO payloads have typed as a land."""
     with duckdb.connect(db_path, read_only=True) as con:
         return frozenset(row[0] for row in con.execute("SELECT card FROM lands").fetchall())
+
+
+def card_colours(db_path: Path = config.DB_PATH) -> dict[str, frozenset[str]]:
+    """Every card's colours as the MTGO payloads have published them."""
+    with duckdb.connect(db_path, read_only=True) as con:
+        # A colourless card is an empty string, which the CSV load reads as NULL.
+        return {
+            card: frozenset(colours or "")
+            for card, colours in con.execute("SELECT card, colours FROM cards").fetchall()
+        }
 
 
 def fallout(db_path: Path = config.DB_PATH) -> list[dict]:

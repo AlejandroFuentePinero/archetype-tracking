@@ -481,3 +481,30 @@ def test_an_empty_paper_row_says_it_was_the_sample_and_not_the_fetch():
     fat = {"against": "Spotlight Brisbane", "build_lists": 77, "baseline_lists": 29}
     assert "at 29 lists" in weekly._stable(fat)
     assert "worth 6 of them" in weekly._stable(fat)
+
+
+def test_a_paper_list_reads_its_splash_off_the_colours_mtgo_has_published(tmp_path):
+    """Melee publishes a decklist's cards and nothing else, so the splash line
+    on a paper list reads the colours MTGO has published for the same names,
+    the way the land count reads MTGO's types. A Dimir list on a playset of
+    Flame of Anor is Grixis Frog, on paper as on MTGO.
+    """
+    from tests import synthetic
+    from tracker import store
+
+    raw = synthetic.write_cache(
+        tmp_path / "raw", [synthetic.league("2026-07-14", [synthetic.entry("colours", cards={"Lightning Bolt": (1, 0)})])]
+    )
+    db = tmp_path / "engine.duckdb"
+    store.build(raw, db)
+    assert store.card_colours(db)["Lightning Bolt"] == frozenset("R")
+    assert store.card_colours(db)["Psychic Frog"] == frozenset("UB")
+
+    shell = {"Psychic Frog": 4, "Quantum Riddler": 4, "Thoughtseize": 4, "Island": 24, "Swamp": 24}
+    dimir = {**_list(1, name="Dimir Midrange"), "main": shell}
+    grixis = {**_list(2, name="Grixis Frog"), "main": {**shell, "Flame of Anor": 4}}
+    colours = store.card_colours(db) | {"Flame of Anor": frozenset("UR")}
+    members = spotlight.members(
+        _payload(DALLAS, [dimir, grixis]), "dimir", None, colours=colours, land_names=store.land_names(db)
+    )
+    assert [row["rank"] for row in members] == [1]
