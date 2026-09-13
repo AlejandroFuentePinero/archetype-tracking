@@ -24,10 +24,12 @@ start,end,lists,against,kind,zone,card,text
 2026-07-13,2026-07-26,79,Pro Tour Amsterdam,event,,,Pro Tour Amsterdam
 2026-07-27,2026-08-09,61,the fortnight to 2026-07-26,adoption,side,Hurkyl's Recall,"Hurkyl's Recall fell in the sideboard, 37/79 to 9/61 lists (47% to 15%)"
 2026-07-27,2026-08-09,61,the fortnight to 2026-07-26,copies,main,Welding Jar,Welding Jar up from 1.4 to 1.9 copies on average
-2026-08-10,2026-08-23,60,the fortnight to 2026-08-09,return,side,Cursed Totem,"Cursed Totem returns after 10 weeks away, 10 of 60 lists (17%)"
-2026-08-10,2026-08-23,60,the fortnight to 2026-08-09,adoption,side,Grafdigger's Cage,"Grafdigger's Cage climbed in the sideboard, 5/61 to 32/60 lists (8% to 53%)"
-2026-08-10,2026-08-23,60,the fortnight to 2026-08-09,return,main,Thundering Falls,"Thundering Falls appears for the first time, 2 of 60 lists (3%)"
-2026-08-24,2026-09-06,71,Spotlight Dallas,adoption,side,Grafdigger's Cage,"Grafdigger's Cage fell in the sideboard, 33/45 to 32/71 lists (73% to 45%)"
-2026-08-24,2026-09-06,71,Spotlight Dallas,adoption,side,Mystical Dispute,"Mystical Dispute fell in the sideboard, 33/45 to 35/71 lists (73% to 49%)"
-2026-08-24,2026-09-06,71,Spotlight Dallas,event,,,Spotlight Brisbane
-2026-08-24,2026-09-06,71,Spotlight Dallas,event,,,Spotlight Dallas
+2026-08-10,2026-08-23,64,the fortnight to 2026-08-09,return,side,Cursed Totem,"Cursed Totem returns after 10 weeks away, 12 of 64 lists (19%)"
+2026-08-10,2026-08-23,64,the fortnight to 2026-08-09,adoption,side,Grafdigger's Cage,"Grafdigger's Cage climbed in the sideboard, 5/61 to 36/64 lists (8% to 56%)"
+2026-08-10,2026-08-23,64,the fortnight to 2026-08-09,adoption,main,Sink into Stupor,"Sink into Stupor climbed in the mainboard, 35/61 to 50/64 lists (57% to 78%)"
+2026-08-10,2026-08-23,64,the fortnight to 2026-08-09,return,main,Thundering Falls,"Thundering Falls appears for the first time, 2 of 64 lists (3%)"
+2026-08-24,2026-09-06,72,Spotlight Dallas,adoption,main,Arcbound Ravager,"Arcbound Ravager fell in the mainboard, 24/45 to 24/72 lists (53% to 33%)"
+2026-08-24,2026-09-06,72,Spotlight Dallas,adoption,side,Grafdigger's Cage,"Grafdigger's Cage fell in the sideboard, 33/45 to 33/72 lists (73% to 46%)"
+2026-08-24,2026-09-06,72,Spotlight Dallas,adoption,side,Mystical Dispute,"Mystical Dispute fell in the sideboard, 33/45 to 36/72 lists (73% to 50%)"
+2026-08-24,2026-09-06,72,Spotlight Dallas,event,,,Spotlight Brisbane
+2026-08-24,2026-09-06,72,Spotlight Dallas,event,,,Spotlight Dallas

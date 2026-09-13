@@ -29,8 +29,6 @@ start,end,lists,against,kind,zone,card,text
 2026-07-13,2026-07-26,73,Pro Tour Amsterdam,return,side,Enchanted Evening,"Enchanted Evening appears for the first time, 3 of 73 lists (4%)"
 2026-07-13,2026-07-26,73,Pro Tour Amsterdam,return,main,Snow-Covered Mountain,"Snow-Covered Mountain appears for the first time, 5 of 73 lists (7%)"
 2026-07-13,2026-07-26,73,Pro Tour Amsterdam,adoption,main,Sunbaked Canyon,"Sunbaked Canyon climbed in the mainboard, 5/16 to 51/73 lists (31% to 70%)"
-2026-07-13,2026-07-26,73,Pro Tour Amsterdam,adoption,side,Wear/Tear,"Wear/Tear climbed in the sideboard, 0/16 to 63/73 lists (0% to 86%)"
-2026-07-13,2026-07-26,73,Pro Tour Amsterdam,adoption,side,Wear,"Wear fell in the sideboard, 14/16 to 0/73 lists (88% to 0%)"
 2026-07-13,2026-07-26,73,Pro Tour Amsterdam,event,,,Pro Tour Amsterdam
 2026-07-27,2026-08-09,32,the fortnight to 2026-07-26,adoption,main,Grapeshot,"Grapeshot climbed in the mainboard, 51/73 to 31/32 lists (70% to 97%)"
 2026-07-27,2026-08-09,32,the fortnight to 2026-07-26,adoption,side,Grapeshot,"Grapeshot fell in the sideboard, 22/73 to 1/32 lists (30% to 3%)"
@@ -39,30 +37,29 @@ start,end,lists,against,kind,zone,card,text
 2026-07-27,2026-08-09,32,the fortnight to 2026-07-26,adoption,main,Thundering Falls,"Thundering Falls fell in the mainboard, 24/73 to 3/32 lists (33% to 9%)"
 2026-07-27,2026-08-09,32,the fortnight to 2026-07-26,adoption,side,Veil of Summer,"Veil of Summer climbed in the sideboard, 5/73 to 13/32 lists (7% to 41%)"
 2026-07-27,2026-08-09,32,the fortnight to 2026-07-26,adoption,side,Wear/Tear,"Wear/Tear fell in the sideboard, 63/73 to 16/32 lists (86% to 50%)"
-2026-08-10,2026-08-23,42,the fortnight to 2026-08-09,adoption,side,Blood Moon,"Blood Moon climbed in the sideboard, 3/32 to 14/42 lists (9% to 33%)"
-2026-08-10,2026-08-23,42,the fortnight to 2026-08-09,adoption,side,Flusterstorm,"Flusterstorm climbed in the sideboard, 1/32 to 13/42 lists (3% to 31%)"
-2026-08-10,2026-08-23,42,the fortnight to 2026-08-09,adoption,side,Galvanic Relay,"Galvanic Relay climbed in the sideboard, 2/32 to 22/42 lists (6% to 52%)"
-2026-08-10,2026-08-23,42,the fortnight to 2026-08-09,adoption,side,Grapeshot,"Grapeshot climbed in the sideboard, 1/32 to 14/42 lists (3% to 33%)"
-2026-08-10,2026-08-23,42,the fortnight to 2026-08-09,adoption,main,March of Reckless Joy,"March of Reckless Joy climbed in the mainboard, 1/32 to 13/42 lists (3% to 31%)"
-2026-08-10,2026-08-23,42,the fortnight to 2026-08-09,adoption,side,Orim's Chant,"Orim's Chant fell in the sideboard, 17/32 to 12/42 lists (53% to 29%)"
-2026-08-10,2026-08-23,42,the fortnight to 2026-08-09,adoption,main,Steam Vents,"Steam Vents climbed in the mainboard, 1/32 to 13/42 lists (3% to 31%)"
-2026-08-10,2026-08-23,42,the fortnight to 2026-08-09,adoption,main,Thundering Falls,"Thundering Falls climbed in the mainboard, 3/32 to 16/42 lists (9% to 38%)"
-2026-08-10,2026-08-23,42,the fortnight to 2026-08-09,adoption,side,Wear/Tear,"Wear/Tear climbed in the sideboard, 16/32 to 31/42 lists (50% to 74%)"
-2026-08-10,2026-08-23,42,the fortnight to 2026-08-09,copies,main,Mountain,Mountain down from 4.0 to 3.3 copies on average
-2026-08-24,2026-09-06,58,Spotlight Dallas,adoption,side,Flusterstorm,"Flusterstorm climbed in the sideboard, 1/24 to 16/58 lists (4% to 28%)"
-2026-08-24,2026-09-06,58,Spotlight Dallas,adoption,side,Galvanic Relay,"Galvanic Relay climbed in the sideboard, 3/24 to 20/58 lists (12% to 34%)"
-2026-08-24,2026-09-06,58,Spotlight Dallas,adoption,main,Grapeshot,"Grapeshot fell in the mainboard, 21/24 to 36/58 lists (88% to 62%)"
-2026-08-24,2026-09-06,58,Spotlight Dallas,adoption,side,Grapeshot,"Grapeshot climbed in the sideboard, 3/24 to 21/58 lists (12% to 36%)"
-2026-08-24,2026-09-06,58,Spotlight Dallas,return,main,Highway Robbery,"Highway Robbery returns after 8 weeks away, 2 of 58 lists (3%)"
-2026-08-24,2026-09-06,58,Spotlight Dallas,adoption,main,March of Reckless Joy,"March of Reckless Joy climbed in the mainboard, 2/24 to 20/58 lists (8% to 34%)"
-2026-08-24,2026-09-06,58,Spotlight Dallas,adoption,side,Orim's Chant,"Orim's Chant fell in the sideboard, 20/24 to 28/58 lists (83% to 48%)"
-2026-08-24,2026-09-06,58,Spotlight Dallas,return,side,Rip Apart,"Rip Apart returns after 8 weeks away, 4 of 58 lists (7%)"
-2026-08-24,2026-09-06,58,Spotlight Dallas,adoption,main,Strike It Rich,"Strike It Rich fell in the mainboard, 8/24 to 5/58 lists (33% to 9%)"
-2026-08-24,2026-09-06,58,Spotlight Dallas,adoption,main,Sunbaked Canyon,"Sunbaked Canyon fell in the mainboard, 18/24 to 24/58 lists (75% to 41%)"
-2026-08-24,2026-09-06,58,Spotlight Dallas,adoption,side,Wear/Tear,"Wear/Tear climbed in the sideboard, 0/24 to 41/58 lists (0% to 71%)"
-2026-08-24,2026-09-06,58,Spotlight Dallas,adoption,side,Wear,"Wear fell in the sideboard, 17/24 to 0/58 lists (71% to 0%)"
-2026-08-24,2026-09-06,58,Spotlight Dallas,copies,main,Arid Mesa,Arid Mesa up from 2.3 to 2.9 copies on average
-2026-08-24,2026-09-06,58,Spotlight Dallas,copies,main,Hex Magic,Hex Magic up from 3.5 to 4.0 copies on average
-2026-08-24,2026-09-06,58,Spotlight Dallas,copies,main,Mountain,Mountain down from 4.1 to 3.3 copies on average
-2026-08-24,2026-09-06,58,Spotlight Dallas,event,,,Spotlight Brisbane
-2026-08-24,2026-09-06,58,Spotlight Dallas,event,,,Spotlight Dallas
+2026-08-10,2026-08-23,44,the fortnight to 2026-08-09,adoption,side,Blood Moon,"Blood Moon climbed in the sideboard, 3/32 to 16/44 lists (9% to 36%)"
+2026-08-10,2026-08-23,44,the fortnight to 2026-08-09,adoption,side,Flusterstorm,"Flusterstorm climbed in the sideboard, 1/32 to 15/44 lists (3% to 34%)"
+2026-08-10,2026-08-23,44,the fortnight to 2026-08-09,adoption,side,Galvanic Relay,"Galvanic Relay climbed in the sideboard, 2/32 to 24/44 lists (6% to 55%)"
+2026-08-10,2026-08-23,44,the fortnight to 2026-08-09,adoption,side,Grapeshot,"Grapeshot climbed in the sideboard, 1/32 to 16/44 lists (3% to 36%)"
+2026-08-10,2026-08-23,44,the fortnight to 2026-08-09,adoption,main,March of Reckless Joy,"March of Reckless Joy climbed in the mainboard, 1/32 to 15/44 lists (3% to 34%)"
+2026-08-10,2026-08-23,44,the fortnight to 2026-08-09,adoption,side,Orim's Chant,"Orim's Chant fell in the sideboard, 17/32 to 12/44 lists (53% to 27%)"
+2026-08-10,2026-08-23,44,the fortnight to 2026-08-09,adoption,main,Steam Vents,"Steam Vents climbed in the mainboard, 1/32 to 15/44 lists (3% to 34%)"
+2026-08-10,2026-08-23,44,the fortnight to 2026-08-09,adoption,main,Thundering Falls,"Thundering Falls climbed in the mainboard, 3/32 to 18/44 lists (9% to 41%)"
+2026-08-10,2026-08-23,44,the fortnight to 2026-08-09,adoption,side,Wear/Tear,"Wear/Tear climbed in the sideboard, 16/32 to 33/44 lists (50% to 75%)"
+2026-08-10,2026-08-23,44,the fortnight to 2026-08-09,copies,main,Mountain,Mountain down from 4.0 to 3.3 copies on average
+2026-08-24,2026-09-06,59,Spotlight Dallas,adoption,side,Fire Magic,"Fire Magic climbed in the sideboard, 1/24 to 15/59 lists (4% to 25%)"
+2026-08-24,2026-09-06,59,Spotlight Dallas,adoption,side,Flusterstorm,"Flusterstorm climbed in the sideboard, 1/24 to 17/59 lists (4% to 29%)"
+2026-08-24,2026-09-06,59,Spotlight Dallas,adoption,side,Galvanic Relay,"Galvanic Relay climbed in the sideboard, 3/24 to 21/59 lists (12% to 36%)"
+2026-08-24,2026-09-06,59,Spotlight Dallas,adoption,main,Grapeshot,"Grapeshot fell in the mainboard, 21/24 to 36/59 lists (88% to 61%)"
+2026-08-24,2026-09-06,59,Spotlight Dallas,adoption,side,Grapeshot,"Grapeshot climbed in the sideboard, 3/24 to 22/59 lists (12% to 37%)"
+2026-08-24,2026-09-06,59,Spotlight Dallas,return,main,Highway Robbery,"Highway Robbery returns after 8 weeks away, 2 of 59 lists (3%)"
+2026-08-24,2026-09-06,59,Spotlight Dallas,adoption,main,March of Reckless Joy,"March of Reckless Joy climbed in the mainboard, 2/24 to 21/59 lists (8% to 36%)"
+2026-08-24,2026-09-06,59,Spotlight Dallas,adoption,side,Orim's Chant,"Orim's Chant fell in the sideboard, 20/24 to 28/59 lists (83% to 47%)"
+2026-08-24,2026-09-06,59,Spotlight Dallas,return,side,Rip Apart,"Rip Apart returns after 8 weeks away, 4 of 59 lists (7%)"
+2026-08-24,2026-09-06,59,Spotlight Dallas,adoption,main,Strike It Rich,"Strike It Rich fell in the mainboard, 8/24 to 5/59 lists (33% to 8%)"
+2026-08-24,2026-09-06,59,Spotlight Dallas,adoption,main,Sunbaked Canyon,"Sunbaked Canyon fell in the mainboard, 18/24 to 24/59 lists (75% to 41%)"
+2026-08-24,2026-09-06,59,Spotlight Dallas,copies,main,Arid Mesa,Arid Mesa up from 2.3 to 3.0 copies on average
+2026-08-24,2026-09-06,59,Spotlight Dallas,copies,main,Hex Magic,Hex Magic up from 3.5 to 4.0 copies on average
+2026-08-24,2026-09-06,59,Spotlight Dallas,copies,main,Mountain,Mountain down from 4.1 to 3.3 copies on average
+2026-08-24,2026-09-06,59,Spotlight Dallas,event,,,Spotlight Brisbane
+2026-08-24,2026-09-06,59,Spotlight Dallas,event,,,Spotlight Dallas

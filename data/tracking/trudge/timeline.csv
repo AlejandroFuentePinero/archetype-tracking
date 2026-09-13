@@ -1,10 +1,7 @@
 start,end,lists,against,kind,zone,card,text
 2026-05-18,2026-05-31,18,"no fortnight before it, the history opening on 2026-05-19",stable,,,
-2026-06-01,2026-06-14,37,the fortnight to 2026-05-31,return,side,Balustrade Wurm,"Balustrade Wurm appears for the first time, 8 of 37 lists (22%)"
-2026-06-01,2026-06-14,37,the fortnight to 2026-05-31,return,main,"Boseiju, Who Endures","Boseiju, Who Endures appears for the first time, 2 of 37 lists (5%)"
-2026-06-01,2026-06-14,37,the fortnight to 2026-05-31,return,side,Dismember,"Dismember appears for the first time, 3 of 37 lists (8%)"
-2026-06-01,2026-06-14,37,the fortnight to 2026-05-31,return,main,Primeval Titan,"Primeval Titan appears for the first time, 2 of 37 lists (5%)"
-2026-06-01,2026-06-14,37,the fortnight to 2026-05-31,return,main,"Ugin, Eye of the Storms","Ugin, Eye of the Storms appears for the first time, 11 of 37 lists (30%)"
+2026-06-01,2026-06-14,37,the fortnight to 2026-05-31,adoption,side,Balustrade Wurm,"Balustrade Wurm climbed in the sideboard, 0/18 to 8/37 lists (0% to 22%)"
+2026-06-01,2026-06-14,37,the fortnight to 2026-05-31,adoption,main,"Ugin, Eye of the Storms","Ugin, Eye of the Storms climbed in the mainboard, 0/18 to 11/37 lists (0% to 30%)"
 2026-06-15,2026-06-28,14,the fortnight to 2026-06-14,return,main,Cavern of Souls,"Cavern of Souls appears for the first time, 6 of 14 lists (43%)"
 2026-06-15,2026-06-28,14,the fortnight to 2026-06-14,adoption,side,Chomping Changeling,"Chomping Changeling fell in the sideboard, 36/37 to 3/14 lists (97% to 21%)"
 2026-06-15,2026-06-28,14,the fortnight to 2026-06-14,adoption,side,Collector Ouphe,"Collector Ouphe fell in the sideboard, 37/37 to 10/14 lists (100% to 71%)"
@@ -24,18 +21,17 @@ start,end,lists,against,kind,zone,card,text
 2026-06-29,2026-07-12,5,the fortnight to 2026-06-28,adoption,side,Surgical Extraction,"Surgical Extraction fell in the sideboard, 6/14 to 1/5 lists (43% to 20%)"
 2026-06-29,2026-07-12,5,the fortnight to 2026-06-28,copies,main,Forest,Forest up from 4.0 to 4.6 copies on average
 2026-06-29,2026-07-12,5,the fortnight to 2026-06-28,copies,main,Turntimber Symbiosis,Turntimber Symbiosis down from 3.5 to 2.8 copies on average
-2026-07-13,2026-07-26,100,Pro Tour Amsterdam,return,main,Ouroboroid,"Ouroboroid appears for the first time, 2 of 100 lists (2%)"
-2026-07-13,2026-07-26,100,Pro Tour Amsterdam,return,side,Scavenging Ooze,"Scavenging Ooze appears for the first time, 8 of 100 lists (8%)"
 2026-07-13,2026-07-26,100,Pro Tour Amsterdam,return,side,Sire of Seven Deaths,"Sire of Seven Deaths moves to the sideboard, 14 of 100 lists (14%)"
 2026-07-13,2026-07-26,100,Pro Tour Amsterdam,event,,,Pro Tour Amsterdam
 2026-07-27,2026-08-09,77,the fortnight to 2026-07-26,return,side,Six,"Six appears for the first time, 3 of 77 lists (4%)"
-2026-08-10,2026-08-23,46,the fortnight to 2026-08-09,adoption,side,Chalice of the Void,"Chalice of the Void fell in the sideboard, 74/77 to 33/46 lists (96% to 72%)"
-2026-08-10,2026-08-23,46,the fortnight to 2026-08-09,return,side,Cursed Totem,"Cursed Totem appears for the first time, 10 of 46 lists (22%)"
-2026-08-10,2026-08-23,46,the fortnight to 2026-08-09,adoption,side,Endurance,"Endurance fell in the sideboard, 69/77 to 24/46 lists (90% to 52%)"
-2026-08-10,2026-08-23,46,the fortnight to 2026-08-09,adoption,side,Grafdigger's Cage,"Grafdigger's Cage climbed in the sideboard, 0/77 to 19/46 lists (0% to 41%)"
-2026-08-10,2026-08-23,46,the fortnight to 2026-08-09,adoption,side,Six,"Six climbed in the sideboard, 3/77 to 12/46 lists (4% to 26%)"
-2026-08-10,2026-08-23,46,the fortnight to 2026-08-09,return,side,Torpor Orb,"Torpor Orb appears for the first time, 8 of 46 lists (17%)"
-2026-08-10,2026-08-23,46,the fortnight to 2026-08-09,return,side,Warping Wail,"Warping Wail appears for the first time, 8 of 46 lists (17%)"
-2026-08-24,2026-09-06,40,Spotlight Dallas,adoption,side,Collector Ouphe,"Collector Ouphe climbed in the sideboard, 8/38 to 18/40 lists (21% to 45%)"
-2026-08-24,2026-09-06,40,Spotlight Dallas,event,,,Spotlight Brisbane
-2026-08-24,2026-09-06,40,Spotlight Dallas,event,,,Spotlight Dallas
+2026-08-10,2026-08-23,47,the fortnight to 2026-08-09,adoption,side,Chalice of the Void,"Chalice of the Void fell in the sideboard, 74/77 to 33/47 lists (96% to 70%)"
+2026-08-10,2026-08-23,47,the fortnight to 2026-08-09,return,side,Cursed Totem,"Cursed Totem appears for the first time, 10 of 47 lists (21%)"
+2026-08-10,2026-08-23,47,the fortnight to 2026-08-09,adoption,side,Endurance,"Endurance fell in the sideboard, 69/77 to 24/47 lists (90% to 51%)"
+2026-08-10,2026-08-23,47,the fortnight to 2026-08-09,adoption,side,Grafdigger's Cage,"Grafdigger's Cage climbed in the sideboard, 0/77 to 20/47 lists (0% to 43%)"
+2026-08-10,2026-08-23,47,the fortnight to 2026-08-09,adoption,side,Six,"Six climbed in the sideboard, 3/77 to 13/47 lists (4% to 28%)"
+2026-08-10,2026-08-23,47,the fortnight to 2026-08-09,return,side,Torpor Orb,"Torpor Orb appears for the first time, 9 of 47 lists (19%)"
+2026-08-10,2026-08-23,47,the fortnight to 2026-08-09,return,side,Warping Wail,"Warping Wail appears for the first time, 9 of 47 lists (19%)"
+2026-08-24,2026-09-06,41,Spotlight Dallas,adoption,side,Collector Ouphe,"Collector Ouphe climbed in the sideboard, 8/38 to 19/41 lists (21% to 46%)"
+2026-08-24,2026-09-06,41,Spotlight Dallas,adoption,main,Drowner of Truth,"Drowner of Truth fell in the mainboard, 34/38 to 28/41 lists (89% to 68%)"
+2026-08-24,2026-09-06,41,Spotlight Dallas,event,,,Spotlight Brisbane
+2026-08-24,2026-09-06,41,Spotlight Dallas,event,,,Spotlight Dallas

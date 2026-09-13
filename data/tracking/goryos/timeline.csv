@@ -2,9 +2,6 @@ start,end,lists,against,kind,zone,card,text
 2026-05-18,2026-05-31,20,"no fortnight before it, the history opening on 2026-05-19",stable,,,
 2026-06-01,2026-06-14,65,the fortnight to 2026-05-31,adoption,main,Consign to Memory,"Consign to Memory climbed in the mainboard, 6/20 to 39/65 lists (30% to 60%)"
 2026-06-01,2026-06-14,65,the fortnight to 2026-05-31,adoption,side,Consign to Memory,"Consign to Memory fell in the sideboard, 13/20 to 26/65 lists (65% to 40%)"
-2026-06-01,2026-06-14,65,the fortnight to 2026-05-31,return,side,Engineered Explosives,"Engineered Explosives appears for the first time, 4 of 65 lists (6%)"
-2026-06-01,2026-06-14,65,the fortnight to 2026-05-31,return,side,Ghost Vacuum,"Ghost Vacuum appears for the first time, 4 of 65 lists (6%)"
-2026-06-01,2026-06-14,65,the fortnight to 2026-05-31,return,main,"Jace, Vryn's Prodigy","Jace, Vryn's Prodigy appears for the first time, 2 of 65 lists (3%)"
 2026-06-01,2026-06-14,65,the fortnight to 2026-05-31,adoption,main,March of Otherworldly Light,"March of Otherworldly Light climbed in the mainboard, 5/20 to 41/65 lists (25% to 63%)"
 2026-06-01,2026-06-14,65,the fortnight to 2026-05-31,adoption,side,Nihil Spellbomb,"Nihil Spellbomb climbed in the sideboard, 11/20 to 52/65 lists (55% to 80%)"
 2026-06-01,2026-06-14,65,the fortnight to 2026-05-31,adoption,main,Pest Control,"Pest Control climbed in the mainboard, 1/20 to 19/65 lists (5% to 29%)"
@@ -49,8 +46,8 @@ start,end,lists,against,kind,zone,card,text
 2026-08-10,2026-08-23,72,the fortnight to 2026-08-09,adoption,side,Spell Snare,"Spell Snare fell in the sideboard, 36/72 to 16/72 lists (50% to 22%)"
 2026-08-10,2026-08-23,72,the fortnight to 2026-08-09,adoption,side,Surgical Extraction,"Surgical Extraction fell in the sideboard, 52/72 to 27/72 lists (72% to 38%)"
 2026-08-10,2026-08-23,72,the fortnight to 2026-08-09,copies,main,Faithful Mending,"Faithful Mending at 4 copies climbed, 42/72 to 54/72 lists (58% to 75%)"
-2026-08-24,2026-09-06,87,Spotlight Dallas,adoption,main,"Kavaero, Mind-Bitten","Kavaero, Mind-Bitten fell in the mainboard, 43/77 to 24/87 lists (56% to 28%)"
-2026-08-24,2026-09-06,87,Spotlight Dallas,copies,main,Faithful Mending,"Faithful Mending at 3 copies fell, 36/77 to 27/87 lists (47% to 31%)"
-2026-08-24,2026-09-06,87,Spotlight Dallas,copies,main,Faithful Mending,"Faithful Mending at 4 copies climbed, 38/77 to 58/87 lists (49% to 67%)"
-2026-08-24,2026-09-06,87,Spotlight Dallas,event,,,Spotlight Brisbane
-2026-08-24,2026-09-06,87,Spotlight Dallas,event,,,Spotlight Dallas
+2026-08-24,2026-09-06,89,Spotlight Dallas,adoption,main,"Kavaero, Mind-Bitten","Kavaero, Mind-Bitten fell in the mainboard, 43/77 to 24/89 lists (56% to 27%)"
+2026-08-24,2026-09-06,89,Spotlight Dallas,copies,main,Faithful Mending,"Faithful Mending at 3 copies fell, 36/77 to 27/89 lists (47% to 30%)"
+2026-08-24,2026-09-06,89,Spotlight Dallas,copies,main,Faithful Mending,"Faithful Mending at 4 copies climbed, 38/77 to 60/89 lists (49% to 67%)"
+2026-08-24,2026-09-06,89,Spotlight Dallas,event,,,Spotlight Brisbane
+2026-08-24,2026-09-06,89,Spotlight Dallas,event,,,Spotlight Dallas

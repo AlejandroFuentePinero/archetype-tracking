@@ -70,8 +70,6 @@ start,end,lists,against,kind,zone,card,text
 2026-06-29,2026-07-12,80,the fortnight to 2026-06-28,copies,main,Galvanic Discharge,Galvanic Discharge down from 4.0 to 3.5 copies on average
 2026-06-29,2026-07-12,80,the fortnight to 2026-06-28,copies,main,Sacred Foundry,Sacred Foundry down from 3.5 to 3.1 copies on average
 2026-07-13,2026-07-26,43,Pro Tour Amsterdam,return,side,The Legend of Roku,"The Legend of Roku moves to the sideboard, 3 of 43 lists (7%)"
-2026-07-13,2026-07-26,43,Pro Tour Amsterdam,adoption,side,Wear/Tear,"Wear/Tear climbed in the sideboard, 0/9 to 37/43 lists (0% to 86%)"
-2026-07-13,2026-07-26,43,Pro Tour Amsterdam,adoption,side,Wear,"Wear fell in the sideboard, 7/9 to 0/43 lists (78% to 0%)"
 2026-07-13,2026-07-26,43,Pro Tour Amsterdam,copies,main,Path to Exile,Path to Exile up from 3.0 to 3.6 copies on average
 2026-07-13,2026-07-26,43,Pro Tour Amsterdam,event,,,Pro Tour Amsterdam
 2026-07-27,2026-08-09,27,the fortnight to 2026-07-26,adoption,side,Celestial Purge,"Celestial Purge fell in the sideboard, 24/43 to 5/27 lists (56% to 19%)"
@@ -89,16 +87,14 @@ start,end,lists,against,kind,zone,card,text
 2026-08-10,2026-08-23,28,the fortnight to 2026-08-09,adoption,main,The Legend of Roku,"The Legend of Roku climbed in the mainboard, 17/27 to 25/28 lists (63% to 89%)"
 2026-08-10,2026-08-23,28,the fortnight to 2026-08-09,adoption,main,Wrath of God,"Wrath of God fell in the mainboard, 7/27 to 1/28 lists (26% to 4%)"
 2026-08-10,2026-08-23,28,the fortnight to 2026-08-09,adoption,side,Wrath of God,"Wrath of God climbed in the sideboard, 14/27 to 23/28 lists (52% to 82%)"
-2026-08-24,2026-09-06,72,Spotlight Dallas,return,side,Batterskull,"Batterskull appears for the first time, 3 of 72 lists (4%)"
-2026-08-24,2026-09-06,72,Spotlight Dallas,adoption,side,Celestial Purge,"Celestial Purge fell in the sideboard, 10/31 to 1/72 lists (32% to 1%)"
-2026-08-24,2026-09-06,72,Spotlight Dallas,return,side,Ethersworn Canonist,"Ethersworn Canonist appears for the first time, 3 of 72 lists (4%)"
-2026-08-24,2026-09-06,72,Spotlight Dallas,adoption,main,High Noon,"High Noon climbed in the mainboard, 16/31 to 55/72 lists (52% to 76%)"
-2026-08-24,2026-09-06,72,Spotlight Dallas,return,side,Perilous Snare,"Perilous Snare appears for the first time, 3 of 72 lists (4%)"
-2026-08-24,2026-09-06,72,Spotlight Dallas,return,side,Pinnacle Starcage,"Pinnacle Starcage returns after 12 weeks away, 3 of 72 lists (4%)"
-2026-08-24,2026-09-06,72,Spotlight Dallas,adoption,main,Relic of Progenitus,"Relic of Progenitus fell in the mainboard, 17/31 to 25/72 lists (55% to 35%)"
-2026-08-24,2026-09-06,72,Spotlight Dallas,adoption,side,Rest in Peace,"Rest in Peace climbed in the sideboard, 12/31 to 56/72 lists (39% to 78%)"
-2026-08-24,2026-09-06,72,Spotlight Dallas,adoption,side,Wear/Tear,"Wear/Tear climbed in the sideboard, 0/31 to 69/72 lists (0% to 96%)"
-2026-08-24,2026-09-06,72,Spotlight Dallas,adoption,side,Wear,"Wear fell in the sideboard, 28/31 to 0/72 lists (90% to 0%)"
-2026-08-24,2026-09-06,72,Spotlight Dallas,copies,main,Galvanic Discharge,Galvanic Discharge up from 3.3 to 3.8 copies on average
-2026-08-24,2026-09-06,72,Spotlight Dallas,event,,,Spotlight Brisbane
-2026-08-24,2026-09-06,72,Spotlight Dallas,event,,,Spotlight Dallas
+2026-08-24,2026-09-06,73,Spotlight Dallas,return,side,Batterskull,"Batterskull appears for the first time, 3 of 73 lists (4%)"
+2026-08-24,2026-09-06,73,Spotlight Dallas,adoption,side,Celestial Purge,"Celestial Purge fell in the sideboard, 10/31 to 1/73 lists (32% to 1%)"
+2026-08-24,2026-09-06,73,Spotlight Dallas,return,side,Ethersworn Canonist,"Ethersworn Canonist appears for the first time, 3 of 73 lists (4%)"
+2026-08-24,2026-09-06,73,Spotlight Dallas,adoption,main,High Noon,"High Noon climbed in the mainboard, 16/31 to 56/73 lists (52% to 77%)"
+2026-08-24,2026-09-06,73,Spotlight Dallas,return,side,Perilous Snare,"Perilous Snare appears for the first time, 3 of 73 lists (4%)"
+2026-08-24,2026-09-06,73,Spotlight Dallas,return,side,Pinnacle Starcage,"Pinnacle Starcage returns after 12 weeks away, 3 of 73 lists (4%)"
+2026-08-24,2026-09-06,73,Spotlight Dallas,adoption,main,Relic of Progenitus,"Relic of Progenitus fell in the mainboard, 17/31 to 25/73 lists (55% to 34%)"
+2026-08-24,2026-09-06,73,Spotlight Dallas,adoption,side,Rest in Peace,"Rest in Peace climbed in the sideboard, 12/31 to 57/73 lists (39% to 78%)"
+2026-08-24,2026-09-06,73,Spotlight Dallas,copies,main,Galvanic Discharge,Galvanic Discharge up from 3.3 to 3.7 copies on average
+2026-08-24,2026-09-06,73,Spotlight Dallas,event,,,Spotlight Brisbane
+2026-08-24,2026-09-06,73,Spotlight Dallas,event,,,Spotlight Dallas
