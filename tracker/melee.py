@@ -235,11 +235,23 @@ def front_face(name: str) -> str:
     against MTGO's history, so the fold happens here or every comparison across
     the two sources quietly misses.
 
+    A split card is written the same way by melee and is not the same case: MTGO
+    publishes both halves under one name, `Wear/Tear`, so folded to its front
+    face it becomes `Wear`, a card no MTGO list has ever registered. Every paper
+    row for it then reads as the event adopting a card the deck has never
+    played, and the fortnight after reads as the deck dropping it again.
+    `config.SPLIT_COLOURS` is the history's split cards, so a melee name landing
+    on one of its keys keeps both halves and everything else folds.
+
     The printing aliases apply after it, the same ones and for the same reason
     the MTGO parse applies them: two names for one card split its history down
     the middle wherever they are not merged at the point names become counts.
     """
-    face = html.unescape(name).split(" // ")[0].strip()
+    full = html.unescape(name).strip()
+    joined = full.replace(" // ", "/")
+    if joined in config.SPLIT_COLOURS:
+        return joined
+    face = full.split(" // ")[0].strip()
     return config.CARD_ALIASES.get(face, face)
 
 

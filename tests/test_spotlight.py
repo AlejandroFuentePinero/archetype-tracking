@@ -82,6 +82,25 @@ def test_a_double_faced_card_is_folded_to_the_face_mtgo_publishes():
     assert main == {"Witch Enchanter": 4}
 
 
+def test_a_split_card_keeps_both_halves_because_mtgo_publishes_both():
+    """Melee writes a split card the way it writes a double-faced one, and MTGO does not.
+
+    MTGO publishes both halves under one name, `Wear/Tear`, so folded to its
+    front face the card becomes `Wear`, which no MTGO list has ever registered.
+    Every paper row for it then reads as the event adopting a card the deck has
+    never played, and the fortnight after reads as the deck dropping it again.
+    The live cache carries 2,511 registrations of `Wear/Tear` and not one of
+    `Wear`.
+    """
+    markup = (
+        '<div class="decklist-category-title">Instant (3)</div>'
+        '<div class="decklist-record"><span class="decklist-record-quantity">3</span>'
+        '<a class="decklist-record-name" href="/Card/View/x">Wear // Tear</a></div>'
+    )
+    main, _side = melee.boards(markup)
+    assert main == {"Wear/Tear": 3}
+
+
 def test_the_sideboard_is_split_on_its_heading_and_not_on_a_count():
     """A companion sits under its own heading and is not a 61st mainboard card."""
     markup = (
