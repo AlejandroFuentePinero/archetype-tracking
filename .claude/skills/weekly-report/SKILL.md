@@ -246,12 +246,14 @@ run changes.
   MTGO only and a paper row never mentions the land count. Recoverable, at the
   price of refetching every decklist page: the headings are on the page and
   `melee.boards` reads them to split the boards.
-- **A list whose boards did not separate is counted as unread**, not classified.
-  A sideboard filed under a heading the fetch does not know puts the whole 75 in
-  the mainboard, and membership is a mainboard test, so such a list would join
-  the deck on a parse failure. The report prints the count. If it climbs past
-  the three melee has published so far, the fetch has broken and the Spotlight
-  numbers are not to be reported until it is fixed.
+- **A list whose boards did not separate is dropped**, not classified.
+  A sideboard the page does not head puts the whole 75 in the mainboard, and
+  membership is a mainboard test, so such a list would join the deck on a parse
+  failure. The report prints the count with its reason. Melee published the
+  three so far with no sideboard heading at all, refetched and confirmed on
+  2026-09-13, so the merge is the field's and not this fetch's: a rising count
+  is a note on what was published, never a reason to hold the Spotlight
+  numbers back.
 - **A row read against a fortnight is marked cross-population** and means less
   than one against the paper event before it. Brisbane to Dallas is paper on
   both sides, a week apart: that is the stronger of the two comparisons, and a

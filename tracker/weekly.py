@@ -29,6 +29,15 @@ WEEKLY_COLUMNS = (
 )
 TIMELINE_COLUMNS = ("start", "end", "lists", "against", "kind", "zone", "card", "text")
 
+# How many dropped paper lists the report says nothing about (Alejandro,
+# 2026-09-13). Melee publishes the odd registration with no sideboard heading,
+# so the boards never separate and the list is dropped. A handful of those is a
+# meme or a corrupt entry rather than news about the deck, 146 Plains at 0-1
+# being one of the three so far, and a banner over a field of nine hundred
+# reads as a fault in the fetch when there is none. Past this the count is
+# worth saying, being too many to be the field's own noise.
+UNREAD_BANNER = 5
+
 
 def deck_dir(deck: str = "blink") -> Path:
     return config.TRACKING_DIR / deck
@@ -454,11 +463,10 @@ def _spotlights(entries: list[dict], camp: str | None = None) -> str:
             f"{entries[-1]['build_lists']} of the {entries[-1]['lists']} at the latest event."
         )
     unread = sum(entry["unread"] for entry in entries)
-    if unread:
+    if unread > UNREAD_BANNER:
         said += (
-            f" {unread} published list(s) could not be read: melee grouped the 75 under a"
-            f" heading the fetch does not know, so the boards did not separate and membership"
-            f" could not be tested."
+            f" {unread} published list(s) are dropped: melee published them with no sideboard"
+            f" heading, so the boards never separated and membership could not be tested."
         )
     rows = [
         [

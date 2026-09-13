@@ -1,23 +1,16 @@
 start,end,lists,against,kind,zone,card,text
 2026-06-15,2026-06-28,3,the fortnight to 2026-06-14,stable,,,
-2026-06-29,2026-07-12,9,the fortnight to 2026-06-28,return,main,Does Machines,"Does Machines appears for the first time, 2 of 9 lists (22%)"
-2026-06-29,2026-07-12,9,the fortnight to 2026-06-28,return,main,Hallowed Fountain,"Hallowed Fountain appears for the first time, 4 of 9 lists (44%)"
-2026-06-29,2026-07-12,9,the fortnight to 2026-06-28,return,side,Haywire Mite,"Haywire Mite moves to the sideboard, 3 of 9 lists (33%)"
-2026-06-29,2026-07-12,9,the fortnight to 2026-06-28,return,main,"Jace, the Perfected Mind","Jace, the Perfected Mind appears for the first time, 2 of 9 lists (22%)"
-2026-06-29,2026-07-12,9,the fortnight to 2026-06-28,return,main,"Kethis, the Hidden Hand","Kethis, the Hidden Hand appears for the first time, 2 of 9 lists (22%)"
-2026-06-29,2026-07-12,9,the fortnight to 2026-06-28,return,main,Lush Portico,"Lush Portico appears for the first time, 2 of 9 lists (22%)"
-2026-06-29,2026-07-12,9,the fortnight to 2026-06-28,return,main,Plaza of Heroes,"Plaza of Heroes appears for the first time, 2 of 9 lists (22%)"
-2026-06-29,2026-07-12,9,the fortnight to 2026-06-28,return,main,Steam Vents,"Steam Vents appears for the first time, 2 of 9 lists (22%)"
-2026-06-29,2026-07-12,9,the fortnight to 2026-06-28,return,main,"Teferi, Time Raveler","Teferi, Time Raveler appears for the first time, 2 of 9 lists (22%)"
-2026-06-29,2026-07-12,9,the fortnight to 2026-06-28,return,side,"Teferi, Time Raveler","Teferi, Time Raveler appears for the first time, 3 of 9 lists (33%)"
-2026-06-29,2026-07-12,9,the fortnight to 2026-06-28,return,main,Temple Garden,"Temple Garden appears for the first time, 2 of 9 lists (22%)"
-2026-06-29,2026-07-12,9,the fortnight to 2026-06-28,return,main,Thundering Falls,"Thundering Falls appears for the first time, 2 of 9 lists (22%)"
-2026-06-29,2026-07-12,9,the fortnight to 2026-06-28,return,main,Unholy Heat,"Unholy Heat appears for the first time, 2 of 9 lists (22%)"
-2026-06-29,2026-07-12,9,the fortnight to 2026-06-28,return,main,Watery Grave,"Watery Grave appears for the first time, 2 of 9 lists (22%)"
-2026-07-13,2026-07-26,14,Pro Tour Amsterdam,return,main,Boomerang Basics,"Boomerang Basics moves to the mainboard, 2 of 14 lists (14%)"
+2026-06-29,2026-07-12,7,the fortnight to 2026-06-28,return,main,Does Machines,"Does Machines appears for the first time, 2 of 7 lists (29%)"
+2026-06-29,2026-07-12,7,the fortnight to 2026-06-28,return,main,Hallowed Fountain,"Hallowed Fountain appears for the first time, 3 of 7 lists (43%)"
+2026-06-29,2026-07-12,7,the fortnight to 2026-06-28,return,main,Steam Vents,"Steam Vents appears for the first time, 2 of 7 lists (29%)"
+2026-06-29,2026-07-12,7,the fortnight to 2026-06-28,return,side,"Teferi, Time Raveler","Teferi, Time Raveler appears for the first time, 3 of 7 lists (43%)"
+2026-06-29,2026-07-12,7,the fortnight to 2026-06-28,return,main,Thundering Falls,"Thundering Falls appears for the first time, 2 of 7 lists (29%)"
+2026-06-29,2026-07-12,7,the fortnight to 2026-06-28,return,main,Unholy Heat,"Unholy Heat appears for the first time, 2 of 7 lists (29%)"
+2026-07-13,2026-07-26,14,Pro Tour Amsterdam,return,main,Boomerang Basics,"Boomerang Basics appears for the first time, 2 of 14 lists (14%)"
 2026-07-13,2026-07-26,14,Pro Tour Amsterdam,return,main,Botanical Sanctum,"Botanical Sanctum appears for the first time, 2 of 14 lists (14%)"
 2026-07-13,2026-07-26,14,Pro Tour Amsterdam,return,main,Cori-Steel Cutter,"Cori-Steel Cutter appears for the first time, 3 of 14 lists (21%)"
 2026-07-13,2026-07-26,14,Pro Tour Amsterdam,return,main,Flame of Anor,"Flame of Anor moves to the mainboard, 3 of 14 lists (21%)"
+2026-07-13,2026-07-26,14,Pro Tour Amsterdam,return,side,Orim's Chant,"Orim's Chant appears for the first time, 3 of 14 lists (21%)"
 2026-07-13,2026-07-26,14,Pro Tour Amsterdam,return,main,"Urza, Lord High Artificer","Urza, Lord High Artificer appears for the first time, 3 of 14 lists (21%)"
 2026-07-13,2026-07-26,14,Pro Tour Amsterdam,return,main,Yavimaya Coast,"Yavimaya Coast appears for the first time, 2 of 14 lists (14%)"
 2026-07-13,2026-07-26,14,Pro Tour Amsterdam,event,,,Pro Tour Amsterdam
@@ -70,6 +63,7 @@ start,end,lists,against,kind,zone,card,text
 2026-08-24,2026-09-06,19,Spotlight Dallas,return,main,Orim's Chant,"Orim's Chant moves to the mainboard, 2 of 19 lists (11%)"
 2026-08-24,2026-09-06,19,Spotlight Dallas,return,main,"Skrelv, Defector Mite","Skrelv, Defector Mite appears for the first time, 2 of 19 lists (11%)"
 2026-08-24,2026-09-06,19,Spotlight Dallas,return,main,Spell Snare,"Spell Snare moves to the mainboard, 3 of 19 lists (16%)"
+2026-08-24,2026-09-06,19,Spotlight Dallas,return,main,"Teferi, Time Raveler","Teferi, Time Raveler moves to the mainboard, 2 of 19 lists (11%)"
 2026-08-24,2026-09-06,19,Spotlight Dallas,copies,main,Grinding Station,Grinding Station down from 2.2 to 1.4 copies on average
 2026-08-24,2026-09-06,19,Spotlight Dallas,copies,main,Island,Island down from 2.2 to 1.8 copies on average
 2026-08-24,2026-09-06,19,Spotlight Dallas,event,,,Spotlight Brisbane

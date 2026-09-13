@@ -169,16 +169,85 @@ def test_a_pair_that_names_another_deck_is_outweighed_by_the_shell_s_own_card():
     assert classify.archetype(_list_of(tamiyo | {"Weapons Manufacturing": 2})) == "affinity"
 
 
-def test_tron_s_versions_are_read_on_the_splash_line_by_colour():
+def _control(spells: dict[str, int]):
+    """A control list as the classifier reads one: the shell's spells on its own lands."""
+    from types import SimpleNamespace
+
+    lands = {"Hallowed Fountain": 4, "Steam Vents": 2, "Island": 3, "Plains": 3, "Marsh Flats": 4}
+    colours = {
+        "Teferi, Time Raveler": frozenset("WU"), "Wrath of the Skies": frozenset("W"),
+        "Supreme Verdict": frozenset("WU"), "Terminus": frozenset("W"),
+        "Temporary Lockdown": frozenset("W"), "Narset, Parter of Veils": frozenset("U"),
+        "Wan Shi Tong, Librarian": frozenset("U"), "Solitude": frozenset("W"),
+        "Fatal Push": frozenset("B"), "Questing Druid": frozenset("G"),
+        "Ephemerate": frozenset("W"),
+    }
+    return SimpleNamespace(
+        mainboard=lands | spells, colours=colours, land_names=frozenset(lands), archetype=None
+    )
+
+
+def test_control_s_sweeper_is_a_slot_and_not_one_card():
+    """Control fills its sweeper slot to the meta (Alejandro, 2026-09-13), so
+    Teferi with any one of Wrath of the Skies, Supreme Verdict, Terminus or
+    Temporary Lockdown is the deck.
+
+    bobthedog's 13th on Terminus and Brainsurge and Ivc's build on Temporary
+    Lockdown are the shape: Wrath in the signature kept 23 such lists out of
+    every report, and out of the fall-out table too, the core being what the
+    fall-out is read over. A list on no sweeper at all is not the deck.
+    """
+    from tracker import classify
+
+    engine = {"Narset, Parter of Veils": 4, "Solitude": 4}
+    for sweeper in ("Wrath of the Skies", "Supreme Verdict", "Terminus", "Temporary Lockdown"):
+        assert classify.archetype(_control(engine | {"Teferi, Time Raveler": 3, sweeper: 3})) == "jeskai"
+    assert classify.archetype(_control(engine | {"Teferi, Time Raveler": 3})) is None
+    assert classify.archetype(_control({"Teferi, Time Raveler": 3, "Terminus": 4})) is None
+
+
+def test_an_off_colour_removal_playset_is_still_control():
+    """Removal is a slot control fills to the meta too (Alejandro, 2026-09-13):
+    stefansson30952's 9th ran 4 Fatal Push as its only card outside UWr and the
+    playset line read it as another deck's. A playset of an engine or a threat
+    still does, the exemption naming removal and nothing else.
+    """
+    from tracker import classify
+
+    shell = {"Teferi, Time Raveler": 3, "Wrath of the Skies": 3, "Narset, Parter of Veils": 4}
+    assert classify.archetype(_control(shell | {"Fatal Push": 4})) == "jeskai"
+    assert classify.archetype(_control(shell | {"Questing Druid": 4})) is None
+    assert classify.archetype(_control(shell | {"Fatal Push": 4, "Questing Druid": 2})) is None
+
+
+def test_an_ephemerate_package_inside_a_control_suite_is_not_control():
+    """Ephemerate beside the control shell is a blink deck (Alejandro,
+    2026-09-13), which is what Fatal_Vlad's, toto_2295's and Valident's lists
+    are: a value package with its own targets inside an intact control suite.
+    The Blink midrange deck's own marker stays Phelia, so the two name
+    different decks on the same shell.
+    """
+    from tracker import classify
+
+    shell = {"Teferi, Time Raveler": 3, "Wrath of the Skies": 3, "Narset, Parter of Veils": 4}
+    assert classify.archetype(_control(shell)) == "jeskai"
+    assert classify.archetype(_control(shell | {"Ephemerate": 4})) is None
+    assert classify.fallout(_control(shell | {"Ephemerate": 4})) == [("jeskai", "ephemerate")]
+
+
+def test_tron_s_versions_are_read_on_their_markers_and_never_on_a_splash():
     """The Tron lands are Tron; blue and green are versions and colourless is
-    tracked (Alejandro, 2026-09-13). Five blue cards or a playset of one is the
-    blue version; a black playset, like four Dismember, says nothing.
+    tracked (Alejandro, 2026-09-13). Blue Tron is the deck on Stock Up or Force
+    of Negation and green Tron the deck on the Chromatic eggs or Sylvan
+    Scrying; every other list is colourless whatever it casts. narca's Dress
+    Down build is the case the splash line got wrong, reading a playset in the
+    colourless Eldrazi shell's flex slot as the blue deck arriving.
     """
     from types import SimpleNamespace
     from tracker import classify
 
     lands = {"Urza's Tower": 4, "Urza's Mine": 4, "Urza's Power Plant": 4}
-    colours = {"Stock Up": frozenset("U"), "Counterspell": frozenset("U"), "Dismember": frozenset("B"),
+    colours = {"Stock Up": frozenset("U"), "Dress Down": frozenset("U"), "Dismember": frozenset("B"),
                "Sylvan Scrying": frozenset("G"), "Ancient Stirrings": frozenset("G")}
 
     def tron(spells):
@@ -186,9 +255,10 @@ def test_tron_s_versions_are_read_on_the_splash_line_by_colour():
 
     for spells, version in [
         ({"Karn, the Great Creator": 4, "Dismember": 4}, "colourless"),
-        ({"Ancient Stirrings": 3}, "colourless"),
+        ({"Karn, the Great Creator": 4, "Dress Down": 4}, "colourless"),
+        ({"Ancient Stirrings": 4}, "colourless"),
         ({"Stock Up": 4}, "blue"),
-        ({"Stock Up": 3, "Counterspell": 2}, "blue"),
+        ({"Force of Negation": 2}, "blue"),
         ({"Sylvan Scrying": 4, "Ancient Stirrings": 4}, "green"),
     ]:
         assert classify.archetype(tron(spells)) == "tron", spells
@@ -728,6 +798,7 @@ def test_presence_is_the_whole_deck_and_conversion_is_the_version(tmp_path, monk
 @pytest.mark.parametrize("mainboard,expected", [
     ({"Unholy Heat": 2, "Ugin's Labyrinth": 2}, "gruul"),
     ({"Writhing Chrysalis": 3}, "gruul"),
+    ({"Lightning Bolt": 2, "Grove of the Burnwillows": 4}, "gruul"),
     ({"Ugin's Labyrinth": 4, "Devourer of Destiny": 3}, "lab"),
     ({"Grove of the Burnwillows": 4}, "mono-green"),
 ])
@@ -736,12 +807,41 @@ def test_a_three_way_variant_rule_reads_in_order(mainboard, expected):
 
     A Gruul list on a couple of Labyrinths is a Gruul list, so the red spells
     are tested before the Labyrinth. A red source is not the line: Grove of the
-    Burnwillows sits in nine of ten mono-green lists.
+    Burnwillows sits in nine of ten mono-green lists, which is why BenT's and
+    Lostwanderer's Pro Tour lists are read on the Bolts they cast off it.
     """
     from types import SimpleNamespace
     from tracker import classify
 
     assert classify.variant("broodscale", SimpleNamespace(mainboard=mainboard)) == expected
+
+
+def test_blink_s_esper_version_is_the_grave_or_a_blue_spell():
+    """A version read on a colour is read on the spells the list casts and never
+    on the splash line (Alejandro, 2026-09-13).
+
+    Watery Grave named the Esper half until SuperCow12653 registered 2 Teferi
+    off Hallowed Fountain and Meticulous Archive twice, with no Grave: the card
+    and the colour together name the version whichever way a pilot builds the
+    mana. A list casting nothing blue off a fetchable Grave is still Esper, the
+    card being tested first.
+    """
+    from types import SimpleNamespace
+    from tracker import classify
+
+    creatures = {card: 2 for card in config.TRACKED_DECKS["blink"]["signature"]}
+    lands = {"Marsh Flats": 4, "Godless Shrine": 2, "Hallowed Fountain": 2, "Watery Grave": 2}
+    colours = {"Teferi, Time Raveler": frozenset("WU"), "Solitude": frozenset("W")}
+
+    def blink_list(spells, mana):
+        main = creatures | spells | {land: count for land, count in lands.items() if land in mana}
+        return SimpleNamespace(mainboard=main, colours=colours, land_names=frozenset(lands))
+
+    orzhov_mana = ("Marsh Flats", "Godless Shrine")
+    esper_mana = (*orzhov_mana, "Watery Grave")
+    assert classify.variant("blink", blink_list({"Solitude": 4}, orzhov_mana)) == "orzhov"
+    assert classify.variant("blink", blink_list({"Teferi, Time Raveler": 2}, orzhov_mana)) == "esper"
+    assert classify.variant("blink", blink_list({"Solitude": 4}, esper_mana)) == "esper"
 
 
 def test_a_version_read_by_colour_is_one_the_report_names(tmp_path, monkeypatch):
@@ -750,3 +850,36 @@ def test_a_version_read_by_colour_is_one_the_report_names(tmp_path, monkeypatch)
     the bare counts list every version the rule names, colour ones included."""
     assert config.versions("tron") == ("blue", "green", "colourless")
     assert weekly._others(config.REPORTS["tron"]) == ["blue", "green"]
+
+
+def test_broodscale_s_golgari_version_is_the_black_cards_and_never_dismember():
+    """Black and green is a fourth version, read after red and the Labyrinth
+    (Alejandro, 2026-09-13). The build is Sephiroth with Fatal Push on
+    Overgrown Tomb, Swamp and Underground Mortuary, and it took a challenge-64
+    on 6 July. Dismember is the card the version cannot be read on: Phyrexian
+    mana casts it in 419 members that hold no black source at all, the same
+    reason Prowess draws no colour rule off Mutagenic Growth. A list on a red
+    spell is still Gruul, which is what keeps the versions a partition.
+    """
+    from types import SimpleNamespace
+    from tracker import classify
+
+    core = {"Basking Broodscale": 4, "Blade of the Bloodchief": 4, "Eldrazi Temple": 4}
+    colours = {"Dismember": frozenset("B"), "Sephiroth, Fabled SOLDIER": frozenset("B"),
+               "Fatal Push": frozenset("B"), "Thoughtseize": frozenset("B"),
+               "Unholy Heat": frozenset("R"), "Kozilek's Command": frozenset("G")}
+    lands = frozenset({"Eldrazi Temple", "Ugin's Labyrinth", "Overgrown Tomb"})
+
+    def brood(spells):
+        return SimpleNamespace(mainboard=core | spells, colours=colours, land_names=lands)
+
+    for spells, version in [
+        ({"Kozilek's Command": 4}, "mono-green"),
+        ({"Dismember": 2}, "mono-green"),
+        ({"Sephiroth, Fabled SOLDIER": 3, "Fatal Push": 2}, "golgari"),
+        ({"Thoughtseize": 4, "Fatal Push": 3}, "golgari"),
+        ({"Sephiroth, Fabled SOLDIER": 3, "Unholy Heat": 4}, "gruul"),
+        ({"Sephiroth, Fabled SOLDIER": 3, "Ugin's Labyrinth": 4}, "lab"),
+    ]:
+        assert classify.archetype(brood(spells)) == "broodscale", spells
+        assert classify.variant("broodscale", brood(spells)) == version, spells

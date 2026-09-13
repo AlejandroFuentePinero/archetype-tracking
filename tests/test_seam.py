@@ -496,6 +496,74 @@ def test_a_capture_interrupted_mid_write_is_not_left_in_the_cache(tmp_path, monk
     assert {row["pilot"] for row in store.goryos_lists(db, "2026-08-05")} == GORYOS_PILOTS_2026_08_05
 
 
+def _ids(db) -> dict[str, str]:
+    """Each pilot's list id, the store's lists being one per pilot here."""
+    with duckdb.connect(db, read_only=True) as con:
+        return dict(con.execute("SELECT pilot, list_id FROM decklists").fetchall())
+
+
+def test_a_list_keeps_its_id_when_an_event_slugged_earlier_is_cached(tmp_path):
+    """An id names the list, not its place in the cache.
+
+    The cache is read in filename order, so an event fetched later under an
+    earlier slug shifted the id of every list behind it. That happened on
+    2026-09-13: 64 lists cached whose slugs sort early moved every id from June
+    on, and the ids quoted across the archived reviews and in `HEURISTICS.md`
+    came to name other lists with nothing saying so.
+    """
+    raw = tmp_path / "raw"
+    synthetic.write_cache(
+        raw,
+        [synthetic.league("2026-07-14", [synthetic.entry("ador"), synthetic.entry("Outsid3r")])],
+    )
+    db = tmp_path / "engine.duckdb"
+    store.build(raw, db)
+    before = _ids(db)
+
+    synthetic.write_cache(
+        raw,
+        [
+            synthetic.challenge(
+                "2026-07-10", [synthetic.entry("inf1nitus", points=21, placement=1)], "12712"
+            )
+        ],
+    )
+    store.build(raw, db)
+
+    after = _ids(db)
+    assert {pilot: after[pilot] for pilot in before} == before
+    assert after.keys() == {"ador", "Outsid3r", "inf1nitus"}
+
+
+def test_a_pilots_second_trophy_in_a_dump_leaves_his_first_lists_id_alone(tmp_path):
+    """A league dump gains 5-0s through its own day, and one pilot can take two.
+
+    The two are two lists and answer to two ids, which is why an id is not the
+    event and the pilot alone. The second carries the ordinal so that the first,
+    which a document may already quote, is the same id the day the second lands.
+    """
+    raw = tmp_path / "raw"
+    db = tmp_path / "engine.duckdb"
+    synthetic.write_cache(raw, [synthetic.league("2026-07-14", [synthetic.entry("ador")])])
+    store.build(raw, db)
+    first = _ids(db)["ador"]
+
+    synthetic.write_cache(
+        raw,
+        [
+            synthetic.league(
+                "2026-07-14",
+                [synthetic.entry("ador"), synthetic.entry("ador", cards={"Persist": (3, 0)})],
+            )
+        ],
+    )
+    store.build(raw, db)
+
+    with duckdb.connect(db, read_only=True) as con:
+        ids = [row[0] for row in con.execute("SELECT list_id FROM decklists").fetchall()]
+    assert first in ids and len(set(ids)) == 2
+
+
 def test_the_same_card_under_two_printings_is_one_card_with_its_copies_summed(tmp_path):
     """Superior Spider-Man is Kavaero, Mind-Bitten with the Marvel IP on it.
 

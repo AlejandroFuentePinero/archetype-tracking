@@ -125,7 +125,6 @@ ENGINES = {
     "livingend": ("Living End",),
     "cascade": ("Shardless Agent", "Crashing Footfalls"),
     "dredger": ("Dredger's Insight",),
-    "forge": ("Mystic Forge",),
     "song": ("Song of Creation",),
     "basim": ("Basim Ibn Ishaq",),
     "cam": ("Sewer-veillance Cam",),
@@ -136,18 +135,30 @@ ENGINES = {
     "cauldron": ("Agatha's Soul Cauldron",),
     "boombust": ("Boom/Bust",),
     "necro": ("Necrodominance",),
-    "oculus": ("Abhorrent Oculus",),
+    # The Dimir Oculus deck is named by Unearth and not by the card it is
+    # called after (Alejandro, 2026-09-13): a one-of Oculus in the stock Frog
+    # and Riddler shell is a threat slot, where every Oculus list proper
+    # reanimates with Unearth.
+    "oculus": ("Unearth",),
     "goryos": ("Goryo's Vengeance",),
     "shadow": ("Death's Shadow",),
     "omnath": ("Wrenn and Six",),
     "creativity": ("Indomitable Creativity",),
     "saheeli": ("Saheeli Rai",),
-    "ponza": ("Cleansing Wildfire",),
+    # Price of Freedom beside it: a control shell on a playset of it is the
+    # land-destruction brew and not control (Alejandro, 2026-09-13).
+    "ponza": ("Cleansing Wildfire", "Price of Freedom"),
     # Phelia beside the control shell is the Blink midrange deck; on its own
     # she names nothing, a Goryo's list carrying Blink's creatures staying.
     "blink": ("Phelia, Exuberant Shepherd",),
     "ragavan": ("Ragavan, Nimble Pilferer",),
     "zoo": ("Territorial Kavu",),
+    "kethis": ("Kethis, the Hidden Hand",),
+    "namor": ("Namor the Sub-Mariner",),
+    # Ephemerate beside the control shell is a blink deck, not control filling
+    # a slot (Alejandro, 2026-09-13). Phelia stays the Blink midrange deck's
+    # marker: the two name different decks on the same shell.
+    "ephemerate": ("Ephemerate",),
 }
 
 # Variant rule: the camps a member belongs to, by mainboard copies of the card
@@ -173,6 +184,7 @@ VERSION_NAMES = {
     "traditional": "Traditional",
     "lab": "Lab",
     "gruul": "Gruul",
+    "golgari": "Golgari",
     "mono-green": "Mono-green",
     "colourless": "Colourless",
     "blue": "Blue",
@@ -205,13 +217,16 @@ TRACKED_DECKS = {
         # Sacred Foundry or Temple Garden with nothing red or green cast are
         # Blink; five red cards, or a playset of one, are Mardu.
         "colours": frozenset("WUB"),
-        # Variant rule: the blue half against the two-colour half. Mainboard
-        # Watery Grave partitions the archetype exactly, with no list between
-        # the two, where a rule drawn on blue sources throws away the Orzhov
-        # lists that fetch and a rule drawn on blue spells drops any Esper list
-        # that cut Teferi. Presence and not a count: a variant here is which
-        # colours the deck is, which one copy settles.
+        # Variant rule: the blue half against the two-colour half, read on
+        # mainboard Watery Grave or any blue spell the list casts (Alejandro,
+        # 2026-09-13). The Grave alone partitioned the archetype until
+        # SuperCow12653 registered 2 Teferi off Hallowed Fountain and
+        # Meticulous Archive twice; the card and the colour together name the
+        # version whichever way a pilot builds the mana. Presence and not a
+        # count: a variant here is which colours the deck is, which one copy
+        # settles.
         "variants": (("esper", ("Watery Grave",)),),
+        "colour_variants": (("esper", "U"),),
         "variant_default": "orzhov",
         # The engines that name another deck built on the four creatures
         # (Alejandro, 2026-09-13): the Guide of Souls and Ocelot Pride energy
@@ -254,7 +269,10 @@ TRACKED_DECKS = {
         # The Kappa Cannoneer and Pinnacle Emissary artifact deck bolted two
         # Oswald and a Station on for a fortnight and is a different deck
         # (Alejandro, 2026-09-13). Mainboard only: Station lists side Kappa.
-        "excluded_engines": ("kappa",),
+        # The Kethis combo is a different deck too, whether or not it adds Loki
+        # for Plaza of Heroes (Alejandro, 2026-09-13): the premise above, that
+        # it runs neither Oswald nor Loki, is not what makes it another deck.
+        "excluded_engines": ("kappa", "kethis"),
     },
     "zoo": {
         # Kavu and Scion together are the deck, and a Kavu-less list on Scion,
@@ -284,19 +302,28 @@ TRACKED_DECKS = {
         # 2026-09-13). Every other list in the history holds it.
         "signature": ("Basking Broodscale", "Blade of the Bloodchief", "Eldrazi Temple"),
         # A hybrid brew on the intact shell is out too, for now: Dredger's
-        # Insight names the Yawgmoth-style Cauldron package and Mystic Forge the
-        # Karn Forge package, and nothing else in the history holds either.
-        "excluded_engines": ("dredger", "forge"),
-        # Three versions, read in this order. The red spells name the Gruul
+        # Insight names the Yawgmoth-style Cauldron package, and nothing else
+        # in the history holds it. A Mystic Forge inside the intact shell is an
+        # innovation and not a brew (Alejandro, 2026-09-13).
+        "excluded_engines": ("dredger",),
+        # Four versions, read in this order. The red spells name the Gruul
         # build: Stomping Ground would too, but Grove of the Burnwillows sits
-        # in nine of ten mono-green lists, so a source is not the line. Ugin's
-        # Labyrinth names the Lab build, every Devourer of Destiny list running
-        # it and nine in ten of its lists running Devourer. A list holding both
-        # is a Gruul list on a couple of Labyrinths, 27 of 1000 since the bans,
-        # and reads as Gruul.
+        # in nine of ten mono-green lists, so a source is not the line.
+        # Lightning Bolt is the third marker (Alejandro, 2026-09-13), the two
+        # Pro Tour lists on Bolt off Grove and Karplusan Forest being the Gruul
+        # deck. Ugin's Labyrinth names the Lab build, every Devourer of Destiny
+        # list running it and nine in ten of its lists running Devourer. A list
+        # holding both is a Gruul list on a couple of Labyrinths, 27 of 1000
+        # since the bans, and reads as Gruul. Golgari is read last, so a black
+        # list on a red spell is still Gruul and the versions stay a partition
+        # (Alejandro, 2026-09-13): the black cards are the marker and never
+        # Dismember, which Phyrexian mana casts in 419 members holding no black
+        # source, the reason Prowess draws no colour rule off Mutagenic Growth.
+        # A list on none of the markers is mono-green whatever it splashes.
         "variants": (
-            ("gruul", ("Unholy Heat", "Writhing Chrysalis")),
+            ("gruul", ("Unholy Heat", "Writhing Chrysalis", "Lightning Bolt")),
             ("lab", ("Ugin's Labyrinth",)),
+            ("golgari", ("Sephiroth, Fabled SOLDIER", "Fatal Push", "Thoughtseize")),
         ),
         "variant_default": "mono-green",
     },
@@ -310,11 +337,16 @@ TRACKED_DECKS = {
         "supporting": (1, ("Tyvar, Jubilant Brawler", "Tyvar, the Pummeler")),
     },
     "affinity": {
-        # Kappa Cannoneer, Pinnacle Emissary and Engineered Explosives are the
-        # shell, and Weapons Manufacturing supports it: some lists test
-        # without it and stay within the shell (Alejandro, 2026-09-13). Krang
-        # is supporting too. Kappa alone admits the Hammer build.
-        "signature": ("Kappa Cannoneer", "Pinnacle Emissary", "Engineered Explosives"),
+        # Kappa Cannoneer and Pinnacle Emissary are the shell, and Engineered
+        # Explosives, Weapons Manufacturing and Krang support it: a list tests
+        # without any one of them and stays within the shell, Explosives
+        # included (Alejandro, 2026-09-13). One of the three keeps the Frogmite
+        # and Ravenous Robots aggro lists, which run none, outside. Kappa alone
+        # admits the Hammer build.
+        "signature": ("Kappa Cannoneer", "Pinnacle Emissary"),
+        "supporting": (
+            1, ("Engineered Explosives", "Weapons Manufacturing", "Krang, Master Mind")
+        ),
         # The Song of Creation deck, the Basim Ibn Ishaq aggro decks and the
         # Sewer-veillance Cam decks are not Affinity (Alejandro, 2026-09-13).
         "excluded_engines": ("song", "basim", "cam"),
@@ -359,12 +391,19 @@ TRACKED_DECKS = {
         # A combo brew in the flex slots, Devoted Druid with Luxior, is a
         # hybrid brew and out for now (Alejandro, 2026-09-13).
         "excluded_engines": ("devoted",),
-        # Versions by colour, on the splash line: five blue cards or a playset
-        # of one is blue, likewise green, else colourless. Blue and green
-        # only, the 18 lists on a black playset such as Dismember being
-        # colourless Tron with removal. Ancient Stirrings on a green splash
-        # inside the Eldrazi engine is colourless with a splash.
-        "colour_variants": (("blue", "U"), ("green", "G")),
+        # Versions by marker and never by the splash line (Alejandro,
+        # 2026-09-13): blue Tron is the deck on Stock Up or Force of Negation,
+        # green Tron the deck on the Chromatic eggs or Sylvan Scrying, and
+        # every other list is colourless whatever it casts. The splash line
+        # read the colourless Eldrazi shell's own flex slots as versions, a
+        # playset of Dress Down or Portent of Calamity as blue and 4 Malevolent
+        # Rumble or Ancient Stirrings as green, so narca's Dress Down build was
+        # arriving in the blue version's storyline as a version change when it
+        # is a build change.
+        "variants": (
+            ("blue", ("Stock Up", "Force of Negation")),
+            ("green", ("Chromatic Sphere", "Chromatic Star", "Sylvan Scrying")),
+        ),
         "variant_default": "colourless",
     },
     "energy": {
@@ -415,31 +454,58 @@ TRACKED_DECKS = {
         "colours": frozenset("UB"),
         # The other Dimir decks on the pair (Alejandro, 2026-09-13): Necro on
         # Soul Spike, Persist reanimator, Oculus on Unearth (which does run
-        # Riddler, in a third of its lists), Goryo's without Ephemerate, and
-        # Death's Shadow. The Moonshadow aggro build is left in: no one card
-        # names it without moving clean lists.
-        "excluded_engines": ("necro", "persist", "oculus", "goryos", "shadow"),
+        # Riddler, in a third of its lists), Goryo's without Ephemerate,
+        # Death's Shadow, and the mono-blue Namor, Archmage's Charm and
+        # Disrupting Shoal tempo shell on a black splash, which is twenty lists
+        # of its own (Alejandro, 2026-09-13). The Moonshadow aggro build is
+        # left in: no one card names it without moving clean lists.
+        "excluded_engines": ("necro", "persist", "oculus", "goryos", "shadow", "namor"),
     },
     "jeskai": {
         # The blue and white control shell as one deck (Alejandro,
-        # 2026-09-13): Teferi and Wrath of the Skies over a draw engine,
-        # whichever of the seven it is. Control adapts its interaction to the
-        # meta, so Galvanic Discharge is a build reading and not a membership
-        # rule: Jeskai and Azorius are the same deck tracked together. The
-        # splash line on black and green. The key is the report's directory
-        # under `data/tracking/` and stays; the name moved.
-        "signature": ("Teferi, Time Raveler", "Wrath of the Skies"),
+        # 2026-09-13): Teferi and a sweeper over a draw engine, whichever of
+        # the ten it is. Control adapts its interaction to the meta, so
+        # Galvanic Discharge is a build reading and not a membership rule:
+        # Jeskai and Azorius are the same deck tracked together. The splash
+        # line on black and green. The key is the report's directory under
+        # `data/tracking/` and stays; the name moved.
+        #
+        # The sweeper is a slot and not a card (Alejandro, 2026-09-13). Wrath
+        # of the Skies in the signature hid 23 control lists from every report:
+        # a list on Supreme Verdict, Terminus or Temporary Lockdown fails the
+        # core, so it never reached the fall-out table either. Dropping the
+        # sweeper outright is the rule that does not work, admitting nine lists
+        # that are not control.
+        "signature": ("Teferi, Time Raveler",),
+        "either": (
+            ("Wrath of the Skies",), ("Supreme Verdict",),
+            ("Terminus",), ("Temporary Lockdown",),
+        ),
+        # The draw engines, ten since Wan Shi Tong, Stock Up and Brainsurge
+        # were added (Alejandro, 2026-09-13), each of the three already more
+        # common among members (15%, 14%, 17%) than Flow State and Thundertrap
+        # Trainer (10%, 3%), which the tier already named.
         "supporting": (1, (
             "Consult the Star Charts", "Isochron Scepter", "Narset, Parter of Veils",
             "Day's Undoing", "Orim's Chant", "Thundertrap Trainer", "Flow State",
+            "Wan Shi Tong, Librarian", "Stock Up", "Brainsurge",
         )),
         "colours": frozenset("UWR"),
+        # Removal is a slot control fills to the meta, so a playset of it off
+        # colour does not name another deck while the rest of the mainboard
+        # stays under the five-card line (Alejandro, 2026-09-13). Fatal Push is
+        # the one such card the history holds; the tier grows as the meta names
+        # another.
+        "playset_exempt": ("Fatal Push",),
         # Decks built on the two cards that are not this one (Alejandro,
         # 2026-09-13): the four-colour Omnath, Creativity and Saheeli hybrids,
         # out for now, and the Ponza, Blink midrange, Ragavan, Zoo and energy
-        # decks that carry the two cards.
+        # decks that carry the two cards. Ephemerate is the sixth such deck: a
+        # blink value package inside an intact control suite is not control
+        # (Alejandro, 2026-09-13).
         "excluded_engines": (
             "omnath", "creativity", "saheeli", "ponza", "blink", "ragavan", "zoo", "energy",
+            "ephemerate",
         ),
     },
     "storm": {
@@ -462,14 +528,18 @@ TRACKED_DECKS = {
 
 
 def versions(archetype: str) -> tuple[str, ...]:
-    """Every camp of an archetype in rule order, or nothing for one population."""
+    """Every camp of an archetype in rule order, or nothing for one population.
+
+    A version named by both a card and a colour, as Blink's Esper half is, is
+    one version and is listed once.
+    """
     if archetype == ARCHETYPE:
         return (*CAMPS, HYBRID_CAMP)
     rule = TRACKED_DECKS[archetype]
     if "variants" not in rule and "colour_variants" not in rule:
         return ()
     named = (*rule.get("variants", ()), *rule.get("colour_variants", ()))
-    return (*(name for name, _ in named), rule["variant_default"])
+    return (*dict.fromkeys(name for name, _ in named), rule["variant_default"])
 
 # The weekly report's subjects: which lists a report is computed over, what it
 # calls itself, and which slots it watches. Kept apart from the membership rules
@@ -500,7 +570,8 @@ REPORTS = {
             "mainboard holds Phelia, Exuberant Shepherd, Flickerwisp, Overlord of the Balemurk "
             "and Witch Enchanter, casts under five spells outside white, blue and black and no "
             "playset of one, and carries none of the energy, Overlords, Stoneblade or taxes "
-            "engines. The esper version mainboards Watery Grave; the orzhov version does not."
+            "engines. The esper version mainboards Watery Grave or casts a blue spell; the "
+            "orzhov version does neither."
         ),
     },
     "goryos": {
@@ -540,8 +611,9 @@ REPORTS = {
         "manabase": False,
         "membership": (
             "mainboard holds Grinding Station, Emry, Lurker of the Loch and Sewer-veillance Cam "
-            "with Oswald Fiddlebender or Loki, God of Mischief, and no Kappa Cannoneer. No colour "
-            "rule: a green splash is the same deck. No versions."
+            "with Oswald Fiddlebender or Loki, God of Mischief, and neither Kappa Cannoneer nor "
+            "Kethis, the Hidden Hand. No colour rule: a green splash is the same deck. No "
+            "versions."
         ),
     },
     "zoo": {
@@ -566,8 +638,10 @@ REPORTS = {
         "membership": (
             "mainboard holds Basking Broodscale, Blade of the Bloodchief and Eldrazi Temple, and "
             "neither the Dredger's Insight nor the Mystic Forge engine. No colour rule. The gruul "
-            "version mainboards Unholy Heat or Writhing Chrysalis, the lab version mainboards "
-            "Ugin's Labyrinth and is the one read, and the mono-green version holds neither."
+            "version mainboards Unholy Heat, Writhing Chrysalis or Lightning Bolt, the lab "
+            "version mainboards Ugin's Labyrinth and is the one read, the golgari version "
+            "mainboards Sephiroth, Fatal Push or Thoughtseize, and the mono-green version "
+            "holds none of them whatever it splashes."
         ),
     },
     "devoted": {
@@ -626,8 +700,9 @@ REPORTS = {
         "manabase": False,
         "membership": (
             "mainboard holds Urza's Tower, Urza's Mine and Urza's Power Plant, and no Devoted "
-            "Druid. The blue version casts five blue cards or a playset of one, the green version "
-            "likewise in green, and the colourless version neither and is the one read."
+            "Druid. The blue version mainboards Stock Up or Force of Negation, the green version "
+            "mainboards Chromatic Sphere, Chromatic Star or Sylvan Scrying, and the colourless "
+            "version holds neither whatever it casts and is the one read."
         ),
     },
     "energy": {
@@ -664,7 +739,7 @@ REPORTS = {
         "membership": (
             "mainboard holds Psychic Frog and Quantum Riddler, casts under five spells outside "
             "blue and black and no playset of one, and none of the Necrodominance, Persist, "
-            "Oculus, Goryo's or Death's Shadow engines. No versions."
+            "Unearth, Goryo's, Death's Shadow or Namor engines. No versions."
         ),
     },
     "jeskai": {
@@ -674,12 +749,14 @@ REPORTS = {
         "watch": (),
         "manabase": False,
         "membership": (
-            "mainboard holds Teferi, Time Raveler and Wrath of the Skies with any of Consult the "
-            "Star Charts, Isochron Scepter, Narset, Parter of Veils, Day's Undoing, Orim's Chant, "
-            "Thundertrap Trainer or Flow State, casts under five spells outside blue, white and "
-            "red and no playset of one, and none of Wrenn and Six, Indomitable Creativity, "
-            "Saheeli Rai, Cleansing Wildfire, Phelia, Exuberant Shepherd, Ragavan, Nimble "
-            "Pilferer, Territorial Kavu, Guide of Souls or Ocelot Pride. No versions."
+            "mainboard holds Teferi, Time Raveler with one of Wrath of the Skies, Supreme "
+            "Verdict, Terminus or Temporary Lockdown, and any of Consult the Star Charts, "
+            "Isochron Scepter, Narset, Parter of Veils, Day's Undoing, Orim's Chant, Thundertrap "
+            "Trainer, Flow State, Wan Shi Tong, Librarian, Stock Up or Brainsurge, casts under "
+            "five spells outside blue, white and red and no playset of one other than Fatal Push, "
+            "and none of Wrenn and Six, Indomitable Creativity, Saheeli Rai, Cleansing Wildfire, "
+            "Phelia, Exuberant Shepherd, Ragavan, Nimble Pilferer, Territorial Kavu, Guide of "
+            "Souls, Ocelot Pride or Ephemerate. No versions."
         ),
     },
     "storm": {
@@ -817,6 +894,7 @@ MAJOR_EVENTS = (
     {"id": 434455, "label": "Pro Tour Amsterdam", "date": "2026-07-17", "format": "Modern"},
     {"id": 441441, "label": "Spotlight Brisbane", "date": "2026-08-29"},
     {"id": 405590, "label": "Spotlight Dallas", "date": "2026-09-05"},
+    {"id": 451148, "label": "RC China", "date": "2026-09-12"},
 )
 
 # One JSON per Spotlight, fetched once and kept. The melee equivalent of RAW_DIR

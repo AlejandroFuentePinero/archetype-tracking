@@ -49,6 +49,11 @@ FILLER_SIDE = {"Consign to Memory": 4, "Wrath of the Skies": 4, "Mystical Disput
 BLINK_SIGNATURE = {card: 2 for card in config.TRACKED_DECKS["blink"]["signature"]}
 BLINK_LANDS = {"Marsh Flats": 4, "Godless Shrine": 2, "Plains": 2, "Swamp": 2}
 BLINK_VARIANT_LANDS = {"esper": {"Watery Grave": 2}, "orzhov": {}}
+# Its filler is its own for the reason its lands are: the deck's versions fork
+# on blue, read on the Grave or on any blue spell the list casts, so the shared
+# block's Faithful Mending would make every synthetic list Esper before the
+# variant rule read a thing.
+BLINK_FILLER = {card: copies for card, copies in FILLER_MAIN.items() if card != "Faithful Mending"}
 
 # One challenge class throughout: every class but league is challenge-class, so
 # which of them a synthetic event is makes no difference to any reading here.
@@ -130,7 +135,7 @@ def blink(
     splash line ignores: the way to write a list holding a red land and
     casting nothing red off it, which is the same deck.
     """
-    main = BLINK_SIGNATURE | FILLER_MAIN | BLINK_LANDS | BLINK_VARIANT_LANDS[variant]
+    main = BLINK_SIGNATURE | BLINK_FILLER | BLINK_LANDS | BLINK_VARIANT_LANDS[variant]
     if off_colour:
         main[off_colour] = 2
     side = dict(FILLER_SIDE)

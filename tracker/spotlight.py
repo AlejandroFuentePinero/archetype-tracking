@@ -85,9 +85,20 @@ def unread(entry: dict) -> bool:
     A mainboard past 60 with no sideboard at all is that failure and not a legal
     registration. Melee's own history has three, at 75, 76 and 146 cards, none
     of them near membership; a list on 60 with an empty sideboard is a pilot who
-    registered no sideboard and is read normally. Counted rather than dropped
-    silently, because a fetch that starts failing should be visible in the
-    report rather than show up as an archetype quietly shedding lists.
+    registered no sideboard and is read normally.
+
+    Those three are dropped and the reason recorded, never recovered by hand
+    (Alejandro, 2026-09-13). Refetching all three pages that day returned type
+    headings and no sideboard heading, so the merge is how melee published them
+    and not something this fetch can fix. Two of the three are a meme or a
+    corrupt registration (146 Plains, a 76-card five-colour pile) and splitting
+    the third by hand would put a hand-read 75 in a population every other list
+    of which the fetch split.
+
+    Counted rather than dropped silently, so the report says what the field
+    published rather than an archetype quietly shedding lists. A rising count
+    means melee merged another registration, which says nothing about this
+    engine.
     """
     return not entry["side"] and sum(entry["main"].values()) > 60
 

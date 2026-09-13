@@ -5,8 +5,6 @@ from pathlib import Path
 from . import config
 from .parse import Decklist, parse_cache
 
-ALL_COLOURS = frozenset("WUBRG")
-
 # The two reasons the splash line turns a list away with, which the weekly
 # report counts together as the colour rule's exclusions.
 COLOUR_REASONS = ("playset", "splash")
@@ -29,15 +27,20 @@ def _holds_core(rule: dict, mainboard: dict[str, int]) -> bool:
     )
 
 
-def _beyond_splash(copies: dict[str, int]) -> str | None:
+def _beyond_splash(copies: dict[str, int], exempt: tuple[str, ...] = ()) -> str | None:
     """Whether a set of spells is more than a splash: a playset of one, or five in all.
 
     A light splash does not move a list out of its deck (Alejandro, 2026-09-13):
     four or fewer cards is a splash, five or more is a deck that goes deeper
     into the colour, and a full playset of one card is the other deck's card
     whatever the total.
+
+    A rule may exempt a card from the playset clause and nothing else, which is
+    how a deck that fills a slot to the meta keeps its own lists (Alejandro,
+    2026-09-13): four off-colour removal spells under the five-card line are
+    still the deck, where a playset of an engine or a threat is another deck's.
     """
-    if any(count >= 4 for count in copies.values()):
+    if any(count >= 4 for card, count in copies.items() if card not in exempt):
         return "playset"
     if sum(copies.values()) >= 5:
         return "splash"
@@ -73,7 +76,11 @@ def _reason(rule: dict, decklist: Decklist) -> str | None:
         name, pair, anchor = rule["outweighed"]
         if all(card in main for card in pair) and anchor not in main:
             return name
-    if "colours" in rule and (beyond := _beyond_splash(_spells_outside(decklist, rule["colours"]))):
+    if "colours" in rule and (
+        beyond := _beyond_splash(
+            _spells_outside(decklist, rule["colours"]), rule.get("playset_exempt", ())
+        )
+    ):
         return beyond
     if any(main.get(card, 0) < copies for card, copies in rule.get("floor", {}).items()):
         return "floor"
@@ -138,10 +145,9 @@ def variant(name: str, decklist: Decklist) -> str | None:
     Goryo's forks on how many copies of one card a list runs;
     a tracked deck forks on whether it runs a card at all, which is what a
     colour split is. Its rule is ordered: the first version whose cards the
-    mainboard holds any of names the camp, then the first colour the list goes
-    deeper than a splash into, and a list holding none takes the default. A
-    tracked deck with no variant rule is one population, and its members carry
-    no camp.
+    mainboard holds any of names the camp, then the first colour the mainboard
+    casts a spell of, and a list holding none takes the default. A tracked deck
+    with no variant rule is one population, and its members carry no camp.
     """
     mainboard = decklist.mainboard
     if name == config.ARCHETYPE:
@@ -152,10 +158,17 @@ def variant(name: str, decklist: Decklist) -> str | None:
     for camp_name, cards in rule.get("variants", ()):
         if any(mainboard.get(card, 0) for card in cards):
             return camp_name
-    # A version read by colour is the splash line the other way round: a deck
-    # that goes deeper than a splash into the colour is that colour's version.
+    # A version read by colour is read on the colour itself and never on the
+    # splash line (Alejandro, 2026-09-13): a list that casts any spell of the
+    # colour is that colour's version, a playset naming a build and not a
+    # version. Blink's Esper half is the one such version, its marker being a
+    # land the card rules above cannot see off a fetch.
     for camp_name, colour in rule.get("colour_variants", ()):
-        if _beyond_splash(_spells_outside(decklist, ALL_COLOURS - {colour})):
+        if any(
+            colour in decklist.colours.get(card, frozenset())
+            for card in mainboard
+            if card not in decklist.land_names
+        ):
             return camp_name
     return rule["variant_default"]
 

@@ -2,6 +2,7 @@
 
 import csv
 import tempfile
+from collections import Counter
 from collections.abc import Iterable
 from pathlib import Path
 
@@ -9,10 +10,11 @@ import duckdb
 
 from . import config, index
 from .classify import classify_cache, fallout as fallout_of
+from .parse import Decklist
 
 DECKLISTS_SCHEMA = """
 CREATE OR REPLACE TABLE decklists (
-    list_id INTEGER,
+    list_id VARCHAR,
     pilot VARCHAR,
     event VARCHAR,
     event_id VARCHAR,
@@ -29,10 +31,10 @@ CREATE OR REPLACE TABLE decklists (
 
 # A card in a list, as the pair the domain calls a configuration. One pilot can
 # publish two 5-0 lists in one league dump, so the list a card belongs to is
-# `list_id`, numbered by the rebuild, and never the pilot and event.
+# `list_id`, which carries an ordinal for exactly that case.
 CONFIGURATIONS_SCHEMA = """
 CREATE OR REPLACE TABLE configurations (
-    list_id INTEGER,
+    list_id VARCHAR,
     card VARCHAR,
     main INTEGER,
     side INTEGER
@@ -66,11 +68,36 @@ CREATE OR REPLACE TABLE cards (
 # reads as a growing count here rather than as a silent decline in its report.
 FALLOUT_SCHEMA = """
 CREATE OR REPLACE TABLE fallout (
-    list_id INTEGER,
+    list_id VARCHAR,
     archetype VARCHAR,
     reason VARCHAR
 )
 """
+
+
+def _identify(decklists: list[Decklist]) -> list[str]:
+    """Each list's id: the event it was published in and the pilot who registered it.
+
+    An id used to be the list's place in the cache, which is a fact about the
+    order the files happened to sort in and not about the list. The 2026-09-13
+    refresh cached 64 lists whose slugs sort early and moved every id from June
+    on by about 32, so the ids quoted in the archived reviews, in `HEURISTICS.md`
+    and in the rule comments came to name other lists with nothing saying so.
+    The event and the pilot are what the site published, so an id minted from
+    them is the same id on the next rebuild.
+
+    One pilot can trophy twice in a league dump, so his second list takes the
+    ordinal and his first keeps the bare key: an id does not move when a later
+    list arrives. Two such lists exchange ids only where the dump republishes
+    them in the other order, which is the unsettled window's own risk.
+    """
+    seen: Counter[str] = Counter()
+    ids = []
+    for decklist in decklists:
+        key = f"{decklist.event_id}#{decklist.pilot}"
+        seen[key] += 1
+        ids.append(key if seen[key] == 1 else f"{key}#{seen[key]}")
+    return ids
 
 
 def _load(con: duckdb.DuckDBPyConnection, table: str, rows: Iterable[tuple]) -> None:
@@ -105,9 +132,14 @@ def build(raw_dir: Path = config.RAW_DIR, db_path: Path = config.DB_PATH) -> Pat
     records is worse than none.
     """
     db_path.parent.mkdir(parents=True, exist_ok=True)
-    # Numbered before the history start is applied, so a list keeps its id
-    # whatever the start is set to.
-    lists = [(i, d) for i, d in enumerate(classify_cache(raw_dir)) if d.date >= config.HISTORY_START]
+    parsed = classify_cache(raw_dir)
+    # Identified over the whole cache, so a list keeps its id whatever the
+    # history start is set to.
+    lists = [
+        (list_id, d)
+        for list_id, d in zip(_identify(parsed), parsed)
+        if d.date >= config.HISTORY_START
+    ]
     with duckdb.connect(db_path) as con:
         con.execute("BEGIN TRANSACTION")
         con.execute(DECKLISTS_SCHEMA)
