@@ -491,6 +491,37 @@ def test_a_withheld_refetch_leaves_the_capture_already_cached_standing(tmp_path)
     assert store.goryos_lists(db, "2026-08-05") == captured
 
 
+def test_a_withheld_repair_of_a_short_capture_is_reported(tmp_path):
+    """A settled day reached at all holds a capture taken inside its own window,
+    so that fetch is a repair of a file the gate has already judged short.
+
+    Withholding it is nothing like withholding an unsettled day's refetch: there
+    the cache keeps a capture believed good, here it keeps one known to be bad,
+    and a run that says nothing leaves it to be frozen. The live run of
+    2026-09-13 did exactly that, reporting success while 2026-08-28 stood at 25
+    lists against a median league day of 60.
+    """
+    site = CapturedSite()
+    raw_dir, db = tmp_path / "raw", tmp_path / "engine.duckdb"
+    refresh("2026-07-01", "2026-08-06", raw_dir, db, source=site, today="2026-08-06")
+
+    # Every capture restamped as taken on the day it covers, which is what a run
+    # made on the day leaves behind.
+    for path in raw_dir.glob("*.json"):
+        stamp = datetime.fromisoformat(f"{mtgo.slug_day(path.stem)}T12:00:00").timestamp()
+        os.utime(path, (stamp, stamp))
+    captured = store.goryos_lists(db, "2026-08-05")
+
+    class WithholdingSite(CapturedSite):
+        def fetch_payload(self, slug):
+            raise mtgo.Unavailable(slug)
+
+    with pytest.raises(mtgo.Unavailable, match="taken inside its own day"):
+        refresh("2026-07-01", "2026-08-31", raw_dir, db, source=WithholdingSite(), today="2026-08-31")
+
+    assert store.goryos_lists(db, "2026-08-05") == captured
+
+
 def test_a_capture_interrupted_mid_write_is_not_left_in_the_cache(tmp_path, monkeypatch):
     """A settled event on disk is never refetched, so a payload left half
     written by a run that died would be kept forever, and every later rebuild

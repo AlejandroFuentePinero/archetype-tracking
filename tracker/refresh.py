@@ -32,9 +32,13 @@ def refresh(
     refetched whatever the calendar says, and a day is skipped only where both
     the day and the capture have settled.
 
-    Only an event with nothing on disk is a gap. An unsettled day the site will
-    not serve keeps the capture it already has, because that refetch was for
-    what the day may have gained, not because the capture was wrong.
+    An event with nothing on disk is a gap, and so is a settled day the site
+    will not serve: reaching the fetch at all means the capture on disk was
+    taken inside its own window, so that fetch is a repair of a file already
+    judged short, and passing over it in silence is how a run reports success
+    while leaving 2026-08-28 at 25 lists. An unsettled day the site will not
+    serve keeps the capture it already has without a word, because that refetch
+    was for what the day may have gained, not because the capture was wrong.
 
     What the run brought in is read off the index either side of the rebuild,
     and is returned rather than printed: an ingest that cannot say what it
@@ -53,13 +57,16 @@ def refresh(
         path = raw_dir / f"{slug}.json"
         cached = path.exists()
         day = mtgo.slug_day(slug)
-        if cached and day < settled.isoformat() and _captured_late(path, day):
+        repair = cached and day < settled.isoformat()
+        if repair and _captured_late(path, day):
             continue
         try:
             payload = source.fetch_payload(slug)
         except mtgo.Unavailable as gap:
             if not cached:
                 gaps.append(str(gap))
+            elif repair:
+                gaps.append(f"{gap}: the capture on disk was taken inside its own day and is short")
             continue
         # Landed whole or not at all: a capture half written by a run that died
         # would be a settled file the cache never refetches and never parses.
