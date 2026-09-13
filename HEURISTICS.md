@@ -638,9 +638,50 @@ play challenges) test innovations first.
 *Applies*: league-derived stats are never blended with challenge stats;
 leagues drive novelty detection, challenges drive performance evidence.
 
+**Top 32 is the window the site publishes, not a cut, so every challenge class
+is one population** (2026-09-13):
+Top 32 means nothing beyond being the only data we get. Conversion is top 8
+anyway, and that is where a finish is read. MTGO added challenge-16 on
+2026-08-22, seating 29 to 50 players and publishing its whole field, records
+included, so its lists are nearer a census than a challenge-64's top 32 of 82:
+better metagame data rather than worse. Measured on the store, its conversion
+deviates from each deck's other challenge lists by a median of 11.4 points
+against the 11.1 points expected from sample size alone (13 decks, 5 to 25
+challenge-16 lists each), and the classes already pooled differ by as much on
+far larger samples: Blink converts 35.2% of its 54 challenge-32 lists against
+15.4% of its 39 challenge-96 lists. The weekly challenge field ran 288 to 512
+before challenge-16 existed and 384 to 480 since, so nothing about the
+denominator moved either.
+*Applies*: `_CHALLENGE` is every event class except league, challenge-16
+included; no class is split out of the top-32 denominator, and no page carries
+a note about the stratum. A later review proposing to drop or split a class on
+its size is answered here rather than re-measured.
+
 ## Proposed, awaiting pilot verdict
 
 Heuristic candidates, held here until Alejandro rules on them. Nothing in this
 section is adopted knowledge and nothing here may steer an analysis. Each entry
 cites the evidence that raised it and counts the sessions it has been put to
 him in. See `.claude/skills/mtg-heuristics/SKILL.md`.
+
+**A fortnight of fewer than ten lists is too thin to read a card-level row off**
+(raised 2026-09-13, surfaced 0×):
+The storyline reads each fortnight against the one before it whatever either
+holds, so a bin of 8 lists prints the same kind of claim as a bin of 130, and
+the reader has only the counts beside the row to tell them apart.
+*Evidence*: 66 of the 597 comparison rows now frozen read across a fortnight
+where one side holds fewer than 10 lists, and 55 of those fail a two-sided
+Fisher test at p<0.05. Devoted Combo's fortnight to 2026-06-14 prints 14 rows
+against a 2-list history, "Craterhoof Behemoth climbed in the mainboard, 0/2 to
+8/9 lists" among them (p=0.06). Grinding Station's fortnight to 2026-08-23
+prints 21 rows off 8 lists, including its own namesake at "Oswald Fiddlebender
+fell in the mainboard, 21/23 to 5/8 lists" (p=0.09) and Damping Sphere at
+"19/23 to 5/8" (p=0.34). Four decks hold all 66: Devoted 38, Grinding Station
+21, Neoform 5, Trudge 2. The `TRACK_RETURN_ABSENCE_LISTS` fix of 2026-09-13
+removed the thin returns and pushed some of those bins into the adoption
+reading instead, so this is what is left of it.
+*Applies if adopted*: a floor on the smaller of the two populations in
+`timeline.moved`, the shape the absence window already has, printing the bin as
+too thin to read rather than its rows. Swapping `moved` for `shifted` is not
+the fix: it is not uniformly stricter and adds about 30 rows across storm,
+livingend, tron, ponza, dimir, jeskai, prowess and devoted.
