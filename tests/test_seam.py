@@ -10,6 +10,8 @@ to tell it apart from the reading it would be confused with.
 """
 
 import json
+import os
+from datetime import datetime
 from pathlib import Path
 
 import duckdb
@@ -277,6 +279,32 @@ def test_refresh_refetches_only_the_days_that_can_still_grow(tmp_path):
     # 2026-08-05 is inside the unsettled tail of a run made on 2026-08-06.
     assert {mtgo.slug_day(slug) for slug in site.fetches} == {"2026-08-05"}
     assert len(site.fetches) == 3
+
+
+def test_a_day_captured_before_it_finished_publishing_is_refetched(tmp_path):
+    """The calendar settling and the capture settling are two different facts.
+
+    A run made on the day itself catches a league dump part filled, and the day
+    then ages out of the unsettled window carrying whatever was caught: in the
+    live cache 2026-08-23 froze at 7 lists and 2026-08-28 at 25, against a
+    median league day of 60. Read off the calendar alone those two files are
+    settled forever. What settles a capture is the lag between the day it covers
+    and the moment it was taken.
+    """
+    site = CapturedSite()
+    raw_dir, db = tmp_path / "raw", tmp_path / "engine.duckdb"
+    refresh("2026-07-01", "2026-08-06", raw_dir, db, source=site, today="2026-08-06")
+    assert len(site.fetches) == 4
+
+    # Every capture restamped as taken on the day it covers, which is what a run
+    # made on the day leaves behind.
+    for path in raw_dir.glob("*.json"):
+        stamp = datetime.fromisoformat(f"{mtgo.slug_day(path.stem)}T12:00:00").timestamp()
+        os.utime(path, (stamp, stamp))
+
+    site.fetches.clear()
+    refresh("2026-07-01", "2026-08-31", raw_dir, db, source=site, today="2026-08-31")
+    assert len(site.fetches) == 4, "a same-day capture is refetched however old the day is"
 
 
 class GrowingSite(CapturedSite):

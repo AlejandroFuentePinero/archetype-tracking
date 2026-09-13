@@ -24,6 +24,14 @@ def refresh(
     overwritten until they settle. Which days those are is a fact about now, not
     about the range asked for, so a range running past today ends today.
 
+    Settled is a fact about the capture as well as about the calendar, and used
+    to be only about the calendar. A run on the day itself catches a league dump
+    part filled, and the calendar then moves past it and freezes what it caught:
+    2026-08-23 froze at 7 lists and 2026-08-28 at 25, against a median league
+    day of 60. So a capture taken inside its own day's unsettled window is
+    refetched whatever the calendar says, and a day is skipped only where both
+    the day and the capture have settled.
+
     Only an event with nothing on disk is a gap. An unsettled day the site will
     not serve keeps the capture it already has, because that refetch was for
     what the day may have gained, not because the capture was wrong.
@@ -44,7 +52,8 @@ def refresh(
     for slug in source.event_slugs(since, config.FORMAT, until, today):
         path = raw_dir / f"{slug}.json"
         cached = path.exists()
-        if cached and mtgo.slug_day(slug) < settled.isoformat():
+        day = mtgo.slug_day(slug)
+        if cached and day < settled.isoformat() and _captured_late(path, day):
             continue
         try:
             payload = source.fetch_payload(slug)
@@ -68,3 +77,15 @@ def refresh(
     # what the committed file says and not what this process believed it wrote.
     after = index.read(db_path)
     return index.Change(index.difference(after, before), index.difference(before, after))
+
+
+def _captured_late(path: Path, day: str) -> bool:
+    """Whether a cached capture was taken after its day had finished publishing.
+
+    The file's own timestamp, the cache being written by this program and by
+    nothing else. A capture taken `config.UNSETTLED_DAYS` after the day it
+    covers has seen whatever that day was going to gain; one taken on the day
+    has not, and nothing in the calendar can tell the two apart later.
+    """
+    captured = date.fromtimestamp(path.stat().st_mtime)
+    return (captured - date.fromisoformat(day)).days >= config.UNSETTLED_DAYS
