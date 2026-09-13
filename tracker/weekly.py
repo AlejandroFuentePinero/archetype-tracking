@@ -310,7 +310,7 @@ _STYLE = """
   color-scheme: light;
   --surface: #fcfcfb; --panel: #ffffff; --line: #e4e3de;
   --ink: #0b0b0b; --ink-2: #52514e; --ink-3: #86847d;
-  --series-1: #2a78d6; --series-2: #eb6834; --series-3: #1baf7a;
+  --series-1: #2a78d6; --series-2: #eb6834; --series-3: #1baf7a; --series-4: #b04ab0;
   --flag: #fdf3e7; --flag-line: #eda100;
   --major: #c2410c;
   --accent: #d97757;
@@ -320,7 +320,7 @@ _STYLE = """
     color-scheme: dark;
     --surface: #14140f; --panel: #1a1a19; --line: #34332e;
     --ink: #f5f4ef; --ink-2: #c3c2b7; --ink-3: #8b8a80;
-    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70;
+    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #b45fc4;
     --flag: #2a2113; --flag-line: #c98500;
     --major: #f97316;
   }
@@ -329,7 +329,7 @@ _STYLE = """
   color-scheme: dark;
   --surface: #14140f; --panel: #1a1a19; --line: #34332e;
   --ink: #f5f4ef; --ink-2: #c3c2b7; --ink-3: #8b8a80;
-  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70;
+  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #b45fc4;
   --flag: #2a2113; --flag-line: #c98500;
   --major: #f97316;
 }

@@ -40,10 +40,13 @@ GROUND = "#040506"
 # Categorical slots 1-3 from the validated reference palette, used here only as
 # sentinels: each is swapped for a CSS variable on the way out, so one rendering
 # of a figure serves both themes and the dark steps are a selected palette in
-# the page's stylesheet rather than an automatic lightening of these. Three is
-# the cap, being what clears every all-pairs gate in both modes; a fourth would
-# put yellow beside orange and fail them.
-SERIES = ("#2a78d6", "#eb6834", "#1baf7a")
+# the page's stylesheet rather than an automatic lightening of these. Four is
+# the cap. The reference palette's own fourth slot, yellow, fails the normal-
+# vision floor beside orange in both modes; the magenta here clears every all-
+# pairs gate, its worst CVD pair (against blue) sitting in the band that is
+# legal only with a second encoding, which every figure using it carries as a
+# label on the panel or the row.
+SERIES = ("#2a78d6", "#eb6834", "#1baf7a", "#b04ab0")
 
 plt.rcParams.update(
     {
@@ -302,58 +305,73 @@ def spotlight_finishes(readings: list[dict]) -> str:
     the reference is drawn, and at a dozen lists over twenty-odd bins the bars
     are one pilot moving three places anyway.
 
-    The strip below carries every list as its own mark, because a curve over a
-    dozen lists invites being read as a distribution when it is a handful of
-    finishes, and the dots say which.
+    One panel per event, stacked on one axis, rather than every curve on one
+    panel: at four events the steps cross each other over the same span and read
+    as a band, and the reading is each event against its own null. The strip at
+    the foot carries every list as its own mark, one row per event, and is where
+    the events are read against each other: a curve over a dozen lists invites
+    being read as a distribution when it is a handful of finishes, and the dots
+    say which. One colour per event, the same in its panel and its row, so the
+    eye carries a panel down to the strip; each panel and row is named as well,
+    the fourth colour being legible to every eye only beside a label.
     """
-    fig, (curve, strip) = plt.subplots(
-        2, 1, figsize=(9, 4.6), gridspec_kw={"hspace": 0.28, "height_ratios": [3, 1]}
+    events = len(readings)
+    fig, axes = plt.subplots(
+        events + 1, 1, figsize=(9, 1.7 * events + 0.55 * events + 1.2), sharex=True,
+        gridspec_kw={"hspace": 0.32, "height_ratios": [*([3] * events), 0.9 * events + 0.6]},
     )
+    *curves, strip = axes
 
-    curve.plot([0, 1], [0, 1], color=INK, alpha=0.35, linewidth=1,
-               linestyle=(0, (5, 3)), label="Field average")
-    for slot, reading in enumerate(readings):
+    for slot, (curve, reading) in enumerate(zip(curves, readings)):
         placings = reading["placings"]
-        if not placings:
-            continue
         colour = SERIES[slot % len(SERIES)]
-        # A step per list. Held from each finish to the next, the share of the
-        # deck's lists that finished at least that high, closing on all of them.
-        reached = [(index + 1) / len(placings) for index in range(len(placings))]
-        # Thinner than the weekly series, three curves crossing each other over
-        # the same span being the whole reading: at the weight of a single line
-        # the overlaps read as one band rather than as three events.
-        curve.step([0.0, *placings, 1.0], [0.0, *reached, 1.0], where="post",
-                   color=colour, linewidth=1.2)
-        curve.plot(placings, reached, linestyle="none", marker="o", markersize=3,
-                   color=colour, label=f"{reading['label']} ({len(placings)} lists)")
-        strip.plot(placings, [slot] * len(placings), linestyle="none", marker="o",
-                   markersize=6, color=colour, alpha=0.55,
-                   markeredgecolor=GROUND, markeredgewidth=1.2)
+        curve.plot([0, 1], [0, 1], color=INK, alpha=0.35, linewidth=1,
+                   linestyle=(0, (5, 3)), label="Field average" if slot == 0 else None)
+        if placings:
+            # A step per list. Held from each finish to the next, the share of
+            # the deck's lists that finished at least that high, closing on all.
+            reached = [(index + 1) / len(placings) for index in range(len(placings))]
+            curve.step([0.0, *placings, 1.0], [0.0, *reached, 1.0], where="post",
+                       color=colour, linewidth=1.2)
+            curve.plot(placings, reached, linestyle="none", marker="o", markersize=3,
+                       color=colour, label=reading["label"])
+            strip.plot(placings, [slot] * len(placings), linestyle="none", marker="o",
+                       markersize=6, color=colour, alpha=0.55,
+                       markeredgecolor=GROUND, markeredgewidth=1.2)
+        # Named in the corner the curve never reaches: it leaves the origin and
+        # closes at the top right, so the bottom right is empty on any result.
+        curve.text(0.98, 0.08, f"{reading['label']} ({len(placings)} lists)",
+                   transform=curve.transAxes, ha="right", va="bottom", fontsize=8,
+                   fontweight="bold")
+        curve.set_ylim(-0.03, 1.05)
+        curve.yaxis.set_major_formatter(lambda value, _: f"{value:.0%}")
+        curve.grid(axis="y", color=INK, alpha=0.12, linewidth=0.8)
 
-    curve.set_title("Cumulative share of the deck's lists by finishing position (paper)",
-                    loc="left", fontsize=10, pad=24)
-    curve.set_ylabel("% of the deck's lists")
-    for axis in (curve, strip):
+    # One key for the whole figure, over the top panel: the null and every
+    # event's colour, three to a row, the title lifted a row for each.
+    handles = [handle for curve in curves for handle in curve.get_legend_handles_labels()[0]]
+    rows = -(-len(handles) // 3)
+    curves[0].set_title("Cumulative share of the deck's lists by finishing position (paper)",
+                        loc="left", fontsize=10, pad=12 + 12 * rows)
+    curves[0].legend(handles=handles, frameon=False, fontsize=8, ncol=3, loc="lower left",
+                     bbox_to_anchor=(0, 1.0), borderaxespad=0.2, handlelength=1.6,
+                     columnspacing=1.6)
+    fig.supylabel("% of the deck's lists", fontsize=9)
+    for axis in axes:
         axis.grid(axis="x", color=INK, alpha=0.12, linewidth=0.8)
         axis.set_axisbelow(True)
         axis.tick_params(length=0)
         axis.set_xlim(-0.02, 1.02)
         axis.xaxis.set_major_formatter(lambda value, _: f"{value:.0%}")
-    curve.grid(axis="y", color=INK, alpha=0.12, linewidth=0.8)
-    curve.set_ylim(-0.03, 1.05)
-    curve.yaxis.set_major_formatter(lambda value, _: f"{value:.0%}")
-    # One row: an event per column plus the null. Wrapped onto a second row the
-    # key lands on the title, the pad above it being one row's worth.
-    _legend(curve, len(readings) + 1)
 
-    strip.set_title("Every list, one mark", loc="left", fontsize=10, pad=6)
+    strip.set_title("Every list, one mark: the events against each other",
+                    loc="left", fontsize=10, pad=6)
     # The axis is named once, under the panel that carries the individual marks,
-    # both panels being the same scale and a second label landing on this title.
+    # every panel being the same scale.
     strip.set_xlabel("finished within this top share of the field")
-    strip.set_yticks(range(len(readings)))
+    strip.set_yticks(range(events))
     strip.set_yticklabels([reading["label"] for reading in readings], fontsize=8)
-    strip.set_ylim(-0.7, len(readings) - 0.3)
+    strip.set_ylim(events - 0.3, -0.7)  # the panels' order, top to bottom
     strip.spines["left"].set_visible(False)
     return _svg(fig)
 
