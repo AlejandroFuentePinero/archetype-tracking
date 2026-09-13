@@ -2,11 +2,13 @@
 
 import argparse
 import json
+from collections import Counter
+from datetime import date, timedelta
 from pathlib import Path
 
 from . import config, index, melee, site, spotlight, weekly
 from .refresh import refresh
-from .store import arrivals
+from .store import arrivals, fallout
 
 
 # How many of the archetype's arrivals are named before the rest become a count.
@@ -49,6 +51,30 @@ def _ingest_lines(change: index.Change, ours: list[dict]) -> list[str]:
         # because lists leaving the history quietly is the same failure as
         # lists arriving quietly, which is what the index exists to stop.
         lines.append(f"  {len(change.withdrawn)} list(s) the site no longer publishes")
+    return lines
+
+
+def _fallout_lines(rows: list[dict], today: str | None = None) -> list[str]:
+    """Every list a rule turned away though it holds the deck's core, as counts.
+
+    Per deck and per reason, the reason being the engine's name or the colour
+    or floor rule, with the last fortnight's share beside the total: a deck
+    adopting another deck's engine card is a count growing here week on week,
+    where its own report would only show a decline.
+    """
+    if not rows:
+        return ["  no list holding a deck's core was turned away"]
+    today = today or date.today().isoformat()
+    since = (date.fromisoformat(today) - timedelta(days=config.TRACK_BIN_DAYS)).isoformat()
+    recent = [row for row in rows if row["date"] >= since]
+    lines = [
+        f"  {len({row['list_id'] for row in rows})} list(s) holding a deck's core and turned away,"
+        f" {len({row['list_id'] for row in recent})} in the last {config.TRACK_BIN_DAYS} days"
+    ]
+    total = Counter((row["archetype"], row["reason"]) for row in rows)
+    fresh = Counter((row["archetype"], row["reason"]) for row in recent)
+    for key, count in sorted(total.items()):
+        lines.append(f"  {key[0]}: {key[1]} {count} ({fresh[key]} recent)")
     return lines
 
 
@@ -134,4 +160,6 @@ def main(argv=None) -> None:
         print(f"since {args.since}: raw cache in {config.RAW_DIR}, store at {config.DB_PATH}")
         print(f"index at {index.path()}, commit it to keep the run comparable")
         print("\n".join(_ingest_lines(change, arrivals(change.added))))
+        print("fall-out, every list holding a tracked deck's core that no rule claimed:")
+        print("\n".join(_fallout_lines(fallout())))
         return

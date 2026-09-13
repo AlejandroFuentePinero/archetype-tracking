@@ -564,3 +564,31 @@ def test_a_persist_deck_on_the_four_is_its_own_deck_and_not_the_archetype(tmp_pa
     store.build(raw, db)
 
     assert {row["pilot"] for row in store.goryos_lists(db)} == {"ador"}
+
+
+def test_a_list_turned_away_by_another_decks_engine_is_named_in_the_fall_out(tmp_path):
+    """Every exclusion is visible, grouped by the deck whose core the list holds
+    and by the engine that turned it away.
+
+    A deck that starts adopting another deck's engine card would otherwise read
+    as a silent decline in its storyline. GabbaAndrewTeam's Persist package on
+    the Goryo's four is the case: out of Goryo's, and said so under Persist.
+    """
+    raw = synthetic.write_cache(
+        tmp_path / "raw",
+        [
+            synthetic.league(
+                "2026-07-14",
+                [
+                    synthetic.entry("GabbaAndrewTeam", cards={"Persist": (3, 0)}),
+                    synthetic.entry("ador", cards={"Phelia, Exuberant Shepherd": (3, 0)}),
+                ],
+            )
+        ],
+    )
+    db = tmp_path / "engine.duckdb"
+    store.build(raw, db)
+
+    assert [(row["archetype"], row["reason"], row["pilot"]) for row in store.fallout(db)] == [
+        ("goryos", "persist", "GabbaAndrewTeam")
+    ]

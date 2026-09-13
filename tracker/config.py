@@ -68,13 +68,57 @@ SIGNATURE_CARDS = (
     "Psychic Frog",
     "Ephemerate",
 )
-# A mainboard card that names another deck. Goryo's is Goryo's Vengeance and the
-# legendary Atraxa it pairs with; Persist reanimator runs a different package
-# and a list holding both is the Persist deck with Goryo's as a second angle
-# (Alejandro, 2026-09-13). The Shifting Woodland Omniscience combo wears the
-# Goryo's core the same way. A Goryo's list carrying Blink's creatures is not
-# this: its engine is still the Goryo's package, so it stays.
-EXCLUDED_CARDS = ("Persist", "Omniscience", "Shifting Woodland")
+# The engines that move a list out of Goryo's, by name in `ENGINES`. Goryo's is
+# Goryo's Vengeance and the legendary Atraxa it pairs with; Persist reanimator
+# runs a different package and a list holding both is the Persist deck with
+# Goryo's as a second angle (Alejandro, 2026-09-13). The Shifting Woodland
+# Omniscience combo wears the Goryo's core the same way. A Goryo's list carrying
+# Blink's creatures is not this: its engine is still the Goryo's package, so it
+# stays.
+EXCLUDED_ENGINES = ("persist", "omniscience")
+
+# The engine registry: every deck a membership rule has had to turn away, named
+# once, with the mainboard cards that mark it. A list answering to a deck's core
+# and carrying an engine the deck names as another deck's carries more than one
+# engine and belongs to nothing (Alejandro, 2026-09-13: an engine moves a list,
+# variation inside an intact engine stays, and hybrid brews are out for now).
+#
+# Which engines count as another deck's is the rule's to say, deck by deck, and
+# not the registry's: a marker names a deck only beside a shell it does not
+# belong to. Eldrazi Temple names the Boros Eldrazi brew beside the energy four
+# and sits in every Trudge and Tron list; Ragavan sits in every Boros Energy
+# list and names a tempo deck beside the control shell. Measured over the store
+# on 2026-09-13: read globally, the markers below would empty Trudge, Tron and
+# Broodscale.
+ENGINES = {
+    "persist": ("Persist",),
+    "omniscience": ("Omniscience", "Shifting Woodland"),
+    "energy": ("Guide of Souls", "Ocelot Pride"),
+    "overlords": ("Estrid's Invocation",),
+    "stoneblade": ("Stoneforge Mystic",),
+    "taxes": ("Tidehollow Sculler",),
+    "kappa": ("Kappa Cannoneer",),
+    "livingend": ("Living End",),
+    "dredger": ("Dredger's Insight",),
+    "forge": ("Mystic Forge",),
+    "song": ("Song of Creation",),
+    "phoenix": ("Arclight Phoenix",),
+    "greentron": ("Chromatic Sphere", "Chromatic Star"),
+    "bluetron": ("Stock Up",),
+    "ramp": ("Malevolent Rumble",),
+    "devoted": ("Devoted Druid",),
+    "eldrazi": ("Eldrazi Temple",),
+    "prowess": ("Cori-Steel Cutter",),
+    "cauldron": ("Agatha's Soul Cauldron",),
+    "boombust": ("Boom/Bust",),
+    "necro": ("Necrodominance",),
+    "oculus": ("Abhorrent Oculus",),
+    "goryos": ("Goryo's Vengeance",),
+    "shadow": ("Death's Shadow",),
+    "omnath": ("Wrenn and Six",),
+    "creativity": ("Indomitable Creativity",),
+    "saheeli": ("Saheeli Rai",),
+}
 
 # Variant rule: the camps a member belongs to, by mainboard copies of the card
 # the archetype forks on. No list in the history sideboards it, so the mainboard
@@ -146,18 +190,12 @@ TRACKED_DECKS = {
         # colours the deck is, which one copy settles.
         "variants": (("esper", ("Watery Grave",)),),
         "variant_default": "orzhov",
-        # A mainboard card that names another deck built on the four creatures
+        # The engines that name another deck built on the four creatures
         # (Alejandro, 2026-09-13): the Guide of Souls and Ocelot Pride energy
         # engine, the Estrid's Invocation Overlords deck, Stoneblade, and the
         # Tidehollow Sculler taxes deck. Aether Vial is not one: the Orzhov Vial
         # lists on Ephemerate are a version of this deck.
-        "excluded": (
-            "Guide of Souls",
-            "Ocelot Pride",
-            "Estrid's Invocation",
-            "Stoneforge Mystic",
-            "Tidehollow Sculler",
-        ),
+        "excluded_engines": ("energy", "overlords", "stoneblade", "taxes"),
     },
     "neoform": {
         # The four together are the deck, and Planar Genesis is the one that
@@ -189,7 +227,7 @@ TRACKED_DECKS = {
         # The Kappa Cannoneer and Pinnacle Emissary artifact deck bolted two
         # Oswald and a Station on for a fortnight and is a different deck
         # (Alejandro, 2026-09-13). Mainboard only: Oswald lists side Kappa.
-        "excluded": ("Kappa Cannoneer",),
+        "excluded_engines": ("kappa",),
     },
     "zoo": {
         # The two together are the deck and nothing else in the history shares
@@ -202,7 +240,7 @@ TRACKED_DECKS = {
         # Cruelty and Faithless Looting, the five-colour Living End build on
         # Bloodbraid Marauder and Malevolent Rumble, and the five-colour energy
         # build on the Guide of Souls and Ocelot Pride engine.
-        "excluded": ("Persist", "Living End", "Guide of Souls", "Ocelot Pride"),
+        "excluded_engines": ("persist", "livingend", "energy"),
         # The Frog version is the bluer build and the one the report reads.
         "variants": (("frog", ("Psychic Frog",)),),
         "variant_default": "traditional",
@@ -219,7 +257,7 @@ TRACKED_DECKS = {
         # A hybrid brew on the intact shell is out too, for now: Dredger's
         # Insight names the Yawgmoth-style Cauldron package and Mystic Forge the
         # Karn Forge package, and nothing else in the history holds either.
-        "excluded": ("Dredger's Insight", "Mystic Forge"),
+        "excluded_engines": ("dredger", "forge"),
         # Three versions, read in this order. The red spells name the Gruul
         # build: Stomping Ground would too, but Grove of the Burnwillows sits
         # in nine of ten mono-green lists, so a source is not the line. Ugin's
@@ -250,7 +288,7 @@ TRACKED_DECKS = {
         "off_colour": (),
         # The Song of Creation deck on the full Affinity four is a hybrid brew
         # and out (Alejandro, 2026-09-13).
-        "excluded": ("Song of Creation",),
+        "excluded_engines": ("song",),
     },
     "prowess": {
         # Cori-Steel Cutter alone admits the artifact decks on Emry and Tamiyo,
@@ -263,7 +301,7 @@ TRACKED_DECKS = {
         # Izzet Phoenix answers the rule through Cutter, Swiftspear, DRC and
         # Vents and is another deck, and the prowess core with Phoenix grafted on
         # is a hybrid brew (Alejandro, 2026-09-13).
-        "excluded": ("Arclight Phoenix",),
+        "excluded_engines": ("phoenix",),
         # One Vents is a Gruul list fetching for its sideboard: every Izzet list
         # runs two or more.
         "floor": {"Steam Vents": 2},
@@ -281,18 +319,12 @@ TRACKED_DECKS = {
         # different deck; every list with Karn is the Eldrazi build.
         "signature": ("Urza's Tower", "Urza's Mine", "Urza's Power Plant", "Karn, the Great Creator"),
         "off_colour": (),
-        # Cards that name another Tron deck (Alejandro, 2026-09-13): the
+        # Engines that name another Tron deck (Alejandro, 2026-09-13): the
         # Chromatic eggs are Mono-Green Tron proper, Stock Up the blue control
         # build, Malevolent Rumble the green ramp build on the Tron lands, and
         # Devoted Druid a combo brew in the flex slots. Ancient Stirrings is not
         # one: clean Eldrazi Tron lists run it on a green splash.
-        "excluded": (
-            "Chromatic Sphere",
-            "Chromatic Star",
-            "Stock Up",
-            "Malevolent Rumble",
-            "Devoted Druid",
-        ),
+        "excluded_engines": ("greentron", "bluetron", "ramp", "devoted"),
     },
     "energy": {
         # Guide of Souls and Ocelot Pride are the engine of every energy deck,
@@ -309,7 +341,7 @@ TRACKED_DECKS = {
         # Hybrid brews on the energy four, out for now (Alejandro, 2026-09-13):
         # the Boros Eldrazi build on the Temple, the Cutter prowess build and
         # the Leonardo Cauldron combo. Nothing else in the history holds them.
-        "excluded": ("Eldrazi Temple", "Cori-Steel Cutter", "Agatha's Soul Cauldron"),
+        "excluded_engines": ("eldrazi", "prowess", "cauldron"),
         "off_colour": (
             "Island", "Snow-Covered Island", "Swamp", "Snow-Covered Swamp",
             "Forest", "Snow-Covered Forest",
@@ -339,7 +371,7 @@ TRACKED_DECKS = {
         # The Boom/Bust and Magmatic Hellkite build in place of Field of Ruin
         # and Demolition Field is a hybrid brew, out for now (Alejandro,
         # 2026-09-13). Flagstones is not the marker: clean lists run it.
-        "excluded": ("Boom/Bust",),
+        "excluded_engines": ("boombust",),
         "off_colour": (
             "Island", "Snow-Covered Island", "Swamp", "Snow-Covered Swamp",
             "Forest", "Snow-Covered Forest",
@@ -370,13 +402,7 @@ TRACKED_DECKS = {
         # Riddler, in a third of its lists), Goryo's without Ephemerate, and
         # Death's Shadow. The Moonshadow aggro build is left in: no one card
         # names it without moving clean lists.
-        "excluded": (
-            "Necrodominance",
-            "Persist",
-            "Abhorrent Oculus",
-            "Goryo's Vengeance",
-            "Death's Shadow",
-        ),
+        "excluded_engines": ("necro", "persist", "oculus", "goryos", "shadow"),
         "off_colour": (
             "Plains", "Snow-Covered Plains", "Mountain", "Snow-Covered Mountain",
             "Forest", "Snow-Covered Forest",
@@ -408,7 +434,7 @@ TRACKED_DECKS = {
         # 2026-09-13): four-colour Omnath control on Wrenn and Six, the
         # Indomitable Creativity combo, and the Saheeli combo inside the
         # control shell, a hybrid brew.
-        "excluded": ("Wrenn and Six", "Indomitable Creativity", "Saheeli Rai"),
+        "excluded_engines": ("omnath", "creativity", "saheeli"),
     },
     "storm": {
         # Ral, Ruby Medallion and Past in Flames together. Ruby alone admits

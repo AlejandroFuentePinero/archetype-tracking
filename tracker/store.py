@@ -8,7 +8,7 @@ from pathlib import Path
 import duckdb
 
 from . import config, index
-from .classify import classify_cache
+from .classify import classify_cache, fallout as fallout_of
 
 DECKLISTS_SCHEMA = """
 CREATE OR REPLACE TABLE decklists (
@@ -45,6 +45,19 @@ CREATE OR REPLACE TABLE configurations (
 LANDS_SCHEMA = """
 CREATE OR REPLACE TABLE lands (
     card VARCHAR
+)
+"""
+
+# Every list that holds a deck's core and belongs to nothing, with the deck and
+# the reason its rule turned it away: an engine's name from `config.ENGINES`,
+# or the colour or floor rule. One row per deck the list resembles. Kept so
+# every exclusion is visible, and a deck adopting another deck's engine card
+# reads as a growing count here rather than as a silent decline in its report.
+FALLOUT_SCHEMA = """
+CREATE OR REPLACE TABLE fallout (
+    list_id INTEGER,
+    archetype VARCHAR,
+    reason VARCHAR
 )
 """
 
@@ -89,6 +102,7 @@ def build(raw_dir: Path = config.RAW_DIR, db_path: Path = config.DB_PATH) -> Pat
         con.execute(DECKLISTS_SCHEMA)
         con.execute(CONFIGURATIONS_SCHEMA)
         con.execute(LANDS_SCHEMA)
+        con.execute(FALLOUT_SCHEMA)
         _load(
             con,
             "decklists",
@@ -120,6 +134,11 @@ def build(raw_dir: Path = config.RAW_DIR, db_path: Path = config.DB_PATH) -> Pat
             ),
         )
         _load(con, "lands", ((card,) for card in sorted(set().union(*(d.land_names for _, d in lists)))))
+        _load(
+            con,
+            "fallout",
+            ((list_id, deck, reason) for list_id, d in lists for deck, reason in fallout_of(d)),
+        )
         con.execute("COMMIT")
     index.write([d for _, d in lists], db_path)
     return db_path
@@ -129,6 +148,22 @@ def land_names(db_path: Path = config.DB_PATH) -> frozenset[str]:
     """Every card the MTGO payloads have typed as a land."""
     with duckdb.connect(db_path, read_only=True) as con:
         return frozenset(row[0] for row in con.execute("SELECT card FROM lands").fetchall())
+
+
+def fallout(db_path: Path = config.DB_PATH) -> list[dict]:
+    """Every list turned away by a rule whose core it holds, with the deck and the reason.
+
+    Most recent first, then by deck, so a run's tail reads as what this week's
+    lists did.
+    """
+    with duckdb.connect(db_path, read_only=True) as con:
+        return _rows(
+            con.execute(
+                "SELECT f.archetype, f.reason, d.pilot, d.event, d.date, d.list_id"
+                " FROM fallout f JOIN decklists d USING (list_id)"
+                " ORDER BY d.date DESC, f.archetype, d.pilot"
+            )
+        )
 
 
 def _rows(cursor: duckdb.DuckDBPyConnection) -> list[dict]:

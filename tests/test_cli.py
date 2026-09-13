@@ -93,3 +93,22 @@ def test_a_first_run_counts_the_history_it_filed_rather_than_reciting_it():
 
     assert len(lines) == cli.NAMED_ARRIVALS + 2, "the count, the named, then the remainder"
     assert lines[-1] == "    and 14 more, further back"
+
+
+def test_the_fall_out_prints_per_deck_and_per_reason_with_the_recent_count():
+    """A deck adopting another deck's engine card shows up here as a count that
+    grows week on week, so the line carries the fortnight's share of it."""
+    rows = [
+        {"archetype": "goryos", "reason": "persist", "pilot": "a", "event": "e", "date": "2026-09-10", "list_id": 1},
+        {"archetype": "goryos", "reason": "persist", "pilot": "b", "event": "e", "date": "2026-07-01", "list_id": 2},
+        {"archetype": "blink", "reason": "energy", "pilot": "c", "event": "e", "date": "2026-09-11", "list_id": 3},
+    ]
+    lines = cli._fallout_lines(rows, today="2026-09-13")
+
+    assert lines[0] == "  3 list(s) holding a deck's core and turned away, 2 in the last 14 days"
+    assert "  blink: energy 1 (1 recent)" in lines
+    assert "  goryos: persist 2 (1 recent)" in lines
+
+
+def test_no_fall_out_says_so():
+    assert cli._fallout_lines([], today="2026-09-13") == ["  no list holding a deck's core was turned away"]
