@@ -156,7 +156,15 @@ def test_a_deck_whose_versions_partition_cleanly_prints_a_zero_rather_than_going
     lines = cli._version_boundary_lines([_boundary()])
 
     assert "  blink: its versions partition cleanly" in lines
-    assert "  tron: its versions partition cleanly" in lines
+    assert "  zoo: its versions partition cleanly" in lines
+
+
+def test_a_deck_the_boundary_does_not_read_is_not_reported_as_reading_clean():
+    """The same confusion the other way up. Tron's versions are not read at all,
+    every signal the check could raise there having been ruled a build, so
+    calling it clean would report a deck nothing looked at as one nothing was
+    found in."""
+    assert not [line for line in cli._version_boundary_lines([_boundary()]) if "tron" in line]
 
 
 def test_a_deck_of_one_population_has_no_boundary_to_print_and_is_left_out():

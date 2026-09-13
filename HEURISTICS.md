@@ -386,7 +386,12 @@ or Force of Negation in the mainboard, green is Chromatic Sphere, Chromatic
 Star or Sylvan Scrying, and every other list is colourless whatever it
 splashes, so a playset of Dress Down, Portent of Calamity, Malevolent Rumble
 or Ancient Stirrings inside the Eldrazi shell is a build reading and not a
-version change. Measured: blue 78 to 53, green 5 to 3, colourless 745 to
+version change, and so is Emrakul, the Aeons Torn: blue Tron is a version of
+the colourless deck that plays more Emrakul, not a deck the card names
+(Alejandro, 2026-09-13). The card sits in 46 of the 50 blue lists and 18 of the
+669 colourless, which is a build the version leans on and not a marker, so a
+colourless list holding it is colourless and the version boundary is not to
+raise it. Measured: blue 78 to 53, green 5 to 3, colourless 745 to
 772, no list changing deck, and AlimTheBackpack's 4 Rumble Brisbane list
 moving from green to colourless, which reverses the splash-line reading of
 that one list. Since the bans that is 822 lists (713 MTGO, 109

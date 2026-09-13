@@ -91,7 +91,10 @@ def _version_boundary_lines(rows: list[dict]) -> list[str]:
     A deck whose versions partition cleanly says so rather than going unlisted:
     absence and a clean reading are different answers, and a deck missing from
     the table is the first told as the second. A deck of one population has no
-    default to fall into and is no part of this either way.
+    default to fall into and is no part of this either way, and neither is a
+    deck the boundary does not read: saying Tron partitions cleanly would be
+    that same confusion the other way up, a deck nothing looked at reported as
+    a deck nothing was found in.
     """
     if not rows:
         lines = ["  no member sits in a version its mainboard disagrees with"]
@@ -101,7 +104,7 @@ def _version_boundary_lines(rows: list[dict]) -> list[str]:
             " sitting in a version their mainboard disagrees with"
         ]
     for deck, rule in config.TRACKED_DECKS.items():
-        if not (default := rule.get("variant_default")):
+        if not (default := rule.get("variant_default")) or not rule.get("version_boundary", True):
             continue
         mine = [row for row in rows if row["archetype"] == deck]
         if not mine:

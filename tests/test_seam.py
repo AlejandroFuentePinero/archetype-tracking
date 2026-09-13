@@ -860,3 +860,32 @@ def test_a_version_too_thin_to_read_a_population_off_has_its_cards_left_unread(t
     store.build(raw, db)
 
     assert store.version_boundary(db) == []
+
+
+def test_a_deck_whose_every_signal_is_a_build_is_left_out_of_the_boundary(tmp_path):
+    """Tron's versions are read by marker and never by what a list casts.
+
+    A playset of Dress Down or Portent of Calamity inside the colourless Eldrazi
+    shell is a build change, and so is Emrakul, the Aeons Torn: blue Tron is a
+    version of the colourless deck that plays more of it, not a deck the card
+    names (Alejandro, 2026-09-13). Every signal the boundary could raise here has
+    been ruled a build, so the deck is left out rather than raised and dismissed
+    once a week.
+    """
+    raw = synthetic.write_cache(
+        tmp_path / "raw",
+        [
+            synthetic.league(
+                "2026-07-14",
+                [
+                    *(synthetic.tron(f"blue{n}", "blue") for n in range(5)),
+                    *(synthetic.tron(f"colourless{n}") for n in range(10)),
+                    synthetic.tron("narca", cards={"Consign to Memory": (2, 0)}),
+                ],
+            )
+        ],
+    )
+    db = tmp_path / "engine.duckdb"
+    store.build(raw, db)
+
+    assert store.version_boundary(db) == []

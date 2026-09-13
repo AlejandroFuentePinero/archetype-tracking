@@ -66,6 +66,15 @@ BROODSCALE_FILLER = {"Malevolent Rumble": 4, "Kozilek's Command": 4}
 BROODSCALE_LANDS = {"Forest": 8}
 BROODSCALE_VERSION_CARDS = {"gruul": {"Unholy Heat": 2}, "mono-green": {}}
 
+# The Tron shell, for the deck whose versions the boundary does not read. Its
+# own filler and lands for the reason the others have theirs: the shared block
+# casts blue off Faithful Mending, and a colourless list casting blue is the
+# whole point of the fixture.
+TRON_SIGNATURE = {card: 4 for card in config.TRACKED_DECKS["tron"]["signature"]}
+TRON_FILLER = {"Karn, the Great Creator": 4, "Kozilek's Command": 4}
+TRON_LANDS = {"Wastes": 8}
+TRON_VERSION_CARDS = {"blue": {"Stock Up": 4}, "colourless": {}}
+
 # One challenge class throughout: every class but league is challenge-class, so
 # which of them a synthetic event is makes no difference to any reading here.
 CHALLENGE_KIND = "challenge-64"
@@ -74,6 +83,8 @@ _LANDS = (
     FILLER_LANDS
     | BLINK_LANDS
     | BROODSCALE_LANDS
+    | TRON_LANDS
+    | dict.fromkeys(TRON_SIGNATURE, 4)
     | {"Watery Grave": 2, "Sacred Foundry": 2, "Mountain": 2, "Eldrazi Temple": 4}
 )
 
@@ -110,6 +121,7 @@ _COLOURS = {
     "Mystical Dispute": ["COLOR_BLUE"],
     "Unholy Heat": ["COLOR_RED"],
     "Malevolent Rumble": ["COLOR_GREEN"],
+    "Stock Up": ["COLOR_BLUE"],
 }
 
 FALLAJI_COPIES = {"fallaji": 4, "non-fallaji": 0, "hybrid": 2}
@@ -139,6 +151,31 @@ def entry(pilot, camp="non-fallaji", cards=None, points=None, placement=None, dr
     return {"pilot": pilot, "points": points, "placement": placement, "main": main, "side": side}
 
 
+def _registered(
+    pilot: str,
+    main: dict[str, int],
+    cards: dict | None,
+    points: int | None,
+    placement: int | None,
+) -> dict:
+    """One pilot's 75: a deck's shell, with `cards` written over it.
+
+    `cards` is the configuration the series is about, `{"Shadowspear": (2, 0)}`
+    maining two copies and siding none. A zero in the mainboard cuts the card
+    from the shell, which is how a list without one of its deck's usual spells
+    is written.
+    """
+    side = dict(FILLER_SIDE)
+    for card, (in_main, in_side) in (cards or {}).items():
+        if in_main:
+            main[card] = in_main
+        else:
+            main.pop(card, None)
+        if in_side:
+            side[card] = in_side
+    return {"pilot": pilot, "points": points, "placement": placement, "main": main, "side": side}
+
+
 def blink(
     pilot: str,
     variant: str = "esper",
@@ -156,15 +193,7 @@ def blink(
     main = BLINK_SIGNATURE | BLINK_FILLER | BLINK_LANDS | BLINK_VARIANT_LANDS[variant]
     if off_colour:
         main[off_colour] = 2
-    side = dict(FILLER_SIDE)
-    for card, (in_main, in_side) in (cards or {}).items():
-        if in_main:
-            main[card] = in_main
-        else:
-            main.pop(card, None)
-        if in_side:
-            side[card] = in_side
-    return {"pilot": pilot, "points": points, "placement": placement, "main": main, "side": side}
+    return _registered(pilot, main, cards, points, placement)
 
 
 def broodscale(
@@ -182,15 +211,23 @@ def broodscale(
     the rule catching it, which is what the boundary check is for.
     """
     main = BROODSCALE_SIGNATURE | BROODSCALE_FILLER | BROODSCALE_LANDS | BROODSCALE_VERSION_CARDS[version]
-    side = dict(FILLER_SIDE)
-    for card, (in_main, in_side) in (cards or {}).items():
-        if in_main:
-            main[card] = in_main
-        else:
-            main.pop(card, None)
-        if in_side:
-            side[card] = in_side
-    return {"pilot": pilot, "points": points, "placement": placement, "main": main, "side": side}
+    return _registered(pilot, main, cards, points, placement)
+
+
+def tron(
+    pilot: str,
+    version: str = "colourless",
+    cards: dict | None = None,
+    points: int | None = None,
+    placement: int | None = None,
+) -> dict:
+    """One Tron list, in one of its versions.
+
+    The deck whose versions the boundary check is told to leave alone: every
+    signal it could raise here has been ruled a build rather than a version.
+    """
+    main = TRON_SIGNATURE | TRON_FILLER | TRON_LANDS | TRON_VERSION_CARDS[version]
+    return _registered(pilot, main, cards, points, placement)
 
 
 def _card_rows(cards: dict[str, int]) -> list[dict]:

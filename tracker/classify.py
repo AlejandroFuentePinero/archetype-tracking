@@ -213,14 +213,16 @@ def version_boundary(lists: list[tuple[str, Decklist]]) -> list[tuple[str, str, 
 
     Sources say nothing either way, the way they say nothing to the splash line,
     or Blink's fetching Orzhov lists and Broodscale's Stomping Ground come back
-    as boundary cases that `CONTEXT.md` already rules out.
+    as boundary cases that `CONTEXT.md` already rules out. A deck whose rule
+    says `version_boundary` is false is left out whole, every signal the check
+    could raise there having been ruled a build already.
     """
     published: dict[str, frozenset[str]] = {}
     for _, decklist in lists:
         published.update(decklist.colours)
     rows = []
     for deck, rule in config.TRACKED_DECKS.items():
-        if not (default := rule.get("variant_default")):
+        if not (default := rule.get("variant_default")) or not rule.get("version_boundary", True):
             continue
         members: dict[str, list[tuple[str, Decklist]]] = {}
         for list_id, decklist in lists:

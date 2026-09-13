@@ -405,6 +405,14 @@ TRACKED_DECKS = {
             ("green", ("Chromatic Sphere", "Chromatic Star", "Sylvan Scrying")),
         ),
         "variant_default": "colourless",
+        # And the version boundary reads nothing here (Alejandro, 2026-09-13).
+        # Blue Tron is a version of the colourless deck that plays more Emrakul,
+        # not a deck the card names: Emrakul sits in 46 of the 50 blue lists and
+        # 18 of the 669 colourless, which is a build the version leans on. With
+        # the splash line and Portent of Calamity already ruled builds above,
+        # every signal the boundary could raise here is one, so the deck is left
+        # out rather than raised and dismissed once a week.
+        "version_boundary": False,
     },
     "energy": {
         # Guide of Souls and Ocelot Pride are the engine of every energy deck,
