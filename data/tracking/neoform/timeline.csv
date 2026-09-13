@@ -1,11 +1,7 @@
 start,end,lists,against,kind,zone,card,text
 2026-05-18,2026-05-31,6,"no fortnight before it, the history opening on 2026-05-19",stable,,,
-2026-06-01,2026-06-14,14,the fortnight to 2026-05-31,adoption,main,Forest,"Forest climbed in the mainboard, 0/6 to 6/14 lists (0% to 43%)"
-2026-06-01,2026-06-14,14,the fortnight to 2026-05-31,adoption,main,Island,"Island climbed in the mainboard, 0/6 to 6/14 lists (0% to 43%)"
 2026-06-01,2026-06-14,14,the fortnight to 2026-05-31,return,main,Wistfulness,"Wistfulness moves to the mainboard, 2 of 14 lists (14%)"
-2026-06-01,2026-06-14,14,the fortnight to 2026-05-31,copies,main,Disciple of Freyalise,Disciple of Freyalise up from 2.5 to 3.1 copies on average
-2026-06-01,2026-06-14,14,the fortnight to 2026-05-31,copies,main,"Ghalta, Stampede Tyrant","Ghalta, Stampede Tyrant up from 2.0 to 2.5 copies on average"
-2026-06-01,2026-06-14,14,the fortnight to 2026-05-31,copies,main,Veil of Summer,Veil of Summer down from 2.8 to 2.0 copies on average
+2026-06-01,2026-06-14,14,the fortnight to 2026-05-31,thin,,,"Too thin to read a move against the fortnight to 2026-05-31: 6 lists, the smaller of the two, where a row needs 10."
 2026-06-15,2026-06-28,13,the fortnight to 2026-06-14,adoption,side,Abhorrent Oculus,"Abhorrent Oculus climbed in the sideboard, 4/14 to 9/13 lists (29% to 69%)"
 2026-06-15,2026-06-28,13,the fortnight to 2026-06-14,adoption,side,Natural State,"Natural State fell in the sideboard, 8/14 to 3/13 lists (57% to 23%)"
 2026-06-15,2026-06-28,13,the fortnight to 2026-06-14,return,main,Nature's Claim,"Nature's Claim moves to the mainboard, 2 of 13 lists (15%)"
@@ -13,9 +9,7 @@ start,end,lists,against,kind,zone,card,text
 2026-06-15,2026-06-28,13,the fortnight to 2026-06-14,adoption,main,Wistfulness,"Wistfulness climbed in the mainboard, 2/14 to 9/13 lists (14% to 69%)"
 2026-06-15,2026-06-28,13,the fortnight to 2026-06-14,copies,main,Disciple of Freyalise,Disciple of Freyalise down from 3.1 to 2.3 copies on average
 2026-06-15,2026-06-28,13,the fortnight to 2026-06-14,copies,main,Veil of Summer,Veil of Summer up from 2.0 to 2.7 copies on average
-2026-06-29,2026-07-12,7,the fortnight to 2026-06-28,adoption,side,Abhorrent Oculus,"Abhorrent Oculus fell in the sideboard, 9/13 to 3/7 lists (69% to 43%)"
-2026-06-29,2026-07-12,7,the fortnight to 2026-06-28,adoption,main,Repudiate/Replicate,"Repudiate/Replicate fell in the mainboard, 9/13 to 2/7 lists (69% to 29%)"
-2026-06-29,2026-07-12,7,the fortnight to 2026-06-28,adoption,side,Ice-Fang Coatl,"Ice-Fang Coatl fell in the sideboard, 5/13 to 0/7 lists (38% to 0%)"
+2026-06-29,2026-07-12,7,the fortnight to 2026-06-28,thin,,,"Too thin to read a move against the fortnight to 2026-06-28: 7 lists, the smaller of the two, where a row needs 10."
 2026-07-13,2026-07-26,54,Pro Tour Amsterdam,adoption,side,"Boseiju, Who Endures","Boseiju, Who Endures fell in the sideboard, 7/14 to 5/54 lists (50% to 9%)"
 2026-07-13,2026-07-26,54,Pro Tour Amsterdam,adoption,side,Fungal Colossus,"Fungal Colossus fell in the sideboard, 7/14 to 5/54 lists (50% to 9%)"
 2026-07-13,2026-07-26,54,Pro Tour Amsterdam,event,,,Pro Tour Amsterdam

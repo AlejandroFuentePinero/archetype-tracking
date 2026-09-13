@@ -1,57 +1,12 @@
 start,end,lists,against,kind,zone,card,text
 2026-05-18,2026-05-31,2,"no fortnight before it, the history opening on 2026-05-19",stable,,,
-2026-06-01,2026-06-14,9,the fortnight to 2026-05-31,adoption,main,Badgermole Cub,"Badgermole Cub climbed in the mainboard, 0/2 to 9/9 lists (0% to 100%)"
-2026-06-01,2026-06-14,9,the fortnight to 2026-05-31,adoption,main,Birds of Paradise,"Birds of Paradise climbed in the mainboard, 1/2 to 9/9 lists (50% to 100%)"
-2026-06-01,2026-06-14,9,the fortnight to 2026-05-31,adoption,main,"Boseiju, Who Endures","Boseiju, Who Endures fell in the mainboard, 2/2 to 7/9 lists (100% to 78%)"
-2026-06-01,2026-06-14,9,the fortnight to 2026-05-31,adoption,side,Collector Ouphe,"Collector Ouphe climbed in the sideboard, 1/2 to 9/9 lists (50% to 100%)"
-2026-06-01,2026-06-14,9,the fortnight to 2026-05-31,adoption,main,Craterhoof Behemoth,"Craterhoof Behemoth climbed in the mainboard, 0/2 to 8/9 lists (0% to 89%)"
-2026-06-01,2026-06-14,9,the fortnight to 2026-05-31,adoption,side,Endurance,"Endurance climbed in the sideboard, 1/2 to 9/9 lists (50% to 100%)"
-2026-06-01,2026-06-14,9,the fortnight to 2026-05-31,adoption,side,Ethersworn Canonist,"Ethersworn Canonist climbed in the sideboard, 0/2 to 9/9 lists (0% to 100%)"
 2026-06-01,2026-06-14,9,the fortnight to 2026-05-31,return,side,"Grist, the Hunger Tide","Grist, the Hunger Tide moves to the sideboard, 8 of 9 lists (89%)"
-2026-06-01,2026-06-14,9,the fortnight to 2026-05-31,adoption,side,Keen-Eyed Curator,"Keen-Eyed Curator climbed in the sideboard, 1/2 to 8/9 lists (50% to 89%)"
-2026-06-01,2026-06-14,9,the fortnight to 2026-05-31,adoption,side,Kraul Harpooner,"Kraul Harpooner climbed in the sideboard, 0/2 to 6/9 lists (0% to 67%)"
-2026-06-01,2026-06-14,9,the fortnight to 2026-05-31,adoption,main,Misty Rainforest,"Misty Rainforest climbed in the mainboard, 1/2 to 9/9 lists (50% to 100%)"
 2026-06-01,2026-06-14,9,the fortnight to 2026-05-31,return,side,Orim's Chant,"Orim's Chant moves to the sideboard, 6 of 9 lists (67%)"
-2026-06-01,2026-06-14,9,the fortnight to 2026-05-31,adoption,main,Ouroboroid,"Ouroboroid climbed in the mainboard, 1/2 to 9/9 lists (50% to 100%)"
-2026-06-01,2026-06-14,9,the fortnight to 2026-05-31,adoption,side,Outland Liberator,"Outland Liberator climbed in the sideboard, 0/2 to 6/9 lists (0% to 67%)"
-2026-06-01,2026-06-14,9,the fortnight to 2026-05-31,adoption,main,Shifting Woodland,"Shifting Woodland climbed in the mainboard, 0/2 to 6/9 lists (0% to 67%)"
-2026-06-01,2026-06-14,9,the fortnight to 2026-05-31,adoption,side,Suncleanser,"Suncleanser climbed in the sideboard, 0/2 to 6/9 lists (0% to 67%)"
-2026-06-15,2026-06-28,21,the fortnight to 2026-06-14,adoption,main,"Boseiju, Who Endures","Boseiju, Who Endures climbed in the mainboard, 7/9 to 21/21 lists (78% to 100%)"
-2026-06-15,2026-06-28,21,the fortnight to 2026-06-14,adoption,side,Damping Sphere,"Damping Sphere climbed in the sideboard, 3/9 to 19/21 lists (33% to 90%)"
-2026-06-15,2026-06-28,21,the fortnight to 2026-06-14,adoption,main,Delighted Halfling,"Delighted Halfling climbed in the mainboard, 6/9 to 20/21 lists (67% to 95%)"
+2026-06-01,2026-06-14,9,the fortnight to 2026-05-31,thin,,,"Too thin to read a move against the fortnight to 2026-05-31: 2 lists, the smaller of the two, where a row needs 10."
 2026-06-15,2026-06-28,21,the fortnight to 2026-06-14,return,main,Endurance,"Endurance moves to the mainboard, 2 of 21 lists (10%)"
-2026-06-15,2026-06-28,21,the fortnight to 2026-06-14,adoption,side,Ethersworn Canonist,"Ethersworn Canonist fell in the sideboard, 9/9 to 15/21 lists (100% to 71%)"
-2026-06-15,2026-06-28,21,the fortnight to 2026-06-14,adoption,main,Malevolent Rumble,"Malevolent Rumble climbed in the mainboard, 6/9 to 19/21 lists (67% to 90%)"
-2026-06-15,2026-06-28,21,the fortnight to 2026-06-14,adoption,main,Ouroboroid,"Ouroboroid fell in the mainboard, 9/9 to 16/21 lists (100% to 76%)"
 2026-06-15,2026-06-28,21,the fortnight to 2026-06-14,return,main,Outland Liberator,"Outland Liberator moves to the mainboard, 2 of 21 lists (10%)"
-2026-06-15,2026-06-28,21,the fortnight to 2026-06-14,adoption,main,Snow-Covered Forest,"Snow-Covered Forest climbed in the mainboard, 4/9 to 14/21 lists (44% to 67%)"
-2026-06-15,2026-06-28,21,the fortnight to 2026-06-14,adoption,main,Sylvan Safekeeper,"Sylvan Safekeeper climbed in the mainboard, 3/9 to 15/21 lists (33% to 71%)"
-2026-06-15,2026-06-28,21,the fortnight to 2026-06-14,adoption,main,Verdant Catacombs,"Verdant Catacombs climbed in the mainboard, 6/9 to 21/21 lists (67% to 100%)"
-2026-06-15,2026-06-28,21,the fortnight to 2026-06-14,copies,main,Birds of Paradise,Birds of Paradise down from 2.0 to 1.5 copies on average
-2026-06-15,2026-06-28,21,the fortnight to 2026-06-14,copies,main,Misty Rainforest,Misty Rainforest down from 2.0 to 1.2 copies on average
-2026-06-15,2026-06-28,21,the fortnight to 2026-06-14,copies,main,Vizier of Remedies,Vizier of Remedies up from 2.3 to 2.8 copies on average
-2026-06-29,2026-07-12,8,the fortnight to 2026-06-28,adoption,side,Damping Sphere,"Damping Sphere fell in the sideboard, 19/21 to 3/8 lists (90% to 38%)"
-2026-06-29,2026-07-12,8,the fortnight to 2026-06-28,adoption,main,Eternal Witness,"Eternal Witness fell in the mainboard, 17/21 to 3/8 lists (81% to 38%)"
-2026-06-29,2026-07-12,8,the fortnight to 2026-06-28,adoption,side,Force of Vigor,"Force of Vigor fell in the sideboard, 17/21 to 4/8 lists (81% to 50%)"
-2026-06-29,2026-07-12,8,the fortnight to 2026-06-28,adoption,main,Godless Shrine,"Godless Shrine fell in the mainboard, 17/21 to 4/8 lists (81% to 50%)"
-2026-06-29,2026-07-12,8,the fortnight to 2026-06-28,adoption,side,"Grist, the Hunger Tide","Grist, the Hunger Tide fell in the sideboard, 17/21 to 4/8 lists (81% to 50%)"
-2026-06-29,2026-07-12,8,the fortnight to 2026-06-28,adoption,side,Keen-Eyed Curator,"Keen-Eyed Curator fell in the sideboard, 16/21 to 3/8 lists (76% to 38%)"
-2026-06-29,2026-07-12,8,the fortnight to 2026-06-28,adoption,main,Lush Portico,"Lush Portico fell in the mainboard, 16/21 to 3/8 lists (76% to 38%)"
-2026-06-29,2026-07-12,8,the fortnight to 2026-06-28,adoption,main,Malevolent Rumble,"Malevolent Rumble fell in the mainboard, 19/21 to 5/8 lists (90% to 62%)"
-2026-06-29,2026-07-12,8,the fortnight to 2026-06-28,adoption,main,Misty Rainforest,"Misty Rainforest fell in the mainboard, 18/21 to 5/8 lists (86% to 62%)"
-2026-06-29,2026-07-12,8,the fortnight to 2026-06-28,adoption,side,Orim's Chant,"Orim's Chant fell in the sideboard, 17/21 to 3/8 lists (81% to 38%)"
-2026-06-29,2026-07-12,8,the fortnight to 2026-06-28,adoption,main,Shifting Woodland,"Shifting Woodland fell in the mainboard, 15/21 to 4/8 lists (71% to 50%)"
-2026-06-29,2026-07-12,8,the fortnight to 2026-06-28,adoption,main,Snow-Covered Forest,"Snow-Covered Forest fell in the mainboard, 14/21 to 2/8 lists (67% to 25%)"
-2026-06-29,2026-07-12,8,the fortnight to 2026-06-28,adoption,side,Suncleanser,"Suncleanser fell in the sideboard, 16/21 to 2/8 lists (76% to 25%)"
-2026-06-29,2026-07-12,8,the fortnight to 2026-06-28,adoption,main,Sylvan Safekeeper,"Sylvan Safekeeper fell in the mainboard, 15/21 to 1/8 lists (71% to 12%)"
-2026-06-29,2026-07-12,8,the fortnight to 2026-06-28,adoption,side,Ethersworn Canonist,"Ethersworn Canonist fell in the sideboard, 15/21 to 0/8 lists (71% to 0%)"
-2026-06-29,2026-07-12,8,the fortnight to 2026-06-28,copies,main,Agatha's Soul Cauldron,Agatha's Soul Cauldron down from 2.7 to 2.3 copies on average
-2026-06-29,2026-07-12,8,the fortnight to 2026-06-28,copies,main,Birds of Paradise,Birds of Paradise up from 1.5 to 2.0 copies on average
-2026-06-29,2026-07-12,8,the fortnight to 2026-06-28,copies,main,"Boseiju, Who Endures","Boseiju, Who Endures down from 1.8 to 1.2 copies on average"
-2026-06-29,2026-07-12,8,the fortnight to 2026-06-28,copies,main,Ouroboroid,Ouroboroid up from 1.1 to 1.5 copies on average
-2026-06-29,2026-07-12,8,the fortnight to 2026-06-28,copies,main,Overgrown Tomb,Overgrown Tomb up from 1.1 to 1.5 copies on average
-2026-06-29,2026-07-12,8,the fortnight to 2026-06-28,copies,main,Vizier of Remedies,Vizier of Remedies down from 2.8 to 2.1 copies on average
-2026-06-29,2026-07-12,8,the fortnight to 2026-06-28,copies,main,Windswept Heath,Windswept Heath down from 3.7 to 3.2 copies on average
+2026-06-15,2026-06-28,21,the fortnight to 2026-06-14,thin,,,"Too thin to read a move against the fortnight to 2026-06-14: 9 lists, the smaller of the two, where a row needs 10."
+2026-06-29,2026-07-12,8,the fortnight to 2026-06-28,thin,,,"Too thin to read a move against the fortnight to 2026-06-28: 8 lists, the smaller of the two, where a row needs 10."
 2026-07-13,2026-07-26,14,Pro Tour Amsterdam,event,,,Pro Tour Amsterdam
 2026-07-27,2026-08-09,95,the fortnight to 2026-07-26,adoption,side,Crystal Barricade,"Crystal Barricade climbed in the sideboard, 0/14 to 27/95 lists (0% to 28%)"
 2026-07-27,2026-08-09,95,the fortnight to 2026-07-26,adoption,side,Dewdrop Cure,"Dewdrop Cure climbed in the sideboard, 0/14 to 21/95 lists (0% to 22%)"
