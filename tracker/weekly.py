@@ -403,6 +403,19 @@ def _against(against: str) -> str:
     return f'<div class="open">against {against}</div>'
 
 
+def _over(lists: int | str) -> str:
+    """How many lists a storyline row was read over, said under its period.
+
+    The findings carry their own counts where they have one, and the copies rows
+    have none at all: "Veil of Summer up from 2.5 to 3.2 copies" is the same
+    sentence over five lists and over fifty. A paper row is where that bites,
+    an event being a handful of the tracked version's lists in a field of
+    hundreds, so the row says its population rather than leaving it to the note
+    above the table.
+    """
+    return f'<div class="open">{lists} lists</div>'
+
+
 def _stable(entry: dict) -> str:
     """Why a paper row is empty, which at these populations is usually the sample.
 
@@ -468,9 +481,22 @@ def _spotlights(entries: list[dict], camp: str | None = None) -> str:
             f" {unread} published list(s) are dropped: melee published them with no sideboard"
             f" heading, so the boards never separated and membership could not be tested."
         )
+    # An event that played two formats carries its draft rounds in everything
+    # positional, and the row cannot be read beside a single-format one without
+    # saying so. `constructed` is set only for such an event.
+    mixed = [entry for entry in entries if entry["constructed"]]
+    if mixed:
+        said += (
+            f" {' and '.join(entry['label'] for entry in mixed)} played two formats. The match"
+            f" record and win rate are the {mixed[0]['constructed']} rounds alone and stop at the"
+            " Swiss, the top 8 there being a draft pod rather than a cut on these lists. The"
+            " field share, top 32, conversion and best finish all come off a standing that"
+            " carries the draft rounds too, which no arithmetic undoes."
+        )
     rows = [
         [
-            f"{entry['label']}<div class=\"open\">week ending {week_label(entry['week'])}</div>",
+            f"{entry['label']}<div class=\"open\">week ending {week_label(entry['week'])}</div>"
+            + ('<div class="open">two formats</div>' if entry["constructed"] else ""),
             f"{entry['field']:,}",
             str(entry["lists"]),
             f"{entry['field_share']:.1%}",
@@ -594,11 +620,12 @@ def render(
     entries = [
         (entry["end"], True, entry["start"],
          f"{entry['start']} to {entry['end']}<div class=\"open\">in progress</div>"
-         f"{_against(entry['against'])}",
+         f"{_over(entry['lists'])}{_against(entry['against'])}",
          _found(entry["found"], f"Stable against {entry['against']}."))
         for entry in running
     ] + [
-        (end, True, start, f"{start} to {end}{_against(found[0]['against'])}",
+        (end, True, start,
+         f"{start} to {end}{_over(found[0]['lists'])}{_against(found[0]['against'])}",
          _found(found, f"Stable against {found[0]['against']}."))
         for (start, end), found in frozen.items()
     ] + [
@@ -606,7 +633,8 @@ def render(
             week_label(entry["week"]),
             False,
             entry["week"],
-            f'<span class="major">{entry["label"]}</span>{_against(entry["against"])}',
+            f'<span class="major">{entry["label"]}</span>'
+            f'{_over(entry["build_lists"])}{_against(entry["against"])}',
             _found(entry["found"], _stable(entry)),
         )
         for entry in spotlights
@@ -645,14 +673,19 @@ def render(
 {note}
 <h2>The numbers (MTGO)</h2>
 {_table(
-    ["Week ending", "Lists", "Top 32", "of field", "Top 8", "of field",
-     "Top 16", "Trophies", "of field"],
+    ["Week ending", "Lists", "Top 32", "of all top 32s", "Top 8", "of all top 8s",
+     "Top 16", "Trophies", "of all 5-0s"],
     [[
         week_label(row["week"]), str(row["lists"]), str(row["chal"]), f'{(row["chal_share"] or 0):.1%}',
         str(row["top8"]), f'{(row["top8_share"] or 0):.1%}', str(row["top16"]),
         str(row["trophies"]), f'{(row["trophy_share"] or 0):.1%}',
     ] for row in reversed(version_weeks)],
 )}
+<p class="note">Three shares and three denominators, all of them that week's: the top 32 share is
+of every list the swiss-like tournaments published, the top 8 share of every list that placed
+top 8 in them, the trophy share of every league 5-0. So the columns are not shares of each
+other, and a top 8 count read against the top 32 denominator comes out several times too
+small.</p>
 {note}
 {_spotlights(spotlights, camp)}
 <h2>What changed</h2>
