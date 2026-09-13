@@ -913,3 +913,53 @@ def test_broodscale_s_golgari_version_is_the_black_cards_and_never_dismember():
     ]:
         assert classify.archetype(brood(spells)) == "broodscale", spells
         assert classify.variant("broodscale", brood(spells)) == version, spells
+
+
+def test_a_fortnight_too_thin_to_read_says_so_instead_of_printing_its_rows(tmp_path):
+    """A bin of eight lists prints the same kind of claim as a bin of a hundred
+    and thirty, and the reader has only the counts beside the row to tell them
+    apart (Alejandro, 2026-09-13). Grinding Station's fortnight to 2026-08-23
+    printed 21 rows off 8 lists, its own namesake among them at "Oswald
+    Fiddlebender fell in the mainboard, 21/23 to 5/8 lists".
+
+    The same move across the same two fortnights, and the only difference is how
+    many lists the thinner of them holds.
+    """
+    took_up = {"Ghost Vacuum": (3, 0)}
+    thin = _built(tmp_path / "thin", [_lists(FIRST, 20), _lists(SECOND, 8, cards=took_up)])
+    read = _built(tmp_path / "read", [_lists(FIRST, 20), _lists(SECOND, 10, cards=took_up)])
+
+    def rows(db):
+        found = timeline.findings(db, config.REPORTS["blink"])[1]["found"]
+        return [row for row in found if row["kind"] != "event"]
+
+    assert [row["kind"] for row in rows(thin)] == ["thin"]
+    assert "8 lists, the smaller of the two" in rows(thin)[0]["text"]
+    assert [row["card"] for row in rows(read)] == ["Ghost Vacuum"]
+
+
+def test_the_floor_reads_the_smaller_fortnight_whichever_side_it_is_on(tmp_path):
+    """The evidence for a move is the thinner of the two populations, so a thick
+    fortnight read against a thin one is no better off than the reverse. Devoted
+    Combo's bin to 2026-06-14 printed 14 rows against a 2-list history."""
+    took_up = {"Ghost Vacuum": (3, 0)}
+    db = _built(tmp_path, [_lists(FIRST, 8), _lists(SECOND, 20, cards=took_up)])
+
+    found = [row for row in timeline.findings(db, config.REPORTS["blink"])[1]["found"]]
+    assert [row["kind"] for row in found if row["kind"] != "event"] == ["thin"]
+
+
+def test_a_return_is_read_off_the_absence_behind_it_and_not_across_the_two(tmp_path):
+    """The floor is on the move, so it leaves the return reading alone.
+
+    A return says the deck had stopped playing a card and took it up again,
+    which rests on the lists it was missing from rather than on the two
+    populations either side of the line. That absence has a floor of its own
+    (`TRACK_RETURN_ABSENCE_LISTS`), given to it on 2026-09-13, so a thin bin is
+    already refused there when the history behind it is thin too.
+    """
+    db = _built(tmp_path, [_lists(FIRST, 30), _lists(SECOND, 8, cards={"Ghost Vacuum": (3, 0)})])
+
+    found = timeline.findings(db, config.REPORTS["blink"])[1]["found"]
+    assert [row["kind"] for row in found if row["kind"] != "event"] == ["return", "thin"]
+    assert "Ghost Vacuum appears for the first time" in found[0]["text"]

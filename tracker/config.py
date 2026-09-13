@@ -873,6 +873,21 @@ TRACK_RETURN_SIDE_LISTS = 3
 # staples, and every window at or above 29 read as a change somebody made.
 TRACK_RETURN_ABSENCE_LISTS = 25
 
+
+# The floor a fortnight has to clear before a card-level move is read across it,
+# on the smaller of the two populations, which is all the evidence there
+# actually is. A fortnight of fewer than ten lists is too thin to read a row off
+# (Alejandro, 2026-09-13): the storyline reads each fortnight against the one
+# before it whatever either holds, so a bin of 8 lists prints the same kind of
+# claim as a bin of 130 and only the counts beside the row tell them apart. Of
+# the 597 comparison rows frozen before the floor, 66 read across such a bin and
+# 55 of those fail a two-sided Fisher test at p<0.05. Ten and not
+# `TRACK_MIN_LISTS`: those rows cluster at 8 and 9 lists, so a floor of five
+# leaves the mass of them standing. The return reading answers to
+# `TRACK_RETURN_ABSENCE_LISTS` above instead, its claim resting on the absence
+# behind it rather than on the move across the two.
+TRACK_ROW_MIN_LISTS = 10
+
 # A return also has to be bigger than the card has ever been, which is what
 # separates a card the field has turned to from a card that was always a
 # one-off and is a one-off again. Without it the gates admit both and the

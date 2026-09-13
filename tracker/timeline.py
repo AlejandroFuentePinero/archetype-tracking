@@ -157,16 +157,33 @@ def lands_row(count: int, n: int, size: int, was: int, was_size: int) -> dict:
     }
 
 
+def readable(size: int, was_size: int) -> bool:
+    """Whether two fortnights hold enough lists between them to read a move across.
+
+    A floor on the smaller of the two, the shape the absence window already has,
+    because the smaller side is all the evidence there is. A fortnight of fewer
+    than `config.TRACK_ROW_MIN_LISTS` lists is too thin to read a card-level row
+    off (Alejandro, 2026-09-13), a bin of 8 lists otherwise printing the same
+    kind of claim as a bin of 130 with only the counts beside the row to tell
+    them apart.
+    """
+    return min(size, was_size) >= config.TRACK_ROW_MIN_LISTS
+
+
 def moved(
     n: int, size: int, was: int, was_size: int, bar: float = config.TRACK_ADOPTION_DELTA
 ) -> bool:
     """Whether a share moved far enough, in both units, to be a row.
 
     The share is what makes a move large and the count is what makes it
-    evidence, so a thin population cannot clear the bar on one pilot.
+    evidence, so a thin population cannot clear the bar on one pilot. Under the
+    floor `readable` sets, neither population is worth reading a move across at
+    all, and the bin says so in place of its rows.
 
     `bar` is the share, and only a watched slot lowers it. See TRACK_WATCH_DELTA.
     """
+    if not readable(size, was_size):
+        return False
     share = n / size
     was_share = was / was_size if was_size else 0.0
     return abs(share - was_share) >= bar and abs(n - was) >= config.TRACK_MIN_LISTS
@@ -410,7 +427,25 @@ def findings(
             if comparable and gate(0, size, len(before_copies), was_size):
                 found.append(adoption_row(card, zone, 0, size, len(before_copies), was_size))
 
-        if comparable:
+        # A fortnight too thin to read a move across says so and prints no
+        # comparison row at all, the readings below answering to `shifted`
+        # rather than to the gate that carries the floor. The return rows above
+        # stay: their claim rests on the absence behind the bin, which has a
+        # floor of its own in `_readable_absence`, and not on the move across
+        # the two populations.
+        thin = comparable and not crossed and not readable(size, was_size)
+        if thin:
+            found.append(
+                {
+                    "kind": "thin",
+                    "zone": "",
+                    "card": "",
+                    "text": f"Too thin to read a move against {against}: "
+                    f"{min(size, was_size)} lists, the smaller of the two, where a row "
+                    f"needs {config.TRACK_ROW_MIN_LISTS}.",
+                }
+            )
+        if comparable and not thin:
             now_held = {key: bins[index] for key, bins in copies.items() if index in bins}
             found += watched_rows(watched, now_held, was_held, size, was_size)
             found += copies_rows(now_held, was_held, size, was_size, watched)

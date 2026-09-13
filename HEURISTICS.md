@@ -662,31 +662,33 @@ included; no class is split out of the top-32 denominator, and no page carries
 a note about the stratum. A later review proposing to drop or split a class on
 its size is answered here rather than re-measured.
 
+**A fortnight of fewer than ten lists is too thin to read a card-level row off**
+(2026-09-13):
+The storyline reads each fortnight against the one before it whatever either
+holds, so a bin of 8 lists prints the same kind of claim as a bin of 130 and the
+reader has only the counts beside the row to tell them apart. The return reading
+was given this floor on 2026-09-13, having read a return off an absence its
+history was too thin to evidence; the adoption and copies rows answer to the
+same rule. Measured on the frozen files, 66 of the 597 comparison rows read
+across such a bin and 55 of those fail a two-sided Fisher test at p<0.05.
+Devoted Combo's fortnight to 2026-06-14 prints 14 rows against a 2-list history,
+"Craterhoof Behemoth climbed in the mainboard, 0/2 to 8/9 lists" among them
+(p=0.06), and Grinding Station's fortnight to 2026-08-23 prints 21 rows off 8
+lists, its own namesake at "Oswald Fiddlebender fell in the mainboard, 21/23 to
+5/8 lists" (p=0.09) and Damping Sphere at "19/23 to 5/8" (p=0.34).
+*Applies*: a floor of ten lists on the smaller of the two populations in
+`timeline.moved`, the shape the absence window already has, printing the bin as
+too thin to read rather than printing its rows. Ten and not `TRACK_MIN_LISTS`:
+the rows this is for cluster at 8 and 9 lists, so a floor of five leaves the
+mass of them standing. Swapping `moved` for `shifted` is not the fix, being not
+uniformly stricter and adding about 30 rows across storm, livingend, tron,
+ponza, dimir, jeskai, prowess and devoted. Devoted Combo and Grinding Station
+hold most of the suppressed rows and will read as too thin for stretches, which
+is the reading those fortnights can carry.
+
 ## Proposed, awaiting pilot verdict
 
 Heuristic candidates, held here until Alejandro rules on them. Nothing in this
 section is adopted knowledge and nothing here may steer an analysis. Each entry
 cites the evidence that raised it and counts the sessions it has been put to
 him in. See `.claude/skills/mtg-heuristics/SKILL.md`.
-
-**A fortnight of fewer than ten lists is too thin to read a card-level row off**
-(raised 2026-09-13, surfaced 1×):
-The storyline reads each fortnight against the one before it whatever either
-holds, so a bin of 8 lists prints the same kind of claim as a bin of 130, and
-the reader has only the counts beside the row to tell them apart.
-*Evidence*: 66 of the 597 comparison rows now frozen read across a fortnight
-where one side holds fewer than 10 lists, and 55 of those fail a two-sided
-Fisher test at p<0.05. Devoted Combo's fortnight to 2026-06-14 prints 14 rows
-against a 2-list history, "Craterhoof Behemoth climbed in the mainboard, 0/2 to
-8/9 lists" among them (p=0.06). Grinding Station's fortnight to 2026-08-23
-prints 21 rows off 8 lists, including its own namesake at "Oswald Fiddlebender
-fell in the mainboard, 21/23 to 5/8 lists" (p=0.09) and Damping Sphere at
-"19/23 to 5/8" (p=0.34). Four decks hold all 66: Devoted 38, Grinding Station
-21, Neoform 5, Trudge 2. The `TRACK_RETURN_ABSENCE_LISTS` fix of 2026-09-13
-removed the thin returns and pushed some of those bins into the adoption
-reading instead, so this is what is left of it.
-*Applies if adopted*: a floor on the smaller of the two populations in
-`timeline.moved`, the shape the absence window already has, printing the bin as
-too thin to read rather than its rows. Swapping `moved` for `shifted` is not
-the fix: it is not uniformly stricter and adds about 30 rows across storm,
-livingend, tron, ponza, dimir, jeskai, prowess and devoted.
