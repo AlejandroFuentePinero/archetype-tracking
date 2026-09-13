@@ -447,7 +447,7 @@ cites the evidence that raised it and counts the sessions it has been put to
 him in. See `.claude/skills/mtg-heuristics/SKILL.md`.
 
 **Jeskai Control is read on a red spell and not a red source** (raised
-2026-09-13, surfaced 0×):
+2026-09-13, surfaced 1×):
 The rule above keys Jeskai on Galvanic Discharge because a source rule cannot
 tell it from Azorius control. Whether the team calls the four-colour control
 lists on Watery Grave and Breeding Pool a different deck, and whether the Boros
@@ -462,7 +462,7 @@ and reads the whole Consult shell, or Energy folds Mardu and Jeskai in as
 versions; either invalidates every frozen row under that deck's directory.
 
 **The regime boundary day was played under the old rules** (raised
-2026-09-13, surfaced 0×):
+2026-09-13, surfaced 1×):
 `REGIME_BOUNDARY` is 2026-05-18, the announcement date, and the window reads
 that day as post-ban. The events published that day were played before the
 bans took effect.
