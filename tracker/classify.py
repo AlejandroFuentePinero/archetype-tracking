@@ -189,6 +189,80 @@ def _absent(candidates: set[str], default: list[Decklist], feature) -> list[str]
     )
 
 
+# The two shapes a marker is read in, each over what it is read off: the
+# colours a mainboard casts, and the spells it holds.
+FEATURES = {"colour": _cast, "card": _spells}
+
+
+def version_markers(lists: list[tuple[str, Decklist]]) -> list[tuple[str, str, str, str]]:
+    """What says a mainboard is a named version's and not its deck's default: deck, version, kind, marker.
+
+    What the pass-three sweep read is read here: the colours a named version is
+    drawn on, and the cards nine tenths of its population holds. The two are
+    read differently on purpose. A colour comes off the rule, which names the
+    cards a version is drawn on and sometimes the colour itself, because a
+    version can be drawn on a colour without its whole population casting it:
+    48 of the 387 Gruul Broodscale lists are on colourless Writhing Chrysalis
+    alone. A card has no such rule to come off, so it comes off the population,
+    and a version thinner than `config.TRACK_MIN_LISTS` has no population to
+    read: nine tenths of a one-list version is every card in one decklist,
+    which is how green Tron alone raised 27 colourless lists on a card the rule
+    calls a build.
+
+    Read over the population given and never over the lists a marker is later
+    put to, which is what lets a paper event be read at all: one event's field
+    is nine lists where the bar wants a population, and MTGO is the population
+    that has one.
+    """
+    published: dict[str, frozenset[str]] = {}
+    for _, decklist in lists:
+        published.update(decklist.colours)
+    markers = []
+    for deck, rule in config.TRACKED_DECKS.items():
+        if not (default := rule.get("variant_default")) or not rule.get("version_boundary", True):
+            continue
+        members: dict[str, list[Decklist]] = {}
+        for _, decklist in lists:
+            if decklist.archetype == deck:
+                members.setdefault(decklist.camp, []).append(decklist)
+        if not (fallen := members.get(default, [])):
+            continue
+        for version in config.versions(deck):
+            if version == default:
+                continue
+            named = members.get(version, [])
+            markers += [
+                (deck, version, "colour", marker)
+                for marker in _absent(_rule_colours(rule, version, published), fallen, _cast)
+            ]
+            # The cards are a population reading where the colours are a rule
+            # reading, so they alone need a population to read.
+            if len(named) >= config.TRACK_MIN_LISTS:
+                markers += [
+                    (deck, version, "card", marker)
+                    for marker in _absent(_carried(named, _spells), fallen, _spells)
+                ]
+    return markers
+
+
+def markers_held(
+    markers: list[tuple[str, str, str]], decklist: Decklist
+) -> list[tuple[str, str, str]]:
+    """Those of a deck's markers a mainboard holds, each read in its own shape.
+
+    Takes the markers rather than reading them, so the population that says
+    what a marker is and the lists it is put to can be two rooms: MTGO is the
+    only field large enough to carry the bar, and a paper event is the only
+    place some of the lists are.
+    """
+    read = {kind: feature(decklist) for kind, feature in FEATURES.items()}
+    return [
+        (version, kind, marker)
+        for version, kind, marker in markers
+        if marker in read[kind]
+    ]
+
+
 def version_boundary(lists: list[tuple[str, Decklist]]) -> list[tuple[str, str, str, str, str]]:
     """Every default-version member whose mainboard is a named version's, and what says so.
 
@@ -200,58 +274,24 @@ def version_boundary(lists: list[tuple[str, Decklist]]) -> list[tuple[str, str, 
     Lightning Bolt and SuperCow12653's two Blink lists casting Teferi, and
     nothing in the build would have found either.
 
-    What the sweep read is read here: the colours a named version is drawn on,
-    and the cards nine tenths of its population holds. The two are read
-    differently on purpose. A colour comes off the rule, which names the cards a
-    version is drawn on and sometimes the colour itself, because a version can
-    be drawn on a colour without its whole population casting it: 48 of the 387
-    Gruul Broodscale lists are on colourless Writhing Chrysalis alone. A card
-    has no such rule to come off, so it comes off the population, and a version
-    thinner than `config.TRACK_MIN_LISTS` has no population to read: nine tenths
-    of a one-list version is every card in one decklist, which is how green Tron
-    alone raised 27 colourless lists on a card the rule calls a build.
-
     Sources say nothing either way, the way they say nothing to the splash line,
     or Blink's fetching Orzhov lists and Broodscale's Stomping Ground come back
     as boundary cases that `CONTEXT.md` already rules out. A deck whose rule
     says `version_boundary` is false is left out whole, every signal the check
     could raise there having been ruled a build already.
     """
-    published: dict[str, frozenset[str]] = {}
-    for _, decklist in lists:
-        published.update(decklist.colours)
+    marked: dict[str, list[tuple[str, str, str]]] = {}
+    for deck, version, kind, marker in version_markers(lists):
+        marked.setdefault(deck, []).append((version, kind, marker))
     rows = []
-    for deck, rule in config.TRACKED_DECKS.items():
-        if not (default := rule.get("variant_default")) or not rule.get("version_boundary", True):
+    for list_id, decklist in lists:
+        markers = marked.get(decklist.archetype)
+        if not markers or decklist.camp != config.TRACKED_DECKS[decklist.archetype]["variant_default"]:
             continue
-        members: dict[str, list[tuple[str, Decklist]]] = {}
-        for list_id, decklist in lists:
-            if decklist.archetype == deck:
-                members.setdefault(decklist.camp, []).append((list_id, decklist))
-        fallen = [decklist for _, decklist in members.get(default, [])]
-        if not fallen:
-            continue
-        for version in config.versions(deck):
-            if version == default:
-                continue
-            named = [decklist for _, decklist in members.get(version, [])]
-            markers = [
-                ("colour", marker, _cast)
-                for marker in _absent(_rule_colours(rule, version, published), fallen, _cast)
-            ]
-            # The cards are a population reading where the colours are a rule
-            # reading, so they alone need a population to read.
-            if len(named) >= config.TRACK_MIN_LISTS:
-                markers += [
-                    ("card", marker, _spells)
-                    for marker in _absent(_carried(named, _spells), fallen, _spells)
-                ]
-            for kind, marker, feature in markers:
-                rows.extend(
-                    (list_id, deck, version, kind, marker)
-                    for list_id, decklist in members[default]
-                    if marker in feature(decklist)
-                )
+        rows += [
+            (list_id, decklist.archetype, version, kind, marker)
+            for version, kind, marker in markers_held(markers, decklist)
+        ]
     return rows
 
 

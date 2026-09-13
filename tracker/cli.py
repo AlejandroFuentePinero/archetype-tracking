@@ -118,14 +118,59 @@ def _version_boundary_lines(rows: list[dict]) -> list[str]:
                 continue
             lines.append(f"  {deck}: {len(marked)} list(s) in {default} that look {version}")
             for found in marked.values():
-                says = ", ".join(
-                    f"casts {row['marker']}" if row["kind"] == "colour" else f"on {row['marker']}"
-                    for row in found
-                )
                 lines.append(
                     f"    {found[0]['date']}  {found[0]['event']:<26}"
-                    f" {found[0]['pilot']:<12}  {says}"
+                    f" {found[0]['pilot']:<12}  {_says(found)}"
                 )
+    return lines
+
+
+def _says(rows: list[dict]) -> str:
+    """What says one list's mainboard is the other version's, its markers in one clause."""
+    return ", ".join(
+        f"casts {row['marker']}" if row["kind"] == "colour" else f"on {row['marker']}"
+        for row in rows
+    )
+
+
+def _paper_boundary_lines(rows: list[dict], spotlights: tuple[dict, ...]) -> list[str]:
+    """The same reading over the paper events, grouped by the event each list was played at.
+
+    Grouped by event because that is where a paper list is looked up: melee
+    publishes a standings page per tournament, and the rank is the list's place
+    in it. The counts are one event's own for the reason `config.MELEE_DIR`
+    exists: a paper field and an MTGO field are not one population and nothing
+    here may pool them.
+
+    Takes the events that were read, and an event among them that raises
+    nothing says so rather than going unlisted, the way a deck whose versions
+    partition cleanly does. An event nobody has fetched is not one of them and
+    prints nothing at all: a field nothing looked at, reported as a field
+    nothing was found in, is the confusion the other way up.
+    """
+    lines = []
+    for spot in spotlights:
+        played = [row for row in rows if row["event"] == spot["label"]]
+        if not played:
+            lines.append(
+                f"  {spot['label']}: every list sits in a version its mainboard agrees with"
+            )
+            continue
+        for deck, rule in config.TRACKED_DECKS.items():
+            for version in config.versions(deck):
+                marked: dict[int, list[dict]] = {}
+                for row in played:
+                    if row["archetype"] == deck and row["version"] == version:
+                        marked.setdefault(row["rank"], []).append(row)
+                if not marked:
+                    continue
+                lines.append(
+                    f"  {spot['label']}: {deck}, {len(marked)} list(s)"
+                    f" in {rule['variant_default']} that look {version}"
+                )
+                for rank in sorted(marked):
+                    found = marked[rank]
+                    lines.append(f"    #{rank:<5} {found[0]['pilot']:<12}  {_says(found)}")
     return lines
 
 
@@ -171,6 +216,18 @@ def main(argv=None) -> None:
             print(f"  {meta['name']}")
             print(f"  {meta['players']} players, {len(payload['lists'])} lists, "
                   f"read at {meta['round']} -> {path}")
+        # The boundary the ingest prints, over the fields the store cannot see.
+        # Read here rather than in `refresh`, which is the MTGO ingest and holds
+        # no paper list: the markers are the store's, the lists are the event's,
+        # and the two populations meet nowhere else.
+        #
+        # Every configured event that has been fetched and not merely the ones
+        # this run brought in, a rule gap being a fact about the whole history
+        # and not about today's request. An event nobody has fetched is not read
+        # and is not passed, so it is never reported as reading clean.
+        print("version boundary, every paper list whose version disagrees with its mainboard:")
+        events = tuple(s for s in config.MAJOR_EVENTS if spotlight.cached(s).exists())
+        print("\n".join(_paper_boundary_lines(spotlight.version_boundary(spotlights=events), events)))
         return
 
     if args.command == "weekly":

@@ -103,6 +103,19 @@ def unread(entry: dict) -> bool:
     return not entry["side"] and sum(entry["main"].values()) > 60
 
 
+def _decklist(
+    entry: dict, colours: dict[str, frozenset[str]] | None, land_names: frozenset[str]
+) -> SimpleNamespace:
+    """One published paper list in the shape the membership rules read.
+
+    Melee publishes a list's cards and nothing else, so the colours and the land
+    types come off the store, which is MTGO's reading of the same names.
+    """
+    return SimpleNamespace(
+        mainboard=entry["main"], colours=colours or {}, land_names=land_names
+    )
+
+
 def members(
     payload: dict,
     archetype: str = "blink",
@@ -130,7 +143,7 @@ def members(
     for entry in payload["lists"]:
         if unread(entry):
             continue
-        decklist = SimpleNamespace(mainboard=entry["main"], colours=colours or {}, land_names=land_names)
+        decklist = _decklist(entry, colours, land_names)
         name = classify.archetype(decklist)
         if name != archetype:
             continue
@@ -138,6 +151,68 @@ def members(
             continue
         found.append(entry)
     return sorted(found, key=lambda row: row["rank"])
+
+
+def version_boundary(
+    db_path: Path = config.DB_PATH,
+    spotlights: tuple[dict, ...] | None = None,
+    directory: Path | None = None,
+) -> list[dict]:
+    """Every paper list sitting in its deck's default version whose mainboard is a named version's.
+
+    The boundary the store prints, read where the store cannot see: a rule gap
+    only paper shows is invisible to anything computed from MTGO. The two Pro
+    Tour Broodscale lists that raised the reading are the case. They cast red off
+    Lightning Bolt, which their Grove of the Burnwillows and Karplusan Forest
+    paid for, where the Gruul rule of the day named only Unholy Heat and
+    Writhing Chrysalis; they sit in `data/raw-melee`, which `store.build` never
+    reads, and no MTGO Broodscale list has ever registered Lightning Bolt, so
+    nothing computed from the store could reach them. The ruling of 2026-09-13
+    named the card and closed that gap: this is the reading that would have
+    raised it.
+
+    Markers off MTGO and lists off the event, which pools no population. A card
+    is a marker because `config.VERSION_MARKER_SHARE` of a named version's
+    lists hold it, and one event's field cannot carry that bar: Pro Tour
+    Amsterdam's mono-green Broodscale population is 9 lists, so its two lists
+    casting red read as a fifth of the version rather than as two lists, which
+    is over the bar that disqualifies a marker. So MTGO says what a marker is
+    and the event says which of its lists carry one, and no denominator here
+    counts a paper list beside an MTGO one.
+
+    Read as `members` reads: the cards melee publishes, given the colours and
+    the land types MTGO has published for the same names, because a paper list
+    has to answer to the rule an MTGO list answers to.
+    """
+    markers = store.version_markers(db_path)
+    colours, typed = store.card_colours(db_path), store.land_names(db_path)
+    rows = []
+    for spot in spotlights or config.MAJOR_EVENTS:
+        if not cached(spot, directory).exists():
+            continue
+        for entry in load(spot, directory)["lists"]:
+            if unread(entry):
+                continue
+            decklist = _decklist(entry, colours, typed)
+            deck = classify.archetype(decklist)
+            if deck not in markers:
+                continue
+            if classify.variant(deck, decklist) != config.TRACKED_DECKS[deck]["variant_default"]:
+                continue
+            rows += [
+                {
+                    "event": spot["label"],
+                    "date": spot["date"],
+                    "rank": entry["rank"],
+                    "pilot": entry["pilot"],
+                    "archetype": deck,
+                    "version": version,
+                    "kind": kind,
+                    "marker": marker,
+                }
+                for version, kind, marker in classify.markers_held(markers[deck], decklist)
+            ]
+    return rows
 
 
 def _rate(rows: list[dict]) -> tuple[float | None, int, int, int]:

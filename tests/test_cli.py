@@ -173,3 +173,57 @@ def test_a_deck_of_one_population_has_no_boundary_to_print_and_is_left_out():
     lines = cli._version_boundary_lines([])
 
     assert not [line for line in lines if "affinity" in line or "neoform" in line]
+
+
+# Two configured paper events, the shape `config.MAJOR_EVENTS` carries.
+PAPER_EVENTS = (
+    {"id": 434455, "label": "Pro Tour Amsterdam", "date": "2026-07-17"},
+    {"id": 441441, "label": "Spotlight Brisbane", "date": "2026-08-29"},
+)
+
+
+def _paper(**over) -> dict:
+    """One paper boundary case as `spotlight.version_boundary` returns it."""
+    return {
+        "event": "Pro Tour Amsterdam",
+        "date": "2026-07-17",
+        "rank": 12,
+        "pilot": "KarplusanKid",
+        "archetype": "broodscale",
+        "version": "gruul",
+        "kind": "colour",
+        "marker": "R",
+    } | over
+
+
+def test_the_paper_boundary_names_the_lists_under_the_event_they_were_played_at():
+    """A paper list is found on the standings page it finished in, so the event
+    is what the lists are grouped under, and the rank is how one is looked up.
+
+    The markers are the store's and the lists are the event's, so the count is
+    the event's own and never a share: nothing here counts a paper list beside
+    an MTGO one.
+    """
+    lines = cli._paper_boundary_lines(
+        [
+            _paper(),
+            _paper(rank=44, pilot="ador"),
+            _paper(rank=44, pilot="ador", version="lab", kind="card", marker="Devourer of Destiny"),
+        ],
+        PAPER_EVENTS,
+    )
+
+    assert "  Pro Tour Amsterdam: broodscale, 2 list(s) in mono-green that look gruul" in lines
+    assert "  Pro Tour Amsterdam: broodscale, 1 list(s) in mono-green that look lab" in lines
+    assert "    #12    KarplusanKid  casts R" in lines
+    assert "    #44    ador          on Devourer of Destiny" in lines
+
+
+def test_an_event_whose_lists_agree_with_their_versions_says_so_rather_than_going_unlisted():
+    """The same distinction the MTGO table draws: an event missing from the
+    reading is a clean event told as one nobody read, and the two are different
+    answers. The events read are what this is handed, so an event among them
+    that raised nothing is the first, and one nobody fetched is never passed."""
+    lines = cli._paper_boundary_lines([_paper()], PAPER_EVENTS)
+
+    assert "  Spotlight Brisbane: every list sits in a version its mainboard agrees with" in lines

@@ -9,7 +9,12 @@ from pathlib import Path
 import duckdb
 
 from . import config, index
-from .classify import classify_cache, fallout as fallout_of, version_boundary as boundary_of
+from .classify import (
+    classify_cache,
+    fallout as fallout_of,
+    version_boundary as boundary_of,
+    version_markers as markers_of,
+)
 from .parse import Decklist
 
 DECKLISTS_SCHEMA = """
@@ -92,6 +97,23 @@ CREATE OR REPLACE TABLE version_boundary (
 """
 
 
+# What says a mainboard is a named version's rather than its deck's default: a
+# colour that version is drawn on, or a card nine tenths of its population
+# holds. The boundary above is this table put to the store's own lists, and it
+# is kept in its own right because the paper events are read against it too.
+# Melee is a population the store never loads and one event's field is nine
+# lists where the bar wants a population, so MTGO says what a marker is and the
+# event says which of its lists carry one, which pools no denominator.
+VERSION_MARKERS_SCHEMA = """
+CREATE OR REPLACE TABLE version_markers (
+    archetype VARCHAR,
+    version VARCHAR,
+    kind VARCHAR,
+    marker VARCHAR
+)
+"""
+
+
 def _identify(decklists: list[Decklist]) -> list[str]:
     """Each list's id: the event it was published in and the pilot who registered it.
 
@@ -165,6 +187,7 @@ def build(raw_dir: Path = config.RAW_DIR, db_path: Path = config.DB_PATH) -> Pat
         con.execute(CARDS_SCHEMA)
         con.execute(FALLOUT_SCHEMA)
         con.execute(VERSION_BOUNDARY_SCHEMA)
+        con.execute(VERSION_MARKERS_SCHEMA)
         _load(
             con,
             "decklists",
@@ -206,6 +229,7 @@ def build(raw_dir: Path = config.RAW_DIR, db_path: Path = config.DB_PATH) -> Pat
             ((list_id, deck, reason) for list_id, d in lists for deck, reason in fallout_of(d)),
         )
         _load(con, "version_boundary", boundary_of(lists))
+        _load(con, "version_markers", markers_of(lists))
         con.execute("COMMIT")
     index.write([d for _, d in lists], db_path)
     return db_path
@@ -257,6 +281,23 @@ def version_boundary(db_path: Path = config.DB_PATH) -> list[dict]:
                 " ORDER BY d.date DESC, b.archetype, b.version, d.pilot, b.marker"
             )
         )
+
+
+def version_markers(db_path: Path = config.DB_PATH) -> dict[str, list[tuple[str, str, str]]]:
+    """Each deck's markers, keyed by deck and shaped as `classify.markers_held` reads them.
+
+    The store is where they are kept because it is the population that says
+    what a marker is: a card comes off `config.VERSION_MARKER_SHARE` of a named
+    version's lists, which no single paper field is large enough to carry.
+    """
+    with duckdb.connect(db_path, read_only=True) as con:
+        rows = con.execute(
+            "SELECT archetype, version, kind, marker FROM version_markers"
+        ).fetchall()
+    markers: dict[str, list[tuple[str, str, str]]] = {}
+    for deck, version, kind, marker in rows:
+        markers.setdefault(deck, []).append((version, kind, marker))
+    return markers
 
 
 def _rows(cursor: duckdb.DuckDBPyConnection) -> list[dict]:

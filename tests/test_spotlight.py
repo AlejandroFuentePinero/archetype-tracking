@@ -15,7 +15,8 @@ import json
 
 import pytest
 
-from tracker import config, melee, spotlight, weekly
+from tracker import config, melee, spotlight, store, weekly
+from tests import synthetic
 
 SIGNATURE = {card: 4 for card in config.TRACKED_DECKS["blink"]["signature"]}
 ESPER = {"Watery Grave": 1}
@@ -508,9 +509,6 @@ def test_a_paper_list_reads_its_splash_off_the_colours_mtgo_has_published(tmp_pa
     the way the land count reads MTGO's types. A Dimir list on a playset of
     Flame of Anor is Grixis Frog, on paper as on MTGO.
     """
-    from tests import synthetic
-    from tracker import store
-
     raw = synthetic.write_cache(
         tmp_path / "raw", [synthetic.league("2026-07-14", [synthetic.entry("colours", cards={"Lightning Bolt": (1, 0)})])]
     )
@@ -527,3 +525,144 @@ def test_a_paper_list_reads_its_splash_off_the_colours_mtgo_has_published(tmp_pa
         _payload(DALLAS, [dimir, grixis]), "dimir", None, colours=colours, land_names=store.land_names(db)
     )
     assert [row["rank"] for row in members] == [1]
+
+
+# The Pro Tour, the event the paper boundary reading was raised on: two
+# Broodscale lists casting red off a card the Gruul rule did not name, in a
+# field the MTGO store never reads.
+AMSTERDAM = {"id": 434455, "label": "Pro Tour Amsterdam", "date": "2026-07-17"}
+
+
+def _registered(rank, entry, name="Broodscale"):
+    """One synthetic 75, published the way melee publishes a paper list."""
+    return {
+        **_list(rank, name=name),
+        "pilot": entry["pilot"],
+        "main": entry["main"],
+        "side": entry["side"],
+    }
+
+
+def test_a_paper_list_casting_a_named_versions_colour_is_a_boundary_case(tmp_path):
+    """The reading the MTGO store cannot reach: a rule gap only paper shows.
+
+    KarplusanKid's list is the shape the two Pro Tour Broodscale lists have: a
+    paper list casting red off a card the Gruul rule does not name, so it reads
+    mono-green. It sits in a melee payload, which the store never loads, so
+    nothing computed from the store can see it, which is why the boundary
+    shipped with this half of its fourth criterion unmet.
+    """
+    raw = synthetic.write_cache(
+        tmp_path / "raw",
+        [
+            synthetic.league(
+                "2026-07-14",
+                [
+                    synthetic.broodscale("gruul0", "gruul", cards={"Galvanic Discharge": (2, 0)}),
+                    *(synthetic.broodscale(f"gruul{n}", "gruul") for n in range(1, 5)),
+                    *(synthetic.broodscale(f"green{n}") for n in range(10)),
+                ],
+            )
+        ],
+    )
+    db = tmp_path / "engine.duckdb"
+    store.build(raw, db)
+    melee_dir = _cache(
+        tmp_path / "melee",
+        AMSTERDAM,
+        _payload(
+            AMSTERDAM,
+            [
+                _registered(
+                    1, synthetic.broodscale("KarplusanKid", cards={"Galvanic Discharge": (2, 0)})
+                ),
+                _registered(2, synthetic.broodscale("someone")),
+            ],
+        ),
+    )
+
+    rows = spotlight.version_boundary(db, (AMSTERDAM,), melee_dir)
+    assert [
+        (row["event"], row["pilot"], row["archetype"], row["version"], row["kind"], row["marker"])
+        for row in rows
+    ] == [("Pro Tour Amsterdam", "KarplusanKid", "broodscale", "gruul", "colour", "R")]
+
+
+def test_a_card_marker_is_read_off_mtgo_and_put_to_a_field_too_thin_to_carry_it(tmp_path):
+    """The whole reason the markers come off the store: a card is a marker
+    because `VERSION_MARKER_SHARE` of a named version's lists hold it, and one
+    paper event's field cannot carry that bar. Amsterdam's mono-green
+    Broodscale population is nine lists, where two lists casting red read as a
+    fifth of the version rather than as two lists. So the store says what a
+    marker is, and the event says which of its lists carry one.
+
+    The list already sitting in the named version is not a case: the default is
+    the one version no list is ever read into, which is the whole asymmetry the
+    boundary exists for.
+    """
+    raw = synthetic.write_cache(
+        tmp_path / "raw",
+        [
+            synthetic.league(
+                "2026-07-14",
+                [
+                    *(synthetic.blink(f"esper{n}", cards={"Shadowspear": (2, 0)}) for n in range(5)),
+                    *(synthetic.blink(f"orzhov{n}", "orzhov") for n in range(10)),
+                ],
+            )
+        ],
+    )
+    db = tmp_path / "engine.duckdb"
+    store.build(raw, db)
+    field = [
+        _registered(1, synthetic.blink("SuperCow12653", "orzhov", cards={"Shadowspear": (2, 0)})),
+        _registered(2, synthetic.blink("labelled", cards={"Shadowspear": (2, 0)})),
+        _registered(3, synthetic.blink("plain", "orzhov")),
+    ]
+    melee_dir = _cache(tmp_path / "melee", AMSTERDAM, _payload(AMSTERDAM, field))
+
+    rows = spotlight.version_boundary(db, (AMSTERDAM,), melee_dir)
+    assert len(field) < config.TRACK_MIN_LISTS
+    assert [(row["pilot"], row["version"], row["kind"], row["marker"]) for row in rows] == [
+        ("SuperCow12653", "esper", "card", "Shadowspear")
+    ]
+
+
+def test_the_paper_field_is_no_part_of_what_makes_a_card_a_marker(tmp_path):
+    """The separation `config.MELEE_DIR` exists for, read the one way it could
+    have been broken here. A paper event and an MTGO event are not the same
+    population, so a share read across both is meaningless and nothing may pool
+    them by accident.
+
+    MTGO's Esper population is a list short of `TRACK_MIN_LISTS` here, so it has
+    no cards to read, and the paper field holds ten Esper lists on Shadowspear.
+    Pooled, the two would clear the bar between them and the paper Orzhov list
+    would be named on a marker half of whose population never played MTGO.
+    """
+    raw = synthetic.write_cache(
+        tmp_path / "raw",
+        [
+            synthetic.league(
+                "2026-07-14",
+                [
+                    *(
+                        synthetic.blink(f"esper{n}", cards={"Shadowspear": (2, 0)})
+                        for n in range(config.TRACK_MIN_LISTS - 1)
+                    ),
+                    *(synthetic.blink(f"orzhov{n}", "orzhov") for n in range(10)),
+                ],
+            )
+        ],
+    )
+    db = tmp_path / "engine.duckdb"
+    store.build(raw, db)
+    field = [
+        _registered(1, synthetic.blink("SuperCow12653", "orzhov", cards={"Shadowspear": (2, 0)})),
+        *(
+            _registered(n, synthetic.blink(f"paper{n}", cards={"Shadowspear": (2, 0)}))
+            for n in range(2, 12)
+        ),
+    ]
+    melee_dir = _cache(tmp_path / "melee", AMSTERDAM, _payload(AMSTERDAM, field))
+
+    assert spotlight.version_boundary(db, (AMSTERDAM,), melee_dir) == []
