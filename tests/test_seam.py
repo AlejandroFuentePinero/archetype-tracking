@@ -437,6 +437,53 @@ def test_a_first_run_that_caches_nothing_still_says_what_it_could_not_reach(tmp_
     assert store.goryos_lists(db) == []
 
 
+def test_a_challenge_published_without_its_standings_is_a_wait_rather_than_a_league(tmp_path):
+    """MTGO publishes a challenge's decklists before the finishes under them.
+
+    Caught in that window the payload carries a bracket, a field, and none of
+    the keys that say who placed where. Nothing but `standings` separates a
+    challenge from a league, so read as it stands it is taken for a league and
+    the build dies on the `name` only a league carries. Ingested instead, it
+    would seat a full bracket in the top-32 population with no placement between
+    them, which is the conversion reading spoiled rather than a build crashed.
+
+    So it is a gap like an unreachable event is: everything else caches, the run
+    says what it could not take, and the re-run picks it up once the finishes
+    land.
+    """
+
+    class MidPublishSite(CapturedSite):
+        UNFINISHED = "modern-challenge-32-2026-08-0512850696"
+
+        def __init__(self):
+            super().__init__()
+            self.published = False
+
+        def fetch_payload(self, slug):
+            payload = super().fetch_payload(slug)
+            if slug == self.UNFINISHED and not self.published:
+                return {k: v for k, v in payload.items() if k not in ("standings", "winloss")}
+            return payload
+
+    site = MidPublishSite()
+    raw_dir, db = tmp_path / "raw", tmp_path / "engine.duckdb"
+
+    with pytest.raises(mtgo.Unavailable, match="not yet its standings"):
+        refresh("2026-08-01", "2026-08-31", raw_dir, db, source=site, today="2026-08-31")
+
+    # Left out of the cache rather than written half published, so no later run
+    # reads it as settled and no build has to survive it.
+    assert not (raw_dir / f"{MidPublishSite.UNFINISHED}.json").exists()
+    assert {row["pilot"] for row in store.goryos_lists(db, "2026-08-05")} == (
+        GORYOS_PILOTS_2026_08_05 - {"Acecalna"}
+    )
+
+    # The finishes land; the re-run takes the event whole.
+    site.published = True
+    refresh("2026-08-01", "2026-08-31", raw_dir, db, source=site, today="2026-08-31")
+    assert {row["pilot"] for row in store.goryos_lists(db, "2026-08-05")} == GORYOS_PILOTS_2026_08_05
+
+
 def test_refresh_caches_the_rest_when_the_site_withholds_an_event(tmp_path):
     """The site intermittently serves a page with the listing missing.
 
@@ -553,6 +600,53 @@ def test_a_capture_interrupted_mid_write_is_not_left_in_the_cache(tmp_path, monk
     refresh("2026-08-01", "2026-08-31", raw_dir, db, source=site, today="2026-08-31")
     assert killed in site.fetches
     assert {row["pilot"] for row in store.goryos_lists(db, "2026-08-05")} == GORYOS_PILOTS_2026_08_05
+
+
+class MisdatedSite(CapturedSite):
+    """The site listing one event under a wrongly dated slug, then correcting it.
+
+    Both listings serve the same payload, and the payload names the event it
+    really is. Seen on the captured 2026-07-08 challenge, listed as 2026-07-24
+    until the site withdrew the second slug.
+    """
+
+    EVENTS = {path.stem: path for path in FIXTURE_DUPLICATE.glob("*.json")}
+
+    def __init__(self, listed):
+        super().__init__()
+        self.listed = listed
+
+    def event_slugs(self, since, fmt, until, today):
+        return [self.listed]
+
+
+def test_an_event_listed_under_a_wrongly_dated_slug_is_cached_under_its_own_name(tmp_path):
+    """One event, one capture, whichever date the index happened to give it.
+
+    Filed under the slug asked for, the correction lands beside the capture
+    rather than on it, and the cache comes to hold the event twice: 12 of the
+    628 captures on 2026-09-14. `parse_cache` counts such an event once, but it
+    keeps whichever of the two names sorts first, which is a fact about the
+    alphabet and not about the capture. Filed under the name the payload gives
+    itself there is nothing to choose between.
+    """
+    raw_dir, db = tmp_path / "raw", tmp_path / "engine.duckdb"
+    misdated = "modern-challenge-32-2026-07-2412846530"
+    corrected = "modern-challenge-32-2026-07-0812846530"
+
+    site = MisdatedSite(misdated)
+    refresh("2026-07-01", "2026-07-31", raw_dir, db, source=site, today="2026-07-31")
+
+    assert site.fetches == [misdated]
+    assert [path.stem for path in raw_dir.glob("*.json")] == [corrected]
+    assert len(classify_cache(raw_dir)) == 32
+
+    # The site corrects the listing. The event is already held, under the name
+    # the correction uses, so the cache neither grows nor twins.
+    refresh("2026-07-01", "2026-07-31", raw_dir, db, source=MisdatedSite(corrected), today="2026-07-31")
+
+    assert [path.stem for path in raw_dir.glob("*.json")] == [corrected]
+    assert len(classify_cache(raw_dir)) == 32
 
 
 def _ids(db) -> dict[str, str]:

@@ -68,11 +68,50 @@ def refresh(
             elif repair:
                 gaps.append(f"{gap}: the capture on disk was taken inside its own day and is short")
             continue
+        # MTGO publishes a challenge's decklists before its standings, so a run
+        # inside that window catches the field with no finishes under it. Parsed
+        # it reads as a league, there being no `standings` to tell the two
+        # apart, and takes the whole build down on the `name` a league carries
+        # and a challenge does not; cached and read, it would put a full bracket
+        # of lists in the top-32 population with no placement between them. It
+        # is data that has not arrived rather than an event nobody won, so it is
+        # left uncached and reported like any other gap. Seen once in 628
+        # captures, on 2026-09-13, and the same slug served its standings twenty
+        # minutes later.
+        if "brackets" in payload and "standings" not in payload:
+            gaps.append(f"{slug}: published its decklists and not yet its standings")
+            continue
+        # Filed under the name the payload gives itself, not under the slug the
+        # index asked for. The site lists an event under a wrongly dated slug
+        # and then corrects the listing, serving the same payload under both, so
+        # a cache filed by slug ends up holding one event under two names: 12 of
+        # 628 captures, one of them the 2026-09-12 challenge listed as
+        # 2026-09-10. `parse_cache` counts such an event once, but it keeps
+        # whichever name sorts first, which is the misdated one as often as not
+        # and is a fact about the alphabet rather than about the capture. Filed
+        # by identity there is one file, and the corrected listing overwrites
+        # the capture taken under the wrong date rather than sitting beside it.
+        filed = raw_dir / f"{payload['site_name']}.json"
+        # The settle gate at the top of the loop asks whether `slug`.json is on
+        # disk, and for these 12 it never is, the capture being filed under the
+        # corrected name: the gate cannot fire and a day that has finished
+        # publishing would be overwritten from the wrong slug on every run. Read
+        # a second time here under the day the payload gives itself, the
+        # misdated slug carrying a day that is not the event's and would age the
+        # capture by the size of the site's own error.
+        if filed != path:
+            filed_day = mtgo.slug_day(payload["site_name"])
+            if (
+                filed.exists()
+                and filed_day < settled.isoformat()
+                and _captured_late(filed, filed_day)
+            ):
+                continue
         # Landed whole or not at all: a capture half written by a run that died
         # would be a settled file the cache never refetches and never parses.
-        partial = path.with_suffix(".partial")
+        partial = filed.with_suffix(".partial")
         partial.write_text(json.dumps(payload, indent=1), encoding="utf-8")
-        partial.replace(path)
+        partial.replace(filed)
 
     store.build(raw_dir, db_path)
     if gaps:
