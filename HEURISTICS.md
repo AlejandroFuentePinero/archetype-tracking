@@ -738,7 +738,7 @@ cites the evidence that raised it and counts the sessions it has been put to
 him in. See `.claude/skills/mtg-heuristics/SKILL.md`.
 
 **Two further floors on the novelty reading: one on the cut population, one on
-the fortnights the peak is read over** (raised 2026-09-14, surfaced 1×):
+the fortnights the peak is read over** (raised 2026-09-14, surfaced 2×):
 The four bars were ruled on 2026-09-14 and stand. Neither of these floors was
 ever built, and each would move the row count.
 *Evidence*: the list floor of three is a tenth of the 30 lists Izzet Prowess put
@@ -754,3 +754,25 @@ refuses elsewhere; a floor of 10 lists there changes exactly one row today.
 *Applies if adopted*: a floor on the cut population, a floor on the fortnights
 the peak is read over, or both. Either is a change of method under a reader from
 2026-09-15 and answers to ADR 0002.
+
+**The return reading should count distinct pilots, not lists** (raised
+2026-09-14, surfaced 0×):
+A league dump publishes every 5-0, so one grinder entering leagues with a brew
+produces several lists of it in a fortnight. Counted as lists, that reads as the
+deck picking a card up; counted as pilots, it is one player's pet card. This is
+the same inversion `goldfishing` already names and corrects for, applied to the
+reading that has the lowest list floor in the project.
+*Evidence*: 4 of the 20 frozen return rows in the Izzet Prowess timeline rest on
+a single pilot, and all four are the same pilot in the same fortnight: Jeskai
+Ascendancy, Legion Leadership, Light Up the Stage and Murktide Regent, bin
+2026-06-15 to 2026-06-28, all SightWinner across three league lists on 15, 19
+and 25 June. The Ascendancy row reads "3 of 91 lists (3%)". `Jeskai Ascendancy`
+has never been registered by another Prowess pilot, before or since. The
+contrast is Tormod's Crypt in the mainboard, which went 9 lists across 5 pilots
+to 25 across 21 in the current bin: a real move, and one an adoption row reports
+on its own.
+*Applies if adopted*: `TRACK_RETURN_MAIN_LISTS` and `TRACK_RETURN_SIDE_LISTS`
+become pilot counts rather than list counts, or a distinct-pilot floor sits
+beside them. Would drop those 4 rows of 20. A change of method under a reader
+from 2026-09-15 and answers to ADR 0002. Worth asking whether the same count
+belongs on the adoption bar, where the min-lists gate is 5.
