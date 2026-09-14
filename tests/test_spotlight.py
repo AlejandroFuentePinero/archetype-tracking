@@ -1204,6 +1204,42 @@ def test_a_card_the_adoption_reading_already_reports_does_not_print_twice(tmp_pa
     assert entry["novelties"] == []
 
 
+def test_a_row_in_one_zone_does_not_silence_the_other_zone(tmp_path):
+    """A card leaving sideboards while the good finishers main it is two facts.
+
+    Keyed on the card alone the suppression above drops the half that says so
+    and keeps the half reporting a decline. Per zone for the reason the peaks
+    and the return gates are: a sideboard churns far harder than a mainboard.
+
+    Tormod's Crypt in Izzet Prowess at Spotlight Dallas raised it. Its mainboard
+    row sits under the list floor and so prints at no configured floor, but it
+    was being discarded before the floor was the question, against a sideboard
+    row reading 61% to 34% and MTGO mainboards going 0.8% to 26.0% over the two
+    fortnights that followed.
+    """
+    # Every MTGO list of the deck sideboards the card, and none mains it.
+    db = tmp_path / "engine.duckdb"
+    store.build(
+        synthetic.write_cache(
+            tmp_path / "raw", [_mtgo("2026-08-12", cards={"Ghost Vacuum": (0, 2)})]
+        ),
+        db,
+    )
+    # The paper field sideboards it nowhere, and four of its good finishers main it.
+    field = _field(100)
+    for row in field[:4]:
+        row["main"] = {**row["main"], "Ghost Vacuum": 2}
+    melee_dir = _cache(tmp_path / "melee", BRISBANE, _payload(BRISBANE, field))
+
+    entry, = spotlight.chain(db, spotlights=(BRISBANE,), directory=melee_dir)
+
+    ordinary = [row for row in entry["found"] if row["card"] == "Ghost Vacuum"]
+    assert [(row["zone"], "fell" in row["text"]) for row in ordinary] == [("side", True)]
+    assert [(row["card"], row["zone"]) for row in entry["novelties"]] == [
+        ("Ghost Vacuum", "main")
+    ]
+
+
 def test_the_mtgo_bar_is_read_over_fortnights_that_closed(tmp_path):
     """The fortnight an event falls in has not finished, and is not a fortnight yet.
 

@@ -1,6 +1,6 @@
 # ADR 0005: Adding a watchlist row to the paper half of the storyline
 
-Status: accepted (2026-09-14, extended the same day)
+Status: accepted (2026-09-14, extended and narrowed the same day)
 
 ## Context
 
@@ -123,3 +123,26 @@ moved, and no clause already written changed a word. Each gained one paragraph
 in sixth place. After 2026-09-15 a clause added to the order changes the weeks
 ahead of it, leaves the written summaries standing, and is announced in that
 week's summary.
+
+## Narrowed: the suppression is read per zone (2026-09-14)
+
+The Consequences above record the suppression as a card an adoption or
+watched-slot row already names. The code keyed it on the card and nothing else,
+where `novelties` produces a row per card and zone, so a sideboard row silenced
+a mainboard watchlist entry and the reverse. Narrowed to the card and the zone
+together, which is what one card, one decision, one row was meant to say.
+
+This is the only place the project collapsed the two zones. The peaks in
+`mtgo_peaks`, the return gates in `timeline._is_return` and the novelty reading
+itself all read per zone, and for the reason stated above: a sideboard churns
+far harder than a mainboard. Tormod's Crypt in Izzet Prowess at Spotlight Dallas
+is the case, mained by one of the twenty good finishers against a sideboard row
+reading 61 percent to 34 percent, the two halves of a promotion. MTGO mainboards
+then went 0.8 percent to 26.0 percent over the two fortnights that followed.
+
+The seven rows above are unchanged, and so are the thirty-five the reading
+prints at a floor of two. The row this rescues sits under the list floor and
+appears only at a floor of one, where the reading goes from 292 rows to 295.
+Nothing a reader has seen moves, which is why it is a narrowing recorded here
+rather than a decision reopened: the floors are untouched and remain the open
+question this ADR left to ADR 0002.

@@ -522,16 +522,25 @@ def chain(
             }
         )
         # Suppressed where an ordinary reading already reports the card in this
-        # entry. A card the adoption or watched-slot reading caught is a move the
-        # field made, which is the stronger claim, and printed twice it reads as
-        # two findings about one card.
-        reported = {row["card"] for comparison in comparisons for row in comparison["found"]}
+        # entry, in the zone the watchlist read it in. A card the adoption or
+        # watched-slot reading caught is a move the field made, which is the
+        # stronger claim, and printed twice it reads as two findings about one
+        # card. Keyed on the zone as well as the card, for the reason the peaks
+        # and the return gates are: a card falling out of sideboards while the
+        # good finishers main it is two facts and not one repeated, and keyed on
+        # the card alone the half that says so is dropped and the half left
+        # standing reports a decline.
+        reported = {
+            (row["card"], row["zone"])
+            for comparison in comparisons
+            for row in comparison["found"]
+        }
         watchlist = [
             row
             for row in novelties(
                 payload, ours, mtgo_peaks(db_path, archetype, build, spot["date"])
             )
-            if row["card"] not in reported
+            if (row["card"], row["zone"]) not in reported
         ]
         entries.append(
             {
