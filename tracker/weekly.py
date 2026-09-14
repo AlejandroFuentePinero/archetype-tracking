@@ -33,7 +33,7 @@ TIMELINE_COLUMNS = ("start", "end", "lists", "against", "kind", "zone", "card", 
 # 2026-09-13). Melee publishes the odd registration with no sideboard heading,
 # so the boards never separate and the list is dropped. A handful of those is a
 # meme or a corrupt entry rather than news about the deck, 146 Plains at 0-1
-# being one of the three so far, and a banner over a field of nine hundred
+# being one of the four so far, and a banner over a field of nine hundred
 # reads as a fault in the fetch when there is none. Past this the count is
 # worth saying, being too many to be the field's own noise.
 UNREAD_BANNER = 5
@@ -193,8 +193,8 @@ def freeze(
     }
 
 
-def _paper(entries: list[dict], week: str) -> dict | None:
-    """The major event that fell in the reported week, with the row it reads against.
+def _paper(entries: list[dict], week: str) -> list[dict]:
+    """Every major event that fell in the reported week, with the row each reads against.
 
     The paper clause was the one clause whose figures were not in this file, so
     it was the one clause written off the rendered page, which is the thing
@@ -202,24 +202,43 @@ def _paper(entries: list[dict], week: str) -> dict | None:
     in the week, so whether the report got a paper paragraph at all depended on
     the writer remembering.
 
+    Every one of them, because a week can hold more than one. The Championship
+    season seats two regions on one weekend, and the week ending 2026-09-13 ran
+    Baltimore and China in two rooms on one day. Handed the first of the two,
+    the clause reported half a weekend as the weekend, and the second event went
+    unmentioned with nothing in the file saying it had been played.
+
+    Side by side and not in a sequence. `chain` reads no event against one
+    played in its own week, two rooms being two fields rather than a before and
+    an after, so each carries its own comparison and neither is the other's
+    baseline. That is also why the comparison row is looked up by the label the
+    entry names rather than taken as the entry before it, which for the second
+    of a weekend's two events is the first of them: a row the entry was never
+    read against.
+
     The comparison row rides along with its own numbers rather than its label
     alone: the clause quotes both sides, and a label would send the writer back
-    to the page for the other half. `placings` is dropped from both, being the
-    positional plot's series and no sentence.
+    to the page for the other half. An event whose baseline is the MTGO
+    fortnight has no paper row to carry and says so with a null. `placings` is
+    dropped from both, being the positional plot's series and no sentence.
     """
-    entry = next((row for row in entries if row["week"] == week), None)
-    if entry is None:
-        return None
-    earlier = entries[: entries.index(entry)]
-    before = earlier[-1] if earlier else None
-    return {
-        **{key: value for key, value in entry.items() if key != "placings"},
-        "against_row": (
-            {key: value for key, value in before.items() if key not in ("placings", "found")}
-            if before
-            else None
-        ),
-    }
+    rows = {entry["label"]: entry for entry in entries}
+    return [
+        {
+            **{key: value for key, value in entry.items() if key != "placings"},
+            "against_row": (
+                {
+                    key: value
+                    for key, value in rows[entry["against"]].items()
+                    if key not in ("placings", "found", "comparisons")
+                }
+                if entry["against"] in rows
+                else None
+            ),
+        }
+        for entry in entries
+        if entry["week"] == week
+    ]
 
 
 def facts(
@@ -279,7 +298,7 @@ def facts(
                                                    report["camp"])
                if row["week"] == week]
     played = spotlights_through(week)
-    paper = _paper(spotlight.chain(db_path, report, played), week) if played else None
+    paper = _paper(spotlight.chain(db_path, report, played), week) if played else []
 
     return {
         "week": week,
@@ -309,7 +328,7 @@ def facts(
         "versions": observed,
         "goldfishing": copying[0] if copying else None,
         "timeline_latest": [row for row in frozen if row["start"] == latest and row["text"]],
-        "major_event": paper,
+        "major_events": paper,
         "excluded_off_colour": tracking.excluded(db_path, report["archetype"]),
     }
 
@@ -318,9 +337,9 @@ _STYLE = """
 :root {
   color-scheme: light;
   --surface: #fcfcfb; --panel: #ffffff; --line: #e4e3de;
-  --ink: #0b0b0b; --ink-2: #52514e; --ink-3: #86847d;
-  --series-1: #2a78d6; --series-2: #eb6834; --series-3: #1baf7a; --series-4: #b04ab0;
-  --flag: #fdf3e7; --flag-line: #eda100;
+  --ink: #0b0b0b; --ink-2: #52514e; --ink-3: #75746d;
+  --series-1: #2a78d6; --series-2: #eb6834; --series-3: #1baf7a; --series-4: #b04ab0; --series-5: #5c6b7a;
+  --flag: #fdf3e7; --flag-line: #eda100; --flag-ink: #8a5e00;
   --major: #c2410c;
   --accent: #d97757;
 }
@@ -329,8 +348,8 @@ _STYLE = """
     color-scheme: dark;
     --surface: #14140f; --panel: #1a1a19; --line: #34332e;
     --ink: #f5f4ef; --ink-2: #c3c2b7; --ink-3: #8b8a80;
-    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #b45fc4;
-    --flag: #2a2113; --flag-line: #c98500;
+    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #b45fc4; --series-5: #8a9bab;
+    --flag: #2a2113; --flag-line: #c98500; --flag-ink: #c98500;
     --major: #f97316;
   }
 }
@@ -338,8 +357,8 @@ _STYLE = """
   color-scheme: dark;
   --surface: #14140f; --panel: #1a1a19; --line: #34332e;
   --ink: #f5f4ef; --ink-2: #c3c2b7; --ink-3: #8b8a80;
-  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #b45fc4;
-  --flag: #2a2113; --flag-line: #c98500;
+  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #b45fc4; --series-5: #8a9bab;
+  --flag: #2a2113; --flag-line: #c98500; --flag-ink: #c98500;
   --major: #f97316;
 }
 * { box-sizing: border-box; }
@@ -357,6 +376,7 @@ h1 { font-size: 22px; letter-spacing: -0.02em; margin: 0 0 4px; color: var(--acc
 .dek { color: var(--ink-3); font-size: 13px; margin: 0; }
 .tracked { color: var(--major); font-size: 15px; font-weight: 700; margin: 8px 0 0; }
 .tracked span { font-size: 13px; font-weight: 500; }
+h2 span { font-weight: 400; color: var(--ink-3); letter-spacing: 0.04em; }
 h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em;
      color: var(--ink-3); font-weight: 600; margin: 40px 0 14px; }
 .summary { background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
@@ -380,7 +400,10 @@ tbody tr:hover { background: var(--panel); }
 .tl .none { color: var(--ink-3); }
 /* A major event's storyline row, set apart from the fortnights around it. */
 .tl .major { color: var(--major); font-weight: 650; }
-.open { color: var(--flag-line); font-size: 11px; margin-top: 2px; }
+/* Its own ink and not --flag-line, which is a 3px bar and is chosen to be seen
+   as a bar. At 11px the same amber reads at 2.1 against the light panel, and
+   this line carries the list count every storyline row was read over. */
+.open { color: var(--flag-ink); font-size: 11px; margin-top: 2px; }
 .note { color: var(--ink-3); font-size: 12px; line-height: 1.55; margin: 12px 0 0; }
 .tag { display: inline-block; font-size: 10px; letter-spacing: 0.04em; text-transform: uppercase;
        color: var(--ink-3); border: 1px solid var(--line); border-radius: 3px;
@@ -413,10 +436,10 @@ def _over(lists: int | str) -> str:
     hundreds, so the row says its population rather than leaving it to the note
     above the table.
     """
-    return f'<div class="open">{lists} lists</div>'
+    return f'<div class="open">{lists} list{"" if lists == 1 else "s"}</div>'
 
 
-def _stable(entry: dict) -> str:
+def _stable(build_lists: int, comparison: dict) -> str:
     """Why a paper row is empty, which at these populations is usually the sample.
 
     A bare "stable" on an eight-list event reads as a fetch that failed. The row
@@ -427,10 +450,11 @@ def _stable(entry: dict) -> str:
     lists against a fortnight of twenty-seven, so five of those eight have to
     change their mind about one card, and its largest move was three.
     """
-    floor = min(entry["build_lists"], entry["baseline_lists"])
+    floor = min(build_lists, comparison["baseline_lists"])
     needed = max(config.TRACK_MIN_LISTS, ceil(floor * config.TRACK_ADOPTION_DELTA))
     return (
-        f"Nothing moved against {entry['against']}: at {floor} lists, the smaller "
+        f"Nothing moved against {comparison['against']}: at {floor} "
+        f"list{'' if floor == 1 else 's'}, the smaller "
         f"of the two, a row needs a shift worth {needed} of them."
     )
 
@@ -468,7 +492,7 @@ def _spotlights(entries: list[dict], camp: str | None = None) -> str:
         return ""
     # Which lists the counts are over, and which the storyline's paper rows are,
     # said because the two differ wherever the report reads one version.
-    said = " The lists counted here are every version of the archetype."
+    said = ""
     if camp:
         said += (
             f" The paper rows in the storyline below are the {config.version_name(camp)} "
@@ -509,7 +533,7 @@ def _spotlights(entries: list[dict], camp: str | None = None) -> str:
         ]
         for entry in entries
     ]
-    return f"""<h2>Major competitive events (paper)</h2>
+    return f"""{_section("Major competitive events (paper)", ALL, camp)}
 <figure>{plots.spotlight_finishes(entries)}</figure>
 {_table(
     ["Event", "Field", "Lists", "of field", "Top 32", "Conversion", "Best",
@@ -536,19 +560,26 @@ def _others(report: dict) -> list[str]:
     return [name for name in config.versions(report["archetype"]) if name != report["camp"]]
 
 
-def _population(camp: str | None, lists: int) -> str:
-    """Which version a reading was taken on, said where the reader is looking.
+ALL, TRACKED = "all versions", "tracked version"
 
-    Empty where the deck is one population. Where it is not the note is not
-    optional: the presence figures above are the whole deck's, and a reader
-    would otherwise put their list count beside a row it was never read against.
+
+def _section(title: str, population: str, camp: str | None) -> str:
+    """A section heading carrying the population the section was read over.
+
+    Which version a reading was taken on is not optional information: a reader
+    who puts a conversion figure beside a presence count has compared one camp
+    against the whole deck. It was a note under four of the sections, which is
+    the same sentence four times and none of them where the eye lands. On the
+    heading it is read before the figure rather than after it, and the deck's
+    own tracked version is then said once, at the top of the page.
+
+    Nothing to say where the deck is one population: every section reads the
+    same lists and a label on each would be four reassurances about a
+    distinction the deck does not have.
     """
     if camp is None:
-        return ""
-    return (
-        f'<p class="note">Read on the {config.version_name(camp)} version alone, '
-        f"{lists} lists since the Modern bans. The presence figures are the whole deck's.</p>"
-    )
+        return f"<h2>{title}</h2>"
+    return f'<h2>{title} <span>({population})</span></h2>'
 
 
 def render(
@@ -577,7 +608,7 @@ def render(
     reading = facts(db_path, deck, week)
     played = spotlights_through(week)
     spotlights = spotlight.chain(db_path, report, played) if played else []
-    note = _population(camp, sum(row["lists"] for row in version_weeks))
+    version_lists = sum(row["lists"] for row in version_weeks)
 
     summary_path = root / "summary" / f"{week}.md"
     summary = (
@@ -597,9 +628,16 @@ def render(
             f"good it is.</p>"
         )
 
-    frozen: dict[tuple[str, str], list[dict]] = {}
+    # Grouped by what the rows were read against as well as by the fortnight
+    # they cover, a fortnight now carrying one row per baseline. Keyed by the
+    # bin alone, a bin read against its own previous fortnight and against two
+    # paper events would collapse into one storyline row under whichever
+    # baseline happened to be written first, and the other two readings would
+    # be printed under a heading that never produced them.
+    frozen: dict[tuple[str, str, str], list[dict]] = {}
     for row in _read(root / "timeline.csv"):
-        frozen.setdefault((row["start"], row["end"]), []).append(row)
+        frozen.setdefault((row["start"], row["end"], row["against"]), []).append(row)
+    frozen_bins = {(start, end) for start, end, _against in frozen}
     # The fortnight the reported week sits in has usually not closed, so it has
     # no frozen row and would leave the meeting looking at a timeline up to a
     # fortnight behind the plots. It is shown from the store instead, marked for
@@ -607,7 +645,7 @@ def render(
     running = [
         entry
         for entry in timeline.findings(db_path, report, spotlights=played)
-        if entry["start"] <= week and (entry["start"], entry["end"]) not in frozen
+        if entry["start"] <= week and (entry["start"], entry["end"]) not in frozen_bins
     ]
     # Fortnights and Spotlights in one sequence, in the order the chain reads
     # them: each row sits above the entry it was read against. A Spotlight is a
@@ -625,19 +663,23 @@ def render(
         for entry in running
     ] + [
         (end, True, start,
-         f"{start} to {end}{_over(found[0]['lists'])}{_against(found[0]['against'])}",
-         _found(found, f"Stable against {found[0]['against']}."))
-        for (start, end), found in frozen.items()
+         f"{start} to {end}{_over(found[0]['lists'])}{_against(against)}",
+         _found(found, f"Stable against {against}."))
+        for (start, end, against), found in frozen.items()
     ] + [
         (
             week_label(entry["week"]),
             False,
             entry["week"],
             f'<span class="major">{entry["label"]}</span>'
-            f'{_over(entry["build_lists"])}{_against(entry["against"])}',
-            _found(entry["found"], _stable(entry)),
+            f'{_over(entry["build_lists"])}{_against(comparison["against"])}',
+            _found(comparison["found"], _stable(entry["build_lists"], comparison)),
         )
         for entry in spotlights
+        # One row per baseline the event was read against. The sort below is
+        # stable and the three keys are the event's, so the comparisons keep the
+        # order the chain put them in: the paper row above the MTGO one.
+        for comparison in entry["comparisons"]
     ]
     timeline_rows = [
         [period, found]
@@ -648,8 +690,7 @@ def render(
     # sections read before reaching them. Presence is the whole deck.
     tracked = (
         f"  <p class=\"tracked\">Tracked version: {config.version_name(camp)} "
-        "<span>(Conversion, Goldfishing, The numbers and What changed read this version alone; "
-        "Presence and the major event counts are the whole deck)</span></p>\n"
+        f"<span>({version_lists} lists since the Modern bans)</span></p>\n"
         if camp else ""
     )
     body = f"""<div class="page">
@@ -662,16 +703,16 @@ def render(
 <h2>This week</h2>
 {banner}<div class="summary">{summary}</div>
 
-<h2>Presence</h2>
+{_section("Presence", ALL, camp)}
 <figure>{plots.presence(weeks, marks, versions)}</figure>
 
-<h2>Conversion</h2>
+{_section("Conversion", TRACKED, camp)}
 <figure>{plots.conversion(version_weeks, marks)}</figure>
-{note}
-<h2>Goldfishing</h2>
+
+{_section("Goldfishing", TRACKED, camp)}
 <figure>{plots.goldfishing(copying, marks)}</figure>
-{note}
-<h2>The numbers (MTGO)</h2>
+
+{_section("The numbers (MTGO)", TRACKED, camp)}
 {_table(
     ["Week ending", "Lists", "Top 32", "of all top 32s", "Top 8", "of all top 8s",
      "Top 16", "Trophies", "of all 5-0s"],
@@ -686,11 +727,10 @@ of every list the swiss-like tournaments published, the top 8 share of every lis
 top 8 in them, the trophy share of every league 5-0. So the columns are not shares of each
 other, and a top 8 count read against the top 32 denominator comes out several times too
 small.</p>
-{note}
+
 {_spotlights(spotlights, camp)}
-<h2>What changed</h2>
+{_section("What changed", TRACKED, camp)}
 {_table(["Period", "Findings"], timeline_rows, "tl")}
-{note}
 
 </div>"""
 

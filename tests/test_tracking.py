@@ -155,6 +155,24 @@ def test_a_deck_can_have_a_second_entry_path():
     assert classify.archetype(_list_of({"Scion of Draco": 4, "Leyline of the Guildpact": 4})) is None
 
 
+def test_trudge_reads_the_eldrazi_shell_and_not_one_of_its_lands():
+    """The shell rather than Ugin's Labyrinth alone (Alejandro, 2026-09-14).
+
+    The Labyrinth stood in for the shell while every list in the history held
+    it. TheJV's RC Baltimore list is the shell whole on a manabase without the
+    land, and the mono-green Springheart Nantuko decks run the two creatures as
+    mana dorks and none of the shell, so the land cannot tell the two apart.
+    """
+    from tracker import classify
+
+    dorks = {"Slumbering Trudge": 4, "Fanatic of Rhonas": 4}
+    for card in ("Ugin's Labyrinth", "Eldrazi Temple", "Kozilek's Command", "Fight Rigging"):
+        assert classify.archetype(_list_of(dorks | {card: 4})) == "trudge", card
+    nantuko = {"Quirion Ranger": 4, "Summoner's Pact": 4, "Springheart Nantuko": 4}
+    assert classify.archetype(_list_of(dorks | nantuko)) is None
+    assert classify.archetype(_list_of(dorks)) is None
+
+
 def test_a_pair_that_names_another_deck_is_outweighed_by_the_shell_s_own_card():
     """Tamiyo beside Mox Amber is the Tamiyo artifact deck, unless Weapons
     Manufacturing sits beside them, when Manufacturing outweighs it and the list
@@ -604,8 +622,8 @@ def test_membership_is_read_off_the_rule_and_not_a_list_of_names(tmp_path):
 
 
 def test_a_list_short_of_one_signature_card_is_not_the_deck(tmp_path):
-    """Membership is every signature card, so three of four is another deck."""
-    short = blink("nearly", placement=1, points=15, cards={"Flickerwisp": (0, 0)})
+    """Membership is every signature card, so two of three is another deck."""
+    short = blink("nearly", placement=1, points=15, cards={"Witch Enchanter": (0, 0)})
     db = _built(tmp_path, [challenge(FIRST, [short], "e1")])
     assert sum(row["chal"] for row in tracking.weekly(db, "blink", "esper", since=FIRST)) == 0
 
@@ -754,10 +772,17 @@ def test_the_fortnight_holding_a_major_event_is_read_against_the_event(tmp_path)
     assert plain["against"] == "the fortnight to 2026-05-31"
     assert [row["card"] for row in plain["found"] if row["kind"] == "return"] == ["Clarion Conqueror"]
 
-    chained = timeline.findings(db, config.REPORTS["blink"], spotlights=(spot,), directory=tmp_path)[1]
-    assert chained["against"] == "Pro Tour Test"
+    # The bin the event fell in now carries a row per baseline: its own previous
+    # fortnight, then the event. The event's row is picked by name rather than
+    # by position, the position being a fact about how many events fell in it.
+    rows = timeline.findings(db, config.REPORTS["blink"], spotlights=(spot,), directory=tmp_path)
+    chained = next(row for row in rows if row["against"] == "Pro Tour Test")
     assert chained["cross_population"] is True
     assert not [row for row in chained["found"] if row["card"] == "Clarion Conqueror"]
+    # And the fortnight reading is not discarded to make room for it.
+    own = next(row for row in rows if row["start"] == chained["start"] and row is not chained)
+    assert own["against"] == "the fortnight to 2026-05-31"
+    assert own["cross_population"] is False
 
     # And the event itself is read against the fortnight that closed before it.
     event = spotlight.chain(db, config.REPORTS["blink"], (spot,), tmp_path)[0]
@@ -782,7 +807,8 @@ def test_a_paper_event_carries_a_land_count_off_the_names_mtgo_has_typed(tmp_pat
 
     event = spotlight.chain(db, _report(manabase=True), (spot,), tmp_path)[0]
     assert any(row["text"].startswith("13 lands climbed") for row in event["found"])
-    after = timeline.findings(db, _report(manabase=True), spotlights=(spot,), directory=tmp_path)[1]
+    rows = timeline.findings(db, _report(manabase=True), spotlights=(spot,), directory=tmp_path)
+    after = next(row for row in rows if row["against"] == spot["label"])
     assert any(row["text"].startswith("13 lands fell") for row in after["found"])
 
 
@@ -963,3 +989,4 @@ def test_a_return_is_read_off_the_absence_behind_it_and_not_across_the_two(tmp_p
     found = timeline.findings(db, config.REPORTS["blink"])[1]["found"]
     assert [row["kind"] for row in found if row["kind"] != "event"] == ["return", "thin"]
     assert "Ghost Vacuum appears for the first time" in found[0]["text"]
+

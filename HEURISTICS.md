@@ -28,6 +28,20 @@ occupies and a grinder's repeat trophies are part of that occupancy. It is also
 why the ingest index diffs as a multiset: two identical league rows are two
 lists, not one filed twice.
 
+**A challenge that did not fire is not a missing challenge, and a major paper
+weekend is the usual reason** (2026-09-14):
+MTGO's Sunday schedule thins when the format's players are in a tournament hall.
+A Sunday short of its usual challenges reads exactly like a fetch that dropped
+an event, and the two have to be told apart before a week's field is doubted.
+*Applies*: a Sunday under two challenge-class events on a weekend carrying an
+RC, a Pro Tour or a Spotlight is the calendar and not a gap. Do not re-fetch it,
+do not doubt the week, and do not say anything about it in the report: a
+paragraph explaining why a field was small is a caveat on a number that is
+correct. A short Sunday with no major event behind it is still a gap and is
+chased. Sunday 2026-09-13, the day of RC Baltimore and RC China, ran one
+challenge-class event where the other sixteen Sundays since the bans ran two to
+four, and was twice mistaken for an ingestion gap before this was ruled.
+
 **A lone dissenting regular beats herd convergence as evidence** (2026-08-07):
 Mass adoption of a winner's 75 inflates belief in it (goldfish copying). A
 single pilot who goes against the hype with a different configuration and does
@@ -285,19 +299,26 @@ Esper Goryo's; ador's 20 July challenge with Phelia and Overlord stays.
 Frozen Goryo's rows for the weeks of 14 and 17 July counted the two league
 lists.
 
-**Esper Blink is the four creatures together on their own colours, and not the
-decks built around them** (2026-09-13):
-Flickerwisp, Phelia, Overlord of the Balemurk and Witch Enchanter are the deck
-as a combination, not a signal from one card: a list that cuts any one of them
-is not Blink, whatever the rest of the 75 looks like. The Guide of Souls and
+**Esper Blink is the three creatures together on their own colours, and not the
+decks built around them** (2026-09-14):
+Phelia, Overlord of the Balemurk and Witch Enchanter are the deck as a
+combination, not a signal from one card: a list that cuts any one of them is
+not Blink, whatever the rest of the 75 looks like. Flickerwisp was the fourth
+until 2026-09-14 and is a slot rather than the deck: a list on the three that
+gives the Flickerwisp seat to Psychic Frog is the same deck innovating. RC
+Baltimore is where that build arrived in numbers, six lists whose pilots all
+typed `Esper Blink` and five of them running Frog as a four-of, four of those
+beside four Quantum Riddler. The Guide of Souls and
 Ocelot Pride energy engine on the blink creatures is energy, a different deck;
 so are the Estrid's Invocation Overlords deck, the Stoneforge Mystic Stoneblade
 build and the Tidehollow Sculler Vial taxes deck, the last a hybrid whose taxes
 package displaces the interaction suite. The Orzhov Aether Vial lists on
 Ephemerate are a version of Blink, so Vial on its own says nothing.
-*Applies*: all four in the mainboard; the 13 lists since the bans that cut one
-(nine without Flickerwisp, three on Emperor of Bones without Phelia, one
-without the Enchanter) stay outside. A mainboard Guide of Souls, Ocelot Pride,
+*Applies*: all three in the mainboard, which against the four-card rule moves 8
+MTGO lists since the bans and 7 paper lists in (the six Baltimore lists and
+CruzH at Dallas) and nothing out. The lists that cut Phelia or the Enchanter
+are still outside, three on Emperor of Bones without Phelia and one without the
+Enchanter. A mainboard Guide of Souls, Ocelot Pride,
 Estrid's Invocation, Stoneforge Mystic or Tidehollow Sculler puts a list
 outside (the rule's `excluded` cards): the leagues of dabigatran on 1 March,
 Jeppebc on 29 March and 10 April, TOP_AI (his second) on 22 May and taku123
@@ -354,16 +375,22 @@ ArsonBjork's 13 May league and Dimmer's Spotlight Brisbane list; a mainboard
 Dredger's Insight puts a list outside (the rule's `excluded` card). Dropping
 Forge on 2026-09-13 moves exactly godseerker's list in and nothing else.
 
-**Trudge is the Eldrazi ramp shell on Ugin's Labyrinth** (2026-09-13):
+**Trudge is the Eldrazi ramp shell** (2026-09-14):
 The mono-green Springheart Nantuko decks on Quirion Ranger, Badgermole Cub and
 Summoner's Pact run Slumbering Trudge and Fanatic of Rhonas as mana dorks and
 none of the Labyrinth, Temple, Kozilek's Command or Fight Rigging shell; they
-are a different deck.
-*Applies*: Ugin's Labyrinth joins the two creatures in the mainboard
-signature. Every other list in the history holds it, so that moves exactly
-Taurum's 23 April and Gormatron's 2 May challenges and the leagues of
-wasatchwarrior on 3 May, Gormatron on 7 May and Dooter611 on 9 June, four of
-them pre-ban. A clean 60 with an unpublished sideboard (AoFTW's 26 July
+are a different deck. Ugin's Labyrinth stood in for that shell while every list
+in the history held it, and RC Baltimore ended that: TheJV's list (rank 735,
+4-5-0) is the shell whole, Fight Rigging, Kozilek's Command, Sowing Mycospawn,
+Malevolent Rumble, Emrakul and Ulamog, on a manabase with no Labyrinth. The
+rule reads the shell rather than any one of its cards.
+*Applies*: Slumbering Trudge and Fanatic of Rhonas in the mainboard with any
+one of Ugin's Labyrinth, Eldrazi Temple, Kozilek's Command or Fight Rigging.
+Every member holds all four and the Nantuko decks hold none, so Taurum's
+23 April and Gormatron's 2 May challenges and the leagues of wasatchwarrior on
+3 May, Gormatron on 7 May and Dooter611 on 9 June stay outside as before.
+Against the Labyrinth clause this moves exactly TheJV's Baltimore list in and
+no MTGO list. A clean 60 with an unpublished sideboard (AoFTW's 26 July
 league) stays.
 
 **Tron is the Tron lands, and colourless is the version we track**
@@ -692,3 +719,4 @@ Heuristic candidates, held here until Alejandro rules on them. Nothing in this
 section is adopted knowledge and nothing here may steer an analysis. Each entry
 cites the evidence that raised it and counts the sessions it has been put to
 him in. See `.claude/skills/mtg-heuristics/SKILL.md`.
+

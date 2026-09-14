@@ -324,10 +324,23 @@ def findings(
     camp arriving reads as the deck changing its mind about every card the two
     camps disagree on.
 
-    Each fortnight is read against the entry before it in the storyline. That is
-    the fortnight before, unless a major paper event in `spotlights` fell inside
-    this one, in which case it is the event: the latest one where two did. A
-    fortnight read against paper is a cross-population reading and the entry
+    A fortnight is read against every entry behind it, one row each: the
+    fortnight before, and each major paper event in `spotlights` that fell
+    inside this one. Every one and never a choice of one, which is what it used
+    to be: a bin holding an event kept the event and dropped the fortnight
+    before it entirely, so the fortnight to 2026-09-06 never said whether the
+    MTGO field had moved on its own terms, and a bin holding two events kept
+    one of them on a sort order. The same rule `spotlight.chain` reads the other
+    direction of the chain by, and for the same reason: the readings answer
+    different questions and keeping one discards the answer to the other.
+
+    The fortnight before leads, holding the medium and the room constant, which
+    makes it the one reading of the set with no caveat on it at all. The events
+    follow in the order they were played. Each stays its own row: two events in
+    one bin are two rooms, and pooled into a single baseline they are a share
+    neither room reported.
+
+    A fortnight read against paper is a cross-population reading and the entry
     says so. The event's own lists are never folded into the fortnight's
     numbers, each entry being one room, and the gate on a paper baseline is
     `shifted` rather than `moved`, the two populations being nowhere near one
@@ -335,6 +348,11 @@ def findings(
     the entry before having held it; one the event did not play is read as a
     return off the deck's own MTGO history, how long a card has been gone being
     a fact about the deck.
+
+    The dated marks a bin carries ride on its first row alone. They say what
+    happened inside the fortnight rather than what it was read against, so
+    repeated under every baseline they would treble a ban's entry in the
+    storyline and read as three bans.
     """
     from . import spotlight  # noqa: PLC0415, spotlight reads this module's rows
 
@@ -364,116 +382,131 @@ def findings(
     for index in sorted(i for i in sizes if i >= first):
         size = sizes[index]
         start, end = bin_start(index, since), bin_end(index, since)
-        if index in paper:
-            label, rows = paper[index]
-            against, crossed, comparable, gate = label, True, True, shifted
-            was_held = spotlight._held(rows)
-            was_size, was_lands = len(rows), spotlight.lands(rows, typed)
-        else:
-            # A delta may not cross the regime boundary: the fortnight before
-            # the first post-regime bin belongs to a different era, so what it
-            # played is not what this deck put down. The store opens the day
-            # after the boundary and holds no such fortnight, so the opening
-            # row names none rather than a date before the bans.
-            comparable = index - 1 >= first
-            against = (
+        # A delta may not cross the regime boundary: the fortnight before the
+        # first post-regime bin belongs to a different era, so what it played is
+        # not what this deck put down. The store opens the day after the
+        # boundary and holds no such fortnight, so the opening row names none
+        # rather than a date before the bans.
+        behind = index - 1 >= first
+        baselines = [
+            (
                 f"the fortnight to {bin_end(index - 1, since)}"
-                if comparable
-                else f"no fortnight before it, the history opening on {config.HISTORY_START}"
+                if behind
+                else f"no fortnight before it, the history opening on {config.HISTORY_START}",
+                False,
+                behind,
+                moved,
+                {key: bins[index - 1] for key, bins in copies.items() if index - 1 in bins},
+                sizes.get(index - 1, 0),
+                lands.get(index - 1, {}),
             )
-            crossed, gate = False, moved
-            was_held = {key: bins[index - 1] for key, bins in copies.items() if index - 1 in bins}
-            was_size, was_lands = sizes.get(index - 1, 0), lands.get(index - 1, {})
-        found = []
+        ] + [
+            (label, True, True, shifted, spotlight._held(rows), len(rows),
+             spotlight.lands(rows, typed))
+            for label, rows in paper.get(index, ())
+        ]
+        for position, baseline in enumerate(baselines):
+            against, crossed, comparable, gate, was_held, was_size, was_lands = baseline
+            found = []
 
-        for (card, zone), bins in sorted(held.items()):
-            if index not in bins:
-                continue
-            n, was = len(bins[index]), len(was_held.get((card, zone), []))
-            share = n / size
+            for (card, zone), bins in sorted(held.items()):
+                if index not in bins:
+                    continue
+                n, was = len(bins[index]), len(was_held.get((card, zone), []))
+                share = n / size
 
-            other = held.get((card, "side" if zone == "main" else "main"), {})
-            # A card the bin before held in the other board did not go
-            # anywhere, so where it turns up is observed rather than read off
-            # an absence, and the window below has nothing to say about it.
-            migrating = index - 1 in other
-            if (
-                not was
-                and (migrating or _readable_absence(index, sizes))
-                and _is_return(bins, index, sizes, zone, share)
-            ):
-                phrase = f"moves to the {zone}board" if migrating else _return_phrase(bins, index)
+                other = held.get((card, "side" if zone == "main" else "main"), {})
+                # A card the bin before held in the other board did not go
+                # anywhere, so where it turns up is observed rather than read off
+                # an absence, and the window below has nothing to say about it.
+                migrating = index - 1 in other
+                if (
+                    not was
+                    and (migrating or _readable_absence(index, sizes))
+                    and _is_return(bins, index, sizes, zone, share)
+                ):
+                    phrase = f"moves to the {zone}board" if migrating else _return_phrase(bins, index)
+                    found.append(
+                        {
+                            "kind": "return",
+                            "zone": zone,
+                            "card": card,
+                            "text": f"{card} {phrase}, {n} of {size} lists ({share:.0%})",
+                        }
+                    )
+                elif (
+                    comparable
+                    and not (zone == "main" and card in watched)
+                    and gate(n, size, was, was_size)
+                ):
+                    found.append(adoption_row(card, zone, n, size, was, was_size))
+
+            # A card the bin dropped entirely has no row of its own above, so it is
+            # read from the baseline's side. Watched slots are read by copy count
+            # below, where zero copies is a row like any other.
+            for (card, zone), before_copies in sorted(was_held.items()):
+                if index in held.get((card, zone), {}) or (zone == "main" and card in watched):
+                    continue
+                if comparable and gate(0, size, len(before_copies), was_size):
+                    found.append(adoption_row(card, zone, 0, size, len(before_copies), was_size))
+
+            # A fortnight too thin to read a move across says so and prints no
+            # comparison row at all, the readings below answering to `shifted`
+            # rather than to the gate that carries the floor. The return rows above
+            # stay: their claim rests on the absence behind the bin, which has a
+            # floor of its own in `_readable_absence`, and not on the move across
+            # the two populations.
+            thin = comparable and not crossed and not readable(size, was_size)
+            if thin:
                 found.append(
                     {
-                        "kind": "return",
-                        "zone": zone,
-                        "card": card,
-                        "text": f"{card} {phrase}, {n} of {size} lists ({share:.0%})",
+                        "kind": "thin",
+                        "zone": "",
+                        "card": "",
+                        "text": f"Too thin to read a move against {against}: "
+                        f"{min(size, was_size)} lists, the smaller of the two, where a row "
+                        f"needs {config.TRACK_ROW_MIN_LISTS}.",
                     }
                 )
-            elif (
-                comparable
-                and not (zone == "main" and card in watched)
-                and gate(n, size, was, was_size)
-            ):
-                found.append(adoption_row(card, zone, n, size, was, was_size))
+            if comparable and not thin:
+                now_held = {key: bins[index] for key, bins in copies.items() if index in bins}
+                found += watched_rows(watched, now_held, was_held, size, was_size)
+                found += copies_rows(now_held, was_held, size, was_size, watched)
+                if report["manabase"]:
+                    found += manabase_rows(lands.get(index, {}), was_lands, size, was_size)
 
-        # A card the bin dropped entirely has no row of its own above, so it is
-        # read from the baseline's side. Watched slots are read by copy count
-        # below, where zero copies is a row like any other.
-        for (card, zone), before_copies in sorted(was_held.items()):
-            if index in held.get((card, zone), {}) or (zone == "main" and card in watched):
-                continue
-            if comparable and gate(0, size, len(before_copies), was_size):
-                found.append(adoption_row(card, zone, 0, size, len(before_copies), was_size))
+            # On the first row alone. A mark says what happened inside the
+            # fortnight rather than what it was read against, so repeated under
+            # every baseline one ban would enter the storyline three times.
+            for event in events() if position == 0 else ():
+                if start <= event["date"] <= end:
+                    found.append({"kind": "event", "zone": None, "card": None, "text": event["label"]})
 
-        # A fortnight too thin to read a move across says so and prints no
-        # comparison row at all, the readings below answering to `shifted`
-        # rather than to the gate that carries the floor. The return rows above
-        # stay: their claim rests on the absence behind the bin, which has a
-        # floor of its own in `_readable_absence`, and not on the move across
-        # the two populations.
-        thin = comparable and not crossed and not readable(size, was_size)
-        if thin:
-            found.append(
+            timeline.append(
                 {
-                    "kind": "thin",
-                    "zone": "",
-                    "card": "",
-                    "text": f"Too thin to read a move against {against}: "
-                    f"{min(size, was_size)} lists, the smaller of the two, where a row "
-                    f"needs {config.TRACK_ROW_MIN_LISTS}.",
+                    "bin": index,
+                    "start": start,
+                    "end": end,
+                    "lists": size,
+                    "against": against,
+                    "cross_population": crossed,
+                    "found": found,
                 }
             )
-        if comparable and not thin:
-            now_held = {key: bins[index] for key, bins in copies.items() if index in bins}
-            found += watched_rows(watched, now_held, was_held, size, was_size)
-            found += copies_rows(now_held, was_held, size, was_size, watched)
-            if report["manabase"]:
-                found += manabase_rows(lands.get(index, {}), was_lands, size, was_size)
-
-        for event in events():
-            if start <= event["date"] <= end:
-                found.append({"kind": "event", "zone": None, "card": None, "text": event["label"]})
-
-        timeline.append(
-            {
-                "bin": index,
-                "start": start,
-                "end": end,
-                "lists": size,
-                "against": against,
-                "cross_population": crossed,
-                "found": found,
-            }
-        )
     return timeline
 
 
 def _paper(
     db_path: Path, spotlights: tuple[dict, ...], directory: Path | None, report: dict, since: str
-) -> dict[int, tuple[str, list[dict]]]:
-    """The major event each bin is read against: the latest one inside it.
+) -> dict[int, list[tuple[str, list[dict]]]]:
+    """The major events each bin is read against: every one played inside it.
+
+    Every one and not the latest, which is what it used to be. Two Regional
+    Championships fell in the fortnight to 2026-09-20, and a bin that keeps one
+    of them drops half the weekend's paper evidence on a sort order. They stay
+    apart rather than pooling into a single baseline: an American field and a
+    Chinese one are two rooms, and one share over both is a number neither
+    reported.
 
     The report's camp's lists at the event, shaped as `spotlight.findings`
     reads them. Only events fetched by now count, a report having to render on a
@@ -482,16 +515,20 @@ def _paper(
     """
     from . import spotlight  # noqa: PLC0415
 
-    played = [s for s in sorted(spotlights, key=lambda s: s["date"]) if spotlight.cached(s, directory).exists()]
+    played = [
+        s
+        for s in sorted(spotlights, key=lambda s: (s["date"], s["label"]))
+        if spotlight.cached(s, directory).exists()
+    ]
     if not played:
         return {}
     colours, typed = card_colours(db_path), land_names(db_path)
-    latest = {}
+    inside: dict[int, list[tuple[str, list[dict]]]] = {}
     for spot in played:
         payload = spotlight.load(spot, directory)
         rows = spotlight.members(payload, report["archetype"], report["camp"], colours, typed)
-        latest[bin_of(spot["date"], since)] = (spot["label"], rows)
-    return latest
+        inside.setdefault(bin_of(spot["date"], since), []).append((spot["label"], rows))
+    return inside
 
 
 def _is_return(

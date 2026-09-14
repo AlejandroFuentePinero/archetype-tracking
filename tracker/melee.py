@@ -5,11 +5,12 @@ MTGO. It is here for one reason: a Spotlight publishes every finisher, where a
 challenge publishes its top 32. That difference is the whole value of the source
 and also the whole hazard, so the two never share a table (see `spotlight.py`).
 
-Two endpoints do the work. The standings of the last round carry the final
-ranking of the entire field, with each player's match record and the id of the
-list they registered; the decklist page carries the cards. Both are the site's
-own DataTables plumbing rather than a documented API, so both are pinned here
-and nowhere else.
+Three endpoints do the work. The standings of a round carry the ranking of the
+entire field as it stood, with each player's match record and the id of the list
+they registered; the pairings of a round carry its matches and who won them; the
+decklist page carries the cards. None is a documented API, the first two being
+the site's own DataTables plumbing, so all three are pinned here and nowhere
+else.
 
 The site names modal double-faced cards `Front // Back` where MTGO names them by
 the front face alone. Left alone that is not a missing card, it is a missing
@@ -61,11 +62,26 @@ COLUMNS = (
     "OpponentGameWinPercentage",
 )
 
+# The same, for the pairings grid. A second DataTables source and so a second
+# exact spec, and its round id rides in the path where the standings endpoint
+# takes it in the body.
+MATCH_COLUMNS = ("TableNumber", "PodNumber", "Teams", "Decklists", "ResultString")
+
 PAGE = 500  # standings rows per request
 TIMEOUT = 90
 ATTEMPTS = 5
 BACKOFF = 10  # seconds, lengthening with each attempt
 PAUSE = 0.45  # between decklist fetches, this being someone else's server
+
+# One connection across the run rather than one per request. A field is one page
+# per registered list, and opened afresh each time each page pays a TCP handshake
+# and a TLS handshake before it is even asked for: 0.45s of a measured 2.05s
+# page, eleven minutes of RC Baltimore's 1494. Held open they are paid once, and
+# a single connection is the gentler thing to hold against someone else's server
+# than fifteen hundred handshakes. The User-Agent rides here because it is the
+# same on every request; what varies stays at the call.
+SESSION = requests.Session()
+SESSION.headers["User-Agent"] = UA
 
 
 class Unavailable(RuntimeError):
@@ -75,10 +91,14 @@ class Unavailable(RuntimeError):
 def _request(method: str, path: str, usable, **kwargs) -> requests.Response:
     """The response, retried until `usable` says it carries what was asked for."""
     url = f"{BASE}{path}"
+    # Read once and not per attempt. Popped inside the loop it was gone by the
+    # second one, so a retried standings request went up without the
+    # `X-Requested-With` and `Referer` the endpoint answers on, and the retry
+    # that was meant to rescue the call was a differently shaped call.
+    headers = kwargs.pop("headers", {})
     for attempt in range(1, ATTEMPTS + 1):
         try:
-            headers = {"User-Agent": UA, **kwargs.pop("headers", {})}
-            response = requests.request(method, url, timeout=TIMEOUT, headers=headers, **kwargs)
+            response = SESSION.request(method, url, timeout=TIMEOUT, headers=headers, **kwargs)
             response.raise_for_status()
             if usable(response):
                 return response
@@ -101,22 +121,91 @@ def details(tournament: int) -> dict:
     return response.json()
 
 
-def final_round(tournament: int) -> tuple[str, str]:
-    """The id and name of the last round the event played.
+def _listed(tournament: int) -> list[tuple[str, str]]:
+    """The id and name of each round the page lists, in the order it lists them.
+
+    The page carries the round selector twice, once over the standings and once
+    over the pairings, so the buttons are deduplicated rather than counted.
+    """
+    response = _request("GET", f"/Tournament/View/{tournament}", lambda r: ROUND_RE.search(r.text))
+    found = list(dict.fromkeys(ROUND_RE.findall(response.text)))
+    if not found:
+        raise Unavailable(f"tournament {tournament} published no rounds")
+    return found
+
+
+def final_round(tournament: int) -> tuple[str, str, list[tuple[str, str]]]:
+    """The last round whose standings the event published, and what it played after.
 
     The last round and not the last Swiss one: its standings are the final
     ranking of the whole field, the top cut in playoff order and everyone else
     on Swiss tiebreakers. Taken as the page lists them rather than by name,
     since an event that ran no playoff ends on a numbered round.
+
+    Standings and matches are published separately, and an organiser can post
+    one without the other. RC Baltimore bulk-published every round through the
+    Semifinals in a single second and left the Finals, a round the page marks
+    completed and whose match it did serve, with no standings at all. Read at
+    the last round listed the fetch is blocked on an empty field; read one round
+    back it is the whole event bar the two players still playing. So the walk
+    stops at the last round that published a field and hands back what was
+    played after it, for `results` to read and `_advance` to fold in.
     """
-    response = _request("GET", f"/Tournament/View/{tournament}", lambda r: ROUND_RE.search(r.text))
-    rounds = ROUND_RE.findall(response.text)
-    if not rounds:
-        raise Unavailable(f"tournament {tournament} published no rounds")
-    return rounds[-1]
+    played = _listed(tournament)
+    for position in range(len(played) - 1, -1, -1):
+        round_id, name = played[position]
+        if _standings_page(tournament, round_id, 0, length=1)["recordsTotal"]:
+            return round_id, name, played[position + 1 :]
+        time.sleep(PAUSE)
+    raise Unavailable(f"tournament {tournament} has published no standings for any round")
 
 
-def _standings_page(tournament: int, round_id: str, start: int, length: int = PAGE) -> dict:
+def results(tournament: int, round_id: str) -> list[dict]:
+    """Each decided match of one round, as the pairings grid published it.
+
+    The winner is the competitor holding the games, read off the grid rather
+    than off the result line, which is prose the site assembles for a reader. A
+    match with no result, without two sides, or with the games level is not a
+    before and an after, and is left out.
+    """
+    first = _matches_page(tournament, round_id, 0)
+    total, rows = first["recordsTotal"], list(first["data"])
+    while len(rows) < total:
+        time.sleep(PAUSE)
+        rows += _matches_page(tournament, round_id, len(rows))["data"]
+    decided = []
+    for row in rows:
+        sides = row.get("Competitors") or []
+        if not row.get("HasResult") or len(sides) != 2:
+            continue
+        won, lost = sorted(sides, key=lambda side: side["GameWinsAndGameByes"], reverse=True)
+        if won["GameWinsAndGameByes"] == lost["GameWinsAndGameByes"]:
+            continue
+        decided.append({"winner": won["TeamId"], "loser": lost["TeamId"]})
+    return decided
+
+
+def _advance(rows: list[dict], decided: list[dict]) -> None:
+    """Fold a played round's results into the standings taken before it.
+
+    A playoff match is two players holding two adjacent ranks, so the round
+    moves two things and no more: the winner takes the win and the better of the
+    two ranks, the loser takes the loss and the worse. Points are left alone,
+    stopping at the end of the Swiss as they do, and so are the tiebreakers and
+    the game record, none of which this module keeps.
+    """
+    by_team = {row["TeamId"]: row for row in rows}
+    for match in decided:
+        winner, loser = by_team.get(match["winner"]), by_team.get(match["loser"])
+        if not winner or not loser:
+            continue
+        winner["MatchWins"] += 1
+        loser["MatchLosses"] += 1
+        winner["Rank"], loser["Rank"] = sorted((winner["Rank"], loser["Rank"]))
+
+
+def _grid(columns: tuple[str, ...], start: int, length: int, **extra: str) -> dict:
+    """The form a DataTables source wants, over the columns it is asked for."""
     form = {
         "draw": "1",
         "start": str(start),
@@ -125,9 +214,9 @@ def _standings_page(tournament: int, round_id: str, start: int, length: int = PA
         "search[regex]": "false",
         "order[0][column]": "0",
         "order[0][dir]": "asc",
-        "roundId": str(round_id),
+        **extra,
     }
-    for index, column in enumerate(COLUMNS):
+    for index, column in enumerate(columns):
         form |= {
             f"columns[{index}][data]": column,
             f"columns[{index}][name]": column,
@@ -136,11 +225,29 @@ def _standings_page(tournament: int, round_id: str, start: int, length: int = PA
             f"columns[{index}][search][value]": "",
             f"columns[{index}][search][regex]": "false",
         }
+    return form
+
+
+def _standings_page(tournament: int, round_id: str, start: int, length: int = PAGE) -> dict:
     response = _request(
         "POST",
         "/Standing/GetRoundStandings",
         lambda r: not r.json().get("Error") and "recordsTotal" in r.json(),
-        data=form,
+        data=_grid(COLUMNS, start, length, roundId=str(round_id)),
+        headers={
+            "X-Requested-With": "XMLHttpRequest",
+            "Referer": f"{BASE}/Tournament/View/{tournament}",
+        },
+    )
+    return response.json()
+
+
+def _matches_page(tournament: int, round_id: str, start: int, length: int = PAGE) -> dict:
+    response = _request(
+        "POST",
+        f"/Match/GetRoundMatches/{round_id}",
+        lambda r: "recordsTotal" in r.json(),
+        data=_grid(MATCH_COLUMNS, start, length),
         headers={
             "X-Requested-With": "XMLHttpRequest",
             "Referer": f"{BASE}/Tournament/View/{tournament}",
@@ -216,9 +323,23 @@ def format_record(tournament: int, blocks: list[tuple[str | None, str]]) -> dict
 
 
 def standings(tournament: int, round_id: str) -> list[dict]:
-    """Every row of that round's standings, paged until the field is complete."""
+    """Every row of that round's standings, paged until the field is complete.
+
+    A round the site lists but has published no standings for answers with an
+    empty set rather than an error, and an empty set pages to completion on the
+    first request: nought of nought rows is a complete field by the arithmetic
+    below. Left to it the fetch caches an event of no lists and says so in one
+    line, which reads as a deck nobody took rather than as data that has not
+    arrived, and the cache it overwrites was the good copy. The organiser posts
+    the last round's standings some time after the last match is reported, so
+    this is a wait and not a failure, and the message says which.
+    """
     first = _standings_page(tournament, round_id, 0)
     total, rows = first["recordsTotal"], list(first["data"])
+    if not total:
+        raise Unavailable(
+            f"tournament {tournament} has published no standings for round {round_id} yet"
+        )
     while len(rows) < total:
         time.sleep(PAUSE)
         rows += _standings_page(tournament, round_id, len(rows))["data"]
@@ -297,6 +418,7 @@ def tournament(tournament_id: int, known: dict | None = None, played_in: str | N
     known = known or {}
     meta = details(tournament_id)
     record: dict[int, tuple] = {}
+    later: list[tuple[str, str]] = []
     if played_in:
         played = rounds(tournament_id)
         constructed = [entry for entry in played if entry["format"] == played_in]
@@ -305,8 +427,21 @@ def tournament(tournament_id: int, known: dict | None = None, played_in: str | N
         round_id, round_name = constructed[-1]["id"], constructed[-1]["name"]
         record = format_record(tournament_id, _blocks(played, played_in))
     else:
-        round_id, round_name = final_round(tournament_id)
+        round_id, round_name, later = final_round(tournament_id)
     rows = standings(tournament_id, round_id)
+    # A round whose standings never arrived but whose matches did. The pairings
+    # grid carries the result, so the ranking is advanced by the match rather
+    # than left a round short or filled in by hand. Stops at the first round
+    # that published nothing, an event being read forward and not in pieces.
+    advanced = []
+    for later_id, later_name in later:
+        decided = results(tournament_id, later_id)
+        if not decided:
+            break
+        _advance(rows, decided)
+        advanced.append(later_name)
+        time.sleep(PAUSE)
+    rows.sort(key=lambda row: row["Rank"])
     lists = []
     for row in rows:
         players = row["Team"]["Players"]
@@ -342,6 +477,11 @@ def tournament(tournament_id: int, known: dict | None = None, played_in: str | N
             "organiser": meta.get("OrganizationName"),
             "start": meta.get("StartDate"),
             "round": round_name,
+            # Empty at an event whose last round published its standings, which
+            # is every event but the one that did not. Named so the file says
+            # what it is: a ranking read at one round and carried forward by the
+            # matches of the rounds after it.
+            "advanced": advanced,
             "format": played_in,
             "players": len(rows),
         },

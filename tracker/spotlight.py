@@ -83,16 +83,16 @@ def unread(entry: dict) -> bool:
     Ephemerate would join the archetype on a parse failure.
 
     A mainboard past 60 with no sideboard at all is that failure and not a legal
-    registration. Melee's own history has three, at 75, 76 and 146 cards, none
+    registration. Melee's own history has four, at 69, 75, 76 and 146 cards, none
     of them near membership; a list on 60 with an empty sideboard is a pilot who
     registered no sideboard and is read normally.
 
-    Those three are dropped and the reason recorded, never recovered by hand
-    (Alejandro, 2026-09-13). Refetching all three pages that day returned type
+    Those four are dropped and the reason recorded, never recovered by hand
+    (Alejandro, 2026-09-13). Refetching the three known that day returned type
     headings and no sideboard heading, so the merge is how melee published them
-    and not something this fetch can fix. Two of the three are a meme or a
+    and not something this fetch can fix. Two of them are a meme or a
     corrupt registration (146 Plains, a 76-card five-colour pile) and splitting
-    the third by hand would put a hand-read 75 in a population every other list
+    the rest by hand would put a hand-read 75 in a population every other list
     of which the fetch split.
 
     Counted rather than dropped silently, so the report says what the field
@@ -242,6 +242,7 @@ def reading(
     """
     lists = payload["lists"]
     field = len(lists)
+    seats = payload["tournament"]["players"]
     ours = members(payload, archetype, camp, colours, land_names)
     cut = [row for row in ours if row["rank"] <= CUT]
     rate, wins, losses, draws = _rate(ours)
@@ -280,7 +281,14 @@ def reading(
         # field of 574 are one axis, and a deck whose lists are spread evenly
         # through the standings plots as the diagonal, which is the null every
         # positional reading here is against.
-        "placings": sorted((row["rank"] - 1) / field for row in ours),
+        #
+        # Over the seats and not over the published lists, which are the
+        # denominator every other figure here uses. A rank is a position among
+        # entrants and an entrant can register no decklist, so Dallas ranks to
+        # 932 over 928 lists and Brisbane to 573 over 571. Divided by the lists
+        # the bottom of those two fields plots past 1.0, which is where the
+        # diagonal closes and past which the panel has no room.
+        "placings": sorted((row["rank"] - 1) / seats for row in ours),
     }
 
 
@@ -315,64 +323,105 @@ def chain(
     cannot produce and no use read on a third of the deck. The findings are the
     report's camp's, and the chain they are read along is that camp's too.
 
-    Every event is read against whatever came immediately before it in the
-    storyline, which is a paper event where one was played since the last
-    fortnight closed and the last closed MTGO fortnight otherwise. A major event
-    is not a separate story that may only be compared with other major events:
-    MTGO moves what pilots take to a Pro Tour and a Pro Tour moves what turns up
-    on MTGO after it. So the chain runs through the event in both directions:
-    the event is read against the fortnight before it here, and the fortnight it
-    fell in is read against the event in `timeline.findings`.
+    Every event is read against the last closed MTGO fortnight, and against the
+    paper event before it where one was played no earlier than that fortnight
+    opened. Both and not one of the two: they answer different questions over
+    the same stretch of time, and the earlier rule kept only the paper one where
+    it existed, so an event that followed another lost its MTGO baseline
+    entirely. The paper row holds the medium constant and is the stronger of the
+    two; the MTGO row is the one that says whether the field the deck came from
+    had already moved. They are ordered strongest first and each says what it
+    read against, because a reader given one number cannot tell which it was.
+
+    No event is read against one played in its own week. Two Regional
+    Championships on one weekend are two rooms rather than a before and an
+    after, and reading either against the other would report the distance
+    between two fields as a fortnight's worth of change.
+
+    A major event is not a separate story that may only be compared with other
+    major events: MTGO moves what pilots take to a Pro Tour and a Pro Tour moves
+    what turns up on MTGO after it. So the chain runs through the event in both
+    directions: the event is read against what came before it here, and the
+    fortnight it fell in is read against the event in `timeline.findings`.
 
     Each entry is one room and never a blend of two. A paper event is never
     folded into a fortnight's own numbers: its week sits inside a fortnight
     rather than beside one, and pooled it would be most of the bin.
 
-    A row against MTGO is a cross-population reading and says so. The Australian
-    field, the American field and the MTGO field are three populations, so a card
-    at nine tenths of one and half of another is not the deck changing its mind.
+    A row spanning two rooms is a cross-population reading and says so. The
+    Australian field, the American field, the Chinese field and the MTGO field
+    are four populations, so a card at nine tenths of one and half of another is
+    not the deck changing its mind. Which room an event drew from is its
+    configured `region`, and a row against MTGO crosses regardless. Paper
+    against paper was taken as one room on the medium alone until 2026-09-14,
+    which marked China against Dallas as the same field.
+
+    The paper row still leads. It crosses at most one of the two things that
+    make a reading weaker, the room, where the MTGO row crosses both the room
+    and the medium, so it remains the stronger of the two whether or not the
+    regions match.
     """
     report = report or config.REPORTS["blink"]
     archetype, build = report["archetype"], report["camp"]
-    played = list(spotlights or config.MAJOR_EVENTS)
+    # Sorted rather than taken as configured, because which event precedes which
+    # is what the chain is, and two played on one day need a settled order.
+    played = sorted(spotlights or config.MAJOR_EVENTS, key=lambda s: (s["date"], s["label"]))
     typed = store.land_names(db_path)
     colours = store.card_colours(db_path)
     entries = []
-    previous: tuple[str, str, list[dict]] | None = None
-    for spot in played:
+    ours_of: dict[int, list[dict]] = {}
+    for position, spot in enumerate(played):
         payload = load(spot, directory)
-        ours = members(payload, archetype, build, colours, typed)
+        ours = ours_of[spot["id"]] = members(payload, archetype, build, colours, typed)
         index = timeline.bin_of(spot["date"]) - 1
         start = timeline.bin_start(index)
         end = (
             date.fromisoformat(start) + timedelta(days=config.TRACK_BIN_DAYS - 1)
         ).isoformat()
-        # The event before this one only where it was played after that
-        # fortnight closed, which is what makes it the later entry of the two.
-        # Otherwise the fortnight is what the storyline last said.
-        if previous and previous[0] > end:
-            baseline, crossed, against = previous[2], False, previous[1]
-        else:
-            baseline = mtgo_lists(db_path, archetype, build, start, end)
-            against, crossed = f"the fortnight to {end}", True
+        comparisons = []
+        # The paper entry before this one: the latest event of an earlier week,
+        # and only where it was played no earlier than the fortnight below it
+        # opened. Further back than that the two sides span different stretches
+        # of the season, and the row would report a quarter's drift as an
+        # event's. An event of this event's own week is no part of it.
+        earlier = [s for s in played[:position] if week(s) < week(spot)]
+        if earlier and closed(earlier[-1]) >= start:
+            prior = earlier[-1]
+            comparisons.append(
+                {
+                    "against": prior["label"],
+                    "cross_population": prior["region"] != spot["region"],
+                    "baseline_lists": len(ours_of[prior["id"]]),
+                    "found": findings(ours, ours_of[prior["id"]], report, typed),
+                }
+            )
+        fortnight = mtgo_lists(db_path, archetype, build, start, end)
+        comparisons.append(
+            {
+                "against": f"the fortnight to {end}",
+                "cross_population": True,
+                "baseline_lists": len(fortnight),
+                "found": findings(ours, fortnight, report, typed),
+            }
+        )
         entries.append(
             {
                 **reading(payload, archetype, None, colours, typed),
                 "label": spot["label"],
                 "date": spot["date"],
                 "week": week(spot),
-                "against": against,
-                "cross_population": crossed,
                 # The constructed format, where the event played more than one.
                 # Everything positional on such a row carries the rounds it was
                 # not played in.
                 "constructed": payload["tournament"].get("format"),
                 "build_lists": len(ours),
-                "baseline_lists": len(baseline),
-                "found": findings(ours, baseline, report, typed),
+                # Strongest first, and the strongest is also what the summary
+                # clause and the paper section quote, so it is spread here
+                # rather than copied: one comparison, not two that can drift.
+                **comparisons[0],
+                "comparisons": comparisons,
             }
         )
-        previous = (closed(spot), spot["label"], ours)
     return entries
 
 

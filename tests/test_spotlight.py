@@ -22,8 +22,8 @@ SIGNATURE = {card: 4 for card in config.TRACKED_DECKS["blink"]["signature"]}
 ESPER = {"Watery Grave": 1}
 FILLER = {"Thoughtseize": 4, "Solitude": 4, "Flooded Strand": 4, "Plains": 2}
 
-BRISBANE = {"id": 441441, "label": "Spotlight Brisbane", "date": "2026-08-29"}
-DALLAS = {"id": 405590, "label": "Spotlight Dallas", "date": "2026-09-05"}
+BRISBANE = {"id": 441441, "label": "Spotlight Brisbane", "date": "2026-08-29", "region": "australia"}
+DALLAS = {"id": 405590, "label": "Spotlight Dallas", "date": "2026-09-05", "region": "usa"}
 
 
 def _list(rank, main=None, side=None, name="Esper Blink", wins=8, losses=4, draws=0, points=None):
@@ -128,7 +128,7 @@ def test_membership_is_the_cards_and_never_the_name_the_pilot_typed():
     # Named for another deck and holding the rule, against named for this one
     # and one signature card short of it.
     impostor = _list(3, name="Esper Blink")
-    del impostor["main"]["Flickerwisp"]
+    del impostor["main"]["Witch Enchanter"]
     payload = _payload(
         BRISBANE,
         [_list(1, name="Azorius Blink"), _list(2, name="Mono-Green Eldrazi"), impostor],
@@ -163,6 +163,25 @@ def test_position_is_read_against_the_field_and_not_as_a_rank():
     tenth_of_small = spotlight.reading(small)["placings"][10]
     tenth_of_big = spotlight.reading(big)["placings"][100]
     assert tenth_of_small == pytest.approx(tenth_of_big)
+
+
+def test_a_seat_that_registered_no_decklist_still_counts_under_the_field():
+    """The field a position is read against is the seats, not the decklists.
+
+    An entrant can be ranked and publish nothing, so ranks run past the number
+    of lists: Dallas ranked 932 over 928 published and Brisbane 573 over 571.
+    Read against the lists, the bottom of such a field lands past 1.0, which is
+    where the diagonal the panel is drawn against closes.
+    """
+    # 100 seats, of which the four who registered nothing are the four ranks
+    # missing from the published lists.
+    published = [_list(rank) for rank in range(1, 101) if rank not in (40, 60, 80, 100)]
+    reading = spotlight.reading(_payload(BRISBANE, published, players=100))
+    assert reading["lists"] == 96
+    assert max(reading["placings"]) < 1.0
+    # Rank 99 is the last seat but one, and reads as that rather than as the
+    # 96 lists it would be a fraction of.
+    assert reading["placings"][-1] == pytest.approx(98 / 100)
 
 
 def test_the_win_rate_counts_matches_and_never_points():
@@ -220,7 +239,9 @@ def test_the_second_spotlight_is_read_against_the_first_and_not_against_mtgo(tmp
 
     chain = spotlight.chain(config.DB_PATH, spotlights=(BRISBANE, DALLAS), directory=tmp_path)
     assert chain[1]["against"] == "Spotlight Brisbane"
-    assert chain[1]["cross_population"] is False
+    # Marked, the two being an Australian field and an American one. The medium
+    # is held constant and the room is not, and the room is what the flag says.
+    assert chain[1]["cross_population"] is True
     climbed = [row for row in chain[1]["found"] if row["card"] == "Clarion Conqueror"]
     assert climbed and "climbed" in climbed[0]["text"]
 
@@ -422,15 +443,49 @@ def test_the_weeks_spotlight_reaches_the_summary_writer(tmp_path):
     chain = spotlight.chain(config.DB_PATH, spotlights=(BRISBANE, DALLAS), directory=tmp_path)
 
     reported = weekly._paper(chain, spotlight.week(DALLAS))
-    assert reported["label"] == "Spotlight Dallas"
-    assert reported["top"][0]["pilot"] == "pilot1"
+    assert [entry["label"] for entry in reported] == ["Spotlight Dallas"]
+    assert reported[0]["top"][0]["pilot"] == "pilot1"
     # Both sides of the comparison, because the clause quotes both.
-    assert reported["against"] == "Spotlight Brisbane"
-    assert reported["against_row"]["lists"] == 11
-    assert weekly._paper(chain, "2026-08-17") is None
+    assert reported[0]["against"] == "Spotlight Brisbane"
+    assert reported[0]["against_row"]["lists"] == 11
+    assert weekly._paper(chain, "2026-08-17") == []
 
 
-AMSTERDAM = {"id": 434455, "label": "Pro Tour Amsterdam", "date": "2026-07-17", "format": "Modern"}
+BALTIMORE = {"id": 405588, "label": "RC Baltimore", "date": "2026-09-12", "region": "usa"}
+CHINA = {"id": 451148, "label": "RC China", "date": "2026-09-12", "region": "china"}
+
+
+def test_both_championships_of_one_weekend_reach_the_summary_writer(tmp_path):
+    """A week can hold two major events, and the clause is written from both.
+
+    The writer used to be handed the first event whose week matched the reported
+    week, with nothing in the file saying a second had been played: the week
+    ending 2026-09-13 ran Baltimore and China on one day, and the paper clause
+    would have reported half the deck's paper week as the whole of it.
+
+    Side by side and not in a sequence. `chain` reads no event against one
+    played in its own week, so each of the two is read against the event behind
+    the weekend and neither is the other's baseline.
+    """
+    _cache(tmp_path, DALLAS, _payload(DALLAS, [_list(rank) for rank in range(1, 21)]))
+    _cache(tmp_path, BALTIMORE, _payload(BALTIMORE, [_list(rank) for rank in range(1, 13)]))
+    _cache(tmp_path, CHINA, _payload(CHINA, [_list(rank) for rank in range(1, 8)]))
+    chain = spotlight.chain(
+        config.DB_PATH, spotlights=(DALLAS, BALTIMORE, CHINA), directory=tmp_path
+    )
+
+    reported = weekly._paper(chain, spotlight.week(BALTIMORE))
+
+    assert [entry["label"] for entry in reported] == ["RC Baltimore", "RC China"]
+    assert [entry["lists"] for entry in reported] == [12, 7]
+    assert [entry["against"] for entry in reported] == ["Spotlight Dallas", "Spotlight Dallas"]
+    assert [entry["against_row"]["lists"] for entry in reported] == [20, 20]
+
+
+AMSTERDAM = {
+    "id": 434455, "label": "Pro Tour Amsterdam", "date": "2026-07-17",
+    "format": "Modern", "region": "international",
+}
 
 
 def test_each_event_reads_against_whatever_the_storyline_said_last(tmp_path):
@@ -453,7 +508,7 @@ def test_each_event_reads_against_whatever_the_storyline_said_last(tmp_path):
     assert amsterdam["lists"] == 3 and amsterdam["field"] == 5
     assert amsterdam["against"] == "the fortnight to 2026-07-12"
     assert brisbane["against"] == "the fortnight to 2026-08-23"
-    assert (dallas["against"], dallas["cross_population"]) == ("Spotlight Brisbane", False)
+    assert (dallas["against"], dallas["cross_population"]) == ("Spotlight Brisbane", True)
 
 
 def test_the_constructed_rounds_of_a_two_format_event_are_read_apart():
@@ -493,14 +548,14 @@ def test_an_empty_paper_row_says_it_was_the_sample_and_not_the_fetch():
     adoption share is, so a row there costs a fifth of the smaller side rather
     than a flat five.
     """
-    thin = {"against": "the fortnight to 2026-07-12", "build_lists": 8, "baseline_lists": 27}
-    assert "the fortnight to 2026-07-12" in weekly._stable(thin)
-    assert "at 8 lists" in weekly._stable(thin)
-    assert f"worth {config.TRACK_MIN_LISTS} of them" in weekly._stable(thin)
+    thin = {"against": "the fortnight to 2026-07-12", "baseline_lists": 27}
+    assert "the fortnight to 2026-07-12" in weekly._stable(8, thin)
+    assert "at 8 lists" in weekly._stable(8, thin)
+    assert f"worth {config.TRACK_MIN_LISTS} of them" in weekly._stable(8, thin)
 
-    fat = {"against": "Spotlight Brisbane", "build_lists": 77, "baseline_lists": 29}
-    assert "at 29 lists" in weekly._stable(fat)
-    assert "worth 6 of them" in weekly._stable(fat)
+    fat = {"against": "Spotlight Brisbane", "baseline_lists": 29}
+    assert "at 29 lists" in weekly._stable(77, fat)
+    assert "worth 6 of them" in weekly._stable(77, fat)
 
 
 def test_a_paper_list_reads_its_splash_off_the_colours_mtgo_has_published(tmp_path):
@@ -530,7 +585,7 @@ def test_a_paper_list_reads_its_splash_off_the_colours_mtgo_has_published(tmp_pa
 # The Pro Tour, the event the paper boundary reading was raised on: two
 # Broodscale lists casting red off a card the Gruul rule did not name, in a
 # field the MTGO store never reads.
-AMSTERDAM = {"id": 434455, "label": "Pro Tour Amsterdam", "date": "2026-07-17"}
+AMSTERDAM = {"id": 434455, "label": "Pro Tour Amsterdam", "date": "2026-07-17", "region": "international"}
 
 
 def _registered(rank, entry, name="Broodscale"):
@@ -666,3 +721,312 @@ def test_the_paper_field_is_no_part_of_what_makes_a_card_a_marker(tmp_path):
     melee_dir = _cache(tmp_path / "melee", AMSTERDAM, _payload(AMSTERDAM, field))
 
     assert spotlight.version_boundary(db, (AMSTERDAM,), melee_dir) == []
+
+
+CHINA = {"id": 451148, "label": "RC China", "date": "2026-09-12", "region": "china"}
+BALTIMORE = {"id": 405588, "label": "RC Baltimore", "date": "2026-09-12", "region": "usa"}
+
+
+def test_an_event_is_read_against_both_the_paper_event_and_the_fortnight(tmp_path):
+    """Two baselines, because they answer two different questions.
+
+    The paper row holds the medium constant and is the stronger of the two; the
+    MTGO row says whether the field the deck came from had already moved. The
+    earlier rule kept whichever was later and dropped the other, so an event
+    that followed another paper event lost its MTGO baseline with nothing
+    saying so.
+    """
+    _cache(tmp_path, BRISBANE, _payload(BRISBANE, [_list(rank) for rank in range(1, 12)]))
+    _cache(tmp_path, DALLAS, _payload(DALLAS, [_list(rank) for rank in range(1, 21)]))
+
+    _, dallas = spotlight.chain(
+        config.DB_PATH, spotlights=(BRISBANE, DALLAS), directory=tmp_path
+    )
+    assert [row["against"] for row in dallas["comparisons"]] == [
+        "Spotlight Brisbane",
+        "the fortnight to 2026-08-23",
+    ]
+    # The strongest is the one the paper section and the summary clause quote,
+    # so it is the entry's own reading and not a third copy of a comparison.
+    assert (dallas["against"], dallas["cross_population"]) == ("Spotlight Brisbane", True)
+    assert dallas["comparisons"][0]["found"] == dallas["found"]
+
+
+def test_two_events_on_one_weekend_are_read_against_the_same_two_entries(tmp_path):
+    """Neither Regional Championship is the other's baseline.
+
+    Baltimore and China were played on one weekend in two rooms, so a row
+    between them would report the distance between an American field and a
+    Chinese one as a fortnight's worth of change. Both are read against the
+    paper event before that weekend and against the last closed fortnight, and
+    Dallas qualifies as the paper one though it fell inside that fortnight: its
+    lists are never folded into a fortnight's own numbers, so the two baselines
+    share no list.
+    """
+    _cache(tmp_path, DALLAS, _payload(DALLAS, [_list(rank) for rank in range(1, 21)]))
+    _cache(tmp_path, CHINA, _payload(CHINA, [_list(rank) for rank in range(1, 16)]))
+    _cache(tmp_path, BALTIMORE, _payload(BALTIMORE, [_list(rank) for rank in range(1, 26)]))
+
+    chain = spotlight.chain(
+        config.DB_PATH, spotlights=(DALLAS, CHINA, BALTIMORE), directory=tmp_path
+    )
+    read = {entry["label"]: [row["against"] for row in entry["comparisons"]] for entry in chain}
+    assert read["RC Baltimore"] == ["Spotlight Dallas", "the fortnight to 2026-09-06"]
+    assert read["RC China"] == ["Spotlight Dallas", "the fortnight to 2026-09-06"]
+    # One baseline, two readings of it: Baltimore and Dallas are both American
+    # fields and the row holds the room, where China against the same event is
+    # two metagames a week apart. The medium cannot tell the two rows apart.
+    crossed = {entry["label"]: entry["cross_population"] for entry in chain}
+    assert crossed["RC Baltimore"] is False and crossed["RC China"] is True
+    # Order of configuration must not decide which of the two is the baseline.
+    flipped = spotlight.chain(
+        config.DB_PATH, spotlights=(BALTIMORE, CHINA, DALLAS), directory=tmp_path
+    )
+    assert [entry["label"] for entry in flipped] == [entry["label"] for entry in chain]
+    assert all(
+        "RC " not in row["against"] for entry in flipped for row in entry["comparisons"]
+    )
+
+
+def test_a_paper_event_seasons_back_is_not_a_baseline(tmp_path):
+    """The paper row is the entry before, not the last one however far back.
+
+    Amsterdam is six weeks and two closed fortnights before Brisbane. Read
+    against it, the row would report a season's drift as one event's, and the
+    fortnights in between would be the evidence it skipped over.
+    """
+    field = [_list(rank) for rank in range(1, 4)] + [_other(rank) for rank in range(4, 6)]
+    _cache(tmp_path, AMSTERDAM, _payload(AMSTERDAM, field))
+    _cache(tmp_path, BRISBANE, _payload(BRISBANE, [_list(rank) for rank in range(1, 12)]))
+
+    _, brisbane = spotlight.chain(
+        config.DB_PATH, spotlights=(AMSTERDAM, BRISBANE), directory=tmp_path
+    )
+    assert [row["against"] for row in brisbane["comparisons"]] == ["the fortnight to 2026-08-23"]
+
+
+def test_a_round_with_no_standings_is_a_wait_rather_than_an_empty_event(monkeypatch):
+    """Nought of nought rows pages to completion and caches an event of no lists.
+
+    The site lists a round it has published no standings for and answers with an
+    empty set rather than an error, which the paging arithmetic reads as a
+    complete field. Left to it the fetch overwrites a good cache with an empty
+    one and reports it in the same line it would report a real event.
+    """
+    monkeypatch.setattr(
+        melee, "_standings_page", lambda *a, **k: {"recordsTotal": 0, "data": []}
+    )
+    with pytest.raises(melee.Unavailable, match="no standings"):
+        melee.standings(405588, "1425471")
+
+
+def _round_row(team, rank, wins, losses, draws, points, deck):
+    """One standings row in the shape melee serves it, cut to what the fetch reads."""
+    return {
+        "TeamId": team,
+        "Rank": rank,
+        "MatchWins": wins,
+        "MatchLosses": losses,
+        "MatchDraws": draws,
+        "Points": points,
+        "Team": {"Players": [{"Username": f"player{team}"}]},
+        "Decklists": [{"DecklistId": f"d{team}", "DecklistName": deck}],
+    }
+
+
+@pytest.fixture
+def baltimore(monkeypatch):
+    """An event whose last round was played and whose last standings never came.
+
+    RC Baltimore's shape, cut to the two players it turns on: eighteen rounds
+    listed, standings published through the Semifinals in one bulk write, and a
+    Finals the page marks completed, carrying its match and no standings at all.
+    """
+    monkeypatch.setattr(melee.time, "sleep", lambda _: None)
+    monkeypatch.setattr(
+        melee,
+        "details",
+        lambda _: {"Name": "RC Baltimore", "OrganizationName": "SCG", "StartDate": "2026-09-12"},
+    )
+    monkeypatch.setattr(melee, "decklist", lambda _: ({"Forest": 60}, {"Pithing Needle": 15}))
+    monkeypatch.setattr(
+        melee, "_listed", lambda _: [("1", "Round 15"), ("2", "Semifinals"), ("3", "Finals")]
+    )
+    semifinals = [
+        _round_row(4357397, 1, 15, 1, 1, 40, "Devoted Druid Combo"),
+        _round_row(4318405, 2, 14, 2, 1, 37, "Mono-Green Broodscale"),
+    ]
+    monkeypatch.setattr(
+        melee,
+        "_standings_page",
+        lambda _t, round_id, *a, **k: (
+            {"recordsTotal": 0, "data": []}
+            if round_id == "3"
+            else {"recordsTotal": len(semifinals), "data": semifinals}
+        ),
+    )
+    monkeypatch.setattr(
+        melee,
+        "_matches_page",
+        lambda _t, round_id, *a, **k: {
+            "recordsTotal": 1,
+            "data": [
+                {
+                    "HasResult": True,
+                    "ResultString": "Pete Ingram won 2-1-0",
+                    "Competitors": [
+                        {"TeamId": 4357397, "GameWinsAndGameByes": 1},
+                        {"TeamId": 4318405, "GameWinsAndGameByes": 2},
+                    ],
+                }
+            ],
+        }
+        if round_id == "3"
+        else {"recordsTotal": 0, "data": []},
+    )
+    return semifinals
+
+
+def test_an_event_is_read_at_the_last_round_that_published_a_field(baltimore):
+    """A listed round with no standings is read past rather than waited on.
+
+    The old rule took the last round the page listed, so an organiser who
+    published everything but the Finals blocked the fetch on an empty field.
+    The field it wanted was already published one round back.
+    """
+    assert melee.final_round(405588) == ("2", "Semifinals", [("3", "Finals")])
+
+
+def test_the_round_after_the_last_standings_is_folded_in_from_its_match(baltimore):
+    """The finals was played and melee served the match; only the standings are missing.
+
+    Read at the Semifinals alone the event says the deck that won came second,
+    which is the one number a reader checks. The pairings grid carries who won,
+    so the ranking is carried forward off the source rather than typed in: the
+    winner takes the win and the better of the two ranks, and both finish 15-2-1.
+    """
+    payload = melee.tournament(405588)
+    read = {row["pilot"]: (row["rank"], row["record"], row["points"]) for row in payload["lists"]}
+    assert read["player4318405"] == (1, "15-2-1", 37)
+    assert read["player4357397"] == (2, "15-2-1", 40)
+    # Points stop at the end of the Swiss, so a playoff match moves the record
+    # and the rank and nothing else. Said by the file, not only by the code.
+    assert payload["tournament"]["round"] == "Semifinals"
+    assert payload["tournament"]["advanced"] == ["Finals"]
+    # Ranked order, the swap at the top having reordered the standings.
+    assert [row["rank"] for row in payload["lists"]] == [1, 2]
+
+
+def test_an_event_whose_last_round_published_its_standings_carries_nothing_forward(baltimore, monkeypatch):
+    """The ordinary case, where the walk stops at the first round it looks at.
+
+    Every event before Baltimore published the standings of its last round, and
+    for those the match reader never runs: there is nothing after the round the
+    field was read at.
+    """
+    monkeypatch.setattr(
+        melee, "_standings_page", lambda _t, _r, *a, **k: {"recordsTotal": 2, "data": baltimore}
+    )
+    payload = melee.tournament(405588)
+    assert payload["tournament"]["round"] == "Finals"
+    assert payload["tournament"]["advanced"] == []
+    assert [(row["rank"], row["record"]) for row in payload["lists"]] == [
+        (1, "15-1-1"),
+        (2, "14-2-1"),
+    ]
+
+
+def test_a_fortnight_holding_two_events_is_read_against_both_and_its_own_past(tmp_path):
+    """The other direction of the chain, under the rule the event side reads by.
+
+    A bin that held an event used to keep the event and drop the fortnight
+    before it, so the fortnight to 2026-09-06 never said whether the MTGO field
+    had moved on its own terms, and a bin holding two events kept one of them on
+    a sort order. Both readings are kept, and the two rooms stay apart: pooled
+    into a single baseline an American field and a Chinese one are a share
+    neither of them reported.
+    """
+    _cache(tmp_path, CHINA, _payload(CHINA, [_list(rank) for rank in range(1, 16)]))
+    _cache(tmp_path, BALTIMORE, _payload(BALTIMORE, [_list(rank) for rank in range(1, 26)]))
+
+    from tracker import timeline
+
+    rows = [
+        row
+        for row in timeline.findings(
+            config.DB_PATH, config.REPORTS["blink"], spotlights=(CHINA, BALTIMORE), directory=tmp_path
+        )
+        if row["start"] == "2026-09-07"
+    ]
+    assert [row["against"] for row in rows] == [
+        "the fortnight to 2026-09-06",
+        "RC Baltimore",
+        "RC China",
+    ]
+    # The fortnight reading is the one with no caveat on it, and it leads.
+    assert [row["cross_population"] for row in rows] == [False, True, True]
+    # Each row is the bin's own MTGO lists, never the bin pooled with an event.
+    assert len({row["lists"] for row in rows}) == 1
+
+
+def test_the_marks_inside_a_fortnight_are_not_repeated_under_every_baseline(tmp_path):
+    """A mark says what happened in the bin, not what the bin was read against.
+
+    Printed under all three rows, one ban enters the storyline three times and
+    reads as three bans.
+    """
+    _cache(tmp_path, CHINA, _payload(CHINA, [_list(rank) for rank in range(1, 16)]))
+    _cache(tmp_path, BALTIMORE, _payload(BALTIMORE, [_list(rank) for rank in range(1, 26)]))
+
+    from tracker import timeline
+
+    marks = [
+        (row["against"], finding["text"])
+        for row in timeline.findings(
+            config.DB_PATH, config.REPORTS["blink"], spotlights=(CHINA, BALTIMORE), directory=tmp_path
+        )
+        if row["start"] == "2026-09-07"
+        for finding in row["found"]
+        if finding["kind"] == "event"
+    ]
+    assert len(marks) == len({text for _against, text in marks})
+
+
+def test_a_retried_request_goes_up_shaped_like_the_first_one(monkeypatch):
+    """A retry has to be the same call, or it is not a retry.
+
+    The standings endpoint answers on `X-Requested-With` and `Referer`, and a
+    retry that drops them is a differently shaped request asking a different
+    question. It reached that state once by reading the headers inside the
+    attempt loop, where the first attempt consumed them.
+    """
+    sent = []
+
+    class _Response:
+        status_code = 200
+
+        def __init__(self, body):
+            self.body = body
+
+        def raise_for_status(self):
+            pass
+
+        def json(self):
+            return self.body
+
+    def _send(method, url, **kwargs):
+        sent.append(kwargs.get("headers"))
+        # Short on the first attempt, whole on the second: the shape `usable`
+        # exists to retry through.
+        return _Response({"data": []} if len(sent) == 1 else {"data": ["a row"]})
+
+    monkeypatch.setattr(melee.SESSION, "request", _send)
+    monkeypatch.setattr(melee.time, "sleep", lambda _: None)
+
+    asked = {"X-Requested-With": "XMLHttpRequest", "Referer": "/Tournament/View/405588"}
+    melee._request("POST", "/anything", lambda r: bool(r.json()["data"]), headers=asked)
+
+    assert len(sent) == 2, "the short first answer was retried"
+    assert sent[0] == asked
+    assert sent[1] == asked, "the retry carried the headers the endpoint answers on"
+

@@ -73,12 +73,15 @@ comparing two weeks is comparing the deck rather than comparing two pieces of
 writing.
 
 **The headline**, and only on a week a major event fell in: an RC, a PT or a
-Spotlight. Who finished, named, with their rank and record, from
-`major_event.top`, and the event. One sentence, its own paragraph, above clause 1.
-It leads for two reasons. A team reads a named finish at the biggest tournament
-of the era before it reads a share, and everything under it is MTGO, so without
-it the week's one paper result arrives in sixth place under figures that never
-counted it.
+Spotlight. Who finished, named, with their rank and record, from the `top` of
+each entry in `major_events`, and the event each of them played. One sentence,
+its own paragraph, above clause 1. Where the week ran more than one event both
+are in it, each finish named with the event it came from: the Championship
+season seats two regions on one weekend, and a headline carrying one of them
+reports half the deck's paper week as the whole of it. It leads for two reasons.
+A team reads a named finish at the biggest tournament of the era before it reads
+a share, and everything under it is MTGO, so without it the week's paper results
+arrive in sixth place under figures that never counted them.
 
 1. **Volume against last week.** `challenge.lists` and `challenge.share` against
    `challenge.previous_share`. Up, down or level. **Say MTGO.** Clauses 1 to 4
@@ -101,11 +104,15 @@ counted it.
    covers. When it is empty, say the fortnight was stable. Never dress up a
    stable fortnight. A card climbing in one board and falling in the other is
    two rows and one decision: write it as the card changing boards.
-5. **Paper**, and only on a week a major event fell in: `major_event`, which
-   is there on those weeks and null on every other. The event whose week is the
-   reported week, read against `major_event.against_row`, which is whatever the
-   storyline said last: the paper event a week earlier where there was one, and
-   the MTGO fortnight before it otherwise. Field share with its n, top 32 with
+5. **Paper**, and only on a week a major event fell in: `major_events`, a list
+   of every event whose week is the reported week and empty on every other
+   week. One sentence per entry and never a pooled one. Two events on one
+   weekend are two rooms and two fields, so a share taken across both is a share
+   of a field nobody played in, and neither is ever the other's baseline. Each
+   entry is read against its own `against_row`, which is whatever the storyline
+   said last for that event: the paper event of an earlier week where there was
+   one, and the MTGO fortnight otherwise, in which case `against_row` is null
+   and `against` names the comparison alone. Field share with its n, top 32 with
    its n, conversion, match record and win rate against the field's. This is where the
    headline's finishes get their context, so it does not repeat the names. An
    event a week outside the reported week is the comparison and never the
@@ -249,18 +256,27 @@ run changes.
 - **A list whose boards did not separate is dropped**, not classified.
   A sideboard the page does not head puts the whole 75 in the mainboard, and
   membership is a mainboard test, so such a list would join the deck on a parse
-  failure. The report prints the count with its reason. Melee published the
-  three so far with no sideboard heading at all, refetched and confirmed on
+  failure. The report prints the count past `weekly.UNREAD_BANNER` lists, with
+  its reason. Melee published the four so far with no sideboard heading at
+  all, three of them refetched and confirmed on
   2026-09-13, so the merge is the field's and not this fetch's: a rising count
   is a note on what was published, never a reason to hold the Spotlight
   numbers back.
-- **A row read against a fortnight is marked cross-population** and means less
-  than one against the paper event before it. Brisbane to Dallas is paper on
-  both sides, a week apart: that is the stronger of the two comparisons, and a
-  clause off a cross-population row says which room each side came from.
+- **A cross-population row means less than a same-room one**, and the row's own
+  `cross_population` says which it is. Read the flag rather than guessing from
+  the medium: paper on both sides is not the test, the regions are. Baltimore
+  against Dallas is two American fields and reads as one room; China against
+  Dallas is paper a week apart and is still two metagames. A clause off a
+  cross-population row says which room each side came from. The paper row is
+  the stronger of the two an event carries either way, crossing at most the
+  room where the fortnight row crosses the room and the medium both.
 - Adding an event is adding it to `config.MAJOR_EVENTS` **and** to
   `data/events.csv`, the first for the reading and the second for the line on
   the figures. Which events count is Alejandro's call, same as `events.csv`.
+  The config entry needs a `region`, the room the field was drawn from, which
+  is what decides whether a row against another event crosses populations. A
+  Pro Tour is `international` and matches nothing, its field being invited
+  worldwide. Omit it and the chain raises rather than guessing.
   A frozen fortnight does not gain the line: `events.csv` puts a row in the bin
   an event falls in when that bin is frozen, so an event added after the fact
   reaches the storyline through its own row and not through the fortnight's.

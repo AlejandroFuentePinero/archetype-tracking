@@ -214,8 +214,9 @@ def main(argv=None) -> None:
             path.write_text(json.dumps(payload), encoding="utf-8")
             meta = payload["tournament"]
             print(f"  {meta['name']}")
+            carried = f", carried through {', '.join(meta['advanced'])}" if meta.get("advanced") else ""
             print(f"  {meta['players']} players, {len(payload['lists'])} lists, "
-                  f"read at {meta['round']} -> {path}")
+                  f"read at {meta['round']}{carried} -> {path}")
         # The boundary the ingest prints, over the fields the store cannot see.
         # Read here rather than in `refresh`, which is the MTGO ingest and holds
         # no paper list: the markers are the store's, the lists are the event's,

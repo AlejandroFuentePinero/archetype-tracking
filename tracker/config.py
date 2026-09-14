@@ -74,6 +74,7 @@ SPLIT_COLOURS = {
     "Cease/Desist": "WBG",
     "Wear/Tear": "RW",
     "Rough/Tumble": "R",
+    "Crime/Punishment": "BR",
 }
 
 # A mainboard over this many cards is a list published with its sideboard in
@@ -178,6 +179,8 @@ HYBRID_CAMP = "hybrid"
 # lowercase and printed capitalised.
 VERSION_NAMES = {
     "non-fallaji": "Riddler",
+    "fallaji": "Fallaji",
+    "hybrid": "Hybrid",
     "esper": "Esper",
     "orzhov": "Orzhov",
     "frog": "Frog",
@@ -201,17 +204,24 @@ def version_name(camp: str) -> str:
 # turn, so a list takes the first name that claims it and is never two decks.
 TRACKED_DECKS = {
     "blink": {
-        # The four together are the deck. Phelia alone is not enough: a white
+        # The three together are the deck. Phelia alone is not enough: a white
         # energy build and a Boros build both play her, and the Ephemerate pool
         # on its own is half Goryo's.
+        #
+        # Flickerwisp was the fourth until 2026-09-14. It is a slot and not the
+        # deck (Alejandro, 2026-09-14): a list on the three that runs Psychic
+        # Frog in the Flickerwisp seat is the same deck innovating, and RC
+        # Baltimore is where that build arrived in numbers, six lists whose
+        # pilots all typed `Esper Blink` and five of them on Frog as a four-of.
+        # The 2026-08-07 ruling set the four-card core against nine MTGO lists
+        # that had cut one; one event now holds most of that again.
         "signature": (
             "Phelia, Exuberant Shepherd",
-            "Flickerwisp",
             "Overlord of the Balemurk",
             "Witch Enchanter",
         ),
         # The deck is Esper or Orzhov and nothing else. A Mardu build shares all
-        # four signature cards and is a different deck, and the line between
+        # three signature cards and is a different deck, and the line between
         # them is the splash line (Alejandro, 2026-09-13): the off-colour
         # spells the mainboard casts, never its sources. Six lists on one
         # Sacred Foundry or Temple Garden with nothing red or green cast are
@@ -377,10 +387,22 @@ TRACKED_DECKS = {
         "floor": {"Steam Vents": 2},
     },
     "trudge": {
-        # Ugin's Labyrinth names the Eldrazi ramp shell: the mono-green Nantuko
-        # decks run Trudge and Fanatic as mana dorks and none of the shell
-        # (Alejandro, 2026-09-13). Every other list in the history holds it.
-        "signature": ("Slumbering Trudge", "Fanatic of Rhonas", "Ugin's Labyrinth"),
+        # The Eldrazi ramp shell, which the mono-green Nantuko decks run none of
+        # while running Trudge and Fanatic as mana dorks (Alejandro,
+        # 2026-09-13). Named by the shell itself rather than by Ugin's
+        # Labyrinth alone (Alejandro, 2026-09-14): the Labyrinth stood in for
+        # the shell while every list in the history held it, and TheJV's RC
+        # Baltimore list is the shell whole on a manabase without the land,
+        # which is the Nantuko clause catching the case it was written to
+        # admit. Any one of these four is the shell; the Nantuko decks hold
+        # none of them.
+        "signature": ("Slumbering Trudge", "Fanatic of Rhonas"),
+        "either": (
+            ("Ugin's Labyrinth",),
+            ("Eldrazi Temple",),
+            ("Kozilek's Command",),
+            ("Fight Rigging",),
+        ),
     },
     "tron": {
         # The three lands are Tron, and Karn is supporting (Alejandro,
@@ -588,8 +610,8 @@ REPORTS = {
         "watch": (),
         "manabase": False,
         "membership": (
-            "mainboard holds Phelia, Exuberant Shepherd, Flickerwisp, Overlord of the Balemurk "
-            "and Witch Enchanter, casts under five spells outside white, blue and black and no "
+            "mainboard holds Phelia, Exuberant Shepherd, Overlord of the Balemurk and Witch "
+            "Enchanter, casts under five spells outside white, blue and black and no "
             "playset of one, and carries none of the energy, Overlords, Stoneblade or taxes "
             "engines. The esper version mainboards Watery Grave or casts a blue spell; the "
             "orzhov version does neither."
@@ -683,7 +705,8 @@ REPORTS = {
         "watch": (),
         "manabase": False,
         "membership": (
-            "mainboard holds Kappa Cannoneer, Pinnacle Emissary and Engineered Explosives, none "
+            "mainboard holds Kappa Cannoneer and Pinnacle Emissary with any one of Engineered "
+            "Explosives, Weapons Manufacturing or Krang, Master Mind, none "
             "of Song of Creation, Basim Ibn Ishaq or Sewer-veillance Cam, and not Tamiyo, "
             "Inquisitive Student beside Mox Amber unless Weapons Manufacturing sits beside them. "
             "No colour rule and no versions."
@@ -709,8 +732,9 @@ REPORTS = {
         "watch": (),
         "manabase": False,
         "membership": (
-            "mainboard holds Slumbering Trudge, Fanatic of Rhonas and Ugin's Labyrinth. No colour "
-            "rule and no versions."
+            "mainboard holds Slumbering Trudge and Fanatic of Rhonas with any one of Ugin's "
+            "Labyrinth, Eldrazi Temple, Kozilek's Command or Fight Rigging. No colour rule and no "
+            "versions."
         ),
     },
     "tron": {
@@ -938,11 +962,28 @@ EVENTS_PATH = REPO_ROOT / "data" / "events.csv"
 # than one. A Pro Tour is six rounds of draft and ten of Modern under a single
 # ranking, so it is read at the end of its last Modern round and its record is
 # the Modern rounds alone. See `melee.tournament`.
+#
+# `region` names the room the event drew its field from, and is what decides
+# whether a comparison between two events is cross-population. Paper against
+# paper used to be taken as one room on the medium alone, which read an
+# Australian field against an American one as the deck changing its mind. A Pro
+# Tour is its own room and matches nothing: its field is invited worldwide, so
+# it is no more the American metagame than the Australian one.
 MAJOR_EVENTS = (
-    {"id": 434455, "label": "Pro Tour Amsterdam", "date": "2026-07-17", "format": "Modern"},
-    {"id": 441441, "label": "Spotlight Brisbane", "date": "2026-08-29"},
-    {"id": 405590, "label": "Spotlight Dallas", "date": "2026-09-05"},
-    {"id": 451148, "label": "RC China", "date": "2026-09-12"},
+    {
+        "id": 434455, "label": "Pro Tour Amsterdam", "date": "2026-07-17",
+        "format": "Modern", "region": "international",
+    },
+    {"id": 441441, "label": "Spotlight Brisbane", "date": "2026-08-29", "region": "australia"},
+    {"id": 405590, "label": "Spotlight Dallas", "date": "2026-09-05", "region": "usa"},
+    # Two Regional Championships on one weekend, in two rooms. Neither is read
+    # against the other: `spotlight.chain` skips an event of the reading event's
+    # own week, so both are read against Spotlight Dallas and the fortnight to
+    # 2026-09-06. Baltimore is configured ahead of its cache, the organiser not
+    # having published the finals standings when it was added on 2026-09-14; an
+    # event with no cache is skipped by every reader until it is fetched.
+    {"id": 405588, "label": "RC Baltimore", "date": "2026-09-12", "region": "usa"},
+    {"id": 451148, "label": "RC China", "date": "2026-09-12", "region": "china"},
 )
 
 # One JSON per Spotlight, fetched once and kept. The melee equivalent of RAW_DIR
