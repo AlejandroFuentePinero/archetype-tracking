@@ -1,5 +1,8 @@
 # Archetype Tracking
 
+The current week's reports, one page per tracked deck:
+<https://alejandrofupi-mtg-archetype-tracking.static.hf.space>
+
 Reads published Magic: The Gathering decklists and reports named Modern
 archetypes fortnightly. It caches every published MTGO event and every
 configured paper event from Melee, curates them into a DuckDB store, and freezes
@@ -82,8 +85,11 @@ never share an axis with MTGO figures: a Spotlight publishes every finisher
 where a challenge publishes a cut, so the two are different populations.
 
 `site` builds what `scripts/deploy_space.sh <user>/<space>` pushes to a
-protected Hugging Face Space: the rendered pages under stable names and an
-index over them, nothing else. It refuses a report with no summary written in.
+protected Hugging Face Space: the rendered pages under stable names and an index
+over them, nothing else. It refuses a report with no summary written in. The
+Space for this repo is `Alejandrofupi/mtg-archetype-tracking`, protected so that
+the repository tree is hidden and the running pages are open to anyone with the
+link at the top of this file.
 
 Which lists a report reads is not a flag. It is the report's own entry in
 `config.REPORTS`: the archetype, the camp its volume figures are pooled over,
@@ -161,7 +167,7 @@ backfill is slow by construction. Please keep it that way.
 uv run pytest
 ```
 
-79 tests over committed MTGO payload fixtures. The network layer is excluded
+152 tests over committed MTGO payload fixtures. The network layer is excluded
 from the test seam by design and is verified by spot-checking fetched counts
 against the live site; the calendar rule deciding which month may legitimately
 have no index yet is not network, and is tested.
