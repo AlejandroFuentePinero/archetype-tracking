@@ -1,47 +1,62 @@
 start,end,lists,against,kind,zone,card,text
-2026-05-18,2026-05-31,30,"no fortnight before it, the history opening on 2026-05-19",stable,,,
-2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,return,side,Cling to Dust,"Cling to Dust appears for the first time, 4 of 59 lists (7%)"
-2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,return,side,Deafening Silence,"Deafening Silence appears for the first time, 4 of 59 lists (7%)"
-2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,adoption,side,Drannith Magistrate,"Drannith Magistrate climbed in the sideboard, 3/30 to 18/59 lists (10% to 31%)"
-2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,return,main,Emeritus of Ideation,"Emeritus of Ideation appears for the first time, 4 of 59 lists (7%)"
-2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,return,side,March of Otherworldly Light,"March of Otherworldly Light moves to the sideboard, 3 of 59 lists (5%)"
-2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,adoption,side,Nihil Spellbomb,"Nihil Spellbomb climbed in the sideboard, 4/30 to 25/59 lists (13% to 42%)"
-2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,return,side,Prismatic Ending,"Prismatic Ending moves to the sideboard, 3 of 59 lists (5%)"
-2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,return,main,Wrath of the Skies,"Wrath of the Skies moves to the mainboard, 15 of 59 lists (25%)"
-2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,adoption,side,Wrath of the Skies,"Wrath of the Skies fell in the sideboard, 30/30 to 44/59 lists (100% to 75%)"
-2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,adoption,side,Chalice of the Void,"Chalice of the Void fell in the sideboard, 8/30 to 0/59 lists (27% to 0%)"
-2026-06-01,2026-06-14,59,the fortnight to 2026-05-31,adoption,main,"Kavaero, Mind-Bitten","Kavaero, Mind-Bitten fell in the mainboard, 8/30 to 0/59 lists (27% to 0%)"
-2026-06-15,2026-06-28,37,the fortnight to 2026-06-14,adoption,main,Psychic Frog,"Psychic Frog climbed in the mainboard, 8/59 to 15/37 lists (14% to 41%)"
-2026-06-15,2026-06-28,37,the fortnight to 2026-06-14,copies,main,Fatal Push,Fatal Push down from 3.7 to 3.3 copies on average
-2026-06-15,2026-06-28,37,the fortnight to 2026-06-14,copies,main,Flickerwisp,Flickerwisp down from 2.4 to 2.0 copies on average
-2026-06-15,2026-06-28,37,the fortnight to 2026-06-14,copies,main,Polluted Delta,Polluted Delta up from 1.5 to 1.9 copies on average
-2026-06-29,2026-07-12,27,the fortnight to 2026-06-28,adoption,side,Clarion Conqueror,"Clarion Conqueror fell in the sideboard, 27/37 to 13/27 lists (73% to 48%)"
-2026-06-29,2026-07-12,27,the fortnight to 2026-06-28,adoption,side,Damping Sphere,"Damping Sphere climbed in the sideboard, 12/37 to 18/27 lists (32% to 67%)"
-2026-06-29,2026-07-12,27,the fortnight to 2026-06-28,return,side,"Emrakul, the Aeons Torn","Emrakul, the Aeons Torn appears for the first time, 3 of 27 lists (11%)"
-2026-06-29,2026-07-12,27,the fortnight to 2026-06-28,return,side,Ghost Vacuum,"Ghost Vacuum appears for the first time, 3 of 27 lists (11%)"
-2026-06-29,2026-07-12,27,the fortnight to 2026-06-28,adoption,main,Island,"Island fell in the mainboard, 26/37 to 10/27 lists (70% to 37%)"
-2026-06-29,2026-07-12,27,the fortnight to 2026-06-28,adoption,side,Nihil Spellbomb,"Nihil Spellbomb fell in the sideboard, 18/37 to 6/27 lists (49% to 22%)"
-2026-06-29,2026-07-12,27,the fortnight to 2026-06-28,adoption,side,White Orchid Phantom,"White Orchid Phantom fell in the sideboard, 25/37 to 8/27 lists (68% to 30%)"
-2026-06-29,2026-07-12,27,the fortnight to 2026-06-28,adoption,side,"Elesh Norn, Mother of Machines","Elesh Norn, Mother of Machines fell in the sideboard, 11/37 to 0/27 lists (30% to 0%)"
-2026-06-29,2026-07-12,27,the fortnight to 2026-06-28,copies,main,Flickerwisp,Flickerwisp up from 2.0 to 2.6 copies on average
-2026-06-29,2026-07-12,27,the fortnight to 2026-06-28,copies,main,Polluted Delta,Polluted Delta down from 1.9 to 1.5 copies on average
-2026-06-29,2026-07-12,27,the fortnight to 2026-06-28,copies,main,Witch Enchanter,Witch Enchanter up from 2.8 to 3.3 copies on average
-2026-07-13,2026-07-26,20,Pro Tour Amsterdam,event,,,Pro Tour Amsterdam
-2026-07-27,2026-08-09,28,the fortnight to 2026-07-26,adoption,main,Bleachbone Verge,"Bleachbone Verge fell in the mainboard, 6/20 to 1/28 lists (30% to 4%)"
-2026-07-27,2026-08-09,28,the fortnight to 2026-07-26,adoption,main,March of Otherworldly Light,"March of Otherworldly Light fell in the mainboard, 11/20 to 6/28 lists (55% to 21%)"
-2026-07-27,2026-08-09,28,the fortnight to 2026-07-26,adoption,side,Nihil Spellbomb,"Nihil Spellbomb fell in the sideboard, 7/20 to 2/28 lists (35% to 7%)"
-2026-07-27,2026-08-09,28,the fortnight to 2026-07-26,adoption,main,Orcish Bowmasters,"Orcish Bowmasters fell in the mainboard, 9/20 to 0/28 lists (45% to 0%)"
-2026-07-27,2026-08-09,28,the fortnight to 2026-07-26,copies,main,Flickerwisp,Flickerwisp up from 2.4 to 2.9 copies on average
-2026-08-10,2026-08-23,114,the fortnight to 2026-08-09,adoption,side,Clarion Conqueror,"Clarion Conqueror climbed in the sideboard, 17/28 to 113/114 lists (61% to 99%)"
+2026-05-18,2026-05-31,31,"no fortnight before it, the history opening on 2026-05-19",stable,,,
+2026-06-01,2026-06-14,60,the fortnight to 2026-05-31,return,side,Cling to Dust,"Cling to Dust appears for the first time, 4 of 60 lists (7%)"
+2026-06-01,2026-06-14,60,the fortnight to 2026-05-31,return,side,Deafening Silence,"Deafening Silence appears for the first time, 4 of 60 lists (7%)"
+2026-06-01,2026-06-14,60,the fortnight to 2026-05-31,return,main,Emeritus of Ideation,"Emeritus of Ideation appears for the first time, 4 of 60 lists (7%)"
+2026-06-01,2026-06-14,60,the fortnight to 2026-05-31,return,main,Erode,"Erode moves to the mainboard, 2 of 60 lists (3%)"
+2026-06-01,2026-06-14,60,the fortnight to 2026-05-31,return,side,March of Otherworldly Light,"March of Otherworldly Light moves to the sideboard, 3 of 60 lists (5%)"
+2026-06-01,2026-06-14,60,the fortnight to 2026-05-31,adoption,side,Nihil Spellbomb,"Nihil Spellbomb climbed in the sideboard, 5/31 to 25/60 lists (16% to 42%)"
+2026-06-01,2026-06-14,60,the fortnight to 2026-05-31,return,side,Prismatic Ending,"Prismatic Ending moves to the sideboard, 3 of 60 lists (5%)"
+2026-06-01,2026-06-14,60,the fortnight to 2026-05-31,adoption,main,Wrath of the Skies,"Wrath of the Skies climbed in the mainboard, 1/31 to 15/60 lists (3% to 25%)"
+2026-06-01,2026-06-14,60,the fortnight to 2026-05-31,adoption,side,Wrath of the Skies,"Wrath of the Skies fell in the sideboard, 30/31 to 45/60 lists (97% to 75%)"
+2026-06-01,2026-06-14,60,the fortnight to 2026-05-31,adoption,side,Chalice of the Void,"Chalice of the Void fell in the sideboard, 8/31 to 0/60 lists (26% to 0%)"
+2026-06-01,2026-06-14,60,the fortnight to 2026-05-31,adoption,main,"Kavaero, Mind-Bitten","Kavaero, Mind-Bitten fell in the mainboard, 8/31 to 0/60 lists (26% to 0%)"
+2026-06-15,2026-06-28,38,the fortnight to 2026-06-14,adoption,main,Psychic Frog,"Psychic Frog climbed in the mainboard, 9/60 to 16/38 lists (15% to 42%)"
+2026-06-15,2026-06-28,38,the fortnight to 2026-06-14,copies,main,Fatal Push,Fatal Push down from 3.7 to 3.2 copies on average
+2026-06-15,2026-06-28,38,the fortnight to 2026-06-14,copies,main,Flickerwisp,Flickerwisp down from 2.4 to 2.0 copies on average
+2026-06-15,2026-06-28,38,the fortnight to 2026-06-14,copies,main,Polluted Delta,Polluted Delta up from 1.5 to 2.0 copies on average
+2026-06-29,2026-07-12,28,the fortnight to 2026-06-28,adoption,side,Clarion Conqueror,"Clarion Conqueror fell in the sideboard, 28/38 to 14/28 lists (74% to 50%)"
+2026-06-29,2026-07-12,28,the fortnight to 2026-06-28,adoption,side,Damping Sphere,"Damping Sphere climbed in the sideboard, 12/38 to 19/28 lists (32% to 68%)"
+2026-06-29,2026-07-12,28,the fortnight to 2026-06-28,return,side,"Emrakul, the Aeons Torn","Emrakul, the Aeons Torn appears for the first time, 3 of 28 lists (11%)"
+2026-06-29,2026-07-12,28,the fortnight to 2026-06-28,return,side,Ghost Vacuum,"Ghost Vacuum appears for the first time, 3 of 28 lists (11%)"
+2026-06-29,2026-07-12,28,the fortnight to 2026-06-28,adoption,main,Island,"Island fell in the mainboard, 27/38 to 11/28 lists (71% to 39%)"
+2026-06-29,2026-07-12,28,the fortnight to 2026-06-28,adoption,side,Nihil Spellbomb,"Nihil Spellbomb fell in the sideboard, 19/38 to 7/28 lists (50% to 25%)"
+2026-06-29,2026-07-12,28,the fortnight to 2026-06-28,adoption,side,White Orchid Phantom,"White Orchid Phantom fell in the sideboard, 25/38 to 8/28 lists (66% to 29%)"
+2026-06-29,2026-07-12,28,the fortnight to 2026-06-28,adoption,side,"Elesh Norn, Mother of Machines","Elesh Norn, Mother of Machines fell in the sideboard, 12/38 to 0/28 lists (32% to 0%)"
+2026-06-29,2026-07-12,28,the fortnight to 2026-06-28,copies,main,Flickerwisp,Flickerwisp up from 2.0 to 2.6 copies on average
+2026-06-29,2026-07-12,28,the fortnight to 2026-06-28,copies,main,Polluted Delta,Polluted Delta down from 2.0 to 1.5 copies on average
+2026-06-29,2026-07-12,28,the fortnight to 2026-06-28,copies,main,Witch Enchanter,Witch Enchanter up from 2.8 to 3.2 copies on average
+2026-07-13,2026-07-26,20,the fortnight to 2026-07-12,adoption,main,Consign to Memory,"Consign to Memory fell in the mainboard, 10/28 to 3/20 lists (36% to 15%)"
+2026-07-13,2026-07-26,20,the fortnight to 2026-07-12,adoption,main,Orcish Bowmasters,"Orcish Bowmasters climbed in the mainboard, 4/28 to 9/20 lists (14% to 45%)"
+2026-07-13,2026-07-26,20,the fortnight to 2026-07-12,return,main,White Orchid Phantom,"White Orchid Phantom moves to the mainboard, 2 of 20 lists (10%)"
+2026-07-13,2026-07-26,20,the fortnight to 2026-07-12,event,,,Pro Tour Amsterdam
+2026-07-13,2026-07-26,20,Pro Tour Amsterdam,stable,,,
+2026-07-27,2026-08-09,30,the fortnight to 2026-07-26,adoption,main,Bleachbone Verge,"Bleachbone Verge fell in the mainboard, 6/20 to 1/30 lists (30% to 3%)"
+2026-07-27,2026-08-09,30,the fortnight to 2026-07-26,adoption,side,Nihil Spellbomb,"Nihil Spellbomb fell in the sideboard, 7/20 to 2/30 lists (35% to 7%)"
+2026-07-27,2026-08-09,30,the fortnight to 2026-07-26,adoption,main,Orcish Bowmasters,"Orcish Bowmasters fell in the mainboard, 9/20 to 1/30 lists (45% to 3%)"
+2026-07-27,2026-08-09,30,the fortnight to 2026-07-26,copies,main,Flickerwisp,Flickerwisp up from 2.4 to 2.9 copies on average
+2026-08-10,2026-08-23,114,the fortnight to 2026-08-09,adoption,side,Clarion Conqueror,"Clarion Conqueror climbed in the sideboard, 17/30 to 113/114 lists (57% to 99%)"
 2026-08-10,2026-08-23,114,the fortnight to 2026-08-09,return,side,Containment Priest,"Containment Priest appears for the first time, 21 of 114 lists (18%)"
 2026-08-10,2026-08-23,114,the fortnight to 2026-08-09,return,main,"Elesh Norn, Mother of Machines","Elesh Norn, Mother of Machines appears for the first time, 5 of 114 lists (4%)"
 2026-08-10,2026-08-23,114,the fortnight to 2026-08-09,return,side,Geist of Saint Traft,"Geist of Saint Traft appears for the first time, 6 of 114 lists (5%)"
 2026-08-10,2026-08-23,114,the fortnight to 2026-08-09,return,main,Inquisition of Kozilek,"Inquisition of Kozilek appears for the first time, 3 of 114 lists (3%)"
-2026-08-10,2026-08-23,114,the fortnight to 2026-08-09,return,main,Spell Snare,"Spell Snare appears for the first time, 2 of 114 lists (2%)"
-2026-08-24,2026-09-06,137,Spotlight Dallas,adoption,main,Consign to Memory,"Consign to Memory fell in the mainboard, 47/62 to 55/137 lists (76% to 40%)"
-2026-08-24,2026-09-06,137,Spotlight Dallas,adoption,side,Consign to Memory,"Consign to Memory climbed in the sideboard, 15/62 to 82/137 lists (24% to 60%)"
-2026-08-24,2026-09-06,137,Spotlight Dallas,adoption,side,Containment Priest,"Containment Priest fell in the sideboard, 29/62 to 29/137 lists (47% to 21%)"
-2026-08-24,2026-09-06,137,Spotlight Dallas,adoption,side,"Elesh Norn, Mother of Machines","Elesh Norn, Mother of Machines fell in the sideboard, 37/62 to 50/137 lists (60% to 36%)"
-2026-08-24,2026-09-06,137,Spotlight Dallas,return,side,Grafdigger's Cage,"Grafdigger's Cage appears for the first time, 5 of 137 lists (4%)"
-2026-08-24,2026-09-06,137,Spotlight Dallas,event,,,Spotlight Brisbane
-2026-08-24,2026-09-06,137,Spotlight Dallas,event,,,Spotlight Dallas
+2026-08-10,2026-08-23,114,the fortnight to 2026-08-09,adoption,main,Island,"Island fell in the mainboard, 11/30 to 18/114 lists (37% to 16%)"
+2026-08-10,2026-08-23,114,the fortnight to 2026-08-09,adoption,main,Psychic Frog,"Psychic Frog fell in the mainboard, 11/30 to 5/114 lists (37% to 4%)"
+2026-08-24,2026-09-06,138,the fortnight to 2026-08-23,adoption,main,Consign to Memory,"Consign to Memory climbed in the mainboard, 11/114 to 56/138 lists (10% to 41%)"
+2026-08-24,2026-09-06,138,the fortnight to 2026-08-23,adoption,side,Consign to Memory,"Consign to Memory fell in the sideboard, 103/114 to 82/138 lists (90% to 59%)"
+2026-08-24,2026-09-06,138,the fortnight to 2026-08-23,adoption,side,Damping Sphere,"Damping Sphere fell in the sideboard, 87/114 to 31/138 lists (76% to 22%)"
+2026-08-24,2026-09-06,138,the fortnight to 2026-08-23,adoption,side,"Elesh Norn, Mother of Machines","Elesh Norn, Mother of Machines climbed in the sideboard, 7/114 to 50/138 lists (6% to 36%)"
+2026-08-24,2026-09-06,138,the fortnight to 2026-08-23,return,side,Grafdigger's Cage,"Grafdigger's Cage appears for the first time, 5 of 138 lists (4%)"
+2026-08-24,2026-09-06,138,the fortnight to 2026-08-23,adoption,side,Mystical Dispute,"Mystical Dispute fell in the sideboard, 80/114 to 60/138 lists (70% to 43%)"
+2026-08-24,2026-09-06,138,the fortnight to 2026-08-23,adoption,side,Nihil Spellbomb,"Nihil Spellbomb climbed in the sideboard, 12/114 to 77/138 lists (11% to 56%)"
+2026-08-24,2026-09-06,138,the fortnight to 2026-08-23,return,side,Spell Snare,"Spell Snare moves to the sideboard, 8 of 138 lists (6%)"
+2026-08-24,2026-09-06,138,the fortnight to 2026-08-23,adoption,side,White Orchid Phantom,"White Orchid Phantom climbed in the sideboard, 36/114 to 81/138 lists (32% to 59%)"
+2026-08-24,2026-09-06,138,the fortnight to 2026-08-23,event,,,Spotlight Brisbane
+2026-08-24,2026-09-06,138,the fortnight to 2026-08-23,event,,,Spotlight Dallas
+2026-08-24,2026-09-06,138,Spotlight Brisbane,return,side,Spell Snare,"Spell Snare moves to the sideboard, 8 of 138 lists (6%)"
+2026-08-24,2026-09-06,138,Spotlight Brisbane,copies,main,Flickerwisp,Flickerwisp up from 2.5 to 2.9 copies on average
+2026-08-24,2026-09-06,138,Spotlight Dallas,adoption,main,Consign to Memory,"Consign to Memory fell in the mainboard, 47/63 to 56/138 lists (75% to 41%)"
+2026-08-24,2026-09-06,138,Spotlight Dallas,adoption,side,Consign to Memory,"Consign to Memory climbed in the sideboard, 16/63 to 82/138 lists (25% to 59%)"
+2026-08-24,2026-09-06,138,Spotlight Dallas,adoption,side,Containment Priest,"Containment Priest fell in the sideboard, 29/63 to 29/138 lists (46% to 21%)"
+2026-08-24,2026-09-06,138,Spotlight Dallas,adoption,side,"Elesh Norn, Mother of Machines","Elesh Norn, Mother of Machines fell in the sideboard, 37/63 to 50/138 lists (59% to 36%)"
+2026-08-24,2026-09-06,138,Spotlight Dallas,return,side,Grafdigger's Cage,"Grafdigger's Cage appears for the first time, 5 of 138 lists (4%)"

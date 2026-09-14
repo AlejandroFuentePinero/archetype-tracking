@@ -1,6 +1,6 @@
 # ADR 0002: Rewriting the frozen rows before the reports were shared
 
-Status: accepted (2026-09-13)
+Status: accepted (2026-09-13, extended 2026-09-14)
 
 ## Context
 
@@ -41,7 +41,9 @@ and 66 of the 597 comparison rows then frozen read across such a bin.
 
 Recompute every frozen row under the corrected engine, and again under the
 floor, both on 2026-09-13 and both before the first sharing, rewriting the files
-in place each time.
+in place each time. A third pass followed on 2026-09-14, narrower than either:
+one report whose membership rule had moved under it, and one league day the
+first pass had not reached back far enough to repair.
 
 ### The defect pass, c5a3d0f
 
@@ -77,6 +79,75 @@ against a paper event is a cross-population reading gated by `timeline.shifted`,
 whose own floor is the move being worth `TRACK_MIN_LISTS` in the smaller room,
 so no row of that kind was withdrawn here.
 
+### The membership pass, 2026-09-14
+
+Two membership rulings landed on 2026-09-14 and one of them moved lists. Esper
+Blink's core went from four cards to three, Flickerwisp ruled a slot rather than
+the deck, which admits 12 MTGO lists across the cache, 8 of them since the bans,
+and 7 paper lists, and turns none away. Trudge's rule moved from Ugin's
+Labyrinth to the Eldrazi ramp shell it stood in for, which admits one paper list
+and no MTGO list, so no frozen row of its answers to it.
+
+Blink's rows were computed on the population the four-card rule gave, which is
+not the deck any more. Its three files were replayed week by week from
+2026-05-18 on today's engine.
+
+Six weeks move in `weekly.csv` and the same six in `version.csv`. The deck reads
+one list more in the weeks to 24 May, 28 June and 5 July, two more in the weeks
+to 7 June and 9 August, and one more in the week to 6 September, with the
+challenge-class and trophy counts under them: 541 lists since the bans become
+549 and 268 trophies become 272. In `timeline.csv`, 35 findings go and 48
+arrive, across six fortnights, and 46 rows become 61. No finding reverses its
+direction; every one of them restates itself on a population one or two lists
+larger.
+
+The paper side was never frozen and needed no pass. It moves on the same ruling
+regardless: 6 lists at RC Baltimore, 112 to 118, and CruzH at Spotlight Dallas,
+63 to 64.
+
+### The league day the first pass did not reach, 2026-09-14
+
+A seventh week moves in every report and is no part of the ruling. The
+2026-08-13 league dump was captured inside its own unsettled window and froze at
+53 lists against a median league day of 60. The settle gate adopted on
+2026-09-13 refetched it on the 2026-09-14 run and it stands at 56. This is the
+same defect the first pass repaired on 2026-08-23 and 2026-08-28; that pass ran
+`refresh --since 2026-08-23` and did not reach back this far.
+
+The three lists put `league_field` for the week to 16 August at 407 where all
+seventeen reports had frozen 404, and give Devoted Combo and Boros Ponza one
+more list and one more trophy each. That one row was repaired in every
+`weekly.csv` and `version.csv`. A denominator is one number about one week, and
+two committed files disagreeing about it is worse than either answer being a
+little stale.
+
+No other deck's `timeline.csv` was touched. Their populations did not move, and
+a fortnight row reads over the lists it names.
+
+### What was deliberately left standing
+
+ADR 0003 changed how a fortnight is read, giving it one row per baseline behind
+it rather than a choice of one, and chose to leave frozen bins alone. That
+stands. Recomputing all seventeen storylines under it would have rewritten
+clause 4 of all seventeen summaries the day before the first sharing, which is a
+method change of exactly the kind ADR 0003 declined to take.
+
+Blink is the exception and could not be anything else: its bins had to be
+recomputed for their population, and a bin recomputed comes back under today's
+engine, second and third baselines included. So Esper Blink's storyline is the
+only one of the seventeen showing the new shape below the running fortnight. It
+is the deck whose rule moved, which is a reasonable place for it to show.
+
+### The summaries under the refrozen rows
+
+Rewritten from them, as in c5a3d0f and 8f00a1b. Both of Esper Blink's: the
+regime median goes from 10 finishes to 11 in the week to 13 September and from
+10 to 10.5 in the week to 6 September, the fortnight to 6 September reads over
+138 lists rather than 133 and against 63 Dallas lists rather than 62, and the
+percentages in that clause move by a point or two each. No clause changed its
+shape and no reading changed its verdict. No other summary quotes a figure that
+moved.
+
 ## Why this is not a precedent
 
 The rule protects a record of what a reader was told. These reports had not been
@@ -100,6 +171,13 @@ reader and not a week into one. A floor adopted after 2026-09-15 changes the
 fortnights ahead of it, leaves the frozen ones standing, and is announced in
 that week's summary.
 
+The membership pass is the third case and the narrowest. A row computed on a
+population a later ruling says was never the deck is not a measurement that
+changed; it is a measurement of the wrong thing, which is the defect case again
+with a pilot verdict in place of a bug. The window is the same one, by a day.
+
 A number that moves because the source published more is still frozen where it
 stands, and this ADR does not license rewriting one. If a frozen row is wrong,
-the next week's summary says so.
+the next week's summary says so. From 2026-09-15 that is the only remedy, and a
+membership ruling taken after it changes the fortnights ahead of it and is
+announced in that week's summary.
