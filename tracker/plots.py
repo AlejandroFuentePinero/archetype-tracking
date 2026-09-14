@@ -20,6 +20,7 @@ where the axes cross.
 
 import re
 from datetime import date, timedelta
+from html import escape
 from io import StringIO
 
 import matplotlib
@@ -40,18 +41,33 @@ GROUND = "#040506"
 # Categorical slots 1-3 from the validated reference palette, used here only as
 # sentinels: each is swapped for a CSS variable on the way out, so one rendering
 # of a figure serves both themes and the dark steps are a selected palette in
-# the page's stylesheet rather than an automatic lightening of these. Four is
-# the cap. The reference palette's own fourth slot, yellow, fails the normal-
-# vision floor beside orange in both modes; the magenta here clears every all-
-# pairs gate, its worst CVD pair (against blue) sitting in the band that is
-# legal only with a second encoding, which every figure using it carries as a
-# label on the panel or the row.
-SERIES = ("#2a78d6", "#eb6834", "#1baf7a", "#b04ab0")
+# the page's stylesheet rather than an automatic lightening of these. The
+# reference palette's own fourth slot, yellow, fails the normal-vision floor
+# beside orange in both modes; the magenta here clears every all-pairs gate, its
+# worst CVD pair (against blue) sitting in the band that is legal only with a
+# second encoding, which every figure using it carries as a label on the panel
+# or the row.
+#
+# Five since RC Baltimore and RC China, the paper figure drawing a panel per
+# cached event and the fifth having wrapped to the first colour, so Pro Tour
+# Amsterdam and RC China were one blue in the legend. The fifth is desaturated
+# and not another hue because there is no hue left: swept over the wheel at
+# every saturation, the best any candidate reaches against these four is 21
+# CIE76 under the worst of normal, protan, deutan and tritan vision, and only
+# low saturation reaches it. This pair sits at that ceiling, 21 light and 22
+# dark, against the 7 and 2 the existing four already sit at, and clears both
+# grounds at 5.3 and 6.5 contrast.
+SERIES = ("#2a78d6", "#eb6834", "#1baf7a", "#b04ab0", "#5c6b7a")
 
 plt.rcParams.update(
     {
-        # Text stays text rather than becoming outlines, so it inherits the
-        # page's font stack and the file stays small enough to inline.
+        # Text stays text rather than becoming outlines: the file stays small
+        # enough to inline, and the labels are selectable and searchable. It
+        # does not inherit the page's font stack, which this comment used to
+        # claim. Matplotlib writes its own `font.family` onto every `<text>`,
+        # so the charts render a different face from the prose around them, and
+        # the layout is computed on DejaVu metrics whatever the browser picks.
+        # Matching the two is a change to the figures and wants a look at them.
         "svg.fonttype": "none",
         "font.size": 9,
         "axes.edgecolor": INK,
@@ -65,8 +81,15 @@ plt.rcParams.update(
 )
 
 
-def _svg(fig) -> str:
-    """The figure as an inline SVG fragment, themed to the page's ink."""
+def _svg(fig, title: str) -> str:
+    """The figure as an inline SVG fragment, themed to the page's ink.
+
+    `title` is the figure's accessible name. A chart inlined as SVG is a tree of
+    paths to a screen reader, which announces it as nothing at all, and the
+    panel titles inside it are `<text>` scattered among the tick labels rather
+    than a name for the whole. Carried as `role="img"` and a `<title>` child,
+    which is the pair that makes the tree one image with one name.
+    """
     buffer = StringIO()
     fig.savefig(buffer, format="svg", transparent=True, bbox_inches="tight")
     plt.close(fig)
@@ -77,8 +100,17 @@ def _svg(fig) -> str:
     for slot, colour in enumerate(SERIES, start=1):
         markup = re.sub(re.escape(colour), f"var(--series-{slot})", markup, flags=re.IGNORECASE)
     # A fixed pixel width would overflow a narrow screen; the viewBox already
-    # carries the aspect ratio, so let the container decide the width.
-    return re.sub(r'<svg width="[^"]*" height="[^"]*"', "<svg", markup, count=1)
+    # carries the aspect ratio, so let the container decide the width. Matched
+    # over the whole opening tag rather than straight after `<svg`, which is
+    # where matplotlib puts `xmlns:xlink` and where this pattern used to look:
+    # it matched nothing for as long as it has been here and the stylesheet has
+    # been doing the whole job on its own.
+    opening = markup.index(">") + 1
+    head = re.sub(r'\s(?:width|height)="[^"]*"', "", markup[:opening])
+    return (
+        f'{head[:4]} role="img"{head[4:]}'
+        f"<title>{escape(title)}</title>{markup[opening:]}"
+    )
 
 
 def _days(rows: list[dict], key: str = "week") -> list[date]:
@@ -123,16 +155,40 @@ def _frame(ax, days: list[date], events: list[dict], ylabel: str) -> None:
         ax.axvline(when, color=INK, alpha=0.6, linewidth=1.4, linestyle=(0, (5, 3)))
 
 
+def _joined(labels: list[str]) -> str:
+    """Same-date event names as one label, saying the kind they share once.
+
+    `RC Baltimore / China` and not `RC Baltimore / RC China`: the repeated word
+    is the class of event, which the first name has already said, and the label
+    runs vertically up a panel where every character it does not need is height
+    the figure cannot spare.
+    """
+    first, *rest = labels
+    kind = f"{first.split(' ')[0]} "
+    return " / ".join(
+        [first] + [label[len(kind):] if label.startswith(kind) else label for label in rest]
+    )
+
+
 def _label_events(ax, days: list[date], events: list[dict]) -> None:
     """Event names, once per figure, along the top of its first panel.
 
     Set to the left of their own line, because the right of the panel is where
     the series name their last point and the two would otherwise sit on top of
     each other.
+
+    One annotation per date and not per event. The Championship season seats two
+    regions on one weekend, and two events on one day are one line: labelled
+    separately the second name's plate paints out all but the tail of the first,
+    which is a line reading `RC IRC China` rather than two lines reading
+    nothing. Joined, the line says what it marks.
     """
+    dated: dict[date, list[str]] = {}
     for when, label in _visible(days, events):
+        dated.setdefault(when, []).append(label)
+    for when, labels in dated.items():
         ax.annotate(
-            label,
+            _joined(labels),
             xy=(when, 1),
             xycoords=("data", "axes fraction"),
             xytext=(-7, -6),
@@ -242,7 +298,8 @@ def presence(weeks: list[dict], events: list[dict], versions: list[tuple]) -> st
     _frame(middle, days, events, "% of 5-0s")
     _end_labels(middle, [(trophies[-1], f"{trophies[-1]:.1f}%", series)])
     if not versions:
-        return _svg(fig)
+        return _svg(fig, "Presence: the deck's share of published top-32 slots and of "
+                         "published league trophies, week by week, on MTGO.")
 
     bottom = axes[2]
     labelled = []
@@ -258,7 +315,9 @@ def presence(weeks: list[dict], events: list[dict], versions: list[tuple]) -> st
     _frame(bottom, days, events, "% of top 32")
     _end_labels(bottom, labelled)
     _legend(bottom, len(versions))
-    return _svg(fig)
+    return _svg(fig, "Presence: the deck's share of published top-32 slots and of published "
+                     "league trophies week by week on MTGO, and the top-32 share split by "
+                     "version of the deck.")
 
 
 def conversion(weeks: list[dict], events: list[dict]) -> str:
@@ -287,7 +346,8 @@ def conversion(weeks: list[dict], events: list[dict]) -> str:
     _label_events(ax, days, events)
     _end_labels(ax, [(presence_pct[-1], "top 32", first), (top8_pct[-1], "top 8", second)])
     _legend(ax, 2)
-    return _svg(fig)
+    return _svg(fig, "Conversion: the deck's share of the published top 8 against its share "
+                     "of the published top 32, week by week, on MTGO.")
 
 
 def spotlight_finishes(readings: list[dict]) -> str:
@@ -340,7 +400,8 @@ def spotlight_finishes(readings: list[dict]) -> str:
                        markeredgecolor=GROUND, markeredgewidth=1.2)
         # Named in the corner the curve never reaches: it leaves the origin and
         # closes at the top right, so the bottom right is empty on any result.
-        curve.text(0.98, 0.08, f"{reading['label']} ({len(placings)} lists)",
+        curve.text(0.98, 0.08,
+                   f"{reading['label']} ({len(placings)} list{'' if len(placings) == 1 else 's'})",
                    transform=curve.transAxes, ha="right", va="bottom", fontsize=8,
                    fontweight="bold")
         curve.set_ylim(-0.03, 1.05)
@@ -373,7 +434,9 @@ def spotlight_finishes(readings: list[dict]) -> str:
     strip.set_yticklabels([reading["label"] for reading in readings], fontsize=8)
     strip.set_ylim(events - 0.3, -0.7)  # the panels' order, top to bottom
     strip.spines["left"].set_visible(False)
-    return _svg(fig)
+    return _svg(fig, "Major paper events: where the deck's lists finished at each one, as a "
+                     "cumulative share of its own lists against the top share of the field, "
+                     "with the diagonal as the null.")
 
 
 def goldfishing(rows: list[dict], events: list[dict]) -> str:
@@ -393,8 +456,14 @@ def goldfishing(rows: list[dict], events: list[dict]) -> str:
     shares = [(row["copied_share"] or 0) * 100 for row in rows]
     fig, ax = plt.subplots(figsize=(9, 2.8))
     ax.bar(days, shares, width=5, color=series, linewidth=0)
+    # A share has no negative half. Left to autoscale, a deck that copied
+    # nothing in any week of its history gets an axis drawn symmetrically about
+    # zero and publishes ticks at -0.04%, which reads as a fault in the figure
+    # rather than as the floor it is.
+    ax.set_ylim(bottom=0)
     ax.set_title("% of the week's builds identical to last week's most-registered list (MTGO)",
                  loc="left", fontsize=10, pad=14)
     _frame(ax, days, events, "% of builds")
     _label_events(ax, days, events)
-    return _svg(fig)
+    return _svg(fig, "Goldfishing: the share of each week's builds identical to the previous "
+                     "week's most-registered list, on MTGO.")

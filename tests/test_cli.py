@@ -115,7 +115,7 @@ def test_no_fall_out_says_so():
 
 
 def _boundary(**over) -> dict:
-    """One boundary case as `store.boundaries` returns it."""
+    """One boundary case as `store.version_boundary` returns it."""
     return {
         "archetype": "broodscale",
         "version": "gruul",
