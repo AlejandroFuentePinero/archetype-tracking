@@ -745,7 +745,12 @@ Two questions stay open either way. A floor on the cut population: the
 prototype produced two rows that were the sample size talking, Tron 3 of a
 4-list cut at Amsterdam and Simic Neoform 3 of 6 at Baltimore, and a floor of 10
 lists drops both but also drops the Brisbane half of Jennifer Walters, where
-raising concentration may drop them on their merits instead. And a floor on the
+raising concentration may drop them on their merits instead. The floor of
+three is what makes the reading uneven: it is a tenth of the 30 lists Izzet
+Prowess put in Baltimore's top fifth and half of the 6 non-Fallaji Goryo's put
+in Brisbane's, so a card is flagged far more readily at a large event than a
+small one, and whether that is right or is the thing to correct is the
+question underneath both options. And a floor on the
 fortnights the MTGO peak is read over: a closed bin of two lists holding a card
 once is a 50% peak that silently kills the card as a novelty for good, which is
 the shape `TRACK_RETURN_ABSENCE_LISTS` exists to refuse elsewhere. A floor of 10
