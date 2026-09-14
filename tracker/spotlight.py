@@ -31,6 +31,7 @@ hundred.
 """
 
 import json
+from collections import Counter
 from datetime import date, timedelta
 from pathlib import Path
 from types import SimpleNamespace
@@ -41,6 +42,18 @@ from . import classify, config, store, timeline
 # that is what a challenge publishes, so it is the one slice of a paper event
 # whose share means the same thing as `chal_share` does.
 CUT = 32
+
+
+def placing(rank: int, seats: int) -> float:
+    """A finish as the share of the field that placed above it: 0 is the winner.
+
+    The positional unit, written once and read twice: the series the positional
+    panel plots, and the cut a novelty is read over. Two call sites computing it
+    apart is one refactor away from a cut that no longer means what the panel
+    shows. Over the seats rather than the published lists, for the reason
+    `reading` gives where it takes the series.
+    """
+    return (rank - 1) / seats
 
 
 def cached(spotlight: dict, directory: Path | None = None) -> Path:
@@ -288,7 +301,7 @@ def reading(
         # 932 over 928 lists and Brisbane to 573 over 571. Divided by the lists
         # the bottom of those two fields plots past 1.0, which is where the
         # diagonal closes and past which the panel has no room.
-        "placings": sorted((row["rank"] - 1) / seats for row in ours),
+        "placings": sorted(placing(row["rank"], seats) for row in ours),
     }
 
 
@@ -308,6 +321,110 @@ def mtgo_lists(db_path: Path, archetype: str, camp: str | None, start: str, end:
         zone = "main" if row["main"] > 0 else "side"
         entry[zone][row["card"]] = row["main"] if zone == "main" else 1
     return list(boards.values())
+
+
+def mtgo_peaks(
+    db_path: Path, archetype: str, camp: str | None, before: str
+) -> dict[tuple[str, str], float]:
+    """Per card and zone, the largest share of any MTGO fortnight ever to hold it.
+
+    What tells a card the deck has not been playing from one it has, and the one
+    bar in the novelty reading that is not read off the event. The whole store
+    and not the post-regime window, for the reason `timeline._history` gives:
+    how much of the deck a card has ever been is a fact about the deck rather
+    than about the regime.
+
+    Per zone, because a sideboard churns far harder than a mainboard, which is
+    the same reason the return gates are per zone. A sideboard staple turning up
+    in mainboards is a decision somebody made; the same card sideboarded again
+    is the deck doing what it does.
+
+    Over the fortnights that closed before the event and never the one it falls
+    in, which is the baseline rule `chain` already reads its MTGO comparison by.
+    A bin part way through holds a few days of publication, and a share taken
+    over it is a share of whatever happened to have been published by the
+    Friday. Read into it the bar inverts: one list of two registering a card
+    reads as half the deck playing it, so the card is refused as something the
+    deck knows, and the thinner the open bin the more certainly it silences the
+    row. Two of the rows the reading finds over the cached events were lost this
+    way, Salvage Titan in Affinity and Sunbaked Canyon in Boros Energy, both at
+    Spotlight Dallas.
+
+    Cutting at a closed bin also fixes the row: what an event earned does not
+    change as the fortnight it fell in fills up. A report whose past changes
+    under it is a report nobody can cite.
+    """
+    registered, lists = timeline._history(db_path, archetype, camp)
+    last = timeline.bin_of(before) - 1
+    sizes = Counter(
+        index for index in (timeline.bin_of(row["date"]) for row in lists) if index <= last
+    )
+    held: dict[tuple[str, str], Counter] = {}
+    for row in registered:
+        index = timeline.bin_of(row["date"])
+        if index <= last:
+            held.setdefault((row["card"], row["zone"]), Counter())[index] += 1
+    return {key: max(n / sizes[i] for i, n in bins.items()) for key, bins in held.items()}
+
+
+def novelty_row(
+    card: str, zone: str, n: int, cut_size: int, over: int, size: int, peak: float
+) -> dict:
+    """A card concentrated in the event's good finishers, phrased as a watchlist.
+
+    Not a finding that the field moved, and worded so it cannot be read as one:
+    every other card row in this project names a change, and this one names a
+    question for the pilot. It carries both slices of the room it was read over
+    and the MTGO bar it cleared, a share off a handful of good finishers being a
+    figure nobody should read without seeing the handful.
+    """
+    return {
+        "kind": "novelty",
+        "zone": zone,
+        "card": card,
+        "text": f"{card} to watch in the {zone}board: {n} of the {cut_size} lists in the top "
+        f"{config.TRACK_NOVELTY_CUT_SHARE:.0%} ({n / cut_size:.0%}), against {over} of {size} "
+        f"over the event ({over / size:.0%}), and no MTGO fortnight above {peak:.0%}",
+    }
+
+
+def novelties(payload: dict, ours: list[dict], peaks: dict[tuple[str, str], float]) -> list[dict]:
+    """Cards the event's good finishers registered that the deck has not been playing.
+
+    The reading no other one here makes. Adoption wants a fifth of the
+    population to move, so a card it reports is established rather than new, and
+    the return reading is a claim about one population's history that a paper
+    field cannot carry. What a pilot actually reads off a standings page is
+    neither: a card sitting with the lists that finished well and not with the
+    rest of the deck.
+
+    Three conditions, each dropping a different false one. The card is held by
+    `TRACK_NOVELTY_MIN_LISTS` of the cut, so the row does not rest on two
+    pilots. No fortnight of the deck's MTGO history has held it above
+    `TRACK_NOVELTY_PEAK` in that zone, which is what makes it novel rather than
+    merely present. And it holds `TRACK_NOVELTY_CONCENTRATION` times as much of
+    the cut as of the deck's own field at the event, without which the row
+    reports whatever the whole room is playing.
+
+    The cut is a share of the field and never a rank, read by the same quantity
+    `reading`'s `placings` takes: a fixed rank is a four times different quality
+    bar across the events already configured. The concentration baseline is the
+    deck's own lists at this event and nothing else, so the row never crosses
+    two populations: one room, two slices of it.
+    """
+    seats = payload["tournament"]["players"]
+    cut = [row for row in ours if placing(row["rank"], seats) < config.TRACK_NOVELTY_CUT_SHARE]
+    among, over = _held(cut), _held(ours)
+    rows = []
+    for (card, zone), copies in sorted(among.items()):
+        n, peak = len(copies), peaks.get((card, zone), 0.0)
+        event_wide = len(over.get((card, zone), []))
+        if n < config.TRACK_NOVELTY_MIN_LISTS or peak > config.TRACK_NOVELTY_PEAK:
+            continue
+        if n / len(cut) < (event_wide / len(ours)) * config.TRACK_NOVELTY_CONCENTRATION:
+            continue
+        rows.append(novelty_row(card, zone, n, len(cut), event_wide, len(ours), peak))
+    return rows
 
 
 def chain(
@@ -404,6 +521,18 @@ def chain(
                 "found": findings(ours, fortnight, report, typed),
             }
         )
+        # Suppressed where an ordinary reading already reports the card in this
+        # entry. A card the adoption or watched-slot reading caught is a move the
+        # field made, which is the stronger claim, and printed twice it reads as
+        # two findings about one card.
+        reported = {row["card"] for comparison in comparisons for row in comparison["found"]}
+        watchlist = [
+            row
+            for row in novelties(
+                payload, ours, mtgo_peaks(db_path, archetype, build, spot["date"])
+            )
+            if row["card"] not in reported
+        ]
         entries.append(
             {
                 **reading(payload, archetype, None, colours, typed),
@@ -420,6 +549,10 @@ def chain(
                 # rather than copied: one comparison, not two that can drift.
                 **comparisons[0],
                 "comparisons": comparisons,
+                # Read against no baseline at all, so it is no part of the
+                # comparisons above: a watchlist is a claim about this room
+                # against the deck's own history, not about a move between two.
+                "novelties": watchlist,
             }
         )
     return entries

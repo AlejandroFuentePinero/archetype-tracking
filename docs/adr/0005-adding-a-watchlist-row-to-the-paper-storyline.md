@@ -1,0 +1,79 @@
+# ADR 0005: Adding a watchlist row to the paper half of the storyline
+
+Status: accepted (2026-09-14)
+
+## Context
+
+Every card row this project prints answers one question: did the field move. A
+card earns one by swinging `TRACK_ADOPTION_DELTA`, a fifth of the population, so
+by the time it prints it is established rather than new. Nothing reported the
+other thing a pilot reads off a standings page by eye, that the good finishers
+are registering a card the field is not.
+
+Ketramose, the New Dawn in non-Fallaji Goryo's at RC Baltimore is the case that
+raised it, and every existing gate refused it correctly. Against Spotlight
+Dallas the swing is 6.7 points where the bar is 20. Against the fortnight to
+2026-09-06 it is 3.3 points and 2.9 lists of evidence where five are needed. It
+is not a watched slot, so it answers to the coarse bar. And `spotlight.findings`
+has no return branch at all, by the design its docstring gives: a card absent
+from MTGO for a month and present at Brisbane is the Australian field building
+differently, not the deck rediscovering anything. The card is also not new,
+having sat between 0 and 7 percent of the mainboards of every fortnight since
+mid-June.
+
+So this is not a threshold to loosen. It is a second reading, making a weaker
+claim, with a bar of its own. See issue #11, and `CONTEXT.md` under **Novelty,
+at a major paper event**, for the rule.
+
+## Decision
+
+A major paper event carries a watchlist row, computed fresh on every render and
+never frozen. It is not a finding that the field moved and is phrased so it
+cannot be read as one.
+
+The part that needs an ADR is not the rule. It is that an already-rendered
+report gains a storyline row it never carried.
+
+Paper rows were never frozen. `timeline.csv` holds fortnight rows alone, keyed
+by the bin they cover, and the paper half of the storyline is recomputed from
+the cache on every render (ADR 0003). So no frozen row moves here and none is
+rewritten, and `weekly.freeze` is untouched.
+
+What changes is how an already-rendered report re-renders. Under ADR 0002 that
+is a change of method, and a change of method under a reader is the thing the
+append-only rule exists to prevent. ADR 0003 made the same kind of change on
+2026-09-14 and closed by saying it was the last such change that might be taken
+quietly. This one lands the same day, still before the first sharing on
+2026-09-15, so it is inside the window where there is no reader. It is written
+down here rather than taken quietly, which is what that sentence asked for.
+
+## Consequences
+
+Over the five cached events and all seventeen tracked decks the reading prints
+seven rows, every one of them something no existing reading reports: a card an
+adoption or watched-slot row already names is suppressed rather than printed
+twice. Five fall at RC Baltimore, one at Spotlight Dallas and one at Spotlight
+Brisbane. The strongest is Jennifer Walters in Devoted Combo sideboards, 3 of 7
+good finishers at Brisbane and 5 of 14 at Baltimore, against no MTGO fortnight
+above 7 percent: two events, two rooms, two months apart, and the MTGO
+population is not playing it.
+
+Ketramose does not print, at 2 of Goryo's 12 good finishers against a floor of
+3. That is the ruling of 2026-09-14 and not an accident of calibration: the case
+that raised the reading is refused by it, and the floor is what makes the rest
+of the rows worth reading.
+
+The MTGO bar is read over the fortnights that closed before the event and never
+the one it falls in, which is the baseline rule `spotlight.chain` already reads
+its own comparison by. This was wrong in the first cut and the numbers show why:
+a bin part way through holds a few days of publication, so one list of two
+registering a card reads as half the deck playing it and the card is refused as
+something the deck knows. Two rows were being lost that way, Salvage Titan in
+Affinity and Sunbaked Canyon in Boros Energy, both at Spotlight Dallas.
+
+The four `TRACK_NOVELTY_*` constants are measured but unratified. They are
+raised in `HEURISTICS.md` under **Proposed, awaiting pilot verdict**, with the
+sweeps behind each and two questions left open: a floor on the cut population,
+and a floor on the fortnights the peak is read over. A verdict that moves any of
+them moves the row count, and after 2026-09-15 that is a change of method under
+a reader and answers to ADR 0002 rather than to this window.

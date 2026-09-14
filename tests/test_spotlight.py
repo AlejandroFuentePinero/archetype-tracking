@@ -1030,3 +1030,214 @@ def test_a_retried_request_goes_up_shaped_like_the_first_one(monkeypatch):
     assert sent[0] == asked
     assert sent[1] == asked, "the retry carried the headers the endpoint answers on"
 
+
+# The novelty watchlist: cards the event's good finishers registered that the
+# deck's own MTGO history has not been playing. Driven on a synthetic store
+# rather than the live one, the reading resting on what MTGO never published and
+# no captured history holding an absence disentangled from everything else the
+# archetype was doing.
+
+
+def _mtgo(day, pilots=20, cards=None):
+    """One day's MTGO publication of the deck, as a league dump."""
+    return synthetic.league(day, [synthetic.blink(f"p{day}{n}", cards=cards) for n in range(pilots)])
+
+
+def _store(tmp_path, *days):
+    """An MTGO store of the deck: the history a peak is read over."""
+    db = tmp_path / "engine.duckdb"
+    events = [_mtgo(day) for day in days or ("2026-07-14",)]
+    store.build(synthetic.write_cache(tmp_path / "raw", events), db)
+    return db
+
+
+def _field(count):
+    """A paper field of the deck, ranked 1 to `count`."""
+    return [_list(rank) for rank in range(1, count + 1)]
+
+
+def test_a_card_the_good_finishers_play_and_the_deck_does_not_is_a_watchlist_row(tmp_path):
+    """The reading the project had no shape for: a card is concentrated in the
+    lists that finished well, and the deck it belongs to has not been playing it.
+
+    No existing gate can reach it. Adoption wants a fifth of the population to
+    move, which by the time it fires makes the card established rather than new;
+    the return gates want the card to have been absent from MTGO entirely. A
+    card four of the twenty good finishers registered and almost nobody else did
+    is neither, and it is the thing a pilot reads off a standings page by eye.
+    """
+    db = _store(tmp_path)
+    field = _field(100)
+    for row in field[:4]:
+        row["side"] = {"Ghost Vacuum": 2}
+    melee_dir = _cache(tmp_path / "melee", BRISBANE, _payload(BRISBANE, field))
+
+    entry, = spotlight.chain(db, spotlights=(BRISBANE,), directory=melee_dir)
+
+    assert [(row["kind"], row["card"], row["zone"]) for row in entry["novelties"]] == [
+        ("novelty", "Ghost Vacuum", "side")
+    ]
+
+
+def test_a_card_the_whole_room_is_playing_is_not_a_novelty(tmp_path):
+    """Most of the good finishers playing a card is mostly the deck playing it.
+
+    Without the concentration bar the reading reports the deck's own staples
+    every time, a card in half the field being in about half of any slice of it.
+    What earns a row is the card that sits with the good finishers and not with
+    the rest, which is a smaller number on a far smaller denominator.
+    """
+    db = _store(tmp_path)
+    field = _field(100)
+    # Over half the room, and so over half the cut: a staple of this field.
+    for row in field[:12] + field[20:63]:
+        row["side"] = {"Damping Sphere": 2}
+    # And a card only the good finishers registered.
+    for row in field[:4]:
+        row["side"] = {**row["side"], "Ghost Vacuum": 2}
+    melee_dir = _cache(tmp_path / "melee", BRISBANE, _payload(BRISBANE, field))
+
+    entry, = spotlight.chain(db, spotlights=(BRISBANE,), directory=melee_dir)
+
+    # The staple is 12 of the 20 good finishers, a bigger number than the card
+    # that prints, and it is the one the reading refuses.
+    assert [row["card"] for row in entry["novelties"]] == ["Ghost Vacuum"]
+
+
+def test_the_mtgo_bar_is_read_in_the_zone_the_event_played_the_card(tmp_path):
+    """A sideboard staple turning up in mainboards is a decision somebody made.
+
+    Read over both boards at once it is a card the deck plays, and the reading
+    would never see the move. A sideboard churns far harder than a mainboard,
+    which is why the return gates are per zone too: the same card sideboarded
+    again is the deck doing what it does.
+    """
+    # Every MTGO list of the deck sideboards Consign to Memory, and none mains it.
+    db = _store(tmp_path)
+
+    mained = _field(100)
+    for row in mained[:4]:
+        row["main"] = {**row["main"], "Consign to Memory": 2}
+    sided = _field(100)
+    for row in sided[:4]:
+        row["side"] = {"Consign to Memory": 2}
+
+    def watchlist(field, where):
+        directory = _cache(tmp_path / where, BRISBANE, _payload(BRISBANE, field))
+        entry, = spotlight.chain(db, spotlights=(BRISBANE,), directory=directory)
+        return [(row["card"], row["zone"]) for row in entry["novelties"]]
+
+    assert watchlist(mained, "mained") == [("Consign to Memory", "main")]
+    assert watchlist(sided, "sided") == []
+
+
+def test_the_cut_is_a_share_of_the_field_and_never_a_rank(tmp_path):
+    """Rank 30 is the top of a fifty-seat room and the middle of a two-fifty one.
+
+    The objection this module raises against reading rank between events, put to
+    the cut itself. A fixed top 64 is the top 17.7% of Pro Tour Amsterdam and
+    the top 4.3% of RC Baltimore, so the same three lists would be good
+    finishers at one event and unremarkable at the other, and the reading would
+    print four times as readily at the small one.
+    """
+    db = _store(tmp_path)
+
+    def watchlist(seats, where):
+        field = _field(seats)
+        # The same three ranks in both rooms, and nothing else about them differs.
+        for row in field[29:32]:
+            row["side"] = {"Ghost Vacuum": 2}
+        directory = _cache(tmp_path / where, BRISBANE, _payload(BRISBANE, field))
+        entry, = spotlight.chain(db, spotlights=(BRISBANE,), directory=directory)
+        return [row["card"] for row in entry["novelties"]]
+
+    # Ranks 30 to 32 of fifty seats are past the top fifth and are nobody's good
+    # finish; of two hundred and fifty they are inside it.
+    assert watchlist(50, "small") == []
+    assert watchlist(250, "big") == ["Ghost Vacuum"]
+
+
+def test_two_of_the_good_finishers_are_not_evidence_of_anything(tmp_path):
+    """The floor that decides whether the reading is worth reading at all.
+
+    At two lists it prints seven rows an event across the tracked decks against
+    two at three, for a claim resting on two pilots. Ketramose, the New Dawn at
+    RC Baltimore is 2 of that deck's 12 good finishers and is the case that
+    raised this reading; it is refused here, and correctly (Alejandro,
+    2026-09-14).
+    """
+    db = _store(tmp_path)
+
+    def watchlist(pilots, where):
+        field = _field(100)
+        for row in field[:pilots]:
+            row["side"] = {"Ghost Vacuum": 2}
+        directory = _cache(tmp_path / where, BRISBANE, _payload(BRISBANE, field))
+        entry, = spotlight.chain(db, spotlights=(BRISBANE,), directory=directory)
+        return [row["card"] for row in entry["novelties"]]
+
+    assert watchlist(2, "two") == []
+    assert watchlist(3, "three") == ["Ghost Vacuum"]
+
+
+def test_a_card_the_adoption_reading_already_reports_does_not_print_twice(tmp_path):
+    """One decision earns one row, which is why the migration fold exists too.
+
+    A card that swung a fifth of the population is a move the field made, and
+    that is the stronger claim of the two. Printed beside a watchlist row it
+    reads as two findings about one card, and the weaker one says nothing the
+    stronger did not.
+    """
+    # The fortnight Brisbane is read against, and it had never seen the card.
+    db = _store(tmp_path, "2026-08-12")
+    field = _field(100)
+    # Three tenths of the event, and most of its good finishers: over the
+    # adoption bar and over the concentration one at the same time.
+    for row in field[:12] + field[40:58]:
+        row["side"] = {"Ghost Vacuum": 2}
+    melee_dir = _cache(tmp_path / "melee", BRISBANE, _payload(BRISBANE, field))
+
+    entry, = spotlight.chain(db, spotlights=(BRISBANE,), directory=melee_dir)
+
+    adopted = [row for row in entry["found"] if row["card"] == "Ghost Vacuum"]
+    assert adopted and "climbed" in adopted[0]["text"]
+    assert entry["novelties"] == []
+
+
+def test_the_mtgo_bar_is_read_over_fortnights_that_closed(tmp_path):
+    """The fortnight an event falls in has not finished, and is not a fortnight yet.
+
+    `chain` already reads its MTGO baseline off the last bin that closed, for
+    the reason every other reading here is cut off at a settled period: a bin
+    part way through holds a few days of publication, and a share taken over it
+    is a share of whatever happened to have been published by the Friday.
+
+    Read into that open bin the novelty bar inverts. One list of two registering
+    a card reads as half the deck playing it, so the card is refused as
+    something the deck knows, and the thinner the open bin the more certainly it
+    silences the row. Two of the six rows the reading found over the cached
+    events were being lost exactly this way.
+    """
+    # A closed fortnight of twenty lists that never registered the card, and two
+    # lists published after it closed, one of which did.
+    db = tmp_path / "engine.duckdb"
+    store.build(
+        synthetic.write_cache(
+            tmp_path / "raw",
+            [
+                _mtgo("2026-08-12"),
+                _mtgo("2026-08-26", pilots=1, cards={"Ghost Vacuum": (0, 2)}),
+                _mtgo("2026-08-27", pilots=1),
+            ],
+        ),
+        db,
+    )
+    field = _field(100)
+    for row in field[:4]:
+        row["side"] = {"Ghost Vacuum": 2}
+    melee_dir = _cache(tmp_path / "melee", BRISBANE, _payload(BRISBANE, field))
+
+    entry, = spotlight.chain(db, spotlights=(BRISBANE,), directory=melee_dir)
+
+    # Half of the open bin, and none of the fortnight that closed.
+    assert [row["card"] for row in entry["novelties"]] == ["Ghost Vacuum"]

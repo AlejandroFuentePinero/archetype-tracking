@@ -720,3 +720,34 @@ section is adopted knowledge and nothing here may steer an analysis. Each entry
 cites the evidence that raised it and counts the sessions it has been put to
 him in. See `.claude/skills/mtg-heuristics/SKILL.md`.
 
+**The novelty bars are the top fifth of the field, three lists, a 10% MTGO peak
+and 1.5x concentration** (raised 2026-09-14, surfaced 0×):
+The paper novelty reading shipped on these four numbers. Each was measured, but
+measured is not ruled on: the reading prints a handful of rows a season and a
+bar moved one notch either way roughly halves or doubles that, so what the
+reading is worth is a pilot's call rather than a knee in a curve.
+*Evidence*: over the five cached events and all seventeen tracked decks the
+settled bars print 7 rows, every one of them a finding no other reading makes.
+The strongest is Jennifer Walters in Devoted Combo sideboards, 3 of 7 good
+finishers at Spotlight Brisbane and 5 of 14 at RC Baltimore, against no MTGO
+fortnight above 7%. The cut: a fixed top 64 gives non-Fallaji Goryo's 7 lists at
+Amsterdam, 1 at Brisbane, 1 at Dallas and 5 at Baltimore, where the top fifth
+gives 8, 6, 12 and 12. The list floor: 3 prints 7 rows over the five events,
+2 prints about 35. The peak bar: 5% prints 4 rows, 10% prints 12 before
+duplicate suppression, 15% prints 20, 20% prints 31, 30% prints 47. The
+concentration bar: 1.25x prints 16, 1.5x prints 12, 2x prints 4, 3x prints none.
+Two of the seven rows are worth a second look on their own terms: Sacred Foundry
+in Izzet Prowess mainboards at 3 of 30, a land rather than a card choice, and
+Grafdigger's Cage in Boros Energy sideboards at 3 of 16 against an MTGO peak of
+9%, which is a card that deck plainly knows.
+*Applies if adopted*: the four `TRACK_NOVELTY_*` constants stand as shipped.
+Two questions stay open either way. A floor on the cut population: the
+prototype produced two rows that were the sample size talking, Tron 3 of a
+4-list cut at Amsterdam and Simic Neoform 3 of 6 at Baltimore, and a floor of 10
+lists drops both but also drops the Brisbane half of Jennifer Walters, where
+raising concentration may drop them on their merits instead. And a floor on the
+fortnights the MTGO peak is read over: a closed bin of two lists holding a card
+once is a 50% peak that silently kills the card as a novelty for good, which is
+the shape `TRACK_RETURN_ABSENCE_LISTS` exists to refuse elsewhere. A floor of 10
+lists there changes exactly one row today, so it is cheap either way and has not
+been taken.

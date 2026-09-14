@@ -918,6 +918,58 @@ TRACK_ROW_MIN_LISTS = 10
 # timeline cannot tell the reader which it is looking at.
 TRACK_RETURN_BEATS_PEAK = True
 
+# Novelty rule: what makes a card at a major paper event worth the pilot's eye.
+# Every other card reading in this project answers whether the field moved, and a
+# card that clears TRACK_ADOPTION_DELTA is established by the time it prints. A
+# pilot reading a standings page by eye asks something else: are the good
+# finishers registering a card the deck is not. Nothing here reported that, and
+# the four bars below are what separates it from noise. A novelty row is a
+# watchlist entry and never evidence of a move, so these buy readable volume
+# rather than certainty.
+#
+# The cut, and it is a share of the field rather than a rank. A fixed top 64 is
+# the top 17.7% of Pro Tour Amsterdam's 362 seats and the top 4.3% of RC
+# Baltimore's 1494: a four times different quality bar across the events already
+# configured, which is the objection `spotlight`'s own docstring raises against
+# reading rank between events and which `placings` already answers. It also
+# starves the population it is meant to create: a fixed top 64 gives non-Fallaji
+# Goryo's 7 lists at Amsterdam, 1 at Brisbane, 1 at Dallas and 5 at Baltimore,
+# and a novelty cannot be read off one list. The top fifth gives that same deck
+# 8, 6, 12 and 12.
+TRACK_NOVELTY_CUT_SHARE = 0.20
+
+# How many of the cut's lists have to hold the card. Three and not two: over the
+# five cached events and all seventeen tracked decks, a floor of 3 prints 2 rows
+# an event and 6 findings no other reading makes, where a floor of 2 prints 7
+# rows an event and 30, a 3.5x volume increase for a claim resting on two
+# pilots. Ketramose, the New Dawn at RC Baltimore is 2 of that deck's 12 good
+# finishers and is correctly refused here (Alejandro, 2026-09-14): it is the case
+# that raised the reading, and printing it would cost the floor that makes the
+# rest of the rows worth reading.
+TRACK_NOVELTY_MIN_LISTS = 3
+
+# And what makes the card new rather than merely present: no fortnight of the
+# deck's MTGO history has ever held it above this share, in this zone. Read per
+# zone because a sideboard churns far harder than a mainboard, the same reason
+# the return gates are per zone, so a sideboard staple appearing in mainboards is
+# a novelty and the same card sideboarded again is not. Swept over the five
+# cached events and all seventeen tracked decks: 5% prints 4 rows, 10% prints
+# 12, 15% prints 20, 20% prints 31 and 30% prints 47. Ten is the knee. Under it
+# the reading nearly disappears, and Sunbaked Canyon in Boros Energy sits at
+# exactly 10%; over it the volume grows by about eight rows per five points with
+# nothing in the numbers to stop at.
+TRACK_NOVELTY_PEAK = 0.10
+
+# And how much more of the cut than of the deck's own field at the event the card
+# has to hold. Without it the reading reports whatever the whole room is playing,
+# every staple of the deck being in most of its good finishers too. Read against
+# the event's own field and never MTGO's, so no row here crosses two populations:
+# one room, two slices of it. Swept over the same five events: 1.25x prints 16
+# rows, 1.5x prints 12, 2x prints 4, 2.5x prints 2 and 3x prints none. The cliff
+# is between 1.5 and 2, where the reading stops finding anything rather than
+# getting stricter, so the bar sits under it.
+TRACK_NOVELTY_CONCENTRATION = 1.5
+
 # Spike rule: how far this week's volume has to clear the level the deck was
 # just at before the summary says so. A deck at several times its own baseline
 # is being copied, and every performance figure taken over the spike measures

@@ -230,7 +230,7 @@ def _paper(entries: list[dict], week: str) -> list[dict]:
                 {
                     key: value
                     for key, value in rows[entry["against"]].items()
-                    if key not in ("placings", "found", "comparisons")
+                    if key not in ("placings", "found", "comparisons", "novelties")
                 }
                 if entry["against"] in rows
                 else None
@@ -459,6 +459,39 @@ def _stable(build_lists: int, comparison: dict) -> str:
     )
 
 
+def _event_rows(entry: dict) -> list[tuple[str, str]]:
+    """A major event's storyline rows: one per baseline, then its watchlist.
+
+    Built per event rather than as two passes over every event, because a week
+    can hold two of them. The Championship season seats two regions on one
+    weekend, and the rows of one weekend's events sort as ties: appended in two
+    passes, the second event's comparisons would land between the first event's
+    comparisons and its own watchlist.
+
+    The watchlist comes last and names no baseline, because it was read against
+    none. It is the event's own good finishers against the rest of its field and
+    against the deck's MTGO history, which is one room and the deck's own past,
+    not a move between two populations.
+    """
+    rows = [
+        (
+            comparison["against"],
+            _found(comparison["found"], _stable(entry["build_lists"], comparison)),
+        )
+        for comparison in entry["comparisons"]
+    ]
+    if entry["novelties"]:
+        # The one storyline row read off finishing position, so it is the one
+        # that carries the two-format caveat every other positional figure here
+        # carries: a Pro Tour ranks six rounds of draft under the same number,
+        # and which lists are its good finishers is ranked on those rounds too.
+        against = "its own field and the deck's MTGO history"
+        if entry["constructed"]:
+            against += ", the good finishers ranked on the draft rounds as well"
+        rows.append((against, _found(entry["novelties"], "")))
+    return rows
+
+
 def spotlights_through(week: str) -> tuple[dict, ...]:
     """The Spotlights a given week's report may show: played by then, and fetched.
 
@@ -672,14 +705,15 @@ def render(
             False,
             entry["week"],
             f'<span class="major">{entry["label"]}</span>'
-            f'{_over(entry["build_lists"])}{_against(comparison["against"])}',
-            _found(comparison["found"], _stable(entry["build_lists"], comparison)),
+            f'{_over(entry["build_lists"])}{_against(against)}',
+            found,
         )
         for entry in spotlights
-        # One row per baseline the event was read against. The sort below is
-        # stable and the three keys are the event's, so the comparisons keep the
-        # order the chain put them in: the paper row above the MTGO one.
-        for comparison in entry["comparisons"]
+        # One row per baseline the event was read against, then its watchlist.
+        # The sort below is stable and the three keys are the event's, so the
+        # rows keep the order `_event_rows` put them in: the paper comparison
+        # above the MTGO one, and the watchlist under both.
+        for against, found in _event_rows(entry)
     ]
     timeline_rows = [
         [period, found]

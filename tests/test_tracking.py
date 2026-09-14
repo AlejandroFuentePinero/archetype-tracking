@@ -990,3 +990,38 @@ def test_a_return_is_read_off_the_absence_behind_it_and_not_across_the_two(tmp_p
     assert [row["kind"] for row in found if row["kind"] != "event"] == ["return", "thin"]
     assert "Ghost Vacuum appears for the first time" in found[0]["text"]
 
+
+def test_a_paper_events_watchlist_is_rendered_and_never_frozen(tmp_path, monkeypatch):
+    """A novelty is a claim about an event, not about a fortnight.
+
+    The frozen timeline is the deck's committed history and is written once: a
+    row in it is a fortnight's finding, phrased under the rule that was in force
+    when it was frozen. A watchlist is neither. It is read off one room against
+    the deck's own history, it carries no baseline, and it is recomputed on every
+    render like the rest of the paper section, so it has no business in the file
+    that must not be rebuilt.
+    """
+    from tracker import spotlight
+
+    monkeypatch.setattr(config, "TRACKING_DIR", tmp_path / "tracking")
+    monkeypatch.setattr(config, "REPORT_DIR", tmp_path / "reports")
+    monkeypatch.setattr(config, "MELEE_DIR", tmp_path / "melee")
+    # A fortnight of MTGO that never registered the card, and an event whose
+    # good finishers did.
+    db = _built(tmp_path, [_lists(FIRST, 25), _lists(SECOND, 25)])
+    finishers = [blink(f"pt{i}", cards={"Ghost Vacuum": (0, 2)}) for i in range(4)]
+    spot, payload = _paper_event("2026-06-06", finishers + [blink(f"pt{i}") for i in range(4, 100)])
+    monkeypatch.setattr(config, "MAJOR_EVENTS", (spot,))
+    spotlight.cached(spot).parent.mkdir(parents=True, exist_ok=True)
+    spotlight.cached(spot).write_text(json.dumps(payload), encoding="utf-8")
+
+    week = spotlight.week(spot)
+    weekly.freeze(db, "blink", through=week)
+    page = weekly.render(db, "blink", week).read_text(encoding="utf-8")
+
+    frozen = weekly._read(weekly.deck_dir("blink") / "timeline.csv")
+    assert "Ghost Vacuum" not in {row["card"] for row in frozen}
+    assert '<span class="tag">novelty</span>Ghost Vacuum to watch in the sideboard' in page
+    # Under the event it was read off, and said to have been read against no
+    # baseline, so a reader never takes it for a move between two populations.
+    assert "against its own field and the deck's MTGO history" in page
