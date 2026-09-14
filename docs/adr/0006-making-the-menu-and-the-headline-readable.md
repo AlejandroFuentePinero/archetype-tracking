@@ -47,6 +47,16 @@ Two things about the card are choices rather than consequences:
   two regions the better finish is named with its own room, because two events
   on one weekend are two fields and a finish pooled across them is a finish in a
   room nobody played in. That is clause 5's rule, applied one surface up.
+- **The rank is printed bare, without the field it was made in.** "110th at RC
+  Baltimore" is the top 7% of 1494 players and reads worse than it was, and a
+  rank at a 404-player RC China is not the same achievement as the same rank at
+  Baltimore, so the column of ordinals invites a comparison it cannot support.
+  Raised again on 2026-09-14 and kept: printing the field size on every card
+  buys the three cards below the cut a denominator at the cost of every other
+  card carrying one it does not need, and the card's job is to be scanned
+  against its neighbours rather than read as a result. The event name is what
+  carries the field size for a reader who knows the rooms, and the report behind
+  the card gives the field share outright.
 
 ## Consequences
 
