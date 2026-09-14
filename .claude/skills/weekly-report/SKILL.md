@@ -75,7 +75,14 @@ writing.
 **The headline**, and only on a week a major event fell in: an RC, a PT or a
 Spotlight. Who finished, named, with their rank and record, from the `top` of
 each entry in `major_events`, and the event each of them played. One sentence,
-its own paragraph, above clause 1. Where the week ran more than one event both
+its own paragraph, above clause 1. **Three names per event and no more.** Where
+an event put more than three lists in the cut, lead with `cut_lists` and name
+the best three: "RC Baltimore put eleven lists in the top 32, led by" and then
+the three. A headline is read aloud off the top of the page, and eleven names
+and eleven records in one sentence is the standings rather than a headline. The
+count is how the other eight reach the reader, and the positional figure plots
+every one of them: naming three of eleven without saying eleven would report the
+deck's event as smaller than it was. Where the week ran more than one event both
 are in it, each finish named with the event it came from: the Championship
 season seats two regions on one weekend, and a headline carrying one of them
 reports half the deck's paper week as the whole of it. It leads for two reasons.

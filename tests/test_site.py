@@ -1,13 +1,18 @@
 """The Space is a menu over one week's reports, and refuses to be anything less."""
 
+import json
+
 import pytest
 
 from tracker import config, site
 
 
-def _render(reports, deck, week, summary=True):
+def _render(reports, deck, week, summary=True, facts=None):
     body = "<p>written</p>" if summary else '<p class="pending">No summary written for this week yet.</p>'
     (reports / f"{deck}-{week}.html").write_text(f"<html><body>{body}</body></html>", encoding="utf-8")
+    written = {"challenge": {"share": 0.068, "previous_share": 0.098}, "major_events": []}
+    written.update(facts or {})
+    (reports / f"{deck}-facts-{week}.json").write_text(json.dumps(written), encoding="utf-8")
 
 
 def _render_all(reports, week="2026-08-31"):
@@ -24,7 +29,7 @@ def test_the_index_lists_every_deck_alphabetically_under_the_week(tmp_path):
     page = (out / "index.html").read_text(encoding="utf-8")
     assert "week ending 2026-09-06" in page
     names = sorted(report["name"] for report in config.REPORTS.values())
-    positions = [page.index(f">{name}</a>") for name in names]
+    positions = [page.index(f">{name}</span>") for name in names]
     assert positions == sorted(positions), "cards are alphabetical"
     assert {p.name for p in out.iterdir()} == {"index.html", "README.md", *(f"{d}.html" for d in config.REPORTS)}
     assert 'href="blink.html"' in page
@@ -60,6 +65,70 @@ def test_reports_on_different_weeks_are_refused(tmp_path):
 
     with pytest.raises(SystemExit, match="disagree on the week"):
         site.build(tmp_path / "site", reports)
+
+
+def test_a_report_without_its_facts_is_refused(tmp_path):
+    reports = tmp_path / "reports"
+    reports.mkdir()
+    _render_all(reports)
+    (reports / "tron-facts-2026-08-31.json").unlink()
+
+    with pytest.raises(SystemExit, match="tron has no facts"):
+        site.build(tmp_path / "site", reports)
+
+
+def test_a_card_carries_the_two_figures_that_decide_whether_it_is_opened(tmp_path):
+    """Seventeen cards under one week are seventeen of the same thing.
+
+    The card has to say enough for a reader to pick one: what the deck holds on
+    MTGO against the week before, and how it finished where the week seated a
+    major event.
+    """
+    reports, out = tmp_path / "reports", tmp_path / "site"
+    reports.mkdir()
+    _render_all(reports)
+    _render(reports, "broodscale", "2026-08-31", facts={
+        "challenge": {"share": 0.121, "previous_share": 0.094},
+        "major_events": [
+            {"label": "RC Baltimore", "best": 1},
+            {"label": "RC China", "best": 7},
+        ],
+    })
+
+    site.build(out, reports)
+    card = (out / "index.html").read_text(encoding="utf-8")
+    card = card[card.index("broodscale.html"):]
+    card = card[: card.index("</a>")]
+    assert "<b>12.1%</b> of MTGO's top 32, from 9.4%" in card
+    # The better of the two rooms, named with the room it was made in: two
+    # regions on one weekend are two fields and the finish is never the week's.
+    assert "Best in paper: <b>1st</b> at RC Baltimore" in card
+    assert "RC China" not in card
+
+
+def test_a_card_for_a_week_with_no_major_event_carries_the_mtgo_line_alone(tmp_path):
+    reports, out = tmp_path / "reports", tmp_path / "site"
+    reports.mkdir()
+    _render_all(reports)
+
+    site.build(out, reports)
+    page = (out / "index.html").read_text(encoding="utf-8")
+    assert "<b>6.8%</b> of MTGO's top 32, from 9.8%" in page
+    assert "Best in paper" not in page
+
+
+def test_a_deck_that_registered_nothing_at_an_event_is_not_given_a_finish(tmp_path):
+    """`best` is null where the deck put no list in the room at all."""
+    reports, out = tmp_path / "reports", tmp_path / "site"
+    reports.mkdir()
+    _render_all(reports)
+    _render(reports, "oswald", "2026-08-31", facts={
+        "major_events": [{"label": "RC Baltimore", "best": 44}, {"label": "RC China", "best": None}],
+    })
+
+    site.build(out, reports)
+    page = (out / "index.html").read_text(encoding="utf-8")
+    assert "Best in paper: <b>44th</b> at RC Baltimore" in page
 
 
 def test_two_events_on_one_day_are_one_labelled_line():
