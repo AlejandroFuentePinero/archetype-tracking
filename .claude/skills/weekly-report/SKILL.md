@@ -59,7 +59,7 @@ version's alone: Esper for Blink, Riddler for Goryo's, Traditional for Domain Zo
 for Broodscale. A finish is one build's, and pooled, a card at nine tenths of
 one version and none of another reads as the deck at half of it. A deck with
 one population, which is the other thirteen, reads the same lists everywhere and
-has no clause 6 to write beyond saying so. The report labels the version
+has no clause 7 to write beyond saying so. The report labels the version
 wherever it is read; the summary should not contradict the labels.
 
 ## Writing the summary
@@ -67,7 +67,7 @@ wherever it is read; the summary should not contradict the labels.
 Read the JSON the run named. Write `data/tracking/<deck>/summary/<week>.md` and
 re-run `uv run tracker weekly` to render it in.
 
-**A headline on a week a major event fell in, then six clauses in this order,
+**A headline on a week a major event fell in, then seven clauses in this order,
 one or two sentences each. Nothing else.** The order is fixed so that a reader
 comparing two weeks is comparing the deck rather than comparing two pieces of
 writing.
@@ -85,7 +85,7 @@ arrive in sixth place under figures that never counted them.
 
 1. **Volume against last week.** `challenge.lists` and `challenge.share` against
    `challenge.previous_share`. Up, down or level. **Say MTGO.** Clauses 1 to 4
-   and 6 are the MTGO store and nothing else, paper being deliberately kept out
+   and 7 are the MTGO store and nothing else, paper being deliberately kept out
    of it, so on a week an event fell in, "43 finishes in swiss-like tournaments"
    reads as the deck's whole week when it is the online half of it.
 2. **Volume against its own history.** The same figures against
@@ -118,7 +118,23 @@ arrive in sixth place under figures that never counted them.
    event a week outside the reported week is the comparison and never the
    subject: a report whose clauses reach past their own week cannot be read
    against the week before it.
-6. **The other versions of the deck.** `versions`, one entry per version the
+6. **The paper watchlist**, and only on a week a major event fell in:
+   `novelties` on each entry in `major_events`, a card the event's good
+   finishers registered that the deck does not play on MTGO and the rest of its
+   own field at that event is not. Name the card, the board, and both counts the
+   row carries: the deck's lists in the cut that held it against its lists over
+   the whole event. Name the event too, a row being one room's like every other
+   paper figure, and where the report reads a version say so, these lists being
+   that version's where clause 5's are the whole deck's. When a week's events
+   carry no row, say so in one sentence and name the events it is saying it of.
+   **It is a watchlist and never a finding that the field moved**, so it gets no
+   verdict: the reading says a card was concentrated in the good finishers and
+   was new to the deck, which is a thing to look at next week and not a change
+   the numbers have established. The MTGO bar the row names is the third figure
+   and belongs in the clause, since without it a row is a concentration rather
+   than a novelty. The cut share and the concentration multiple go unsaid, being
+   what "the top fifth of the field" and the two counts already carry.
+7. **The other versions of the deck.** `versions`, one entry per version the
    report names but does not read, as bare numbers. Observability only. They get
    no verdict, and the presence figures already count them. The presence
    figure's third panel plots the same split.
@@ -158,6 +174,9 @@ Rules for the prose:
   MTGO clauses under it say MTGO.
 - The paper clause names the event that fell inside the reported week, and the
   event before it only as the comparison.
+- The watchlist clause reads off `novelties` and nowhere else. The storyline
+  renders every event ever cached, so a card on it from an earlier event is a
+  row the reported week did not produce and does not belong in the summary.
 - `git status` shows changes under `data/tracking/`, and `data/index.csv` moved.
   Commit those: they are the report's memory, and without them the timeline
   cannot be rebuilt.

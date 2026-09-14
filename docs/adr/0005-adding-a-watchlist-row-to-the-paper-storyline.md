@@ -1,6 +1,6 @@
 # ADR 0005: Adding a watchlist row to the paper half of the storyline
 
-Status: accepted (2026-09-14)
+Status: accepted (2026-09-14, extended the same day)
 
 ## Context
 
@@ -77,3 +77,44 @@ sweeps behind each and two questions left open: a floor on the cut population,
 and a floor on the fortnights the peak is read over. A verdict that moves any of
 them moves the row count, and after 2026-09-15 that is a change of method under
 a reader and answers to ADR 0002 rather than to this window.
+
+## Extension: the summary gains a clause, the same day
+
+The row above reaches the storyline and nothing else. A reader who reads only
+the summary, which is what the Tuesday meeting reads, never learns the reading
+ran. This week that hides the strongest thing the paper data says about Devoted
+Combo: Jennifer Walters in 5 of the 14 lists it put in Baltimore's top fifth
+against 8 of its 59 over the event. It sat five thousand pixels down the page
+with nothing above pointing at it.
+
+So the weekly-report skill gains a clause. The fixed order goes from six clauses
+to seven, the watchlist taking sixth place and the versions clause moving to
+seventh. It goes after the paper clause rather than beside the MTGO innovation
+clause it resembles, so that the two paper clauses stay together and the reader
+meets the event's numbers before the cards read off it. The versions clause was
+the right one to displace, being observability with no verdict.
+
+Three things about the clause are worth writing down, because each was a choice:
+
+- **It reads `novelties` on `major_events` and nothing else.** The storyline
+  renders every event ever cached, so it currently shows seven rows where the
+  reported week produced five. Devoted Combo's Brisbane row belongs to the week
+  Brisbane was played, which is the same rule clause 5 already keeps: an event a
+  week outside the reported week is the comparison and never the subject.
+- **Every deck writes the clause, including the thirteen with no row.** A clause
+  that appears only when it has something to say is a clause a reader cannot
+  count on, and the whole reason the order is fixed is that a reader comparing
+  two weeks compares the deck. The empty form says what it is saying it of.
+- **The MTGO bar is printed and the other two are not.** Without it a row reads
+  as a concentration; with it, as a card the deck does not play. The cut share
+  and the concentration multiple are already carried by the words "the top fifth
+  of the field" and by the two counts beside the card.
+
+Seventeen summaries already written for the week to 2026-09-13 were rewritten to
+carry the clause. That is the thing ADR 0002 forbids once there is a reader, and
+it is taken here for the same reason as the row above: the first sharing is
+2026-09-15 and this lands on 2026-09-14. No figure in any of the seventeen
+moved, and no clause already written changed a word. Each gained one paragraph
+in sixth place. After 2026-09-15 a clause added to the order changes the weeks
+ahead of it, leaves the written summaries standing, and is announced in that
+week's summary.

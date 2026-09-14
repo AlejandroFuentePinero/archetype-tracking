@@ -208,7 +208,7 @@ took 5 in August and has 1 so far in September, and its two most recent lists
 are two builds rather than one: Napoleon_I's Sephiroth of 29 August and
 gpowerone's Thoughtseize and Inquisition discard build of 7 September. Read
 the fortnight to 20 September for which way it went, and say so in that
-week's clause 6. A version that thins to nothing is worth dropping again, the
+week's versions clause. A version that thins to nothing is worth dropping again, the
 same call in reverse.
 
 **Devoted Combo is Devoted Druid with either Tyvar, and the Nantuko cards are
@@ -721,7 +721,7 @@ cites the evidence that raised it and counts the sessions it has been put to
 him in. See `.claude/skills/mtg-heuristics/SKILL.md`.
 
 **The novelty bars are the top fifth of the field, three lists, a 10% MTGO peak
-and 1.5x concentration** (raised 2026-09-14, surfaced 0×):
+and 1.5x concentration** (raised 2026-09-14, surfaced 1×):
 The paper novelty reading shipped on these four numbers. Each was measured, but
 measured is not ruled on: the reading prints a handful of rows a season and a
 bar moved one notch either way roughly halves or doubles that, so what the
