@@ -713,6 +713,23 @@ ponza, dimir, jeskai, prowess and devoted. Devoted Combo and Grinding Station
 hold most of the suppressed rows and will read as too thin for stretches, which
 is the reading those fortnights can carry.
 
+**The novelty bars are the top fifth of the field, three lists, a 10% MTGO peak
+and 1.5x concentration** (2026-09-14):
+The paper novelty reading prints a handful of rows a season, and each bar moved
+one notch roughly halves or doubles that: the peak bar alone gives 4 rows at 5%,
+12 at 10%, 20 at 15% and 31 at 20%. No curve has a knee, so where the bars sit
+is a judgement about how much a pilot wants flagged rather than something the
+data settles. Ruled on 2026-09-14: these four are the right amount, and the
+weaker rows they admit are accepted with them. Two of the seven over the cached
+events are those: Sacred Foundry in Izzet Prowess mainboards at 3 of 30, a land
+rather than a card choice, and Grafdigger's Cage in Boros Energy sideboards at
+3 of 16 against a 9% MTGO peak, a card that deck plainly knows.
+*Applies*: `TRACK_NOVELTY_CUT_SHARE` 0.20, `TRACK_NOVELTY_MIN_LISTS` 3,
+`TRACK_NOVELTY_PEAK` 0.10 and `TRACK_NOVELTY_CONCENTRATION` 1.5 stand as
+shipped. A later session proposing to move one answers here rather than
+re-measuring, and from 2026-09-15 moving any of them is a change of method under
+a reader and answers to ADR 0002.
+
 ## Proposed, awaiting pilot verdict
 
 Heuristic candidates, held here until Alejandro rules on them. Nothing in this
@@ -720,39 +737,20 @@ section is adopted knowledge and nothing here may steer an analysis. Each entry
 cites the evidence that raised it and counts the sessions it has been put to
 him in. See `.claude/skills/mtg-heuristics/SKILL.md`.
 
-**The novelty bars are the top fifth of the field, three lists, a 10% MTGO peak
-and 1.5x concentration** (raised 2026-09-14, surfaced 1×):
-The paper novelty reading shipped on these four numbers. Each was measured, but
-measured is not ruled on: the reading prints a handful of rows a season and a
-bar moved one notch either way roughly halves or doubles that, so what the
-reading is worth is a pilot's call rather than a knee in a curve.
-*Evidence*: over the five cached events and all seventeen tracked decks the
-settled bars print 7 rows, every one of them a finding no other reading makes.
-The strongest is Jennifer Walters in Devoted Combo sideboards, 3 of 7 good
-finishers at Spotlight Brisbane and 5 of 14 at RC Baltimore, against no MTGO
-fortnight above 7%. The cut: a fixed top 64 gives non-Fallaji Goryo's 7 lists at
-Amsterdam, 1 at Brisbane, 1 at Dallas and 5 at Baltimore, where the top fifth
-gives 8, 6, 12 and 12. The list floor: 3 prints 7 rows over the five events,
-2 prints about 35. The peak bar: 5% prints 4 rows, 10% prints 12 before
-duplicate suppression, 15% prints 20, 20% prints 31, 30% prints 47. The
-concentration bar: 1.25x prints 16, 1.5x prints 12, 2x prints 4, 3x prints none.
-Two of the seven rows are worth a second look on their own terms: Sacred Foundry
-in Izzet Prowess mainboards at 3 of 30, a land rather than a card choice, and
-Grafdigger's Cage in Boros Energy sideboards at 3 of 16 against an MTGO peak of
-9%, which is a card that deck plainly knows.
-*Applies if adopted*: the four `TRACK_NOVELTY_*` constants stand as shipped.
-Two questions stay open either way. A floor on the cut population: the
-prototype produced two rows that were the sample size talking, Tron 3 of a
-4-list cut at Amsterdam and Simic Neoform 3 of 6 at Baltimore, and a floor of 10
-lists drops both but also drops the Brisbane half of Jennifer Walters, where
-raising concentration may drop them on their merits instead. The floor of
-three is what makes the reading uneven: it is a tenth of the 30 lists Izzet
-Prowess put in Baltimore's top fifth and half of the 6 non-Fallaji Goryo's put
-in Brisbane's, so a card is flagged far more readily at a large event than a
-small one, and whether that is right or is the thing to correct is the
-question underneath both options. And a floor on the
-fortnights the MTGO peak is read over: a closed bin of two lists holding a card
-once is a 50% peak that silently kills the card as a novelty for good, which is
-the shape `TRACK_RETURN_ABSENCE_LISTS` exists to refuse elsewhere. A floor of 10
-lists there changes exactly one row today, so it is cheap either way and has not
-been taken.
+**Two further floors on the novelty reading: one on the cut population, one on
+the fortnights the peak is read over** (raised 2026-09-14, surfaced 1×):
+The four bars were ruled on 2026-09-14 and stand. Neither of these floors was
+ever built, and each would move the row count.
+*Evidence*: the list floor of three is a tenth of the 30 lists Izzet Prowess put
+in Baltimore's top fifth and half of the 6 non-Fallaji Goryo's put in
+Brisbane's, so a card is flagged far more readily at a large event than a small
+one. A floor of 10 on the cut population drops the two rows that were the sample
+size talking, Tron 3 of a 4-list cut at Amsterdam and Simic Neoform 3 of 6 at
+Baltimore, but it also drops the Brisbane half of Jennifer Walters, where
+raising concentration would drop them on their merits instead. On the other
+side, a closed fortnight of two lists holding a card once is a 50% peak that
+kills the card as a novelty for good, the shape `TRACK_RETURN_ABSENCE_LISTS`
+refuses elsewhere; a floor of 10 lists there changes exactly one row today.
+*Applies if adopted*: a floor on the cut population, a floor on the fortnights
+the peak is read over, or both. Either is a change of method under a reader from
+2026-09-15 and answers to ADR 0002.

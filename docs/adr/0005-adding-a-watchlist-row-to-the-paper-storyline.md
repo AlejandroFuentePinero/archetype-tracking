@@ -71,6 +71,11 @@ registering a card reads as half the deck playing it and the card is refused as
 something the deck knows. Two rows were being lost that way, Salvage Titan in
 Affinity and Sunbaked Canyon in Boros Energy, both at Spotlight Dallas.
 
+The four `TRACK_NOVELTY_*` constants were measured but unratified when this was
+written, and were ratified as shipped on 2026-09-14, inside the same window. The
+paragraph below stands as the reasoning behind them; what it says about their
+status was true for the hours between.
+
 The four `TRACK_NOVELTY_*` constants are measured but unratified. They are
 raised in `HEURISTICS.md` under **Proposed, awaiting pilot verdict**, with the
 sweeps behind each and two questions left open: a floor on the cut population,
