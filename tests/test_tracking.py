@@ -1025,3 +1025,31 @@ def test_a_paper_events_watchlist_is_rendered_and_never_frozen(tmp_path, monkeyp
     # Under the event it was read off, and said to have been read against no
     # baseline, so a reader never takes it for a move between two populations.
     assert "against its own field and the deck's MTGO history" in page
+
+
+def test_the_summary_reads_as_a_lead_and_a_list_of_facts():
+    """The summary is scanned before it is read, so the facts are bullets.
+
+    A reader meets the lead first and the figures under it, one per line. The
+    two shapes the file uses are a paragraph and a `- ` block, and a bold label
+    opens each bullet so the eye can find the reading it wants.
+    """
+    written = (
+        "Broodscale won RC Baltimore. SolomonGrundy took it on 15-2-1.\n\n"
+        "- **MTGO** 11.2% of the top 32, from 10.5%.\n"
+        "- **Conversion** the Lab version is over-converting.\n"
+    )
+    markup = weekly.summary_html(written)
+
+    assert markup.startswith("<p>Broodscale won RC Baltimore.")
+    assert markup.count("<li>") == 2
+    assert "<li><b>MTGO</b> 11.2% of the top 32, from 10.5%.</li>" in markup
+    # One list, not one per bullet.
+    assert markup.count("<ul>") == 1
+
+
+def test_a_summary_of_paragraphs_alone_still_renders():
+    """Weeks before the bullets, and any week with nothing to itemise."""
+    markup = weekly.summary_html("First paragraph.\n\nSecond paragraph.")
+
+    assert markup == "<p>First paragraph.</p><p>Second paragraph.</p>"

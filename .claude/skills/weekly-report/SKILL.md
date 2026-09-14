@@ -52,14 +52,14 @@ invalidates every frozen row it has, so it is Alejandro's call and not a
 tidy-up.
 
 **Every report reads two populations, and the split is the same for all.**
-Presence, which is the presence figure and clauses 1 and 2, is the whole deck,
+Presence, which is the presence figure and the MTGO bullet, is the whole deck,
 every version pooled, because a metagame share is a share of the whole deck.
 Conversion, goldfishing, the numbers table and the storyline are the tracked
 version's alone: Esper for Blink, Riddler for Goryo's, Traditional for Domain Zoo, Lab
 for Broodscale. A finish is one build's, and pooled, a card at nine tenths of
 one version and none of another reads as the deck at half of it. A deck with
 one population, which is the other thirteen, reads the same lists everywhere and
-has no clause 7 to write beyond saying so. The report labels the version
+writes no versions bullet at all. The report labels the version
 wherever it is read; the summary should not contradict the labels.
 
 ## Writing the summary
@@ -67,91 +67,96 @@ wherever it is read; the summary should not contradict the labels.
 Read the JSON the run named. Write `data/tracking/<deck>/summary/<week>.md` and
 re-run `uv run tracker weekly` to render it in.
 
-**A headline on a week a major event fell in, then seven clauses in this order,
-one or two sentences each. Nothing else.** The order is fixed so that a reader
-comparing two weeks is comparing the deck rather than comparing two pieces of
-writing.
+**A lead sentence or two, then the week's facts as bullets. Nothing else.** The
+summary is the first thing read and often the only thing read, so it is built to
+be scanned: a short lead that says what happened, and under it one labelled
+bullet per reading. The bullets are in a fixed order so that a reader comparing
+two weeks is comparing the deck rather than comparing two pieces of writing.
 
-**The headline**, and only on a week a major event fell in: an RC, a PT or a
-Spotlight. Who finished, named, with their rank and record, from the `top` of
-each entry in `major_events`, and the event each of them played. One sentence,
-its own paragraph, above clause 1. **Three names per event and no more.** Where
-an event put more than three lists in the cut, lead with `cut_lists` and name
-the best three: "RC Baltimore put eleven lists in the top 32, led by" and then
-the three. A headline is read aloud off the top of the page, and eleven names
-and eleven records in one sentence is the standings rather than a headline. The
-count is how the other eight reach the reader, and the positional figure plots
-every one of them: naming three of eleven without saying eleven would report the
-deck's event as smaller than it was. Where the week ran more than one event both
-are in it, each finish named with the event it came from: the Championship
-season seats two regions on one weekend, and a headline carrying one of them
-reports half the deck's paper week as the whole of it. It leads for two reasons.
-A team reads a named finish at the biggest tournament of the era before it reads
-a share, and everything under it is MTGO, so without it the week's paper results
-arrive in sixth place under figures that never counted them.
+**A bullet only appears when it has something to say.** A line whose content is
+"nothing happened" is a line a reader learns to skip, and once they skip one
+they skim the rest. Where the watchlist reading found no card, or the deck has
+one population, that bullet is absent and the storyline further down still
+carries the reading. This is the one place the fixed order gives way: the order
+of the bullets that appear never changes, but their presence does.
 
-1. **Volume against last week.** `challenge.lists` and `challenge.share` against
-   `challenge.previous_share`. Up, down or level. **Say MTGO.** Clauses 1 to 4
-   and 7 are the MTGO store and nothing else, paper being deliberately kept out
-   of it, so on a week an event fell in, "43 finishes in swiss-like tournaments"
-   reads as the deck's whole week when it is the online half of it.
-2. **Volume against its own history.** The same figures against
-   `challenge.median_lists`, the median week since the bans, which is the figure
-   that stops a deflating spike reading as a collapse. `challenge.recent_median`
-   is the median of the four weeks behind this one, and the two together are the
-   clause: a deck can be well above its regime median and level against where it
-   has just been, which is what a deck that moved to a new level looks like.
-3. **Conversion.** `conversion.top8` and `conversion.top8_share` against
-   `conversion.share`, which is the tracked version's own top-32 share and not
-   the pooled one in clause 1; `conversion.lists` is its n. Where the report
-   reads a version, name it. When `conversion.over_converting` is true the
-   version is holding more of the top 8 than of the top 32, and that is the
-   sentence.
-4. **Innovation.** What `timeline_latest` holds, named, and the fortnight it
-   covers. When it is empty, say the fortnight was stable. Never dress up a
-   stable fortnight. A card climbing in one board and falling in the other is
-   two rows and one decision: write it as the card changing boards.
-5. **Paper**, and only on a week a major event fell in: `major_events`, a list
-   of every event whose week is the reported week and empty on every other
-   week. One sentence per entry and never a pooled one. Two events on one
-   weekend are two rooms and two fields, so a share taken across both is a share
-   of a field nobody played in, and neither is ever the other's baseline. Each
-   entry is read against its own `against_row`, which is whatever the storyline
-   said last for that event: the paper event of an earlier week where there was
-   one, and the MTGO fortnight otherwise, in which case `against_row` is null
-   and `against` names the comparison alone. Field share with its n, top 32 with
-   its n, conversion, match record and win rate against the field's. This is where the
-   headline's finishes get their context, so it does not repeat the names. An
-   event a week outside the reported week is the comparison and never the
-   subject: a report whose clauses reach past their own week cannot be read
-   against the week before it.
-6. **The paper watchlist**, and only on a week a major event fell in:
-   `novelties` on each entry in `major_events`, a card the event's good
-   finishers registered that the deck does not play on MTGO and the rest of its
-   own field at that event is not. Name the card, the board, and both counts the
-   row carries: the deck's lists in the cut that held it against its lists over
-   the whole event. Name the event too, a row being one room's like every other
-   paper figure, and where the report reads a version say so, these lists being
-   that version's where clause 5's are the whole deck's. When a week's events
-   carry no row, say so in one sentence and name the events it is saying it of.
-   **It is a watchlist and never a finding that the field moved**, so it gets no
-   verdict: the reading says a card was concentrated in the good finishers and
-   was new to the deck, which is a thing to look at next week and not a change
-   the numbers have established. The MTGO bar the row names is the third figure
-   and belongs in the clause, since without it a row is a concentration rather
-   than a novelty. The cut share and the concentration multiple go unsaid, being
-   what "the top fifth of the field" and the two counts already carry.
-7. **The other versions of the deck.** `versions`, one entry per version the
-   report names but does not read, as bare numbers. Observability only. They get
-   no verdict, and the presence figures already count them. The presence
-   figure's third panel plots the same split.
+**The lead.** One or two sentences, plain English, saying what the week was. On
+a week a major paper event fell in it is the finishes: who finished, named, with
+rank and record, read off the `top` of each entry in `major_events`, and the
+event each played in. **Three names per event and no more.** Where an event put
+more than three lists in the cut, say the count and name the best three:
+"eleven lists in the top 32 in all". The count is how the other eight reach the
+reader, and the positional figure plots every one of them. Where the week ran
+more than one event both are in the lead, each finish named with the event it
+came from, the Championship season seating two regions on one weekend. Lead with
+the result rather than the mechanics: "Broodscale won RC Baltimore" and "Nothing
+in paper" are both leads; "RC Baltimore put eleven lists in the top 32" is a
+figure, and the bullets are where figures go. On a week with no paper event the
+lead is the MTGO week in a sentence.
+
+Then the bullets, in this order, each opening with its label in `**bold**`:
+
+- **MTGO.** `challenge.lists` and `challenge.share` against
+  `challenge.previous_share`, then the same count against
+  `challenge.median_lists`, the median week since the bans, and
+  `challenge.recent_median`, the median of the four weeks behind this one. The
+  two medians together are what stop a deflating spike reading as a collapse: a
+  deck can be well above its regime median and level against where it has just
+  been, which is what a deck that moved to a new level looks like. **Say MTGO.**
+  This bullet, conversion, build and versions are the MTGO store and nothing
+  else, so on a week an event fell in "28 finishes in swiss-like tournaments"
+  reads as the deck's whole week when it is the online half of it.
+- **Conversion.** `conversion.top8` and `conversion.top8_share` against
+  `conversion.share`, which is the tracked version's own top-32 share and not
+  the pooled one in the MTGO bullet; `conversion.lists` is its n. Where the
+  report reads a version, name it. When `conversion.over_converting` is true the
+  version is holding more of the top 8 than of the top 32, and that is the
+  bullet.
+- **Build.** What `timeline_latest` holds, named, and the fortnight it covers.
+  When it is empty, say the fortnight was stable. Never dress up a stable
+  fortnight. A card climbing in one board and falling in the other is two rows
+  and one decision: write it as the card changing boards.
+- **One bullet per paper event**, labelled with the event's name, and only on a
+  week a major event fell in: every entry in `major_events` whose week is the
+  reported week. Never a pooled bullet. Two events on one weekend are two rooms
+  and two fields, so a share taken across both is a share of a field nobody
+  played in, and neither is ever the other's baseline. Each is read against its
+  own `against_row`, whatever the storyline said last for that event: the paper
+  event of an earlier week where there was one, and the MTGO fortnight
+  otherwise, in which case `against_row` is null and `against` names the
+  comparison alone. Field share with its n, top 32 with its n, conversion, match
+  record and win rate against the field's. This is where the lead's finishes get
+  their context, so it does not repeat the names. An event a week outside the
+  reported week is the comparison and never the subject.
+- **Watchlist**, only where `novelties` on an entry in `major_events` holds a
+  row: a card the event's good finishers registered that the deck does not play
+  on MTGO and the rest of its own field at that event is not. Name the card, the
+  board, and both counts the row carries: the deck's lists in the cut that held
+  it against its lists over the whole event. Name the event too, a row being one
+  room's like every other paper figure, and where the report reads a version say
+  so, these lists being that version's where the event bullet's are the whole
+  deck's. **It is a watchlist and never a finding that the field moved**, so it
+  gets no verdict: the reading says a card was concentrated in the good
+  finishers and was new to the deck, which is a thing to look at next week and
+  not a change the numbers have established. The MTGO bar the row names is the
+  third figure and belongs in the bullet, since without it a row is a
+  concentration rather than a novelty. The cut share and the concentration
+  multiple go unsaid, being what "the top fifth of the field" and the two counts
+  already carry. Where no event produced a row, the bullet is absent.
+- **Other versions**, only where `versions` holds one: one entry per version the
+  report names but does not read, as bare numbers, and say they are MTGO.
+  Observability only. They get no verdict, and the presence figures already
+  count them. Where the deck has one population the bullet is absent.
 
 Rules for the prose:
 
-- **Short sentences.** The summary is read aloud in a meeting off the top of the
-  page. One number per sentence where the sentence can carry only one, and a
-  comparison next to the figure it qualifies rather than four clauses later.
-  Six numbers in one sentence is a table, and there is a table further down.
+- **Short sentences, and plain English.** The summary is read aloud in a meeting
+  off the top of the page, and scanned on a screen by everyone who was not
+  there. Say what happened, then the figure that shows it. A comparison goes
+  next to the figure it qualifies rather than three bullets later, and six
+  numbers in one sentence is a table, which is further down the page. Prefer the
+  short word: a deck has a big week rather than a substantial one, and a card
+  falls rather than exhibits a decline.
 - **The words are fixed too.** A placement-publishing event is a **swiss-like
   tournament**, never "challenge-class". The history since 2026-05-19 is
   **since the Modern bans**, never "post-regime". The deck **achieves finishes
@@ -176,12 +181,14 @@ Rules for the prose:
 
 - The rendered file opens and the three weekly figures are there, plus the
   major-events figure on any week a paper event is cached.
-- The summary's clauses are in order and every number in it appears in the JSON.
-- On a week a major event fell in, the summary opens with the headline and the
-  MTGO clauses under it say MTGO.
-- The paper clause names the event that fell inside the reported week, and the
+- The summary's bullets are in order and every number in it appears in the JSON.
+- On a week a major event fell in, the lead carries the finishes and the MTGO
+  bullets under it say MTGO.
+- Every bullet that appears has something to say. No bullet reports that a
+  reading found nothing.
+- Each paper bullet names the event that fell inside the reported week, and the
   event before it only as the comparison.
-- The watchlist clause reads off `novelties` and nowhere else. The storyline
+- The watchlist bullet reads off `novelties` and nowhere else. The storyline
   renders every event ever cached, so a card on it from an earlier event is a
   row the reported week did not produce and does not belong in the summary.
 - `git status` shows changes under `data/tracking/`, and `data/index.csv` moved.
@@ -292,7 +299,7 @@ run changes.
   `cross_population` says which it is. Read the flag rather than guessing from
   the medium: paper on both sides is not the test, the regions are. Baltimore
   against Dallas is two American fields and reads as one room; China against
-  Dallas is paper a week apart and is still two metagames. A clause off a
+  Dallas is paper a week apart and is still two metagames. A bullet off a
   cross-population row says which room each side came from. The paper row is
   the stronger of the two an event carries either way, crossing at most the
   room where the fortnight row crosses the room and the medium both.

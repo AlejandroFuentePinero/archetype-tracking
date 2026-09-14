@@ -16,6 +16,7 @@ asked about weeks that have no row yet.
 
 import csv
 import json
+import re
 import statistics
 from datetime import date, timedelta
 from math import ceil
@@ -381,7 +382,11 @@ h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em;
      color: var(--ink-3); font-weight: 600; margin: 40px 0 14px; }
 .summary { background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
            padding: 20px 22px; font-size: 16px; line-height: 1.6; }
-.summary p { margin: 0 0 10px; } .summary p:last-child { margin: 0; }
+.summary p { margin: 0 0 14px; } .summary p:last-child { margin: 0; }
+.summary ul { margin: 0; padding: 0; list-style: none; }
+.summary li { margin: 0 0 9px; padding-left: 0; font-size: 15px; }
+.summary li:last-child { margin: 0; }
+.summary li b { color: var(--ink); font-weight: 600; margin-right: 7px; }
 .summary .pending { color: var(--ink-3); font-style: italic; }
 .flag { background: var(--flag); border-left: 3px solid var(--flag-line);
         border-radius: 4px; padding: 12px 16px; margin: 0 0 18px; font-size: 14px; }
@@ -615,6 +620,30 @@ def _section(title: str, population: str, camp: str | None) -> str:
     return f'<h2>{title} <span>({population})</span></h2>'
 
 
+
+def summary_html(written: str) -> str:
+    """The hand-written summary as markup: lead paragraphs, then the facts.
+
+    The summary uses two shapes and no more. A block of `- ` lines is the
+    week's figures, which a reader scans rather than reads, and anything else
+    is a paragraph, which is the narrative they read first. `**bold**` labels
+    a bullet. A richer markdown than that would be a formatting language in a
+    file whose whole job is to be read aloud in a meeting.
+    """
+    blocks = []
+    for block in written.strip().split("\n\n"):
+        if block.startswith("- "):
+            items = "".join(f"<li>{_emphasis(line[2:])}</li>" for line in block.split("\n"))
+            blocks.append(f"<ul>{items}</ul>")
+        else:
+            blocks.append(f"<p>{_emphasis(block)}</p>")
+    return "".join(blocks)
+
+
+def _emphasis(text: str) -> str:
+    return re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", text)
+
+
 def render(
     db_path: Path = config.DB_PATH,
     deck: str = "blink",
@@ -645,7 +674,7 @@ def render(
 
     summary_path = root / "summary" / f"{week}.md"
     summary = (
-        "".join(f"<p>{line}</p>" for line in summary_path.read_text(encoding="utf-8").split("\n\n"))
+        summary_html(summary_path.read_text(encoding="utf-8"))
         if summary_path.exists()
         else '<p class="pending">No summary written for this week yet.</p>'
     )

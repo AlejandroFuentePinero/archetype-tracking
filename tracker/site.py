@@ -27,7 +27,7 @@ _INDEX_STYLE = """
 .page { max-width: 940px; }
 header { border: 0; padding: 0; margin: 0 0 32px; }
 h1 { font-size: 30px; color: var(--ink); }
-.dek { font-size: 14px; max-width: 560px; margin-top: 8px; line-height: 1.5; }
+.dek { font-size: 14px; margin-top: 8px; line-height: 1.5; }
 .week { color: var(--ink-2); font-size: 13px; margin: 14px 0 0; }
 .decks { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px;
          grid-template-columns: repeat(2, 1fr); }
