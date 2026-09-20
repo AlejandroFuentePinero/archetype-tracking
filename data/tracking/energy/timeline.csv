@@ -16,16 +16,12 @@ start,end,lists,against,kind,zone,card,text
 2026-06-01,2026-06-14,179,the fortnight to 2026-05-31,adoption,side,Orim's Chant,"Orim's Chant fell in the sideboard, 100/136 to 86/179 lists (74% to 48%)"
 2026-06-01,2026-06-14,179,the fortnight to 2026-05-31,return,main,Redirect Lightning,"Redirect Lightning appears for the first time, 2 of 179 lists (1%)"
 2026-06-01,2026-06-14,179,the fortnight to 2026-05-31,return,main,Shadowy Backstreet,"Shadowy Backstreet appears for the first time, 2 of 179 lists (1%)"
-2026-06-01,2026-06-14,179,the fortnight to 2026-05-31,return,main,Stadium Headliner,"Stadium Headliner appears for the first time, 2 of 179 lists (1%)"
 2026-06-01,2026-06-14,179,the fortnight to 2026-05-31,return,main,Sunbillow Verge,"Sunbillow Verge appears for the first time, 14 of 179 lists (8%)"
-2026-06-01,2026-06-14,179,the fortnight to 2026-05-31,return,main,Sundering Eruption,"Sundering Eruption appears for the first time, 3 of 179 lists (2%)"
 2026-06-01,2026-06-14,179,the fortnight to 2026-05-31,adoption,main,The Legend of Roku,"The Legend of Roku climbed in the mainboard, 59/136 to 141/179 lists (43% to 79%)"
 2026-06-01,2026-06-14,179,the fortnight to 2026-05-31,adoption,side,The Legend of Roku,"The Legend of Roku fell in the sideboard, 57/136 to 28/179 lists (42% to 16%)"
 2026-06-01,2026-06-14,179,the fortnight to 2026-05-31,return,main,Umezawa's Jitte,"Umezawa's Jitte moves to the mainboard, 4 of 179 lists (2%)"
-2026-06-15,2026-06-28,140,the fortnight to 2026-06-14,return,main,"Aurelia, the Law Above","Aurelia, the Law Above appears for the first time, 4 of 140 lists (3%)"
 2026-06-15,2026-06-28,140,the fortnight to 2026-06-14,return,main,"Eiganjo, Seat of the Empire","Eiganjo, Seat of the Empire appears for the first time, 4 of 140 lists (3%)"
 2026-06-15,2026-06-28,140,the fortnight to 2026-06-14,return,side,Exorcise,"Exorcise appears for the first time, 3 of 140 lists (2%)"
-2026-06-15,2026-06-28,140,the fortnight to 2026-06-14,return,main,Extraction Specialist,"Extraction Specialist appears for the first time, 2 of 140 lists (1%)"
 2026-06-15,2026-06-28,140,the fortnight to 2026-06-14,adoption,side,Surgical Extraction,"Surgical Extraction climbed in the sideboard, 74/179 to 97/140 lists (41% to 69%)"
 2026-06-29,2026-07-12,165,the fortnight to 2026-06-28,adoption,main,Fable of the Mirror-Breaker,"Fable of the Mirror-Breaker fell in the mainboard, 62/140 to 24/165 lists (44% to 15%)"
 2026-06-29,2026-07-12,165,the fortnight to 2026-06-28,return,main,March of Otherworldly Light,"March of Otherworldly Light appears for the first time, 2 of 165 lists (1%)"
@@ -36,11 +32,9 @@ start,end,lists,against,kind,zone,card,text
 2026-07-13,2026-07-26,154,Pro Tour Amsterdam,return,side,Ranger-Captain of Eos,"Ranger-Captain of Eos moves to the sideboard, 5 of 154 lists (3%)"
 2026-07-13,2026-07-26,154,Pro Tour Amsterdam,copies,main,Voice of Victory,Voice of Victory up from 2.9 to 3.3 copies on average
 2026-07-13,2026-07-26,154,Pro Tour Amsterdam,event,,,Pro Tour Amsterdam
-2026-07-27,2026-08-09,109,the fortnight to 2026-07-26,return,main,Conduit Goblin,"Conduit Goblin returns after 6 weeks away, 2 of 109 lists (2%)"
 2026-07-27,2026-08-09,109,the fortnight to 2026-07-26,adoption,main,The Legend of Roku,"The Legend of Roku fell in the mainboard, 65/154 to 16/109 lists (42% to 15%)"
 2026-08-10,2026-08-23,73,the fortnight to 2026-08-09,return,main,Belladonna Took,"Belladonna Took appears for the first time, 7 of 73 lists (10%)"
 2026-08-10,2026-08-23,73,the fortnight to 2026-08-09,adoption,main,Blood Moon,"Blood Moon climbed in the mainboard, 64/109 to 58/73 lists (59% to 79%)"
-2026-08-10,2026-08-23,73,the fortnight to 2026-08-09,return,main,Fear of Missing Out,"Fear of Missing Out appears for the first time, 6 of 73 lists (8%)"
 2026-08-10,2026-08-23,73,the fortnight to 2026-08-09,return,side,Grafdigger's Cage,"Grafdigger's Cage returns after 8 weeks away, 5 of 73 lists (7%)"
 2026-08-10,2026-08-23,73,the fortnight to 2026-08-09,adoption,main,Windswept Heath,"Windswept Heath climbed in the mainboard, 28/109 to 35/73 lists (26% to 48%)"
 2026-08-24,2026-09-06,58,Spotlight Dallas,adoption,main,Arena of Glory,"Arena of Glory fell in the mainboard, 33/34 to 44/58 lists (97% to 76%)"
@@ -48,3 +42,16 @@ start,end,lists,against,kind,zone,card,text
 2026-08-24,2026-09-06,58,Spotlight Dallas,adoption,main,Windswept Heath,"Windswept Heath fell in the mainboard, 19/34 to 19/58 lists (56% to 33%)"
 2026-08-24,2026-09-06,58,Spotlight Dallas,event,,,Spotlight Brisbane
 2026-08-24,2026-09-06,58,Spotlight Dallas,event,,,Spotlight Dallas
+2026-09-07,2026-09-20,61,the fortnight to 2026-09-06,return,main,Abandoned Air Temple,"Abandoned Air Temple appears for the first time, 3 of 61 lists (5%)"
+2026-09-07,2026-09-20,61,the fortnight to 2026-09-06,adoption,main,Lightning Bolt,"Lightning Bolt fell in the mainboard, 27/58 to 16/61 lists (47% to 26%)"
+2026-09-07,2026-09-20,61,the fortnight to 2026-09-06,adoption,side,Rest in Peace,"Rest in Peace fell in the sideboard, 38/58 to 24/61 lists (66% to 39%)"
+2026-09-07,2026-09-20,61,the fortnight to 2026-09-06,adoption,main,Sunbaked Canyon,"Sunbaked Canyon fell in the mainboard, 27/58 to 8/61 lists (47% to 13%)"
+2026-09-07,2026-09-20,61,the fortnight to 2026-09-06,adoption,main,Witch Enchanter,"Witch Enchanter fell in the mainboard, 16/58 to 4/61 lists (28% to 7%)"
+2026-09-07,2026-09-20,61,the fortnight to 2026-09-06,copies,main,Flooded Strand,Flooded Strand up from 3.0 to 3.6 copies on average
+2026-09-07,2026-09-20,61,the fortnight to 2026-09-06,copies,main,Ranger-Captain of Eos,Ranger-Captain of Eos down from 2.4 to 2.0 copies on average
+2026-09-07,2026-09-20,61,the fortnight to 2026-09-06,copies,main,Voice of Victory,Voice of Victory up from 3.2 to 3.8 copies on average
+2026-09-07,2026-09-20,61,the fortnight to 2026-09-06,event,,,RC Baltimore
+2026-09-07,2026-09-20,61,the fortnight to 2026-09-06,event,,,RC China
+2026-09-07,2026-09-20,61,RC Baltimore,return,main,Abandoned Air Temple,"Abandoned Air Temple appears for the first time, 3 of 61 lists (5%)"
+2026-09-07,2026-09-20,61,RC China,return,main,Abandoned Air Temple,"Abandoned Air Temple appears for the first time, 3 of 61 lists (5%)"
+2026-09-07,2026-09-20,61,RC China,copies,main,Flooded Strand,Flooded Strand up from 3.1 to 3.6 copies on average

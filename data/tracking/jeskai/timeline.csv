@@ -10,16 +10,13 @@ start,end,lists,against,kind,zone,card,text
 2026-06-01,2026-06-14,74,the fortnight to 2026-05-31,return,side,Nihil Spellbomb,"Nihil Spellbomb appears for the first time, 9 of 74 lists (12%)"
 2026-06-01,2026-06-14,74,the fortnight to 2026-05-31,return,main,No More Lies,"No More Lies appears for the first time, 2 of 74 lists (3%)"
 2026-06-01,2026-06-14,74,the fortnight to 2026-05-31,adoption,main,Polluted Delta,"Polluted Delta climbed in the mainboard, 8/44 to 30/74 lists (18% to 41%)"
-2026-06-01,2026-06-14,74,the fortnight to 2026-05-31,return,main,Restless Anchorage,"Restless Anchorage appears for the first time, 2 of 74 lists (3%)"
 2026-06-01,2026-06-14,74,the fortnight to 2026-05-31,return,side,Spell Snare,"Spell Snare moves to the sideboard, 3 of 74 lists (4%)"
 2026-06-15,2026-06-28,69,the fortnight to 2026-06-14,adoption,side,Celestial Purge,"Celestial Purge climbed in the sideboard, 22/74 to 48/69 lists (30% to 70%)"
 2026-06-15,2026-06-28,69,the fortnight to 2026-06-14,adoption,main,Floodfarm Verge,"Floodfarm Verge fell in the mainboard, 31/74 to 10/69 lists (42% to 14%)"
-2026-06-15,2026-06-28,69,the fortnight to 2026-06-14,return,main,Mistrise Village,"Mistrise Village appears for the first time, 2 of 69 lists (3%)"
 2026-06-15,2026-06-28,69,the fortnight to 2026-06-14,adoption,main,"Narset, Parter of Veils","Narset, Parter of Veils climbed in the mainboard, 29/74 to 43/69 lists (39% to 62%)"
 2026-06-15,2026-06-28,69,the fortnight to 2026-06-14,adoption,main,"Otawara, Soaring City","Otawara, Soaring City fell in the mainboard, 49/74 to 26/69 lists (66% to 38%)"
 2026-06-15,2026-06-28,69,the fortnight to 2026-06-14,return,main,Oust,"Oust appears for the first time, 5 of 69 lists (7%)"
 2026-06-15,2026-06-28,69,the fortnight to 2026-06-14,return,side,Relic of Progenitus,"Relic of Progenitus moves to the sideboard, 4 of 69 lists (6%)"
-2026-06-15,2026-06-28,69,the fortnight to 2026-06-14,return,main,Temporal Trespass,"Temporal Trespass appears for the first time, 2 of 69 lists (3%)"
 2026-06-15,2026-06-28,69,the fortnight to 2026-06-14,copies,main,Arid Mesa,Arid Mesa up from 2.0 to 2.7 copies on average
 2026-06-15,2026-06-28,69,the fortnight to 2026-06-14,copies,main,Counterspell,Counterspell down from 3.7 to 3.2 copies on average
 2026-06-15,2026-06-28,69,the fortnight to 2026-06-14,copies,main,Wrath of the Skies,Wrath of the Skies up from 2.5 to 3.0 copies on average
@@ -34,12 +31,9 @@ start,end,lists,against,kind,zone,card,text
 2026-06-29,2026-07-12,77,the fortnight to 2026-06-28,return,main,Kozilek's Command,"Kozilek's Command appears for the first time, 2 of 77 lists (3%)"
 2026-06-29,2026-07-12,77,the fortnight to 2026-06-28,copies,main,Solitude,Solitude down from 3.4 to 3.0 copies on average
 2026-07-13,2026-07-26,63,Pro Tour Amsterdam,adoption,main,Hall of Storm Giants,"Hall of Storm Giants climbed in the mainboard, 2/13 to 34/63 lists (15% to 54%)"
-2026-07-13,2026-07-26,63,Pro Tour Amsterdam,return,side,Pyroclasm,"Pyroclasm appears for the first time, 4 of 63 lists (6%)"
 2026-07-13,2026-07-26,63,Pro Tour Amsterdam,event,,,Pro Tour Amsterdam
-2026-07-27,2026-08-09,42,the fortnight to 2026-07-26,return,side,Bribery,"Bribery appears for the first time, 5 of 42 lists (12%)"
 2026-07-27,2026-08-09,42,the fortnight to 2026-07-26,adoption,main,Spell Snare,"Spell Snare climbed in the mainboard, 48/63 to 41/42 lists (76% to 98%)"
 2026-07-27,2026-08-09,42,the fortnight to 2026-07-26,return,main,Waterlogged Teachings,"Waterlogged Teachings appears for the first time, 5 of 42 lists (12%)"
-2026-08-10,2026-08-23,45,the fortnight to 2026-08-09,return,main,Bilbo's Gambit,"Bilbo's Gambit appears for the first time, 2 of 45 lists (4%)"
 2026-08-10,2026-08-23,45,the fortnight to 2026-08-09,adoption,side,Celestial Purge,"Celestial Purge fell in the sideboard, 23/42 to 13/45 lists (55% to 29%)"
 2026-08-10,2026-08-23,45,the fortnight to 2026-08-09,adoption,main,Force of Negation,"Force of Negation fell in the mainboard, 19/42 to 11/45 lists (45% to 24%)"
 2026-08-10,2026-08-23,45,the fortnight to 2026-08-09,adoption,side,"Kaheera, the Orphanguard","Kaheera, the Orphanguard fell in the sideboard, 34/42 to 27/45 lists (81% to 60%)"
@@ -52,3 +46,11 @@ start,end,lists,against,kind,zone,card,text
 2026-08-24,2026-09-06,28,Spotlight Dallas,adoption,main,Steam Vents,"Steam Vents climbed in the mainboard, 19/30 to 25/28 lists (63% to 89%)"
 2026-08-24,2026-09-06,28,Spotlight Dallas,event,,,Spotlight Brisbane
 2026-08-24,2026-09-06,28,Spotlight Dallas,event,,,Spotlight Dallas
+2026-09-07,2026-09-20,32,the fortnight to 2026-09-06,adoption,main,March of Otherworldly Light,"March of Otherworldly Light fell in the mainboard, 7/28 to 1/32 lists (25% to 3%)"
+2026-09-07,2026-09-20,32,the fortnight to 2026-09-06,copies,main,Counterspell,Counterspell down from 3.3 to 2.9 copies on average
+2026-09-07,2026-09-20,32,the fortnight to 2026-09-06,event,,,RC Baltimore
+2026-09-07,2026-09-20,32,the fortnight to 2026-09-06,event,,,RC China
+2026-09-07,2026-09-20,32,RC Baltimore,adoption,main,Mystic Gate,"Mystic Gate fell in the mainboard, 28/33 to 20/32 lists (85% to 62%)"
+2026-09-07,2026-09-20,32,RC Baltimore,adoption,main,"Otawara, Soaring City","Otawara, Soaring City fell in the mainboard, 14/33 to 5/32 lists (42% to 16%)"
+2026-09-07,2026-09-20,32,RC Baltimore,copies,main,Arid Mesa,Arid Mesa up from 2.5 to 3.1 copies on average
+2026-09-07,2026-09-20,32,RC China,copies,main,Consult the Star Charts,Consult the Star Charts up from 2.8 to 3.6 copies on average

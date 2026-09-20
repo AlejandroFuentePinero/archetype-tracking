@@ -18,7 +18,6 @@ start,end,lists,against,kind,zone,card,text
 2026-06-15,2026-06-28,31,the fortnight to 2026-06-14,adoption,side,Deafening Silence,"Deafening Silence fell in the sideboard, 19/37 to 1/31 lists (51% to 3%)"
 2026-06-15,2026-06-28,31,the fortnight to 2026-06-14,adoption,side,Foundation Breaker,"Foundation Breaker climbed in the sideboard, 11/37 to 16/31 lists (30% to 52%)"
 2026-06-15,2026-06-28,31,the fortnight to 2026-06-14,adoption,side,Ingot Chewer,"Ingot Chewer fell in the sideboard, 24/37 to 6/31 lists (65% to 19%)"
-2026-06-15,2026-06-28,31,the fortnight to 2026-06-14,return,side,"Klothys, God of Destiny","Klothys, God of Destiny appears for the first time, 3 of 31 lists (10%)"
 2026-06-15,2026-06-28,31,the fortnight to 2026-06-14,adoption,main,Striped Riverwinder,"Striped Riverwinder fell in the mainboard, 29/37 to 16/31 lists (78% to 52%)"
 2026-06-15,2026-06-28,31,the fortnight to 2026-06-14,copies,main,Generous Ent,Generous Ent down from 3.9 to 3.5 copies on average
 2026-06-15,2026-06-28,31,the fortnight to 2026-06-14,copies,main,Oliphaunt,Oliphaunt up from 1.5 to 2.2 copies on average
@@ -31,8 +30,6 @@ start,end,lists,against,kind,zone,card,text
 2026-06-29,2026-07-12,21,the fortnight to 2026-06-28,adoption,main,Waker of Waves,"Waker of Waves climbed in the mainboard, 8/31 to 14/21 lists (26% to 67%)"
 2026-06-29,2026-07-12,21,the fortnight to 2026-06-28,copies,main,Oliphaunt,Oliphaunt up from 2.2 to 3.2 copies on average
 2026-06-29,2026-07-12,21,the fortnight to 2026-06-28,copies,main,Sink into Stupor,Sink into Stupor down from 1.8 to 1.3 copies on average
-2026-07-13,2026-07-26,35,Pro Tour Amsterdam,return,main,Cascade Bluffs,"Cascade Bluffs appears for the first time, 2 of 35 lists (6%)"
-2026-07-13,2026-07-26,35,Pro Tour Amsterdam,return,main,Commandeer,"Commandeer moves to the mainboard, 2 of 35 lists (6%)"
 2026-07-13,2026-07-26,35,Pro Tour Amsterdam,return,main,Sacred Foundry,"Sacred Foundry appears for the first time, 15 of 35 lists (43%)"
 2026-07-13,2026-07-26,35,Pro Tour Amsterdam,event,,,Pro Tour Amsterdam
 2026-07-27,2026-08-09,38,the fortnight to 2026-07-26,adoption,main,"Boseiju, Who Endures","Boseiju, Who Endures fell in the mainboard, 18/35 to 6/38 lists (51% to 16%)"
@@ -48,7 +45,15 @@ start,end,lists,against,kind,zone,card,text
 2026-08-10,2026-08-23,41,the fortnight to 2026-08-09,adoption,main,Striped Riverwinder,"Striped Riverwinder climbed in the mainboard, 16/38 to 29/41 lists (42% to 71%)"
 2026-08-10,2026-08-23,41,the fortnight to 2026-08-09,copies,main,Waker of Waves,Waker of Waves down from 2.4 to 2.0 copies on average
 2026-08-24,2026-09-06,50,Spotlight Dallas,adoption,main,Curator of Mysteries,"Curator of Mysteries fell in the mainboard, 10/19 to 3/50 lists (53% to 6%)"
-2026-08-24,2026-09-06,50,Spotlight Dallas,return,main,Formidable Speaker,"Formidable Speaker returns after 8 weeks away, 5 of 50 lists (10%)"
-2026-08-24,2026-09-06,50,Spotlight Dallas,return,main,Repudiate/Replicate,"Repudiate/Replicate appears for the first time, 2 of 50 lists (4%)"
 2026-08-24,2026-09-06,50,Spotlight Dallas,event,,,Spotlight Brisbane
 2026-08-24,2026-09-06,50,Spotlight Dallas,event,,,Spotlight Dallas
+2026-09-07,2026-09-20,30,the fortnight to 2026-09-06,adoption,main,"Boseiju, Who Endures","Boseiju, Who Endures climbed in the mainboard, 2/50 to 10/30 lists (4% to 33%)"
+2026-09-07,2026-09-20,30,the fortnight to 2026-09-06,return,main,Fire/Ice,"Fire/Ice returns after 6 weeks away, 2 of 30 lists (7%)"
+2026-09-07,2026-09-20,30,the fortnight to 2026-09-06,adoption,side,"Teferi, Time Raveler","Teferi, Time Raveler fell in the sideboard, 43/50 to 18/30 lists (86% to 60%)"
+2026-09-07,2026-09-20,30,the fortnight to 2026-09-06,event,,,RC Baltimore
+2026-09-07,2026-09-20,30,the fortnight to 2026-09-06,event,,,RC China
+2026-09-07,2026-09-20,30,RC Baltimore,stable,,,
+2026-09-07,2026-09-20,30,RC China,return,main,Fire/Ice,"Fire/Ice returns after 6 weeks away, 2 of 30 lists (7%)"
+2026-09-07,2026-09-20,30,RC China,copies,main,Generous Ent,Generous Ent up from 3.5 to 4.0 copies on average
+2026-09-07,2026-09-20,30,RC China,copies,main,Misty Rainforest,Misty Rainforest up from 3.5 to 4.0 copies on average
+2026-09-07,2026-09-20,30,RC China,copies,main,Oliphaunt,Oliphaunt up from 2.7 to 3.1 copies on average

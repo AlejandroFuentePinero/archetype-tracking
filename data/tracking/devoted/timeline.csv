@@ -36,7 +36,6 @@ start,end,lists,against,kind,zone,card,text
 2026-07-27,2026-08-09,95,the fortnight to 2026-07-26,copies,main,Vizier of Remedies,Vizier of Remedies down from 2.1 to 1.1 copies on average
 2026-07-27,2026-08-09,95,the fortnight to 2026-07-26,copies,main,Windswept Heath,Windswept Heath down from 3.7 to 2.2 copies on average
 2026-08-10,2026-08-23,130,the fortnight to 2026-08-09,adoption,side,Abrupt Decay,"Abrupt Decay climbed in the sideboard, 1/95 to 56/130 lists (1% to 43%)"
-2026-08-10,2026-08-23,130,the fortnight to 2026-08-09,return,main,Bridgeworks Battle,"Bridgeworks Battle appears for the first time, 2 of 130 lists (2%)"
 2026-08-10,2026-08-23,130,the fortnight to 2026-08-09,return,side,Chomping Changeling,"Chomping Changeling appears for the first time, 37 of 130 lists (28%)"
 2026-08-10,2026-08-23,130,the fortnight to 2026-08-09,adoption,side,Crystal Barricade,"Crystal Barricade climbed in the sideboard, 27/95 to 107/130 lists (28% to 82%)"
 2026-08-10,2026-08-23,130,the fortnight to 2026-08-09,return,side,Culling Ritual,"Culling Ritual appears for the first time, 8 of 130 lists (6%)"
@@ -65,3 +64,39 @@ start,end,lists,against,kind,zone,card,text
 2026-08-24,2026-09-06,71,Spotlight Dallas,adoption,main,Craterhoof Behemoth,"Craterhoof Behemoth fell in the mainboard, 39/41 to 53/71 lists (95% to 75%)"
 2026-08-24,2026-09-06,71,Spotlight Dallas,event,,,Spotlight Brisbane
 2026-08-24,2026-09-06,71,Spotlight Dallas,event,,,Spotlight Dallas
+2026-09-07,2026-09-20,83,the fortnight to 2026-09-06,adoption,side,"Boromir, Warden of the Tower","Boromir, Warden of the Tower climbed in the sideboard, 7/71 to 27/83 lists (10% to 33%)"
+2026-09-07,2026-09-20,83,the fortnight to 2026-09-06,adoption,side,Chalice of the Void,"Chalice of the Void climbed in the sideboard, 4/71 to 31/83 lists (6% to 37%)"
+2026-09-07,2026-09-20,83,the fortnight to 2026-09-06,adoption,side,Collector Ouphe,"Collector Ouphe fell in the sideboard, 51/71 to 28/83 lists (72% to 34%)"
+2026-09-07,2026-09-20,83,the fortnight to 2026-09-06,adoption,side,Crystal Barricade,"Crystal Barricade fell in the sideboard, 53/71 to 41/83 lists (75% to 49%)"
+2026-09-07,2026-09-20,83,the fortnight to 2026-09-06,adoption,side,Doorkeeper Thrull,"Doorkeeper Thrull climbed in the sideboard, 4/71 to 43/83 lists (6% to 52%)"
+2026-09-07,2026-09-20,83,the fortnight to 2026-09-06,adoption,side,Force of Vigor,"Force of Vigor fell in the sideboard, 44/71 to 31/83 lists (62% to 37%)"
+2026-09-07,2026-09-20,83,the fortnight to 2026-09-06,adoption,main,Gemstone Caverns,"Gemstone Caverns climbed in the mainboard, 20/71 to 43/83 lists (28% to 52%)"
+2026-09-07,2026-09-20,83,the fortnight to 2026-09-06,adoption,side,Guerrilla Gorilla,"Guerrilla Gorilla climbed in the sideboard, 37/71 to 65/83 lists (52% to 78%)"
+2026-09-07,2026-09-20,83,the fortnight to 2026-09-06,adoption,main,Horizon Canopy,"Horizon Canopy climbed in the mainboard, 16/71 to 52/83 lists (23% to 63%)"
+2026-09-07,2026-09-20,83,the fortnight to 2026-09-06,adoption,side,Icetill Explorer,"Icetill Explorer climbed in the sideboard, 0/71 to 40/83 lists (0% to 48%)"
+2026-09-07,2026-09-20,83,the fortnight to 2026-09-06,adoption,main,Nurturing Peatland,"Nurturing Peatland climbed in the mainboard, 45/71 to 75/83 lists (63% to 90%)"
+2026-09-07,2026-09-20,83,the fortnight to 2026-09-06,adoption,side,Pick Your Poison,"Pick Your Poison climbed in the sideboard, 0/71 to 45/83 lists (0% to 54%)"
+2026-09-07,2026-09-20,83,the fortnight to 2026-09-06,adoption,side,Reclamation Sage,"Reclamation Sage climbed in the sideboard, 4/71 to 42/83 lists (6% to 51%)"
+2026-09-07,2026-09-20,83,the fortnight to 2026-09-06,adoption,main,Summoner's Pact,"Summoner's Pact fell in the mainboard, 20/71 to 6/83 lists (28% to 7%)"
+2026-09-07,2026-09-20,83,the fortnight to 2026-09-06,return,main,Thoughtseize,"Thoughtseize moves to the mainboard, 16 of 83 lists (19%)"
+2026-09-07,2026-09-20,83,the fortnight to 2026-09-06,return,main,Vexing Bauble,"Vexing Bauble moves to the mainboard, 19 of 83 lists (23%)"
+2026-09-07,2026-09-20,83,the fortnight to 2026-09-06,adoption,side,Vexing Bauble,"Vexing Bauble fell in the sideboard, 61/71 to 46/83 lists (86% to 55%)"
+2026-09-07,2026-09-20,83,the fortnight to 2026-09-06,adoption,main,Walking Ballista,"Walking Ballista fell in the mainboard, 35/71 to 18/83 lists (49% to 22%)"
+2026-09-07,2026-09-20,83,the fortnight to 2026-09-06,event,,,RC Baltimore
+2026-09-07,2026-09-20,83,the fortnight to 2026-09-06,event,,,RC China
+2026-09-07,2026-09-20,83,RC Baltimore,adoption,side,Chalice of the Void,"Chalice of the Void climbed in the sideboard, 10/59 to 31/83 lists (17% to 37%)"
+2026-09-07,2026-09-20,83,RC Baltimore,adoption,side,Crystal Barricade,"Crystal Barricade fell in the sideboard, 48/59 to 41/83 lists (81% to 49%)"
+2026-09-07,2026-09-20,83,RC Baltimore,adoption,side,Doorkeeper Thrull,"Doorkeeper Thrull climbed in the sideboard, 8/59 to 43/83 lists (14% to 52%)"
+2026-09-07,2026-09-20,83,RC Baltimore,adoption,side,Force of Vigor,"Force of Vigor fell in the sideboard, 43/59 to 31/83 lists (73% to 37%)"
+2026-09-07,2026-09-20,83,RC Baltimore,adoption,side,Icetill Explorer,"Icetill Explorer climbed in the sideboard, 11/59 to 40/83 lists (19% to 48%)"
+2026-09-07,2026-09-20,83,RC Baltimore,adoption,side,Pick Your Poison,"Pick Your Poison climbed in the sideboard, 4/59 to 45/83 lists (7% to 54%)"
+2026-09-07,2026-09-20,83,RC Baltimore,adoption,side,Vexing Bauble,"Vexing Bauble fell in the sideboard, 50/59 to 46/83 lists (85% to 55%)"
+2026-09-07,2026-09-20,83,RC China,adoption,side,Doorkeeper Thrull,"Doorkeeper Thrull climbed in the sideboard, 0/13 to 43/83 lists (0% to 52%)"
+2026-09-07,2026-09-20,83,RC China,adoption,side,Force of Vigor,"Force of Vigor fell in the sideboard, 13/13 to 31/83 lists (100% to 37%)"
+2026-09-07,2026-09-20,83,RC China,adoption,side,Icetill Explorer,"Icetill Explorer climbed in the sideboard, 1/13 to 40/83 lists (8% to 48%)"
+2026-09-07,2026-09-20,83,RC China,adoption,side,Pick Your Poison,"Pick Your Poison climbed in the sideboard, 0/13 to 45/83 lists (0% to 54%)"
+2026-09-07,2026-09-20,83,RC China,adoption,side,Reclamation Sage,"Reclamation Sage climbed in the sideboard, 1/13 to 42/83 lists (8% to 51%)"
+2026-09-07,2026-09-20,83,RC China,adoption,side,Thoughtseize,"Thoughtseize climbed in the sideboard, 2/13 to 53/83 lists (15% to 64%)"
+2026-09-07,2026-09-20,83,RC China,return,main,Vexing Bauble,"Vexing Bauble moves to the mainboard, 19 of 83 lists (23%)"
+2026-09-07,2026-09-20,83,RC China,adoption,side,Vexing Bauble,"Vexing Bauble fell in the sideboard, 13/13 to 46/83 lists (100% to 55%)"
+2026-09-07,2026-09-20,83,RC China,copies,main,Misty Rainforest,Misty Rainforest down from 2.5 to 1.7 copies on average

@@ -16,7 +16,6 @@ start,end,lists,against,kind,zone,card,text
 2026-06-29,2026-07-12,38,the fortnight to 2026-06-28,adoption,main,Murktide Regent,"Murktide Regent climbed in the mainboard, 6/40 to 16/38 lists (15% to 42%)"
 2026-06-29,2026-07-12,38,the fortnight to 2026-06-28,return,main,Nihil Spellbomb,"Nihil Spellbomb moves to the mainboard, 2 of 38 lists (5%)"
 2026-06-29,2026-07-12,38,the fortnight to 2026-06-28,adoption,main,Preordain,"Preordain climbed in the mainboard, 3/40 to 12/38 lists (8% to 32%)"
-2026-06-29,2026-07-12,38,the fortnight to 2026-06-28,return,main,Prismatic Ending,"Prismatic Ending returns after 6 weeks away, 2 of 38 lists (5%)"
 2026-06-29,2026-07-12,38,the fortnight to 2026-06-28,adoption,main,Scalding Tarn,"Scalding Tarn climbed in the mainboard, 8/40 to 17/38 lists (20% to 45%)"
 2026-06-29,2026-07-12,38,the fortnight to 2026-06-28,adoption,main,Sheoldred's Edict,"Sheoldred's Edict climbed in the mainboard, 19/40 to 32/38 lists (48% to 84%)"
 2026-06-29,2026-07-12,38,the fortnight to 2026-06-28,adoption,side,Sheoldred's Edict,"Sheoldred's Edict fell in the sideboard, 17/40 to 5/38 lists (42% to 13%)"
@@ -30,11 +29,9 @@ start,end,lists,against,kind,zone,card,text
 2026-07-27,2026-08-09,75,the fortnight to 2026-07-26,adoption,side,Chalice of the Void,"Chalice of the Void fell in the sideboard, 17/63 to 1/75 lists (27% to 1%)"
 2026-07-27,2026-08-09,75,the fortnight to 2026-07-26,adoption,main,Consign to Memory,"Consign to Memory climbed in the mainboard, 3/63 to 43/75 lists (5% to 57%)"
 2026-07-27,2026-08-09,75,the fortnight to 2026-07-26,adoption,side,Consign to Memory,"Consign to Memory fell in the sideboard, 60/63 to 32/75 lists (95% to 43%)"
-2026-07-27,2026-08-09,75,the fortnight to 2026-07-26,return,side,Extirpate,"Extirpate appears for the first time, 4 of 75 lists (5%)"
 2026-07-27,2026-08-09,75,the fortnight to 2026-07-26,adoption,side,Ghost Vacuum,"Ghost Vacuum climbed in the sideboard, 7/63 to 33/75 lists (11% to 44%)"
 2026-07-27,2026-08-09,75,the fortnight to 2026-07-26,adoption,main,Harbinger of the Seas,"Harbinger of the Seas climbed in the mainboard, 3/63 to 21/75 lists (5% to 28%)"
 2026-07-27,2026-08-09,75,the fortnight to 2026-07-26,adoption,side,Harbinger of the Seas,"Harbinger of the Seas fell in the sideboard, 57/63 to 48/75 lists (90% to 64%)"
-2026-07-27,2026-08-09,75,the fortnight to 2026-07-26,return,main,"Narset, Parter of Veils","Narset, Parter of Veils appears for the first time, 2 of 75 lists (3%)"
 2026-07-27,2026-08-09,75,the fortnight to 2026-07-26,return,main,Nulldrifter,"Nulldrifter appears for the first time, 2 of 75 lists (3%)"
 2026-07-27,2026-08-09,75,the fortnight to 2026-07-26,return,side,Pithing Needle,"Pithing Needle appears for the first time, 8 of 75 lists (11%)"
 2026-07-27,2026-08-09,75,the fortnight to 2026-07-26,return,main,Shadow of Doubt,"Shadow of Doubt appears for the first time, 4 of 75 lists (5%)"
@@ -53,6 +50,28 @@ start,end,lists,against,kind,zone,card,text
 2026-08-24,2026-09-06,64,Spotlight Dallas,adoption,main,Consign to Memory,"Consign to Memory climbed in the mainboard, 4/21 to 29/64 lists (19% to 45%)"
 2026-08-24,2026-09-06,64,Spotlight Dallas,adoption,side,Consign to Memory,"Consign to Memory fell in the sideboard, 17/21 to 35/64 lists (81% to 55%)"
 2026-08-24,2026-09-06,64,Spotlight Dallas,adoption,main,Drown in the Loch,"Drown in the Loch fell in the mainboard, 18/21 to 32/64 lists (86% to 50%)"
-2026-08-24,2026-09-06,64,Spotlight Dallas,return,main,Requiting Hex,"Requiting Hex moves to the mainboard, 4 of 64 lists (6%)"
 2026-08-24,2026-09-06,64,Spotlight Dallas,event,,,Spotlight Brisbane
 2026-08-24,2026-09-06,64,Spotlight Dallas,event,,,Spotlight Dallas
+2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,adoption,main,Bloodstained Mire,"Bloodstained Mire climbed in the mainboard, 20/64 to 34/55 lists (31% to 62%)"
+2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,adoption,side,Break the Ice,"Break the Ice fell in the sideboard, 25/64 to 7/55 lists (39% to 13%)"
+2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,adoption,main,Cling to Dust,"Cling to Dust fell in the mainboard, 41/64 to 18/55 lists (64% to 33%)"
+2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,adoption,main,Consign to Memory,"Consign to Memory climbed in the mainboard, 29/64 to 36/55 lists (45% to 65%)"
+2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,adoption,side,Consign to Memory,"Consign to Memory fell in the sideboard, 35/64 to 19/55 lists (55% to 35%)"
+2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,adoption,main,Drown in the Loch,"Drown in the Loch climbed in the mainboard, 32/64 to 42/55 lists (50% to 76%)"
+2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,adoption,main,Gloomlake Verge,"Gloomlake Verge climbed in the mainboard, 27/64 to 40/55 lists (42% to 73%)"
+2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,adoption,main,Lórien Revealed,"Lórien Revealed fell in the mainboard, 17/64 to 1/55 lists (27% to 2%)"
+2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,adoption,main,Preordain,"Preordain fell in the mainboard, 43/64 to 16/55 lists (67% to 29%)"
+2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,adoption,side,Requiting Hex,"Requiting Hex climbed in the sideboard, 18/64 to 39/55 lists (28% to 71%)"
+2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,adoption,main,Scalding Tarn,"Scalding Tarn climbed in the mainboard, 15/64 to 34/55 lists (23% to 62%)"
+2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,adoption,side,Stern Scolding,"Stern Scolding climbed in the sideboard, 11/64 to 38/55 lists (17% to 69%)"
+2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,adoption,main,"Wan Shi Tong, Librarian","Wan Shi Tong, Librarian climbed in the mainboard, 16/64 to 33/55 lists (25% to 60%)"
+2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,copies,main,Flooded Strand,Flooded Strand down from 2.0 to 1.6 copies on average
+2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,copies,main,Island,Island up from 2.2 to 2.7 copies on average
+2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,copies,main,Marsh Flats,Marsh Flats down from 2.0 to 1.4 copies on average
+2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,copies,main,Orcish Bowmasters,Orcish Bowmasters up from 2.4 to 2.9 copies on average
+2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,copies,main,Sheoldred's Edict,Sheoldred's Edict down from 1.9 to 1.3 copies on average
+2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,event,,,RC Baltimore
+2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,event,,,RC China
+2026-09-07,2026-09-20,55,RC Baltimore,adoption,main,Cling to Dust,"Cling to Dust fell in the mainboard, 38/68 to 18/55 lists (56% to 33%)"
+2026-09-07,2026-09-20,55,RC Baltimore,adoption,main,Marsh Flats,"Marsh Flats climbed in the mainboard, 40/68 to 47/55 lists (59% to 85%)"
+2026-09-07,2026-09-20,55,RC China,stable,,,
