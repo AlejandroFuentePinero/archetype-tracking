@@ -52,26 +52,24 @@ start,end,lists,against,kind,zone,card,text
 2026-08-24,2026-09-06,64,Spotlight Dallas,adoption,main,Drown in the Loch,"Drown in the Loch fell in the mainboard, 18/21 to 32/64 lists (86% to 50%)"
 2026-08-24,2026-09-06,64,Spotlight Dallas,event,,,Spotlight Brisbane
 2026-08-24,2026-09-06,64,Spotlight Dallas,event,,,Spotlight Dallas
-2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,adoption,main,Bloodstained Mire,"Bloodstained Mire climbed in the mainboard, 20/64 to 34/55 lists (31% to 62%)"
-2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,adoption,side,Break the Ice,"Break the Ice fell in the sideboard, 25/64 to 7/55 lists (39% to 13%)"
-2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,adoption,main,Cling to Dust,"Cling to Dust fell in the mainboard, 41/64 to 18/55 lists (64% to 33%)"
-2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,adoption,main,Consign to Memory,"Consign to Memory climbed in the mainboard, 29/64 to 36/55 lists (45% to 65%)"
-2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,adoption,side,Consign to Memory,"Consign to Memory fell in the sideboard, 35/64 to 19/55 lists (55% to 35%)"
-2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,adoption,main,Drown in the Loch,"Drown in the Loch climbed in the mainboard, 32/64 to 42/55 lists (50% to 76%)"
-2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,adoption,main,Gloomlake Verge,"Gloomlake Verge climbed in the mainboard, 27/64 to 40/55 lists (42% to 73%)"
-2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,adoption,main,Lórien Revealed,"Lórien Revealed fell in the mainboard, 17/64 to 1/55 lists (27% to 2%)"
-2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,adoption,main,Preordain,"Preordain fell in the mainboard, 43/64 to 16/55 lists (67% to 29%)"
-2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,adoption,side,Requiting Hex,"Requiting Hex climbed in the sideboard, 18/64 to 39/55 lists (28% to 71%)"
-2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,adoption,main,Scalding Tarn,"Scalding Tarn climbed in the mainboard, 15/64 to 34/55 lists (23% to 62%)"
-2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,adoption,side,Stern Scolding,"Stern Scolding climbed in the sideboard, 11/64 to 38/55 lists (17% to 69%)"
-2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,adoption,main,"Wan Shi Tong, Librarian","Wan Shi Tong, Librarian climbed in the mainboard, 16/64 to 33/55 lists (25% to 60%)"
-2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,copies,main,Flooded Strand,Flooded Strand down from 2.0 to 1.6 copies on average
-2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,copies,main,Island,Island up from 2.2 to 2.7 copies on average
-2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,copies,main,Marsh Flats,Marsh Flats down from 2.0 to 1.4 copies on average
-2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,copies,main,Orcish Bowmasters,Orcish Bowmasters up from 2.4 to 2.9 copies on average
-2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,copies,main,Sheoldred's Edict,Sheoldred's Edict down from 1.9 to 1.3 copies on average
-2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,event,,,RC Baltimore
-2026-09-07,2026-09-20,55,the fortnight to 2026-09-06,event,,,RC China
-2026-09-07,2026-09-20,55,RC Baltimore,adoption,main,Cling to Dust,"Cling to Dust fell in the mainboard, 38/68 to 18/55 lists (56% to 33%)"
-2026-09-07,2026-09-20,55,RC Baltimore,adoption,main,Marsh Flats,"Marsh Flats climbed in the mainboard, 40/68 to 47/55 lists (59% to 85%)"
-2026-09-07,2026-09-20,55,RC China,stable,,,
+2026-09-07,2026-09-20,54,the fortnight to 2026-09-06,adoption,main,Bloodstained Mire,"Bloodstained Mire climbed in the mainboard, 20/64 to 33/54 lists (31% to 61%)"
+2026-09-07,2026-09-20,54,the fortnight to 2026-09-06,adoption,side,Break the Ice,"Break the Ice fell in the sideboard, 25/64 to 7/54 lists (39% to 13%)"
+2026-09-07,2026-09-20,54,the fortnight to 2026-09-06,adoption,main,Cling to Dust,"Cling to Dust fell in the mainboard, 41/64 to 18/54 lists (64% to 33%)"
+2026-09-07,2026-09-20,54,the fortnight to 2026-09-06,adoption,main,Drown in the Loch,"Drown in the Loch climbed in the mainboard, 32/64 to 41/54 lists (50% to 76%)"
+2026-09-07,2026-09-20,54,the fortnight to 2026-09-06,adoption,main,Gloomlake Verge,"Gloomlake Verge climbed in the mainboard, 27/64 to 39/54 lists (42% to 72%)"
+2026-09-07,2026-09-20,54,the fortnight to 2026-09-06,adoption,main,Lórien Revealed,"Lórien Revealed fell in the mainboard, 17/64 to 1/54 lists (27% to 2%)"
+2026-09-07,2026-09-20,54,the fortnight to 2026-09-06,adoption,main,Preordain,"Preordain fell in the mainboard, 43/64 to 16/54 lists (67% to 30%)"
+2026-09-07,2026-09-20,54,the fortnight to 2026-09-06,adoption,side,Requiting Hex,"Requiting Hex climbed in the sideboard, 18/64 to 38/54 lists (28% to 70%)"
+2026-09-07,2026-09-20,54,the fortnight to 2026-09-06,adoption,main,Scalding Tarn,"Scalding Tarn climbed in the mainboard, 15/64 to 33/54 lists (23% to 61%)"
+2026-09-07,2026-09-20,54,the fortnight to 2026-09-06,adoption,side,Stern Scolding,"Stern Scolding climbed in the sideboard, 11/64 to 37/54 lists (17% to 69%)"
+2026-09-07,2026-09-20,54,the fortnight to 2026-09-06,adoption,main,"Wan Shi Tong, Librarian","Wan Shi Tong, Librarian climbed in the mainboard, 16/64 to 32/54 lists (25% to 59%)"
+2026-09-07,2026-09-20,54,the fortnight to 2026-09-06,copies,main,Flooded Strand,Flooded Strand down from 2.0 to 1.6 copies on average
+2026-09-07,2026-09-20,54,the fortnight to 2026-09-06,copies,main,Island,Island up from 2.2 to 2.7 copies on average
+2026-09-07,2026-09-20,54,the fortnight to 2026-09-06,copies,main,Marsh Flats,Marsh Flats down from 2.0 to 1.4 copies on average
+2026-09-07,2026-09-20,54,the fortnight to 2026-09-06,copies,main,Orcish Bowmasters,Orcish Bowmasters up from 2.4 to 2.9 copies on average
+2026-09-07,2026-09-20,54,the fortnight to 2026-09-06,copies,main,Sheoldred's Edict,Sheoldred's Edict down from 1.9 to 1.3 copies on average
+2026-09-07,2026-09-20,54,the fortnight to 2026-09-06,event,,,RC Baltimore
+2026-09-07,2026-09-20,54,the fortnight to 2026-09-06,event,,,RC China
+2026-09-07,2026-09-20,54,RC Baltimore,adoption,main,Cling to Dust,"Cling to Dust fell in the mainboard, 38/68 to 18/54 lists (56% to 33%)"
+2026-09-07,2026-09-20,54,RC Baltimore,adoption,main,Marsh Flats,"Marsh Flats climbed in the mainboard, 40/68 to 46/54 lists (59% to 85%)"
+2026-09-07,2026-09-20,54,RC China,stable,,,

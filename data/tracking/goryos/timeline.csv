@@ -51,10 +51,11 @@ start,end,lists,against,kind,zone,card,text
 2026-08-24,2026-09-06,89,Spotlight Dallas,copies,main,Faithful Mending,"Faithful Mending at 4 copies climbed, 38/77 to 60/89 lists (49% to 67%)"
 2026-08-24,2026-09-06,89,Spotlight Dallas,event,,,Spotlight Brisbane
 2026-08-24,2026-09-06,89,Spotlight Dallas,event,,,Spotlight Dallas
-2026-09-07,2026-09-20,53,the fortnight to 2026-09-06,copies,main,Faithful Mending,"Faithful Mending at 4 copies fell, 60/89 to 30/53 lists (67% to 57%)"
-2026-09-07,2026-09-20,53,the fortnight to 2026-09-06,event,,,RC Baltimore
-2026-09-07,2026-09-20,53,the fortnight to 2026-09-06,event,,,RC China
-2026-09-07,2026-09-20,53,RC Baltimore,adoption,main,March of Otherworldly Light,"March of Otherworldly Light climbed in the mainboard, 72/105 to 47/53 lists (69% to 89%)"
-2026-09-07,2026-09-20,53,RC Baltimore,copies,main,Faithful Mending,"Faithful Mending at 3 copies fell, 73/105 to 21/53 lists (70% to 40%)"
-2026-09-07,2026-09-20,53,RC Baltimore,copies,main,Faithful Mending,"Faithful Mending at 4 copies climbed, 29/105 to 30/53 lists (28% to 57%)"
-2026-09-07,2026-09-20,53,RC China,stable,,,
+2026-09-07,2026-09-20,52,the fortnight to 2026-09-06,copies,main,Faithful Mending,"Faithful Mending at 3 copies climbed, 27/89 to 21/52 lists (30% to 40%)"
+2026-09-07,2026-09-20,52,the fortnight to 2026-09-06,copies,main,Faithful Mending,"Faithful Mending at 4 copies fell, 60/89 to 29/52 lists (67% to 56%)"
+2026-09-07,2026-09-20,52,the fortnight to 2026-09-06,copies,main,Prismatic Ending,"Prismatic Ending at 2 copies fell, 81/89 to 42/52 lists (91% to 81%)"
+2026-09-07,2026-09-20,52,the fortnight to 2026-09-06,event,,,RC Baltimore
+2026-09-07,2026-09-20,52,the fortnight to 2026-09-06,event,,,RC China
+2026-09-07,2026-09-20,52,RC Baltimore,copies,main,Faithful Mending,"Faithful Mending at 3 copies fell, 73/105 to 21/52 lists (70% to 40%)"
+2026-09-07,2026-09-20,52,RC Baltimore,copies,main,Faithful Mending,"Faithful Mending at 4 copies climbed, 29/105 to 29/52 lists (28% to 56%)"
+2026-09-07,2026-09-20,52,RC China,stable,,,

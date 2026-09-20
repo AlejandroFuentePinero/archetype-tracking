@@ -73,25 +73,25 @@ start,end,lists,against,kind,zone,card,text
 2026-08-24,2026-09-06,82,Spotlight Dallas,adoption,side,Warping Wail,"Warping Wail fell in the sideboard, 15/18 to 37/82 lists (83% to 45%)"
 2026-08-24,2026-09-06,82,Spotlight Dallas,event,,,Spotlight Brisbane
 2026-08-24,2026-09-06,82,Spotlight Dallas,event,,,Spotlight Dallas
-2026-09-07,2026-09-20,201,the fortnight to 2026-09-06,return,side,Icetill Explorer,"Icetill Explorer appears for the first time, 3 of 201 lists (1%)"
-2026-09-07,2026-09-20,201,the fortnight to 2026-09-06,return,main,Midnight Tilling,"Midnight Tilling appears for the first time, 7 of 201 lists (3%)"
-2026-09-07,2026-09-20,201,the fortnight to 2026-09-06,adoption,side,Pithing Needle,"Pithing Needle fell in the sideboard, 68/82 to 119/201 lists (83% to 59%)"
-2026-09-07,2026-09-20,201,the fortnight to 2026-09-06,adoption,side,Six,"Six climbed in the sideboard, 12/82 to 103/201 lists (15% to 51%)"
-2026-09-07,2026-09-20,201,the fortnight to 2026-09-06,adoption,side,Soulless Jailer,"Soulless Jailer fell in the sideboard, 48/82 to 27/201 lists (59% to 13%)"
-2026-09-07,2026-09-20,201,the fortnight to 2026-09-06,adoption,side,Thief of Existence,"Thief of Existence climbed in the sideboard, 52/82 to 176/201 lists (63% to 88%)"
-2026-09-07,2026-09-20,201,the fortnight to 2026-09-06,return,main,Trinisphere,"Trinisphere moves to the mainboard, 6 of 201 lists (3%)"
-2026-09-07,2026-09-20,201,the fortnight to 2026-09-06,adoption,side,Warping Wail,"Warping Wail climbed in the sideboard, 37/82 to 145/201 lists (45% to 72%)"
-2026-09-07,2026-09-20,201,the fortnight to 2026-09-06,adoption,main,"Yavimaya, Cradle of Growth","Yavimaya, Cradle of Growth climbed in the mainboard, 49/82 to 178/201 lists (60% to 89%)"
-2026-09-07,2026-09-20,201,the fortnight to 2026-09-06,copies,main,Dismember,Dismember down from 2.0 to 1.4 copies on average
-2026-09-07,2026-09-20,201,the fortnight to 2026-09-06,event,,,RC Baltimore
-2026-09-07,2026-09-20,201,the fortnight to 2026-09-06,event,,,RC China
-2026-09-07,2026-09-20,201,RC Baltimore,stable,,,
-2026-09-07,2026-09-20,201,RC China,adoption,main,Gemstone Caverns,"Gemstone Caverns climbed in the mainboard, 13/24 to 154/201 lists (54% to 77%)"
-2026-09-07,2026-09-20,201,RC China,adoption,main,Grove of the Burnwillows,"Grove of the Burnwillows fell in the mainboard, 7/24 to 16/201 lists (29% to 8%)"
-2026-09-07,2026-09-20,201,RC China,return,side,Icetill Explorer,"Icetill Explorer appears for the first time, 3 of 201 lists (1%)"
-2026-09-07,2026-09-20,201,RC China,return,main,Midnight Tilling,"Midnight Tilling appears for the first time, 7 of 201 lists (3%)"
-2026-09-07,2026-09-20,201,RC China,adoption,main,Sire of Seven Deaths,"Sire of Seven Deaths fell in the mainboard, 11/24 to 38/201 lists (46% to 19%)"
-2026-09-07,2026-09-20,201,RC China,adoption,side,Sire of Seven Deaths,"Sire of Seven Deaths climbed in the sideboard, 12/24 to 150/201 lists (50% to 75%)"
-2026-09-07,2026-09-20,201,RC China,return,main,Trinisphere,"Trinisphere moves to the mainboard, 6 of 201 lists (3%)"
-2026-09-07,2026-09-20,201,RC China,copies,main,"Emrakul, the Promised End","Emrakul, the Promised End up from 3.3 to 3.8 copies on average"
-2026-09-07,2026-09-20,201,RC China,copies,main,Forest,Forest up from 5.2 to 5.7 copies on average
+2026-09-07,2026-09-20,200,the fortnight to 2026-09-06,return,side,Icetill Explorer,"Icetill Explorer appears for the first time, 3 of 200 lists (2%)"
+2026-09-07,2026-09-20,200,the fortnight to 2026-09-06,return,main,Midnight Tilling,"Midnight Tilling appears for the first time, 6 of 200 lists (3%)"
+2026-09-07,2026-09-20,200,the fortnight to 2026-09-06,adoption,side,Pithing Needle,"Pithing Needle fell in the sideboard, 68/82 to 119/200 lists (83% to 60%)"
+2026-09-07,2026-09-20,200,the fortnight to 2026-09-06,adoption,side,Six,"Six climbed in the sideboard, 12/82 to 103/200 lists (15% to 52%)"
+2026-09-07,2026-09-20,200,the fortnight to 2026-09-06,adoption,side,Soulless Jailer,"Soulless Jailer fell in the sideboard, 48/82 to 26/200 lists (59% to 13%)"
+2026-09-07,2026-09-20,200,the fortnight to 2026-09-06,adoption,side,Thief of Existence,"Thief of Existence climbed in the sideboard, 52/82 to 176/200 lists (63% to 88%)"
+2026-09-07,2026-09-20,200,the fortnight to 2026-09-06,return,main,Trinisphere,"Trinisphere moves to the mainboard, 6 of 200 lists (3%)"
+2026-09-07,2026-09-20,200,the fortnight to 2026-09-06,adoption,side,Warping Wail,"Warping Wail climbed in the sideboard, 37/82 to 146/200 lists (45% to 73%)"
+2026-09-07,2026-09-20,200,the fortnight to 2026-09-06,adoption,main,"Yavimaya, Cradle of Growth","Yavimaya, Cradle of Growth climbed in the mainboard, 49/82 to 177/200 lists (60% to 88%)"
+2026-09-07,2026-09-20,200,the fortnight to 2026-09-06,copies,main,Dismember,Dismember down from 2.0 to 1.4 copies on average
+2026-09-07,2026-09-20,200,the fortnight to 2026-09-06,event,,,RC Baltimore
+2026-09-07,2026-09-20,200,the fortnight to 2026-09-06,event,,,RC China
+2026-09-07,2026-09-20,200,RC Baltimore,stable,,,
+2026-09-07,2026-09-20,200,RC China,adoption,main,Gemstone Caverns,"Gemstone Caverns climbed in the mainboard, 13/24 to 154/200 lists (54% to 77%)"
+2026-09-07,2026-09-20,200,RC China,adoption,main,Grove of the Burnwillows,"Grove of the Burnwillows fell in the mainboard, 7/24 to 16/200 lists (29% to 8%)"
+2026-09-07,2026-09-20,200,RC China,return,side,Icetill Explorer,"Icetill Explorer appears for the first time, 3 of 200 lists (2%)"
+2026-09-07,2026-09-20,200,RC China,return,main,Midnight Tilling,"Midnight Tilling appears for the first time, 6 of 200 lists (3%)"
+2026-09-07,2026-09-20,200,RC China,adoption,main,Sire of Seven Deaths,"Sire of Seven Deaths fell in the mainboard, 11/24 to 39/200 lists (46% to 20%)"
+2026-09-07,2026-09-20,200,RC China,adoption,side,Sire of Seven Deaths,"Sire of Seven Deaths climbed in the sideboard, 12/24 to 148/200 lists (50% to 74%)"
+2026-09-07,2026-09-20,200,RC China,return,main,Trinisphere,"Trinisphere moves to the mainboard, 6 of 200 lists (3%)"
+2026-09-07,2026-09-20,200,RC China,copies,main,"Emrakul, the Promised End","Emrakul, the Promised End up from 3.3 to 3.8 copies on average"
+2026-09-07,2026-09-20,200,RC China,copies,main,Forest,Forest up from 5.2 to 5.7 copies on average
