@@ -554,6 +554,38 @@ TRACKED_DECKS = {
         # lists beside no white spell, a fetchable land of the Temur shell.
         "signature": ("Living End", "Shardless Agent", "Violent Outburst"),
     },
+    # The UWr Phelia deck, named by Alejandro on 2026-09-21 and tracked from
+    # that day. It had been finishing since 2026-05-19 and answering to no
+    # rule: 58 lists and 37 pilots, 20 of them in September, turned away as
+    # UWr Control carrying another deck's engine and claimed by nothing after
+    # that. Phelia, Quantum Riddler and Consign to Memory together, which no
+    # other tracked deck's mainboard holds inside these colours.
+    #
+    # Tested after every deck that existed before it, so no list changes hands
+    # on the day it is added: measured over the whole cache it takes none, and
+    # the order says so rather than the measurement having to be repeated.
+    "jeskaiblink": {
+        "signature": (
+            "Phelia, Exuberant Shepherd", "Quantum Riddler", "Consign to Memory",
+        ),
+        # The threat slot, one of four. Casey Jones and Fable are the same slot
+        # played two ways (Alejandro, 2026-09-21), 10 and 8 of the 23 lists in
+        # the fortnight to 20 September, and Galvanic Discharge and Ragavan sit
+        # in 56 and 54 of the 58. Required as a tier rather than carried in the
+        # core: on the core alone the rule reaches 366 lists that are Domain
+        # Zoo, and requiring Discharge outright drops 5 members that play the
+        # slot the other way.
+        "supporting": (1, (
+            "Galvanic Discharge", "Casey Jones, Vigilante",
+            "Fable of the Mirror-Breaker", "Ragavan, Nimble Pilferer",
+        )),
+        # The line against Esper Blink, which is the same Phelia on the same
+        # blink plan in WUB, and against Domain Zoo, which mainboards Phelia
+        # and Consign to Memory in five colours. No engine exclusion: this deck
+        # carries the energy pair in 25 of its 58 lists and Ephemerate in 29,
+        # so excluding either would be excluding the deck.
+        "colours": frozenset("UWR"),
+    },
 }
 
 
@@ -824,6 +856,19 @@ REPORTS = {
         "membership": (
             "mainboard holds Living End, Shardless Agent and Violent Outburst. No colour rule and "
             "no versions."
+        ),
+    },
+    "jeskaiblink": {
+        "name": "Jeskai Blink",
+        "archetype": "jeskaiblink",
+        "camp": None,
+        "watch": (),
+        "manabase": False,
+        "membership": (
+            "mainboard holds Phelia, Exuberant Shepherd, Quantum Riddler and Consign to Memory "
+            "with any of Galvanic Discharge, Casey Jones, Vigilante, Fable of the Mirror-Breaker "
+            "or Ragavan, Nimble Pilferer, and casts under five spells outside blue, white and red "
+            "and no playset of one. No versions."
         ),
     },
 }
