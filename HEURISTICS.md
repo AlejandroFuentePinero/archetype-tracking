@@ -773,3 +773,24 @@ Heuristic candidates, held here until Alejandro rules on them. Nothing in this
 section is adopted knowledge and nothing here may steer an analysis. Each entry
 cites the evidence that raised it and counts the sessions it has been put to
 him in. See `.claude/skills/mtg-heuristics/SKILL.md`.
+
+**A Phelia UWr shell is finishing and belongs to no deck** (raised 2026-09-21,
+surfaced 0×):
+Phelia, Exuberant Shepherd is Esper Blink's engine marker, so a list holding
+UWr Control's core and Phelia is turned away by the UWr rule as another deck's
+engine, and Blink's own three-card core does not claim it either. If these are
+UWr Control adopting a card, the deck's week is bigger than the five finishes
+this report gives it; if they are a separate brew, they want a rule of their
+own.
+*Evidence*: the 2026-09-21 refresh named 48 lists holding UWr Control's core
+that the blink marker turned away, 23 of them in the 14 days to 2026-09-20, the
+largest recent bucket in a fall-out of 81. Across the store since 2026-09-07,
+39 Phelia lists are claimed by nothing at all, 19 of them in swiss-like
+tournaments, and they are finishing: ShadowTitan1 7th in a challenge-32 on
+20 September, MTGHolic 21st and ejk 24th in challenge-16s on the 19th,
+ganache1127 24th in a challenge-32 on the 20th.
+*Applies if adopted*: either UWr Control stops naming blink as another deck's
+engine, which admits these lists and moves its frozen weeks from the week they
+are unfrozen onward, or the shell is named as its own deck with its own rule.
+Both are membership rulings and neither may be taken by widening a rule to
+catch lists that look like the deck.
