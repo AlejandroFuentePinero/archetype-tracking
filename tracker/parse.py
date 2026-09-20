@@ -15,6 +15,9 @@ from . import config
 # What a slug appends to the event kind: publication date plus event id.
 DATED_SUFFIX_RE = re.compile(r"-\d{4}-\d{2}-\d{2}\d+$")
 
+# The day inside that suffix, which is the day the site listed the event under.
+SLUG_DAY_RE = re.compile(r"\d{4}-\d{2}-\d{2}(?=\d+$)")
+
 # How the payload types a land, in the fixed-width column it publishes types in.
 LAND_TYPE = "LAND"
 
@@ -180,18 +183,44 @@ def parse_event(payload: dict) -> list[Decklist]:
     return lists
 
 
+def _identity(payload: dict) -> tuple[str, str] | str:
+    """What makes two captures the same event.
+
+    A challenge-class event publishes its own id and start time, and those are
+    the identity. `site_name` is not: it echoes back the slug that was asked
+    for, the same in all 637 captures as the name the file was saved under, so
+    an event the site lists twice answers to both names and reads as two
+    events. That is how 12854081 reached the store twice on 2026-09-21, once
+    under a slug dated 2026-08-24 and once under its own 2026-09-12, putting
+    32 lists and 21 tracked members into the fortnight twice.
+
+    A league dump publishes neither id nor start time, one dump to a day, so
+    its slug is the only identity it has.
+    """
+    return (payload["event_id"], payload["starttime"]) if payload.get("event_id") else payload["site_name"]
+
+
+def misdated(payload: dict) -> bool:
+    """Whether a capture was taken under a slug carrying a day that is not the event's."""
+    if not payload.get("starttime"):
+        return False
+    listed = SLUG_DAY_RE.search(payload["site_name"])
+    return bool(listed) and listed.group() != payload["starttime"][:10]
+
+
 def parse_cache(raw_dir: Path) -> list[Decklist]:
     """Every cached event in `raw_dir`, parsed, counted once.
 
     The site occasionally lists an event a second time under a wrongly dated
-    slug. Both slugs serve the same payload, and that payload names the event it
-    really is, so `site_name` is the event's identity and the filename is not.
+    slug, and both slugs serve the same payload. Where two captures are the
+    same event the one taken under the event's own day is the one read, so
+    which capture survives is a fact about the site's listing and not about
+    which filename sorts first.
     """
-    lists, seen = [], set()
+    events: dict[object, tuple[bool, list[Decklist]]] = {}
     for path in sorted(raw_dir.glob("*.json")):
         payload = json.loads(path.read_text(encoding="utf-8"))
-        if payload["site_name"] in seen:
-            continue
-        seen.add(payload["site_name"])
-        lists.extend(parse_event(payload))
-    return lists
+        key, wrong_day = _identity(payload), misdated(payload)
+        if key not in events or (events[key][0] and not wrong_day):
+            events[key] = (wrong_day, parse_event(payload))
+    return [decklist for _, lists in events.values() for decklist in lists]

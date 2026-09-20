@@ -174,8 +174,10 @@ def test_a_no_playoff_event_finishes_on_the_swiss_order():
 def test_an_event_listed_under_two_slugs_is_one_event():
     """The site occasionally lists an event a second time under a wrong date.
 
-    Both slugs serve the same 32 lists, and the payload names the event it
-    really is, so counting the cache by slug would inflate every metric.
+    Both slugs serve the same 32 lists and each capture echoes back the slug it
+    was asked for, so the payload's own name says nothing about which event it
+    is. The event id and start time do, and counting the cache by anything else
+    inflates every metric off the doubled lists.
     """
     lists = classify_cache(FIXTURE_DUPLICATE)
 
@@ -605,9 +607,9 @@ def test_a_capture_interrupted_mid_write_is_not_left_in_the_cache(tmp_path, monk
 class MisdatedSite(CapturedSite):
     """The site listing one event under a wrongly dated slug, then correcting it.
 
-    Both listings serve the same payload, and the payload names the event it
-    really is. Seen on the captured 2026-07-08 challenge, listed as 2026-07-24
-    until the site withdrew the second slug.
+    Both listings serve the same event, and each capture echoes back the slug
+    it was asked for. Seen on the captured 2026-07-08 challenge, listed as
+    2026-07-24 until the site withdrew the second slug.
     """
 
     EVENTS = {path.stem: path for path in FIXTURE_DUPLICATE.glob("*.json")}
@@ -620,15 +622,16 @@ class MisdatedSite(CapturedSite):
         return [self.listed]
 
 
-def test_an_event_listed_under_a_wrongly_dated_slug_is_cached_under_its_own_name(tmp_path):
+def test_a_corrected_listing_clears_the_capture_taken_under_the_wrong_date(tmp_path):
     """One event, one capture, whichever date the index happened to give it.
 
-    Filed under the slug asked for, the correction lands beside the capture
-    rather than on it, and the cache comes to hold the event twice: 12 of the
-    628 captures on 2026-09-14. `parse_cache` counts such an event once, but it
-    keeps whichever of the two names sorts first, which is a fact about the
-    alphabet and not about the capture. Filed under the name the payload gives
-    itself there is nothing to choose between.
+    The capture was filed under the name its payload gave itself, on the belief
+    that the payload names the event it really is. It does not: `site_name`
+    echoes back the slug that was asked for, so filing by it was filing by slug
+    and the correction landed beside the capture rather than on it. That put
+    the 2026-09-12 challenge in the store twice on 2026-09-21, 32 lists and 21
+    tracked members doubled inside the fortnight. The event id is the identity,
+    so the capture taken under the event's own day clears the other.
     """
     raw_dir, db = tmp_path / "raw", tmp_path / "engine.duckdb"
     misdated = "modern-challenge-32-2026-07-2412846530"
@@ -638,15 +641,37 @@ def test_an_event_listed_under_a_wrongly_dated_slug_is_cached_under_its_own_name
     refresh("2026-07-01", "2026-07-31", raw_dir, db, source=site, today="2026-07-31")
 
     assert site.fetches == [misdated]
-    assert [path.stem for path in raw_dir.glob("*.json")] == [corrected]
+    assert [path.stem for path in raw_dir.glob("*.json")] == [misdated]
     assert len(classify_cache(raw_dir)) == 32
 
-    # The site corrects the listing. The event is already held, under the name
-    # the correction uses, so the cache neither grows nor twins.
+    # The site corrects the listing. The correction is the event's own day, so
+    # it takes the place of the capture taken under the wrong one.
     refresh("2026-07-01", "2026-07-31", raw_dir, db, source=MisdatedSite(corrected), today="2026-07-31")
 
     assert [path.stem for path in raw_dir.glob("*.json")] == [corrected]
     assert len(classify_cache(raw_dir)) == 32
+
+
+def test_both_captures_on_disk_still_read_as_one_event(tmp_path):
+    """The cache holding an event twice is a state the store has to survive.
+
+    Whichever order the two listings arrive in, and whether or not the stale
+    capture was ever cleared, the event is read once and read off the capture
+    taken under its own day.
+    """
+    raw_dir, db = tmp_path / "raw", tmp_path / "engine.duckdb"
+    raw_dir.mkdir(parents=True)
+    for path in FIXTURE_DUPLICATE.glob("*.json"):
+        (raw_dir / path.name).write_bytes(path.read_bytes())
+
+    store.build(raw_dir, db)
+
+    with duckdb.connect(db, read_only=True) as con:
+        assert con.execute("SELECT count(*) FROM decklists").fetchone()[0] == 32
+        assert all(
+            "2026-07-08" in list_id
+            for (list_id,) in con.execute("SELECT list_id FROM decklists").fetchall()
+        )
 
 
 def _ids(db) -> dict[str, str]:
