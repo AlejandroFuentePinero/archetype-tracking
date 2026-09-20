@@ -81,7 +81,7 @@ def _history(db_path: Path, archetype: str, camp: str | None) -> tuple[list[dict
             )
         )
         lists = _rows(
-            con.execute(f"SELECT list_id, date, lands FROM decklists WHERE {where}", plain)
+            con.execute(f"SELECT list_id, pilot, date, lands FROM decklists WHERE {where}", plain)
         )
     return registered, lists
 
@@ -374,6 +374,7 @@ def findings(
         held.setdefault(key, {}).setdefault(index, []).append(row["list_id"])
         copies.setdefault(key, {}).setdefault(index, []).append(row["main"])
 
+    pilots = {row["list_id"]: row["pilot"] for row in lists}
     paper = _paper(db_path, spotlights, directory, report, since)
     typed = land_names(db_path) if paper and report["manabase"] else frozenset()
     watched = set(report["watch"])
@@ -423,7 +424,7 @@ def findings(
                 if (
                     not was
                     and (migrating or _readable_absence(index, sizes))
-                    and _is_return(bins, index, sizes, zone, share)
+                    and _is_return(bins, index, sizes, zone, share, pilots)
                 ):
                     phrase = f"moves to the {zone}board" if migrating else _return_phrase(bins, index)
                     found.append(
@@ -532,7 +533,12 @@ def _paper(
 
 
 def _is_return(
-    bins: dict[int, list[int]], index: int, sizes: dict[int, int], zone: str, share: float
+    bins: dict[int, list[int]],
+    index: int,
+    sizes: dict[int, int],
+    zone: str,
+    share: float,
+    pilots: dict[int, str],
 ) -> bool:
     """Whether an appearance with no bin behind it is a return worth a row.
 
@@ -545,11 +551,17 @@ def _is_return(
     has to be a larger share than the card has ever held, which is what
     separates a card the field turned to from one that was always a one-off.
 
+    The gate counts pilots and not lists. A league publishes every 5-0, so a
+    grinder entering with a brew is several lists of it in one fortnight, and
+    read as lists the deck appears to have picked the card up when one player
+    did. The row still names the lists, that being what every other row here
+    counts; what the pilots decide is whether it prints.
+
     How long the card was gone is this function's question. Whether there were
     enough lists for it to have been gone from is `_readable_absence`.
     """
-    gate = config.TRACK_RETURN_MAIN_LISTS if zone == "main" else config.TRACK_RETURN_SIDE_LISTS
-    if len(bins[index]) < gate:
+    gate = config.TRACK_RETURN_MAIN_PILOTS if zone == "main" else config.TRACK_RETURN_SIDE_PILOTS
+    if len({pilots[list_id] for list_id in bins[index]}) < gate:
         return False
     absence = config.RETURN_ABSENCE_DAYS // config.TRACK_BIN_DAYS
     if any(index - back in bins for back in range(1, absence + 1)):

@@ -730,49 +730,46 @@ shipped. A later session proposing to move one answers here rather than
 re-measuring, and from 2026-09-15 moving any of them is a change of method under
 a reader and answers to ADR 0002.
 
+**A fortnight of fewer than ten lists cannot set the MTGO bar a novelty is
+refused against** (2026-09-21):
+The novelty reading refuses a card the deck's MTGO history has held above 10% of
+a fortnight in that zone. Read over a thin fortnight that bar inverts: a closed
+bin of two lists holding the card once is a 50% peak, so one list silences the
+card as a novelty for good. `mtgo_peaks` already passes over the open bin an
+event falls in for exactly this reason and the return reading's absence window
+refuses the same shape, so the closed bin that is merely thin was the gap.
+Ruled on 2026-09-21, and the cut-population floor proposed beside it was refused
+with it: a flat floor of ten good finishers silences whole decks at whole events
+rather than bad rows, the top fifth giving non-Fallaji Goryo's 8 lists at
+Amsterdam, 6 at Brisbane, 12 at Dallas and 12 at Baltimore, so the deck the
+reading was built for would carry no watchlist row at two of the four events
+cached.
+*Applies*: `TRACK_NOVELTY_PEAK_LISTS` 10, the floor the storyline's own
+card-level rows already answer to. A bin under it is passed over when the peak
+is taken, and a card held only in such bins has no peak and reads as one the
+deck has not been playing. There is no floor on the cut a novelty is read over:
+a row off a small cut is refused on concentration or it is not refused at all.
+
+**A return is read in pilots, not in lists** (2026-09-21):
+A league publishes every 5-0, so one grinder entering with a brew produces
+several lists of it in a fortnight. Read as lists on the lowest floor in the
+project, that is the deck picking a card back up when one player did. Four of
+the 20 return rows frozen in the Izzet Prowess timeline were one pilot,
+SightWinner across three league lists on 15, 19 and 25 June, Jeskai Ascendancy
+among them, a card no other Prowess pilot has ever registered. It is the same
+inversion `goldfishing` reads per pilot per 60 for and the league stratum keeps
+a per-pilot cap for.
+*Applies*: `TRACK_RETURN_MAIN_PILOTS` and `TRACK_RETURN_SIDE_PILOTS`, both 2,
+counting distinct pilots in the bin. The sideboard's old 3 is not carried over,
+having been calibrated on list volume: over the 289 frozen rows, 2 and 2
+withdraws the 63 that rest on a single pilot where 2 and 3 withdraws 96 and
+takes 33 rows two or more pilots registered. The row still names its lists, the
+pilots deciding only whether it prints. Withdrawn from the frozen files on
+2026-09-21 under ADR 0008.
+
 ## Proposed, awaiting pilot verdict
 
 Heuristic candidates, held here until Alejandro rules on them. Nothing in this
 section is adopted knowledge and nothing here may steer an analysis. Each entry
 cites the evidence that raised it and counts the sessions it has been put to
 him in. See `.claude/skills/mtg-heuristics/SKILL.md`.
-
-**Two further floors on the novelty reading: one on the cut population, one on
-the fortnights the peak is read over** (raised 2026-09-14, surfaced 2×):
-The four bars were ruled on 2026-09-14 and stand. Neither of these floors was
-ever built, and each would move the row count.
-*Evidence*: the list floor of three is a tenth of the 30 lists Izzet Prowess put
-in Baltimore's top fifth and half of the 6 non-Fallaji Goryo's put in
-Brisbane's, so a card is flagged far more readily at a large event than a small
-one. A floor of 10 on the cut population drops the two rows that were the sample
-size talking, Tron 3 of a 4-list cut at Amsterdam and Simic Neoform 3 of 6 at
-Baltimore, but it also drops the Brisbane half of Jennifer Walters, where
-raising concentration would drop them on their merits instead. On the other
-side, a closed fortnight of two lists holding a card once is a 50% peak that
-kills the card as a novelty for good, the shape `TRACK_RETURN_ABSENCE_LISTS`
-refuses elsewhere; a floor of 10 lists there changes exactly one row today.
-*Applies if adopted*: a floor on the cut population, a floor on the fortnights
-the peak is read over, or both. Either is a change of method under a reader from
-2026-09-15 and answers to ADR 0002.
-
-**The return reading should count distinct pilots, not lists** (raised
-2026-09-14, surfaced 0×):
-A league dump publishes every 5-0, so one grinder entering leagues with a brew
-produces several lists of it in a fortnight. Counted as lists, that reads as the
-deck picking a card up; counted as pilots, it is one player's pet card. This is
-the same inversion `goldfishing` already names and corrects for, applied to the
-reading that has the lowest list floor in the project.
-*Evidence*: 4 of the 20 frozen return rows in the Izzet Prowess timeline rest on
-a single pilot, and all four are the same pilot in the same fortnight: Jeskai
-Ascendancy, Legion Leadership, Light Up the Stage and Murktide Regent, bin
-2026-06-15 to 2026-06-28, all SightWinner across three league lists on 15, 19
-and 25 June. The Ascendancy row reads "3 of 91 lists (3%)". `Jeskai Ascendancy`
-has never been registered by another Prowess pilot, before or since. The
-contrast is Tormod's Crypt in the mainboard, which went 9 lists across 5 pilots
-to 25 across 21 in the current bin: a real move, and one an adoption row reports
-on its own.
-*Applies if adopted*: `TRACK_RETURN_MAIN_LISTS` and `TRACK_RETURN_SIDE_LISTS`
-become pilot counts rather than list counts, or a distinct-pilot floor sits
-beside them. Would drop those 4 rows of 20. A change of method under a reader
-from 2026-09-15 and answers to ADR 0002. Worth asking whether the same count
-belongs on the adoption bar, where the min-lists gate is 5.

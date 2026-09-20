@@ -1,6 +1,6 @@
 # ADR 0002: Rewriting the frozen rows before the reports were shared
 
-Status: accepted (2026-09-13, extended 2026-09-14)
+Status: accepted (2026-09-13, extended 2026-09-14, scope narrowed 2026-09-21 by ADR 0008)
 
 ## Context
 
@@ -181,3 +181,12 @@ stands, and this ADR does not license rewriting one. If a frozen row is wrong,
 the next week's summary says so. From 2026-09-15 that is the only remedy, and a
 membership ruling taken after it changes the fortnights ahead of it and is
 announced in that week's summary.
+
+## Scope, ruled 2026-09-21
+
+This ADR protects a stable system. Its rule is there so the metrics do not move
+with every build once the readings are settled, and while they are still being
+calibrated a frozen row computed under a method the pilot has since ruled out is
+not a record worth keeping. ADR 0008 carries the ruling and the pass it
+licensed. A number that moved because the source published more is still frozen
+where it stands, which is the case this ADR was written for and is unaffected.

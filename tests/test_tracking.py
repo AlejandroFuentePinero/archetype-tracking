@@ -422,6 +422,41 @@ def test_a_return_needs_enough_lists_behind_it_to_have_been_absent_from(tmp_path
     assert returns(read) == ["Ghost Vacuum"]
 
 
+def test_a_grinder_repeating_a_brew_is_one_pilot_and_not_a_return(tmp_path):
+    """A league publishes every 5-0, so one player's pet card is several lists.
+
+    Read as lists this is the deck picking a card back up, on the lowest list
+    floor in the project. It is one player. Four of the 20 return rows frozen in
+    the Izzet Prowess timeline were exactly this, all four SightWinner across
+    three league lists in the bin to 2026-06-28, and Jeskai Ascendancy among
+    them has never been registered by another Prowess pilot.
+
+    The same three lists from three pilots is the deck turning to the card, and
+    still prints.
+    """
+    arrival = {"Ghost Vacuum": (0, 3)}
+
+    def _store(directory, pilots):
+        return _built(directory, [
+            _lists(FIRST, 30),
+            league(SECOND, [blink(name, cards=arrival) for name in pilots]),
+            league("2026-06-10", [blink(f"other{i}") for i in range(7)]),
+        ])
+
+    def returns(db):
+        return [
+            row["card"]
+            for row in timeline.findings(db, config.REPORTS["blink"])[1]["found"]
+            if row["kind"] == "return"
+        ]
+
+    grinder = _store(tmp_path / "grinder", ["sightwinner"] * 3)
+    field = _store(tmp_path / "field", ["one", "two", "three"])
+
+    assert returns(grinder) == []
+    assert returns(field) == ["Ghost Vacuum"]
+
+
 def test_a_card_crossing_the_boards_is_a_migration_and_says_so(tmp_path):
     """Moving a card to the mainboard is not the deck discovering it.
 

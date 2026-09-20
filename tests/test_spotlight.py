@@ -1277,3 +1277,62 @@ def test_the_mtgo_bar_is_read_over_fortnights_that_closed(tmp_path):
 
     # Half of the open bin, and none of the fortnight that closed.
     assert [row["card"] for row in entry["novelties"]] == ["Ghost Vacuum"]
+
+
+def test_a_closed_fortnight_too_thin_to_read_does_not_set_the_bar(tmp_path):
+    """A bin of two lists holding the card once is not the deck playing it.
+
+    Closing is not what makes a fortnight readable. A settled bin of two lists
+    reads one of them as half the deck, clears the 10% bar on its own and
+    silences the card as a novelty for good, which is the inversion the open bin
+    above was cut for and the shape the return reading's absence window already
+    refuses. The storyline gives a card-level row a floor of ten lists; the bar
+    a card is refused against answers to the same floor.
+    """
+    # A closed fortnight of two lists, one of them registering the card.
+    db = tmp_path / "engine.duckdb"
+    store.build(
+        synthetic.write_cache(
+            tmp_path / "raw",
+            [
+                _mtgo("2026-07-14", pilots=1, cards={"Ghost Vacuum": (0, 2)}),
+                _mtgo("2026-07-15", pilots=1),
+            ],
+        ),
+        db,
+    )
+    field = _field(100)
+    for row in field[:4]:
+        row["side"] = {"Ghost Vacuum": 2}
+    melee_dir = _cache(tmp_path / "melee", BRISBANE, _payload(BRISBANE, field))
+
+    entry, = spotlight.chain(db, spotlights=(BRISBANE,), directory=melee_dir)
+
+    assert [row["card"] for row in entry["novelties"]] == ["Ghost Vacuum"]
+
+
+def test_a_fortnight_that_carries_the_floor_still_sets_the_bar(tmp_path):
+    """And the floor is a floor, not a repeal of the bar it guards.
+
+    The same half-the-deck share over a bin of twenty lists is the deck playing
+    the card, and the card is refused on it exactly as before.
+    """
+    db = tmp_path / "engine.duckdb"
+    store.build(
+        synthetic.write_cache(
+            tmp_path / "raw",
+            [
+                _mtgo("2026-07-14", pilots=10, cards={"Ghost Vacuum": (0, 2)}),
+                _mtgo("2026-07-15", pilots=10),
+            ],
+        ),
+        db,
+    )
+    field = _field(100)
+    for row in field[:4]:
+        row["side"] = {"Ghost Vacuum": 2}
+    melee_dir = _cache(tmp_path / "melee", BRISBANE, _payload(BRISBANE, field))
+
+    entry, = spotlight.chain(db, spotlights=(BRISBANE,), directory=melee_dir)
+
+    assert entry["novelties"] == []

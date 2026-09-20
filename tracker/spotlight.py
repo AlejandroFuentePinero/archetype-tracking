@@ -353,6 +353,12 @@ def mtgo_peaks(
     Cutting at a closed bin also fixes the row: what an event earned does not
     change as the fortnight it fell in fills up. A report whose past changes
     under it is a report nobody can cite.
+
+    A closed bin under `TRACK_NOVELTY_PEAK_LISTS` is passed over for the same
+    reason the open one is. The bar inverts on a thin population whether or not
+    it has settled: a fortnight of two lists holding the card once is a 50% peak
+    and silences the card for good. A card held only in such bins has no peak
+    here and is read as one the deck has not been playing.
     """
     registered, lists = timeline._history(db_path, archetype, camp)
     last = timeline.bin_of(before) - 1
@@ -364,7 +370,14 @@ def mtgo_peaks(
         index = timeline.bin_of(row["date"])
         if index <= last:
             held.setdefault((row["card"], row["zone"]), Counter())[index] += 1
-    return {key: max(n / sizes[i] for i, n in bins.items()) for key, bins in held.items()}
+    peaks = {}
+    for key, bins in held.items():
+        shares = [
+            n / sizes[i] for i, n in bins.items() if sizes[i] >= config.TRACK_NOVELTY_PEAK_LISTS
+        ]
+        if shares:
+            peaks[key] = max(shares)
+    return peaks
 
 
 def novelty_row(

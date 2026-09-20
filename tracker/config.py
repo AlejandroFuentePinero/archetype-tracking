@@ -876,14 +876,28 @@ TRACK_COPY_DELTA = 0.4
 # one marginal row.
 TRACK_STAPLE_SHARE = 0.7
 
-# Returning-card gates, per zone. A sideboard churns about seven times harder
-# than a mainboard, so one gate cannot serve both: two thirds of the sideboard
-# names this deck has ever registered appear in two weeks or fewer, and they
-# carry four percent of the volume. Both sit on RETURN_ABSENCE_DAYS above, which
-# a fortnight is too short for: a staple running at three to six lists a week
-# misses two thin weeks on chance alone and reads as a return.
-TRACK_RETURN_MAIN_LISTS = 2
-TRACK_RETURN_SIDE_LISTS = 3
+# Returning-card gates, per zone, and counted in pilots rather than lists. A
+# sideboard churns about seven times harder than a mainboard, so one gate cannot
+# serve both: two thirds of the sideboard names this deck has ever registered
+# appear in two weeks or fewer, and they carry four percent of the volume. Both
+# sit on RETURN_ABSENCE_DAYS above, which a fortnight is too short for: a staple
+# running at three to six lists a week misses two thin weeks on chance alone and
+# reads as a return.
+#
+# Pilots and not lists (Alejandro, 2026-09-21): a league publishes every 5-0, so
+# one grinder entering with a brew produces several lists of it in a fortnight
+# and the lowest list floor in the project reads that as the deck picking the
+# card up. Four of the 20 return rows frozen in the Izzet Prowess timeline were
+# one pilot, SightWinner, across three league lists in the bin to 2026-06-28.
+# The same inversion `goldfishing` reads per pilot per 60 for.
+# Two and two, and the sideboard's three did not carry over: the three was
+# calibrated on list volume, so read in pilots it tightens the bar rather than
+# restating it. Measured over the 289 frozen return rows, two and two withdraws
+# the 63 that rest on a single pilot, 49 mainboard and 14 sideboard, where
+# carrying the three over withdraws 96 and takes 33 rows two or more pilots
+# registered (Alejandro, 2026-09-21).
+TRACK_RETURN_MAIN_PILOTS = 2
+TRACK_RETURN_SIDE_PILOTS = 2
 
 # And how many lists the absence itself has to be read over. A return claims the
 # deck was not playing the card, and the claim needs a window big enough to have
@@ -959,6 +973,15 @@ TRACK_NOVELTY_MIN_LISTS = 3
 # exactly 10%; over it the volume grows by about eight rows per five points with
 # nothing in the numbers to stop at.
 TRACK_NOVELTY_PEAK = 0.10
+
+# And how big a fortnight has to be before it may set that peak. A closed bin of
+# two lists holding the card once reads as half the deck playing it, so one list
+# silences the card as a novelty for good, which is the inversion `mtgo_peaks`
+# already refuses on the open bin the event falls in and the shape
+# `TRACK_RETURN_ABSENCE_LISTS` refuses on the return reading. Ten, the floor the
+# storyline's own card-level rows answer to (Alejandro, 2026-09-21), so a thin
+# fortnight is passed over rather than the card being refused off it.
+TRACK_NOVELTY_PEAK_LISTS = 10
 
 # And how much more of the cut than of the deck's own field at the event the card
 # has to hold. Without it the reading reports whatever the whole room is playing,
