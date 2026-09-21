@@ -556,7 +556,7 @@ TRACKED_DECKS = {
     },
     # The UWr Phelia deck, named by Alejandro on 2026-09-21 and tracked from
     # that day. It had been finishing since 2026-05-19 and answering to no
-    # rule: 49 lists and 31 pilots, 18 of them in September, turned away as
+    # rule: 54 lists and 34 pilots, 20 of them in September, turned away as
     # UWr Control carrying another deck's engine and claimed by nothing after
     # that. Phelia, Quantum Riddler and Consign to Memory together, which no
     # other tracked deck's mainboard holds inside these colours.
@@ -568,31 +568,38 @@ TRACKED_DECKS = {
         "signature": (
             "Phelia, Exuberant Shepherd", "Quantum Riddler", "Consign to Memory",
         ),
-        # The threat slot, Casey Jones or Fable and nothing else (Alejandro,
-        # 2026-09-21): one of the two, sometimes both. Over the 49 members
-        # Fable sits in 32, Casey in 18 and both in 1, the shape he described.
-        # A tier and not a core card: on the core alone the rule reaches 366
-        # lists that are Domain Zoo.
+        # The shell, and the deck is read on it rather than on any one card
+        # (Alejandro, 2026-09-21): it is easy to tell from UWr Control and from
+        # Esper Blink once the whole list is in view, so four of these seven
+        # and not one of them names it. Galvanic Discharge, Solitude, Teferi
+        # and Arena of Glory carry it, 53, 54, 49 and 50 of the 54 members;
+        # Wrath of the Skies sits in 27 and the threat slot, Casey Jones or
+        # Fable, in 18 and 30, one of the two and sometimes both.
         #
-        # Red is a membership condition, and this tier is what enforces it.
-        # Both cards are mono-red, so a list holding one casts red and all 49
-        # members do; a separate colour test could never fire. Obsidian Charmaw
-        # rides with the slot, 30 of the 49 sideboards and none of the
-        # mainboards, and stays an observation, membership being read on the
-        # mainboard.
+        # Arena of Glory is a land and still supporting evidence. A land says
+        # nothing about colour, which is why the splash line never reads one,
+        # but a deck can still be known by the one it plays.
         #
-        # Nine lists hold the core and take their red from Galvanic Discharge
-        # with neither of these, eight pilots between 2026-05-19 and
-        # 2026-09-20. They are turned away here and show in the fall-out under
-        # `supporting`, which is where a build that may be the same deck waits
-        # to be ruled on.
-        "supporting": (1, (
+        # Red is a membership condition, and the tier is what enforces it.
+        # Discharge, Casey, Fable and Arena of Glory are all red, so four of
+        # seven cannot be met on blue and white alone: all 54 members cast red.
+        # Obsidian Charmaw rides with the shell, 35 of the 54 sideboards, and
+        # stays an observation, membership being read on the mainboard.
+        #
+        # Four is where the population divides. Holding three or fewer of the
+        # seven are 181 lists on Ephemerate, Witch Enchanter, Ocelot Pride and
+        # Guide of Souls, which is another deck and not a thin build of this
+        # one; at four the energy pair and Witch Enchanter drop away and
+        # Discharge and Ragavan take over. One card lower would admit all 181.
+        "supporting": (4, (
+            "Galvanic Discharge", "Solitude", "Wrath of the Skies",
+            "Teferi, Time Raveler", "Arena of Glory",
             "Casey Jones, Vigilante", "Fable of the Mirror-Breaker",
         )),
         # The line against Esper Blink, which is the same Phelia on the same
         # blink plan in WUB, and against Domain Zoo, which mainboards Phelia
         # and Consign to Memory in five colours. No engine exclusion: this deck
-        # carries the energy pair in 23 of its 49 lists and Ephemerate in 21,
+        # carries Ephemerate in 26 of its 54 lists and the energy pair in 22,
         # so excluding either would be excluding the deck.
         "colours": frozenset("UWR"),
     },
@@ -876,9 +883,10 @@ REPORTS = {
         "manabase": False,
         "membership": (
             "mainboard holds Phelia, Exuberant Shepherd, Quantum Riddler and Consign to Memory "
-            "with Casey Jones, Vigilante or Fable of the Mirror-Breaker, which is where its red "
-            "comes from, and casts under five spells outside blue, white and red and no playset "
-            "of one. No versions."
+            "with four of Galvanic Discharge, Solitude, Wrath of the Skies, Teferi, Time "
+            "Raveler, Arena of Glory, Casey Jones, Vigilante and Fable of the Mirror-Breaker, "
+            "which is where its red comes from, and casts under five spells outside blue, white "
+            "and red and no playset of one. No versions."
         ),
     },
 }
