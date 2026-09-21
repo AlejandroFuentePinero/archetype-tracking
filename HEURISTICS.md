@@ -554,24 +554,28 @@ builds and stay (2026-09-13). One population, no versions.
 
 **Jeskai Blink is its own deck, not UWr Control adopting Phelia** (2026-09-21):
 Phelia, Exuberant Shepherd with Quantum Riddler and Consign to Memory in the
-mainboard, plus a threat: Galvanic Discharge, Casey Jones, Vigilante, Fable of
-the Mirror-Breaker or Ragavan, Nimble Pilferer, the last two being the same
-slot played two ways. It is not Esper Blink, which is the same Phelia plan in
-WUB and which none of these lists holds the core of. It is not UWr Control,
-whose shell is Orim's Chant, Isochron Scepter, Narset and Day's Undoing, and
-which none of these lists plays: of the 23 that UWr Control's rule turned away
-in the fortnight to 20 September, 6 held any of its supporting tier and none
-would enter it even if the Phelia exclusion were lifted.
+mainboard, and a red threat: Casey Jones, Vigilante or Fable of the
+Mirror-Breaker, one of the two and sometimes both. The deck has to cast red to
+be the deck, and those two cards are where the red comes from: Fable sits in 32
+of the 49 lists, Casey in 18, both in 1, and all 49 cast red. Obsidian Charmaw
+rides with the slot, 30 of the 49 sideboards and none of the mainboards.
+It is not Esper Blink, which is the same Phelia plan in WUB and whose core none
+of these lists holds. It is not UWr Control, whose shell is Orim's Chant,
+Isochron Scepter, Narset and Day's Undoing: of the 23 lists UWr Control's rule
+turned away in the fortnight to 20 September, 6 held any of its supporting tier
+and none would enter it even if the Phelia exclusion were lifted.
 *Applies*: a tracked deck of its own, `jeskaiblink` in `config.TRACKED_DECKS`
 and `config.REPORTS`, colours UWr on the splash line, no engine exclusion since
-the deck carries the energy pair in 25 of its 58 lists and Ephemerate in 29.
+the deck carries the energy pair in 23 of its 49 lists and Ephemerate in 21.
 Tested after every deck that existed before it, and measured over the whole
-cache it takes no list from any of them. Frozen back to the Modern bans: 58
-lists, 37 pilots, 19 May to 20 September, and 19 lists in the week to
-20 September alone against a median week of 1. The three lists on Eternal
-Witness and Nissa, Resurgent Animist that hold the core and none of the threat
-slot (bobthedog on 12 September, VampireDiaries on the 12th and 13th) are a
-green build and stay outside.
+cache it takes no list from any of them. Frozen back to the Modern bans: 49
+lists, 31 pilots, 19 May to 20 September, and 17 lists in the week to
+20 September alone against a median week of 0.5. Two builds hold the core and
+stay outside: the nine that take their red from Galvanic Discharge with neither
+threat (eight pilots, 19 May to 20 September, ganache1127 twice in the reported
+week) and the three on Eternal Witness and Nissa, Resurgent Animist that cast
+green (bobthedog on 12 September, VampireDiaries on the 12th and 13th). Both
+show in the fall-out under `supporting`.
 
 ## Data interpretation
 

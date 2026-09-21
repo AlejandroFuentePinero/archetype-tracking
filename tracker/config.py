@@ -556,7 +556,7 @@ TRACKED_DECKS = {
     },
     # The UWr Phelia deck, named by Alejandro on 2026-09-21 and tracked from
     # that day. It had been finishing since 2026-05-19 and answering to no
-    # rule: 58 lists and 37 pilots, 20 of them in September, turned away as
+    # rule: 49 lists and 31 pilots, 18 of them in September, turned away as
     # UWr Control carrying another deck's engine and claimed by nothing after
     # that. Phelia, Quantum Riddler and Consign to Memory together, which no
     # other tracked deck's mainboard holds inside these colours.
@@ -568,21 +568,31 @@ TRACKED_DECKS = {
         "signature": (
             "Phelia, Exuberant Shepherd", "Quantum Riddler", "Consign to Memory",
         ),
-        # The threat slot, one of four. Casey Jones and Fable are the same slot
-        # played two ways (Alejandro, 2026-09-21), 10 and 8 of the 23 lists in
-        # the fortnight to 20 September, and Galvanic Discharge and Ragavan sit
-        # in 56 and 54 of the 58. Required as a tier rather than carried in the
-        # core: on the core alone the rule reaches 366 lists that are Domain
-        # Zoo, and requiring Discharge outright drops 5 members that play the
-        # slot the other way.
+        # The threat slot, Casey Jones or Fable and nothing else (Alejandro,
+        # 2026-09-21): one of the two, sometimes both. Over the 49 members
+        # Fable sits in 32, Casey in 18 and both in 1, the shape he described.
+        # A tier and not a core card: on the core alone the rule reaches 366
+        # lists that are Domain Zoo.
+        #
+        # Red is a membership condition, and this tier is what enforces it.
+        # Both cards are mono-red, so a list holding one casts red and all 49
+        # members do; a separate colour test could never fire. Obsidian Charmaw
+        # rides with the slot, 30 of the 49 sideboards and none of the
+        # mainboards, and stays an observation, membership being read on the
+        # mainboard.
+        #
+        # Nine lists hold the core and take their red from Galvanic Discharge
+        # with neither of these, eight pilots between 2026-05-19 and
+        # 2026-09-20. They are turned away here and show in the fall-out under
+        # `supporting`, which is where a build that may be the same deck waits
+        # to be ruled on.
         "supporting": (1, (
-            "Galvanic Discharge", "Casey Jones, Vigilante",
-            "Fable of the Mirror-Breaker", "Ragavan, Nimble Pilferer",
+            "Casey Jones, Vigilante", "Fable of the Mirror-Breaker",
         )),
         # The line against Esper Blink, which is the same Phelia on the same
         # blink plan in WUB, and against Domain Zoo, which mainboards Phelia
         # and Consign to Memory in five colours. No engine exclusion: this deck
-        # carries the energy pair in 25 of its 58 lists and Ephemerate in 29,
+        # carries the energy pair in 23 of its 49 lists and Ephemerate in 21,
         # so excluding either would be excluding the deck.
         "colours": frozenset("UWR"),
     },
@@ -866,9 +876,9 @@ REPORTS = {
         "manabase": False,
         "membership": (
             "mainboard holds Phelia, Exuberant Shepherd, Quantum Riddler and Consign to Memory "
-            "with any of Galvanic Discharge, Casey Jones, Vigilante, Fable of the Mirror-Breaker "
-            "or Ragavan, Nimble Pilferer, and casts under five spells outside blue, white and red "
-            "and no playset of one. No versions."
+            "with Casey Jones, Vigilante or Fable of the Mirror-Breaker, which is where its red "
+            "comes from, and casts under five spells outside blue, white and red and no playset "
+            "of one. No versions."
         ),
     },
 }
