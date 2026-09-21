@@ -262,13 +262,16 @@ run changes.
   standings either side of each run. The finishing positions still carry the
   draft rounds, which no arithmetic can undo.
 - **A major event is a storyline entry like any other.** Every entry is read
-  against the one immediately before it, the event included. The event is read
-  against the last fortnight that closed before it (or the paper event played
-  since, where there was one), and the fortnight the event fell in is read
-  against the event, never against the fortnight before. MTGO moves what pilots
-  take to a Pro Tour and a Pro Tour moves what turns up on MTGO after it, and
-  that response is the whole point of carrying paper events. Each row says
-  under its period what it was read against.
+  against every entry behind it, never a choice of one. The event is read
+  against both entries behind it, the last fortnight that closed before it and
+  the paper event before it where that event was played no earlier than the
+  fortnight opened. The fortnight the event fell in is read against the
+  fortnight before it and against every event inside it, the fortnight-before
+  row leading because it holds the medium and the room constant, and the events
+  following in the order they were played. MTGO moves what pilots take to a Pro
+  Tour and a Pro Tour moves what turns up on MTGO after it, and that response is
+  the whole point of carrying paper events. Each row says under its period what
+  it was read against.
 - **Its lists are never folded into a fortnight's own numbers.** Each entry is
   one room. An event week sits inside a fortnight rather than beside one, and
   pooled it would be most of the bin, the fortnight to 6 September holding 87
