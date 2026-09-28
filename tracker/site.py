@@ -9,8 +9,8 @@ import json
 import shutil
 from pathlib import Path
 
-from . import config
-from .weekly import _STYLE, week_label
+from . import config, plots, timeline
+from .weekly import _STYLE, _numbers, _read, week_label
 
 CONTACT_NAME = "Alejandro de la Fuente"
 CONTACT_EMAIL = "alejandrofuentepinero@gmail.com"
@@ -43,6 +43,8 @@ h1 { font-size: 30px; color: var(--ink); }
                 letter-spacing: 0; line-height: 1.45; }
 .decks .scent b { font-weight: 600; color: var(--ink); }
 @media (max-width: 520px) { .decks { grid-template-columns: 1fr; } }
+figure { margin: 0 0 36px; overflow-x: auto; }
+figure svg { width: 100%; height: auto; display: block; min-width: 520px; }
 footer { color: var(--ink-3); font-size: 13px; margin-top: 56px; padding-top: 18px;
          border-top: 1px solid var(--line); }
 footer a { color: inherit; }
@@ -119,18 +121,39 @@ def build(out: Path = config.SITE_DIR, reports: Path = config.REPORT_DIR) -> str
         if not beside.exists():
             raise SystemExit(f"{deck} has no facts for {week}: re-render it")
         facts[deck] = json.loads(beside.read_text(encoding="utf-8"))
+    stacks = frozen_weeks(week)
 
     shutil.rmtree(out, ignore_errors=True)
     out.mkdir(parents=True)
     for deck, path in latest.items():
         shutil.copyfile(path, out / f"{deck}.html")
-    (out / "index.html").write_text(index(week, facts), encoding="utf-8")
+    (out / "index.html").write_text(index(week, facts, stacks), encoding="utf-8")
     shutil.copyfile(config.REPO_ROOT / "deploy" / "README.md", out / "README.md")
     return week
 
 
-def index(week: str, facts: dict[str, dict]) -> str:
-    decks = sorted(config.REPORTS.items(), key=lambda item: item[1]["name"])
+def frozen_weeks(week: str, tracking: Path = config.TRACKING_DIR) -> list[tuple[str, list[dict]]]:
+    """Every deck's frozen weekly rows through `week`, named for the figure.
+
+    The frozen file and not the store, so the stack is drawn from the same rows
+    the reports were, and a deck the run has not frozen for the week is refused
+    like a deck without its facts rather than left out of the field quietly.
+    """
+    stacks = []
+    for deck, report in config.REPORTS.items():
+        rows = [_numbers(row) for row in _read(tracking / deck / "weekly.csv") if row["week"] <= week]
+        if not rows or rows[-1]["week"] != week:
+            raise SystemExit(f"{deck} has no frozen week {week}: run weekly")
+        stacks.append((report["name"], rows))
+    if len({len(rows) for _, rows in stacks}) != 1:
+        raise SystemExit("decks disagree on the weeks frozen")
+    return stacks
+
+
+def index(week: str, facts: dict[str, dict], stacks: list[tuple[str, list[dict]]]) -> str:
+    """Cards in the order of the latest week's MTGO share, the largest first,
+    under the stack that shows how the field got there."""
+    decks = sorted(config.REPORTS.items(), key=lambda item: -facts[item[0]]["challenge"]["share"])
     cards = "\n".join(
         f'  <li><a href="{deck}.html"><span class="name">{report["name"]}</span>'
         f'<span class="scent">{scent(facts[deck])}</span></a></li>'
@@ -146,6 +169,7 @@ def index(week: str, facts: dict[str, dict]) -> str:
   <p class="dek">{DEK}</p>
   <p class="week">Reports for the week ending {week_label(week)}</p>
 </header>
+<figure>{plots.meta(stacks, timeline.events())}</figure>
 <ul class="decks">
 {cards}
 </ul>

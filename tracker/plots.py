@@ -207,7 +207,7 @@ def _label_events(ax, days: list[date], events: list[dict]) -> None:
 _LABEL_GAP = 0.075
 
 
-def _end_labels(ax, labelled: list[tuple[float, str, str]]) -> None:
+def _end_labels(ax, labelled: list[tuple[float, str, str]], gap: float = _LABEL_GAP) -> None:
     """The series named past the right spine, level with their own last values.
 
     Outside the axis rather than beside the point, because the last weeks are
@@ -221,8 +221,8 @@ def _end_labels(ax, labelled: list[tuple[float, str, str]]) -> None:
     placed: list[tuple[float, str, str]] = []
     for value, text, colour in sorted(labelled):
         spot = (value - bottom) / span
-        if placed and spot - placed[-1][0] < _LABEL_GAP:
-            spot = placed[-1][0] + _LABEL_GAP
+        if placed and spot - placed[-1][0] < gap:
+            spot = placed[-1][0] + gap
         placed.append((spot, text, colour))
     for spot, text, colour in placed:
         ax.annotate(
@@ -467,3 +467,54 @@ def goldfishing(rows: list[dict], events: list[dict]) -> str:
     _label_events(ax, days, events)
     return _svg(fig, "Goldfishing: the share of each week's builds identical to the previous "
                      "week's most-registered list, on MTGO.")
+
+
+# Bands past the palette are steps of the page's ink, darkest nearest the
+# coloured five and fading towards the top, and the untracked rest of the field
+# is the faintest of all. Direct labels carry identity where a band is wide
+# enough to name; the greys only separate neighbours.
+_META_LABEL_FLOOR = 2.0
+
+
+def meta(decks: list[tuple[str, list[dict]]], events: list[dict]) -> str:
+    """The published top-32 field as one stack, a band per tracked archetype.
+
+    Bands sit largest-first from the baseline by the latest week's share, which
+    is the order the cards under the figure take, so the stack and the menu read
+    the same way. Eighteen hues cannot be told apart, so only the five largest
+    take the report palette and the rest are steps of ink; identity is the label
+    at the right edge, printed for every band the latest week makes wide enough
+    to carry one. What no tracked deck holds is the rest of the field, faintest
+    and on top, so the stack always closes at one hundred and a week the tracked
+    decks gained on the field shows as the grey shrinking.
+    """
+    ranked = sorted(decks, key=lambda item: item[1][-1]["chal_share"] or 0, reverse=True)
+    days = _days(ranked[0][1])
+    shares = [[(row["chal_share"] or 0) * 100 for row in rows] for _, rows in ranked]
+    rest = [max(0.0, 100 - sum(column)) for column in zip(*shares)]
+    greys = len(ranked) - len(SERIES)
+    colours = list(SERIES) + [
+        (*matplotlib.colors.to_rgb(INK), 0.44 - 0.3 * step / max(greys - 1, 1))
+        for step in range(greys)
+    ] + [(*matplotlib.colors.to_rgb(INK), 0.06)]
+
+    fig, ax = plt.subplots(figsize=(9, 5.5))
+    ax.stackplot(days, *shares, rest, colors=colours, edgecolor=GROUND, linewidth=1.2)
+    ax.set_ylim(0, 100)
+    ax.set_title("Share of published top-32 slots by archetype (MTGO)",
+                 loc="left", fontsize=10, pad=14)
+    _frame(ax, days, events, "% of top 32")
+    _label_events(ax, days, events)
+
+    labelled, floor = [], 0.0
+    for (name, _), band, colour in zip(ranked, shares, colours):
+        if band[-1] >= _META_LABEL_FLOOR:
+            labelled.append((floor + band[-1] / 2, f"{name} {band[-1]:.1f}%",
+                             colour if isinstance(colour, str) else INK))
+        floor += band[-1]
+    labelled.append((floor + rest[-1] / 2, f"Rest of the field {rest[-1]:.1f}%", INK))
+    # Tighter than the line figures' gap: a stack labels a dozen bands on one
+    # axis, and at the report spacing the names fan far above the bands they name.
+    _end_labels(ax, labelled, gap=0.045)
+    return _svg(fig, "The metagame: each tracked archetype's share of published top-32 "
+                     "slots week by week on MTGO, stacked, with the rest of the field on top.")

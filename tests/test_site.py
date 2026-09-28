@@ -20,20 +20,37 @@ def _render_all(reports, week="2026-08-31"):
         _render(reports, deck, week)
 
 
-def test_the_index_lists_every_deck_alphabetically_under_the_week(tmp_path):
+def test_the_index_lists_every_deck_by_its_latest_share_under_the_stack(tmp_path):
+    """The cards are the menu and the stack above them is the field: both read
+    largest-first by the latest week's MTGO share, so the two agree."""
     reports, out = tmp_path / "reports", tmp_path / "site"
     reports.mkdir()
     _render_all(reports)
+    _render(reports, "broodscale", "2026-08-31", facts={"challenge": {"share": 0.2, "previous_share": 0.1}})
+    _render(reports, "oswald", "2026-08-31", facts={"challenge": {"share": 0.01, "previous_share": 0.1}})
 
     assert site.build(out, reports) == "2026-08-31"
     page = (out / "index.html").read_text(encoding="utf-8")
     assert "week ending 2026-09-06" in page
-    names = sorted(report["name"] for report in config.REPORTS.values())
-    positions = [page.index(f">{name}</span>") for name in names]
-    assert positions == sorted(positions), "cards are alphabetical"
+    first, last = page.index(">Broodscale</span>"), page.index(">Grinding Station</span>")
+    others = [page.index(f">{r['name']}</span>") for d, r in config.REPORTS.items() if d not in ("broodscale", "oswald")]
+    assert first < min(others) and last > max(others), "cards are ordered by the latest share"
+    figure = page[page.index("<figure>"):page.index("</figure>")]
+    assert figure.index("<svg") < figure.index("<ul") if "<ul" in figure else True
+    assert "The metagame:" in figure and "Rest of the field" in figure
+    assert figure.index("<figure>") < page.index('<ul class="decks">')
     assert {p.name for p in out.iterdir()} == {"index.html", "README.md", *(f"{d}.html" for d in config.REPORTS)}
     assert 'href="blink.html"' in page
     assert site.CONTACT_EMAIL in page
+
+
+def test_a_week_no_run_has_frozen_is_refused(tmp_path):
+    reports = tmp_path / "reports"
+    reports.mkdir()
+    _render_all(reports, "2030-01-06")
+
+    with pytest.raises(SystemExit, match="blink has no frozen week 2030-01-06"):
+        site.build(tmp_path / "site", reports)
 
 
 def test_the_latest_report_per_deck_is_the_one_shipped(tmp_path):
