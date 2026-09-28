@@ -552,7 +552,7 @@ Outburst on black sources (the leagues of Cagalli123 on 19 May and RNicoF on
 19 June, Hravv's 4 July challenge and marknorton at Brisbane) are Living End
 builds and stay (2026-09-13). One population, no versions.
 
-**Jeskai Blink is its own deck, and it is read on its shell** (2026-09-21):
+**Jeskai Blink is its own deck, and it is read on its shell** (2026-09-28):
 Phelia, Exuberant Shepherd with Quantum Riddler and Consign to Memory in the
 mainboard, and four of Galvanic Discharge, Solitude, Wrath of the Skies,
 Teferi, Time Raveler, Arena of Glory, Casey Jones, Vigilante and Fable of the
@@ -569,16 +569,39 @@ Isochron Scepter, Narset and Day's Undoing: of the 23 lists UWr Control's rule
 turned away in the fortnight to 20 September, 6 held any of its supporting tier
 and none would enter it even if the Phelia exclusion were lifted.
 *Applies*: a tracked deck of its own, `jeskaiblink` in `config.TRACKED_DECKS`
-and `config.REPORTS`, colours UWr on the splash line, no engine exclusion since
-the deck carries Ephemerate in 26 of its 54 lists and the energy pair in 22.
-Red needs no separate test: four of the seven cannot be met on blue and white
-alone, and all 54 cast red. Tested after every deck that existed before it, and
-measured over the whole cache it takes no list from any of them. Frozen back to
-the Modern bans: 54 lists, 34 pilots, 19 May to 20 September, and 19 lists in
-the week to 20 September alone against a median week of 1. Four is the cut
-because the population divides there: at three or fewer the lists are the
-Ephemerate and Witch Enchanter deck below, and one card lower would admit all
-181 of them.
+and `config.REPORTS`, colours UWr on the splash line, Ephemerate not excluded
+since the deck carried it in 26 of its first 54 lists. The energy pair is
+excluded (revised 2026-09-28): a list on Guide of Souls and Ocelot Pride is
+Jeskai Energy whatever else it holds, and this deck is the midrange control
+build without them, fewer creatures and more spells. That took 21 of the 66
+lists the rule had claimed, 16 of them the full shell with the pair, Ajani and
+Bombardment added, and its frozen history was rebuilt the same day: 45 lists,
+33 pilots, 19 May to 27 September, and 18 lists in the week to 20 September
+against a median week of 0. Red needs no separate test: four of the seven
+cannot be met on blue and white alone, and every member casts red. Tested
+after every deck that existed before it. Four is the cut because the
+population divides there: at three or fewer the lists are Jeskai Energy, and
+one card lower would admit all 181 of them.
+
+**Jeskai Energy is the UWr Phelia shell on the energy package, and it is its
+own deck** (2026-09-28):
+Phelia, Exuberant Shepherd with Guide of Souls and Ocelot Pride in blue, white
+and red, and Quantum Riddler, which is the blue: every one of the 250 lists
+casting blue on the three holds it and none of the 36 red-white ones does,
+those being Boros Energy on Phelia. Whether the list also holds Witch
+Enchanter does not matter; the package is the test, and a UWr Phelia list
+without it is Jeskai Blink. Solitude sits in 98% of the lists, Ephemerate in
+91%, Starfield Shepherd in 81%, Witch Enchanter and Consign to Memory in 75%.
+It was the largest deck on Phelia in the fortnight after the bans, 35 and 32
+lists in the first two weeks, and has run at a handful a week since August.
+*Applies*: a tracked deck of its own, `jeskaienergy` in `config.TRACKED_DECKS`
+and `config.REPORTS`, colours UWr on the splash line, no engine exclusion.
+Tested after every deck that existed before it: Boros Energy keeps the 4 lists
+it claims on a blue splash, and Jeskai Blink's 21 on the pair reach it through
+that rule's own exclusion. Frozen back to the Modern bans: 246 lists, 136
+pilots, 19 May to 27 September, 12 finishes in swiss-like tournaments in the
+first week and 1 in the week to 27 September. The 22 lists on the four cards
+beyond the UWr splash line, most of them Esper, stay outside.
 
 **Esper Ketramose is Frog, Riddler and Ketramose, and it is its own deck**
 (2026-09-28):
@@ -826,22 +849,3 @@ Heuristic candidates, held here until Alejandro rules on them. Nothing in this
 section is adopted knowledge and nothing here may steer an analysis. Each entry
 cites the evidence that raised it and counts the sessions it has been put to
 him in. See `.claude/skills/mtg-heuristics/SKILL.md`.
-
-**A Phelia energy blink deck in UWr belongs to no rule** (raised 2026-09-21,
-surfaced 0x):
-Separating Jeskai Blink from the lists around it turned up a second population
-holding the same Phelia, Quantum Riddler and Consign to Memory core inside the
-same colours, built on a different plan: Ephemerate and Witch Enchanter with
-the energy pair rather than Galvanic Discharge and a red threat. It is claimed
-by nothing, and Esper Blink's own core does not reach it.
-*Evidence*: 181 lists and 106 pilots since 2026-05-19 hold the core in UWr and
-three or fewer of Jeskai Blink's seven. Ephemerate sits in 180 of them, Witch
-Enchanter in 173, Ocelot Pride and Guide of Souls in 172 each and Starfield
-Shepherd in 161, against 26, 10 and 22 of Jeskai Blink's 54. It is a faded
-population rather than a live one: 5 lists in the fortnight to 20 September
-against the 20 Jeskai Blink took.
-*Applies if adopted*: either a tracked deck of its own with a rule on
-Ephemerate and Witch Enchanter, or a named reason in the fall-out so the lists
-stop reading as nothing. It is a membership ruling and cannot be taken by
-widening Jeskai Blink, whose shell these lists fail on four counts.
-

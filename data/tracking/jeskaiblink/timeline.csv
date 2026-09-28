@@ -1,22 +1,15 @@
 start,end,lists,against,kind,zone,card,text
 2026-05-18,2026-05-31,3,"no fortnight before it, the history opening on 2026-05-19",stable,,,
 2026-06-01,2026-06-14,1,the fortnight to 2026-05-31,thin,,,"Too thin to read a move against the fortnight to 2026-05-31: 1 lists, the smaller of the two, where a row needs 10."
-2026-06-15,2026-06-28,7,the fortnight to 2026-06-14,return,side,Spell Snare,"Spell Snare moves to the sideboard, 3 of 7 lists (43%)"
-2026-06-15,2026-06-28,7,the fortnight to 2026-06-14,thin,,,"Too thin to read a move against the fortnight to 2026-06-14: 1 lists, the smaller of the two, where a row needs 10."
-2026-06-29,2026-07-12,10,the fortnight to 2026-06-28,thin,,,"Too thin to read a move against the fortnight to 2026-06-28: 7 lists, the smaller of the two, where a row needs 10."
-2026-07-13,2026-07-26,7,the fortnight to 2026-07-12,thin,,,"Too thin to read a move against the fortnight to 2026-07-12: 7 lists, the smaller of the two, where a row needs 10."
-2026-07-13,2026-07-26,7,the fortnight to 2026-07-12,event,,,Pro Tour Amsterdam
-2026-07-13,2026-07-26,7,Pro Tour Amsterdam,stable,,,
-2026-07-27,2026-08-09,1,the fortnight to 2026-07-26,thin,,,"Too thin to read a move against the fortnight to 2026-07-26: 1 lists, the smaller of the two, where a row needs 10."
-2026-08-10,2026-08-23,3,the fortnight to 2026-08-09,thin,,,"Too thin to read a move against the fortnight to 2026-08-09: 1 lists, the smaller of the two, where a row needs 10."
-2026-08-24,2026-09-06,2,the fortnight to 2026-08-23,thin,,,"Too thin to read a move against the fortnight to 2026-08-23: 2 lists, the smaller of the two, where a row needs 10."
-2026-08-24,2026-09-06,2,the fortnight to 2026-08-23,event,,,Spotlight Brisbane
-2026-08-24,2026-09-06,2,the fortnight to 2026-08-23,event,,,Spotlight Dallas
-2026-08-24,2026-09-06,2,Spotlight Brisbane,stable,,,
-2026-08-24,2026-09-06,2,Spotlight Dallas,stable,,,
-2026-09-07,2026-09-20,20,the fortnight to 2026-09-06,return,side,Prismatic Ending,"Prismatic Ending moves to the sideboard, 12 of 20 lists (60%)"
-2026-09-07,2026-09-20,20,the fortnight to 2026-09-06,thin,,,"Too thin to read a move against the fortnight to 2026-09-06: 2 lists, the smaller of the two, where a row needs 10."
-2026-09-07,2026-09-20,20,the fortnight to 2026-09-06,event,,,RC Baltimore
-2026-09-07,2026-09-20,20,the fortnight to 2026-09-06,event,,,RC China
-2026-09-07,2026-09-20,20,RC Baltimore,stable,,,
-2026-09-07,2026-09-20,20,RC China,return,side,Prismatic Ending,"Prismatic Ending moves to the sideboard, 12 of 20 lists (60%)"
+2026-06-15,2026-06-28,5,the fortnight to 2026-06-14,return,side,Spell Snare,"Spell Snare moves to the sideboard, 3 of 5 lists (60%)"
+2026-06-15,2026-06-28,5,the fortnight to 2026-06-14,thin,,,"Too thin to read a move against the fortnight to 2026-06-14: 1 lists, the smaller of the two, where a row needs 10."
+2026-06-29,2026-07-12,1,the fortnight to 2026-06-28,thin,,,"Too thin to read a move against the fortnight to 2026-06-28: 1 lists, the smaller of the two, where a row needs 10."
+2026-07-13,2026-07-26,2,the fortnight to 2026-07-12,thin,,,"Too thin to read a move against the fortnight to 2026-07-12: 1 lists, the smaller of the two, where a row needs 10."
+2026-07-13,2026-07-26,2,the fortnight to 2026-07-12,event,,,Pro Tour Amsterdam
+2026-07-13,2026-07-26,2,Pro Tour Amsterdam,stable,,,
+2026-08-10,2026-08-23,2,the fortnight to 2026-08-09,thin,,,"Too thin to read a move against the fortnight to 2026-08-09: 0 lists, the smaller of the two, where a row needs 10."
+2026-09-07,2026-09-20,19,the fortnight to 2026-09-06,thin,,,"Too thin to read a move against the fortnight to 2026-09-06: 0 lists, the smaller of the two, where a row needs 10."
+2026-09-07,2026-09-20,19,the fortnight to 2026-09-06,event,,,RC Baltimore
+2026-09-07,2026-09-20,19,the fortnight to 2026-09-06,event,,,RC China
+2026-09-07,2026-09-20,19,RC Baltimore,stable,,,
+2026-09-07,2026-09-20,19,RC China,stable,,,

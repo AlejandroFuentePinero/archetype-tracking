@@ -1,6 +1,6 @@
 ---
 name: weekly-report
-description: Ingest the week's MTGO data and build a tracked deck's weekly report. Use whenever Alejandro asks for this week's report, for any tracked deck's report (Esper Blink, Goryo's, Simic Neoform, Grinding Station, Domain Zoo, Broodscale, Devoted Combo, Affinity, Izzet Prowess, Trudge, Tron, Boros Energy, Boros Ponza, Dimir Midrange, UWr Control, Storm, Temur Living End, Jeskai Blink, Esper Ketramose), to prepare for the team meeting, or to ingest new data and report on a tracked deck.
+description: Ingest the week's MTGO data and build a tracked deck's weekly report. Use whenever Alejandro asks for this week's report, for any tracked deck's report (Esper Blink, Goryo's, Simic Neoform, Grinding Station, Domain Zoo, Broodscale, Devoted Combo, Affinity, Izzet Prowess, Trudge, Tron, Boros Energy, Boros Ponza, Dimir Midrange, UWr Control, Storm, Temur Living End, Jeskai Blink, Esper Ketramose, Jeskai Energy), to prepare for the team meeting, or to ingest new data and report on a tracked deck.
 ---
 
 # The weekly tracked-deck report
@@ -20,7 +20,7 @@ how it was measured.
 
 ```bash
 uv run tracker refresh --since <the Monday two weeks back>
-for deck in blink goryos neoform oswald zoo broodscale devoted affinity prowess trudge tron energy ponza dimir jeskai storm livingend jeskaiblink ketramose; do
+for deck in blink goryos neoform oswald zoo broodscale devoted affinity prowess trudge tron energy ponza dimir jeskai storm livingend jeskaiblink ketramose jeskaienergy; do
   uv run tracker weekly --deck $deck
 done
 ```

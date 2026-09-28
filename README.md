@@ -52,7 +52,7 @@ The store and the raw cache are not committed, so a fresh clone builds them:
 uv run tracker refresh
 
 # Freeze the closed weeks and render last week's report for each tracked deck.
-for deck in blink goryos neoform oswald zoo broodscale devoted affinity prowess trudge tron energy ponza dimir jeskai storm livingend jeskaiblink ketramose; do
+for deck in blink goryos neoform oswald zoo broodscale devoted affinity prowess trudge tron energy ponza dimir jeskai storm livingend jeskaiblink ketramose jeskaienergy; do
   uv run tracker weekly --deck $deck
 done
 ```

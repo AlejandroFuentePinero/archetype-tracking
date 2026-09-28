@@ -598,10 +598,17 @@ TRACKED_DECKS = {
         )),
         # The line against Esper Blink, which is the same Phelia on the same
         # blink plan in WUB, and against Domain Zoo, which mainboards Phelia
-        # and Consign to Memory in five colours. No engine exclusion: this deck
-        # carries Ephemerate in 26 of its 54 lists and the energy pair in 22,
-        # so excluding either would be excluding the deck.
+        # and Consign to Memory in five colours. Ephemerate is not excluded,
+        # the deck carrying it in 26 of its first 54 lists.
         "colours": frozenset("UWR"),
+        # The energy package is the line against Jeskai Energy (Alejandro,
+        # 2026-09-28): a UWr Phelia list on Guide of Souls and Ocelot Pride is
+        # that deck whatever else it holds, and this one is the midrange
+        # control build without them, fewer creatures and more spells. The
+        # rule had claimed 21 lists on the pair, 16 of them the full shell with
+        # the pair, Ajani and Bombardment added; they leave, and its frozen
+        # history was rebuilt on the day.
+        "excluded_engines": ("energy",),
     },
     # Esper Ketramose: Psychic Frog, Quantum Riddler and Ketramose, the New Dawn
     # together are the deck (Alejandro, 2026-09-28). It surfaced as Dimir
@@ -628,6 +635,25 @@ TRACKED_DECKS = {
         # No engine exclusion: Ephemerate is in 92% of the lists and Phelia in
         # 24 of the 127, both the deck's own cards here.
         "colours": frozenset("WUB"),
+    },
+    # Jeskai Energy: the UWr Phelia shell on the energy package (Alejandro,
+    # 2026-09-28). Guide of Souls and Ocelot Pride beside Phelia are this deck
+    # whatever else the list holds; without them the Teferi, Fable and
+    # Discharge build is Jeskai Blink, which excludes the pair for that
+    # reason. Quantum Riddler is the blue: every one of the 250 lists casting
+    # blue on the three holds it and none of the 36 red-white ones does, those
+    # being Boros Energy on Phelia. It was the largest deck on the three in
+    # the fortnight after the bans and has run at a handful a week since
+    # August.
+    #
+    # Tested after every deck that existed before it: Boros Energy keeps the
+    # 4 lists it claims on a blue splash, and Jeskai Blink's 21 on the pair
+    # reach it through that rule's own exclusion.
+    "jeskaienergy": {
+        "signature": (
+            "Phelia, Exuberant Shepherd", "Quantum Riddler", "Guide of Souls", "Ocelot Pride",
+        ),
+        "colours": frozenset("UWR"),
     },
 }
 
@@ -911,8 +937,9 @@ REPORTS = {
             "mainboard holds Phelia, Exuberant Shepherd, Quantum Riddler and Consign to Memory "
             "with four of Galvanic Discharge, Solitude, Wrath of the Skies, Teferi, Time "
             "Raveler, Arena of Glory, Casey Jones, Vigilante and Fable of the Mirror-Breaker, "
-            "which is where its red comes from, and casts under five spells outside blue, white "
-            "and red and no playset of one. No versions."
+            "which is where its red comes from, no Guide of Souls or Ocelot Pride, which make "
+            "it Jeskai Energy, and casts under five spells outside blue, white and red and no "
+            "playset of one. No versions."
         ),
     },
     "ketramose": {
@@ -925,6 +952,18 @@ REPORTS = {
             "mainboard holds Psychic Frog, Quantum Riddler and Ketramose, the New Dawn with two "
             "of Relic of Progenitus, No More Lies and Spell Snare, and casts under five spells "
             "outside white, blue and black and no playset of one. No versions."
+        ),
+    },
+    "jeskaienergy": {
+        "name": "Jeskai Energy",
+        "archetype": "jeskaienergy",
+        "camp": None,
+        "watch": (),
+        "manabase": False,
+        "membership": (
+            "mainboard holds Phelia, Exuberant Shepherd, Quantum Riddler, Guide of Souls and "
+            "Ocelot Pride, and casts under five spells outside blue, white and red and no "
+            "playset of one. No versions."
         ),
     },
 }
