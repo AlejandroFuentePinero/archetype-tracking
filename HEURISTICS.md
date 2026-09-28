@@ -580,6 +580,31 @@ because the population divides there: at three or fewer the lists are the
 Ephemerate and Witch Enchanter deck below, and one card lower would admit all
 181 of them.
 
+**Esper Ketramose is Frog, Riddler and Ketramose, and it is its own deck**
+(2026-09-28):
+Psychic Frog, Quantum Riddler and Ketramose, the New Dawn in the mainboard,
+with two of Relic of Progenitus, No More Lies and Spell Snare. It is the deck
+the Dimir Midrange entry calls Esper Frog: Solitude and Prismatic Ending are
+each in 97% of the lists, which is what took it out of Dimir on the splash
+line, 25 lists in the week to 27 September alone. It is not Esper Blink,
+whose core of Phelia, Overlord and Witch Enchanter none of these lists holds,
+though Ephemerate is in 92% of them and Phelia in 24 of the 127. Goryo's on
+the three cards is the Atraxa reanimator, 23 lists on an Atraxa playset. The
+supporting tier is there for the day either of those takes up Ketramose:
+Relic and No More Lies are in none of Goryo's 25 Ketramose lists, No More
+Lies and Spell Snare in almost none of Esper Blink's 45, and two of the three
+admits none of those 70 while keeping 111 of the 127 lists on the core.
+*Applies*: a tracked deck of its own, `ketramose` in `config.TRACKED_DECKS`
+and `config.REPORTS`, colours WUB on the splash line, no engine exclusion
+since the deck plays Ephemerate in 92% of its lists and Phelia in a fifth.
+Tested after every deck that existed before it, and measured over the whole
+cache it takes no list from any of them. Frozen back to the Modern bans: 108
+lists, 56 pilots, 23 May to 27 September, a first run of 17 lists in the week
+to 9 August, and 25 lists in the week to 27 September against a median week
+of 1. Fifteen lists on the core since the bans hold fewer than two of the
+tier and stay outside, eleven of them July lists on Relic alone. The Dimir
+entry's "Esper Frog on five or more white cards" is this deck.
+
 ## Data interpretation
 
 **The history opens the day after the announcement, since the boundary day was

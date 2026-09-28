@@ -603,6 +603,32 @@ TRACKED_DECKS = {
         # so excluding either would be excluding the deck.
         "colours": frozenset("UWR"),
     },
+    # Esper Ketramose: Psychic Frog, Quantum Riddler and Ketramose, the New Dawn
+    # together are the deck (Alejandro, 2026-09-28). It surfaced as Dimir
+    # Midrange's fall-out, 25 lists in the week to 27 September turned away on
+    # a Solitude playset, and had been finishing since March: 162 lists hold
+    # the three, 127 of them answering to no rule, the other 35 already
+    # Goryo's (23, on an Atraxa playset) or Esper Blink (12, on Overlord and
+    # Witch Enchanter) and claimed earlier in the order.
+    #
+    # Tested after every deck that existed before it, so no list changes hands
+    # on the day it is added.
+    "ketramose": {
+        "signature": ("Psychic Frog", "Quantum Riddler", "Ketramose, the New Dawn"),
+        # The line against Goryo's and Esper Blink should either take up
+        # Ketramose (Alejandro, 2026-09-28): the order alone would leave the
+        # rule reading their lists, so it also asks for the cards this deck
+        # plays and neither of them does. Relic of Progenitus, No More Lies
+        # and Spell Snare sit in 89%, 82% and 76% of the 127 lists; Relic and
+        # No More Lies are in none of Goryo's 25 Ketramose lists, No More Lies
+        # and Spell Snare in almost none of Blink's 45. Two of the three keeps
+        # 111 of the 127 and admits none of those 70. The 16 it drops are
+        # mostly July lists on Relic alone, before No More Lies arrived.
+        "supporting": (2, ("Relic of Progenitus", "No More Lies", "Spell Snare")),
+        # No engine exclusion: Ephemerate is in 92% of the lists and Phelia in
+        # 24 of the 127, both the deck's own cards here.
+        "colours": frozenset("WUB"),
+    },
 }
 
 
@@ -887,6 +913,18 @@ REPORTS = {
             "Raveler, Arena of Glory, Casey Jones, Vigilante and Fable of the Mirror-Breaker, "
             "which is where its red comes from, and casts under five spells outside blue, white "
             "and red and no playset of one. No versions."
+        ),
+    },
+    "ketramose": {
+        "name": "Esper Ketramose",
+        "archetype": "ketramose",
+        "camp": None,
+        "watch": (),
+        "manabase": False,
+        "membership": (
+            "mainboard holds Psychic Frog, Quantum Riddler and Ketramose, the New Dawn with two "
+            "of Relic of Progenitus, No More Lies and Spell Snare, and casts under five spells "
+            "outside white, blue and black and no playset of one. No versions."
         ),
     },
 }

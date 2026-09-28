@@ -1,0 +1,38 @@
+start,end,lists,against,kind,zone,card,text
+2026-05-18,2026-05-31,2,"no fortnight before it, the history opening on 2026-05-19",stable,,,
+2026-06-01,2026-06-14,2,the fortnight to 2026-05-31,thin,,,"Too thin to read a move against the fortnight to 2026-05-31: 2 lists, the smaller of the two, where a row needs 10."
+2026-06-29,2026-07-12,2,the fortnight to 2026-06-28,thin,,,"Too thin to read a move against the fortnight to 2026-06-28: 0 lists, the smaller of the two, where a row needs 10."
+2026-07-13,2026-07-26,10,the fortnight to 2026-07-12,return,side,Fatal Push,"Fatal Push moves to the sideboard, 2 of 10 lists (20%)"
+2026-07-13,2026-07-26,10,the fortnight to 2026-07-12,return,side,Spell Snare,"Spell Snare moves to the sideboard, 6 of 10 lists (60%)"
+2026-07-13,2026-07-26,10,the fortnight to 2026-07-12,thin,,,"Too thin to read a move against the fortnight to 2026-07-12: 2 lists, the smaller of the two, where a row needs 10."
+2026-07-13,2026-07-26,10,the fortnight to 2026-07-12,event,,,Pro Tour Amsterdam
+2026-07-13,2026-07-26,10,Pro Tour Amsterdam,return,side,Fatal Push,"Fatal Push moves to the sideboard, 2 of 10 lists (20%)"
+2026-07-13,2026-07-26,10,Pro Tour Amsterdam,return,side,Spell Snare,"Spell Snare moves to the sideboard, 6 of 10 lists (60%)"
+2026-07-27,2026-08-09,30,the fortnight to 2026-07-26,adoption,side,Clarion Conqueror,"Clarion Conqueror climbed in the sideboard, 0/10 to 9/30 lists (0% to 30%)"
+2026-07-27,2026-08-09,30,the fortnight to 2026-07-26,return,side,Force of Negation,"Force of Negation moves to the sideboard, 7 of 30 lists (23%)"
+2026-07-27,2026-08-09,30,the fortnight to 2026-07-26,adoption,main,"Otawara, Soaring City","Otawara, Soaring City climbed in the mainboard, 0/10 to 7/30 lists (0% to 23%)"
+2026-07-27,2026-08-09,30,the fortnight to 2026-07-26,adoption,main,Spell Snare,"Spell Snare climbed in the mainboard, 4/10 to 24/30 lists (40% to 80%)"
+2026-07-27,2026-08-09,30,the fortnight to 2026-07-26,adoption,main,"Takenuma, Abandoned Mire","Takenuma, Abandoned Mire climbed in the mainboard, 0/10 to 6/30 lists (0% to 20%)"
+2026-07-27,2026-08-09,30,the fortnight to 2026-07-26,adoption,main,"Teferi, Time Raveler","Teferi, Time Raveler climbed in the mainboard, 2/10 to 13/30 lists (20% to 43%)"
+2026-07-27,2026-08-09,30,the fortnight to 2026-07-26,copies,main,Ephemerate,Ephemerate down from 3.3 to 2.9 copies on average
+2026-08-10,2026-08-23,25,the fortnight to 2026-08-09,adoption,side,Damping Sphere,"Damping Sphere fell in the sideboard, 23/30 to 14/25 lists (77% to 56%)"
+2026-08-10,2026-08-23,25,the fortnight to 2026-08-09,return,side,"Elesh Norn, Mother of Machines","Elesh Norn, Mother of Machines appears for the first time, 2 of 25 lists (8%)"
+2026-08-10,2026-08-23,25,the fortnight to 2026-08-09,adoption,side,Fatal Push,"Fatal Push climbed in the sideboard, 6/30 to 13/25 lists (20% to 52%)"
+2026-08-10,2026-08-23,25,the fortnight to 2026-08-09,adoption,main,Force of Negation,"Force of Negation climbed in the mainboard, 1/30 to 9/25 lists (3% to 36%)"
+2026-08-10,2026-08-23,25,the fortnight to 2026-08-09,return,main,King T'Challa,"King T'Challa appears for the first time, 2 of 25 lists (8%)"
+2026-08-10,2026-08-23,25,the fortnight to 2026-08-09,adoption,main,Subtlety,"Subtlety climbed in the mainboard, 1/30 to 9/25 lists (3% to 36%)"
+2026-08-10,2026-08-23,25,the fortnight to 2026-08-09,return,main,Suppression Ray,"Suppression Ray appears for the first time, 9 of 25 lists (36%)"
+2026-08-10,2026-08-23,25,the fortnight to 2026-08-09,adoption,side,"Teferi, Time Raveler","Teferi, Time Raveler climbed in the sideboard, 1/30 to 7/25 lists (3% to 28%)"
+2026-08-10,2026-08-23,25,the fortnight to 2026-08-09,adoption,side,Spell Snare,"Spell Snare fell in the sideboard, 6/30 to 0/25 lists (20% to 0%)"
+2026-08-10,2026-08-23,25,the fortnight to 2026-08-09,copies,main,Ephemerate,Ephemerate down from 2.9 to 2.1 copies on average
+2026-08-10,2026-08-23,25,the fortnight to 2026-08-09,copies,main,Marsh Flats,Marsh Flats down from 3.9 to 3.2 copies on average
+2026-08-24,2026-09-06,9,the fortnight to 2026-08-23,thin,,,"Too thin to read a move against the fortnight to 2026-08-23: 9 lists, the smaller of the two, where a row needs 10."
+2026-08-24,2026-09-06,9,the fortnight to 2026-08-23,event,,,Spotlight Brisbane
+2026-08-24,2026-09-06,9,the fortnight to 2026-08-23,event,,,Spotlight Dallas
+2026-08-24,2026-09-06,9,Spotlight Brisbane,stable,,,
+2026-08-24,2026-09-06,9,Spotlight Dallas,stable,,,
+2026-09-07,2026-09-20,3,the fortnight to 2026-09-06,thin,,,"Too thin to read a move against the fortnight to 2026-09-06: 3 lists, the smaller of the two, where a row needs 10."
+2026-09-07,2026-09-20,3,the fortnight to 2026-09-06,event,,,RC Baltimore
+2026-09-07,2026-09-20,3,the fortnight to 2026-09-06,event,,,RC China
+2026-09-07,2026-09-20,3,RC Baltimore,stable,,,
+2026-09-07,2026-09-20,3,RC China,stable,,,
