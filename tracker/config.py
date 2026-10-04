@@ -1199,6 +1199,12 @@ MAJOR_EVENTS = (
     # event with no cache is skipped by every reader until it is fetched.
     {"id": 405588, "label": "RC Baltimore", "date": "2026-09-12", "region": "usa"},
     {"id": 451148, "label": "RC China", "date": "2026-09-12", "region": "china"},
+    # The next pair of rooms, four weeks on. Japan's Champions Cup Final seats
+    # Japan and Korea and is BIG MAGIC's event; Ottawa is Canada's one RC of the
+    # season, a room of its own and never the American one. Added on 2026-10-04
+    # ahead of the Monday run, Ottawa still playing its Sunday when it was added.
+    {"id": 411350, "label": "RC Japan & Korea", "date": "2026-10-03", "region": "japan"},
+    {"id": 459699, "label": "RC Canada", "date": "2026-10-03", "region": "canada"},
 )
 
 # One JSON per Spotlight, fetched once and kept. The melee equivalent of RAW_DIR
