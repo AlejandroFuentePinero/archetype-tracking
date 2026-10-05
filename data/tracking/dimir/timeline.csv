@@ -73,3 +73,20 @@ start,end,lists,against,kind,zone,card,text
 2026-09-07,2026-09-20,54,RC Baltimore,adoption,main,Cling to Dust,"Cling to Dust fell in the mainboard, 38/68 to 18/54 lists (56% to 33%)"
 2026-09-07,2026-09-20,54,RC Baltimore,adoption,main,Marsh Flats,"Marsh Flats climbed in the mainboard, 40/68 to 46/54 lists (59% to 85%)"
 2026-09-07,2026-09-20,54,RC China,stable,,,
+2026-09-21,2026-10-04,32,the fortnight to 2026-09-20,adoption,side,Break the Ice,"Break the Ice climbed in the sideboard, 7/54 to 15/32 lists (13% to 47%)"
+2026-09-21,2026-10-04,32,the fortnight to 2026-09-20,return,main,Breeding Pool,"Breeding Pool returns after 6 weeks away, 2 of 32 lists (6%)"
+2026-09-21,2026-10-04,32,the fortnight to 2026-09-20,adoption,main,Consign to Memory,"Consign to Memory climbed in the mainboard, 35/54 to 28/32 lists (65% to 88%)"
+2026-09-21,2026-10-04,32,the fortnight to 2026-09-20,adoption,side,Consign to Memory,"Consign to Memory fell in the sideboard, 19/54 to 4/32 lists (35% to 12%)"
+2026-09-21,2026-10-04,32,the fortnight to 2026-09-20,return,side,Culling Ritual,"Culling Ritual returns after 6 weeks away, 2 of 32 lists (6%)"
+2026-09-21,2026-10-04,32,the fortnight to 2026-09-20,adoption,main,Harbinger of the Seas,"Harbinger of the Seas climbed in the mainboard, 2/54 to 9/32 lists (4% to 28%)"
+2026-09-21,2026-10-04,32,the fortnight to 2026-09-20,adoption,side,Harbinger of the Seas,"Harbinger of the Seas fell in the sideboard, 52/54 to 22/32 lists (96% to 69%)"
+2026-09-21,2026-10-04,32,the fortnight to 2026-09-20,return,main,Theorist's Sanctum,"Theorist's Sanctum appears for the first time, 4 of 32 lists (12%)"
+2026-09-21,2026-10-04,32,the fortnight to 2026-09-20,adoption,main,"Wan Shi Tong, Librarian","Wan Shi Tong, Librarian fell in the mainboard, 32/54 to 11/32 lists (59% to 34%)"
+2026-09-21,2026-10-04,32,the fortnight to 2026-09-20,event,,,RC Japan & Korea
+2026-09-21,2026-10-04,32,the fortnight to 2026-09-20,event,,,RC Canada
+2026-09-21,2026-10-04,32,RC Canada,return,main,Breeding Pool,"Breeding Pool returns after 6 weeks away, 2 of 32 lists (6%)"
+2026-09-21,2026-10-04,32,RC Canada,return,side,Culling Ritual,"Culling Ritual returns after 6 weeks away, 2 of 32 lists (6%)"
+2026-09-21,2026-10-04,32,RC Japan & Korea,return,main,Breeding Pool,"Breeding Pool returns after 6 weeks away, 2 of 32 lists (6%)"
+2026-09-21,2026-10-04,32,RC Japan & Korea,return,side,Culling Ritual,"Culling Ritual returns after 6 weeks away, 2 of 32 lists (6%)"
+2026-09-21,2026-10-04,32,RC Japan & Korea,return,main,Theorist's Sanctum,"Theorist's Sanctum appears for the first time, 4 of 32 lists (12%)"
+2026-09-21,2026-10-04,32,RC Japan & Korea,copies,main,Quantum Riddler,Quantum Riddler down from 4.0 to 3.5 copies on average
