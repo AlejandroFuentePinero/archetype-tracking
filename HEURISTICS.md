@@ -628,6 +628,23 @@ of 1. Fifteen lists on the core since the bans hold fewer than two of the
 tier and stay outside, eleven of them July lists on Relic alone. The Dimir
 entry's "Esper Frog on five or more white cards" is this deck.
 
+**Rakdos Delirium is Dark Matter Manipulator and Fear of Missing Out, and it
+is its own deck** (2026-10-12):
+A new deck, first seen on MTGO on 2 October and 17 lists deep at RC Europe:
+Moonshadow, Nethergoyf and Dark Matter Manipulator as the threats, Fear of
+Missing Out as the card no other deck plays beside them, on the Street Wraith,
+Detective's Phoenix and Mishra's Bauble shell. The pilots at Ghent typed it
+Rakdos Delirium, and that is its name here; Rakdos Aggro and Rakdos Phoenix
+were the earlier names for the same seventy-five. Expected in this week's MTGO
+lists and possibly last week's.
+*Applies*: both cards in the mainboard and the splash line on black and red (the
+rule's `colours`). Neither card alone is the line: Fear of Missing Out without
+the Manipulator is the Hollow One and Marauding Mako builds, 113 MTGO lists,
+and the Manipulator without it is a Bloodghast reanimator, one list. The
+Moonshadow and Nethergoyf shell without either stays unclassified, where it
+was. Tested after every deck that existed before it. Tracked as `delirium`,
+one population, reported as Rakdos Delirium.
+
 ## Data interpretation
 
 **The history opens the day after the announcement, since the boundary day was

@@ -655,6 +655,23 @@ TRACKED_DECKS = {
         ),
         "colours": frozenset("UWR"),
     },
+    # Rakdos Delirium: Dark Matter Manipulator and Fear of Missing Out together
+    # are the deck (Alejandro, 2026-10-12), on the Moonshadow, Nethergoyf and
+    # Street Wraith shell. Neither card alone names it: Fear of Missing Out is
+    # in 113 MTGO lists without the Manipulator, the Hollow One and Marauding
+    # Mako builds, and the one Manipulator list without it is a Bloodghast
+    # reanimator. The pair sits in nothing else. New in October: 10 MTGO lists
+    # from 2 October, 3 at RC Japan & Korea, 2 at RC Canada and 17 at RC
+    # Europe, all of them answering to no rule before this one.
+    #
+    # Tested after every deck that existed before it, so no list changes hands
+    # on the day it is added.
+    "delirium": {
+        "signature": ("Dark Matter Manipulator", "Fear of Missing Out"),
+        # Black and red, read on the splash line: the one Ghent list on a
+        # single Psychic Frog is a splash and stays in.
+        "colours": frozenset("BR"),
+    },
 }
 
 
@@ -966,6 +983,17 @@ REPORTS = {
             "playset of one. No versions."
         ),
     },
+    "delirium": {
+        "name": "Rakdos Delirium",
+        "archetype": "delirium",
+        "camp": None,
+        "watch": (),
+        "manabase": False,
+        "membership": (
+            "mainboard holds Dark Matter Manipulator and Fear of Missing Out, and casts under "
+            "five spells outside black and red and no playset of one. No versions."
+        ),
+    },
 }
 
 # How far a watched slot's share has to move to earn a row, against the twenty
@@ -1205,6 +1233,13 @@ MAJOR_EVENTS = (
     # ahead of the Monday run, Ottawa still playing its Sunday when it was added.
     {"id": 411350, "label": "RC Japan & Korea", "date": "2026-10-03", "region": "japan"},
     {"id": 459699, "label": "RC Canada", "date": "2026-10-03", "region": "canada"},
+    # The weekend after. Ghent is the European RC, Fanfinity's Ultimate Guard
+    # European Magic Series, a room of its own; Los Angeles is Star City Games'
+    # American one and shares the American room with Baltimore and Dallas, so it
+    # alone reads against them as one field. Added on 2026-10-09 ahead of the
+    # weekend, both still at registration; the Monday run fetches them.
+    {"id": 470109, "label": "RC Europe", "date": "2026-10-10", "region": "europe"},
+    {"id": 405591, "label": "RC Los Angeles", "date": "2026-10-10", "region": "usa"},
 )
 
 # One JSON per Spotlight, fetched once and kept. The melee equivalent of RAW_DIR
