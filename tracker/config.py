@@ -1240,6 +1240,11 @@ MAJOR_EVENTS = (
     # weekend, both still at registration; the Monday run fetches them.
     {"id": 470109, "label": "RC Europe", "date": "2026-10-10", "region": "europe"},
     {"id": 405591, "label": "RC Los Angeles", "date": "2026-10-10", "region": "usa"},
+    # The weekend after that, one event. Singapore is the South East Asian RC,
+    # Oracle Events' MTG SEA Championship Final at Singapore EXPO, a room of its
+    # own: 182 players at the 17 October start, the smallest RC field so far.
+    # Added on 2026-10-17 with round one under way; the Monday run fetches it.
+    {"id": 482105, "label": "RC South East Asia", "date": "2026-10-17", "region": "southeast-asia"},
 )
 
 # One JSON per Spotlight, fetched once and kept. The melee equivalent of RAW_DIR
