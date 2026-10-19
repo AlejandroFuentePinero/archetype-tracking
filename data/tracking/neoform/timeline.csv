@@ -73,3 +73,30 @@ start,end,lists,against,kind,zone,card,text
 2026-09-21,2026-10-04,17,RC Japan & Korea,adoption,side,Nature's Claim,"Nature's Claim climbed in the sideboard, 1/13 to 8/17 lists (8% to 47%)"
 2026-09-21,2026-10-04,17,RC Japan & Korea,adoption,side,Theorist's Proxy,"Theorist's Proxy fell in the sideboard, 6/13 to 0/17 lists (46% to 0%)"
 2026-09-21,2026-10-04,17,RC Japan & Korea,copies,main,Scalding Tarn,Scalding Tarn up from 1.1 to 1.7 copies on average
+2026-10-05,2026-10-18,16,the fortnight to 2026-10-04,adoption,main,Flooded Strand,"Flooded Strand climbed in the mainboard, 10/17 to 15/16 lists (59% to 94%)"
+2026-10-05,2026-10-18,16,the fortnight to 2026-10-04,adoption,main,Forest,"Forest fell in the mainboard, 10/17 to 1/16 lists (59% to 6%)"
+2026-10-05,2026-10-18,16,the fortnight to 2026-10-04,adoption,side,Ice-Fang Coatl,"Ice-Fang Coatl climbed in the sideboard, 1/17 to 8/16 lists (6% to 50%)"
+2026-10-05,2026-10-18,16,the fortnight to 2026-10-04,adoption,side,Into the Flood Maw,"Into the Flood Maw fell in the sideboard, 10/17 to 5/16 lists (59% to 31%)"
+2026-10-05,2026-10-18,16,the fortnight to 2026-10-04,adoption,main,Island,"Island fell in the mainboard, 10/17 to 1/16 lists (59% to 6%)"
+2026-10-05,2026-10-18,16,the fortnight to 2026-10-04,adoption,main,Snow-Covered Forest,"Snow-Covered Forest climbed in the mainboard, 7/17 to 15/16 lists (41% to 94%)"
+2026-10-05,2026-10-18,16,the fortnight to 2026-10-04,adoption,main,Snow-Covered Island,"Snow-Covered Island climbed in the mainboard, 7/17 to 15/16 lists (41% to 94%)"
+2026-10-05,2026-10-18,16,the fortnight to 2026-10-04,adoption,main,Wooded Foothills,"Wooded Foothills climbed in the mainboard, 4/17 to 12/16 lists (24% to 75%)"
+2026-10-05,2026-10-18,16,the fortnight to 2026-10-04,copies,main,Pact of Negation,Pact of Negation up from 3.1 to 3.5 copies on average
+2026-10-05,2026-10-18,16,the fortnight to 2026-10-04,copies,main,Scalding Tarn,Scalding Tarn down from 1.7 to 1.0 copies on average
+2026-10-05,2026-10-18,16,the fortnight to 2026-10-04,event,,,RC Europe
+2026-10-05,2026-10-18,16,the fortnight to 2026-10-04,event,,,RC Los Angeles
+2026-10-05,2026-10-18,16,the fortnight to 2026-10-04,event,,,RC South East Asia
+2026-10-05,2026-10-18,16,RC Europe,adoption,main,Forest,"Forest fell in the mainboard, 12/14 to 1/16 lists (86% to 6%)"
+2026-10-05,2026-10-18,16,RC Europe,adoption,side,Ice-Fang Coatl,"Ice-Fang Coatl climbed in the sideboard, 1/14 to 8/16 lists (7% to 50%)"
+2026-10-05,2026-10-18,16,RC Europe,adoption,side,Into the Flood Maw,"Into the Flood Maw fell in the sideboard, 11/14 to 5/16 lists (79% to 31%)"
+2026-10-05,2026-10-18,16,RC Europe,adoption,main,Island,"Island fell in the mainboard, 12/14 to 1/16 lists (86% to 6%)"
+2026-10-05,2026-10-18,16,RC Europe,adoption,main,Scalding Tarn,"Scalding Tarn climbed in the mainboard, 8/14 to 16/16 lists (57% to 100%)"
+2026-10-05,2026-10-18,16,RC Europe,adoption,main,Snow-Covered Forest,"Snow-Covered Forest climbed in the mainboard, 2/14 to 15/16 lists (14% to 94%)"
+2026-10-05,2026-10-18,16,RC Europe,adoption,main,Snow-Covered Island,"Snow-Covered Island climbed in the mainboard, 2/14 to 15/16 lists (14% to 94%)"
+2026-10-05,2026-10-18,16,RC Europe,adoption,main,Wooded Foothills,"Wooded Foothills climbed in the mainboard, 3/14 to 12/16 lists (21% to 75%)"
+2026-10-05,2026-10-18,16,RC Europe,copies,main,Veil of Summer,Veil of Summer down from 3.0 to 2.3 copies on average
+2026-10-05,2026-10-18,16,RC Los Angeles,adoption,main,Scalding Tarn,"Scalding Tarn climbed in the mainboard, 5/10 to 16/16 lists (50% to 100%)"
+2026-10-05,2026-10-18,16,RC Los Angeles,adoption,main,Wooded Foothills,"Wooded Foothills climbed in the mainboard, 2/10 to 12/16 lists (20% to 75%)"
+2026-10-05,2026-10-18,16,RC Los Angeles,copies,main,Pact of Negation,Pact of Negation up from 3.0 to 3.5 copies on average
+2026-10-05,2026-10-18,16,RC Los Angeles,copies,main,Veil of Summer,Veil of Summer down from 3.1 to 2.3 copies on average
+2026-10-05,2026-10-18,16,RC South East Asia,stable,,,

@@ -75,3 +75,17 @@ start,end,lists,against,kind,zone,card,text
 2026-09-21,2026-10-04,59,RC Japan & Korea,adoption,side,"Elesh Norn, Mother of Machines","Elesh Norn, Mother of Machines fell in the sideboard, 11/19 to 15/59 lists (58% to 25%)"
 2026-09-21,2026-10-04,59,RC Japan & Korea,adoption,side,Surgical Extraction,"Surgical Extraction fell in the sideboard, 6/19 to 1/59 lists (32% to 2%)"
 2026-09-21,2026-10-04,59,RC Japan & Korea,return,side,Vindicate,"Vindicate returns after 12 weeks away, 4 of 59 lists (7%)"
+2026-10-05,2026-10-18,20,the fortnight to 2026-10-04,adoption,main,Prismatic Ending,"Prismatic Ending climbed in the mainboard, 20/59 to 12/20 lists (34% to 60%)"
+2026-10-05,2026-10-18,20,the fortnight to 2026-10-04,return,side,Prismatic Ending,"Prismatic Ending moves to the sideboard, 2 of 20 lists (10%)"
+2026-10-05,2026-10-18,20,the fortnight to 2026-10-04,return,side,Sanctifier en-Vec,"Sanctifier en-Vec returns after 6 weeks away, 3 of 20 lists (15%)"
+2026-10-05,2026-10-18,20,the fortnight to 2026-10-04,event,,,RC Europe
+2026-10-05,2026-10-18,20,the fortnight to 2026-10-04,event,,,RC Los Angeles
+2026-10-05,2026-10-18,20,the fortnight to 2026-10-04,event,,,RC South East Asia
+2026-10-05,2026-10-18,20,RC Europe,return,side,Prismatic Ending,"Prismatic Ending moves to the sideboard, 2 of 20 lists (10%)"
+2026-10-05,2026-10-18,20,RC Europe,adoption,main,March of Otherworldly Light,"March of Otherworldly Light fell in the mainboard, 18/66 to 0/20 lists (27% to 0%)"
+2026-10-05,2026-10-18,20,RC Los Angeles,adoption,main,Island,"Island fell in the mainboard, 21/55 to 2/20 lists (38% to 10%)"
+2026-10-05,2026-10-18,20,RC Los Angeles,return,side,Sanctifier en-Vec,"Sanctifier en-Vec returns after 6 weeks away, 3 of 20 lists (15%)"
+2026-10-05,2026-10-18,20,RC South East Asia,return,side,Prismatic Ending,"Prismatic Ending moves to the sideboard, 2 of 20 lists (10%)"
+2026-10-05,2026-10-18,20,RC South East Asia,return,side,Sanctifier en-Vec,"Sanctifier en-Vec returns after 6 weeks away, 3 of 20 lists (15%)"
+2026-10-05,2026-10-18,20,RC South East Asia,adoption,side,Surgical Extraction,"Surgical Extraction fell in the sideboard, 5/11 to 0/20 lists (45% to 0%)"
+2026-10-05,2026-10-18,20,RC South East Asia,copies,main,Polluted Delta,Polluted Delta down from 2.1 to 1.6 copies on average

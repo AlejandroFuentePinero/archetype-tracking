@@ -77,3 +77,28 @@ start,end,lists,against,kind,zone,card,text
 2026-09-21,2026-10-04,156,RC Japan & Korea,adoption,main,Pompous Battlemage,"Pompous Battlemage fell in the mainboard, 29/55 to 23/156 lists (53% to 15%)"
 2026-09-21,2026-10-04,156,RC Japan & Korea,return,main,Siege Smash,"Siege Smash appears for the first time, 6 of 156 lists (4%)"
 2026-09-21,2026-10-04,156,RC Japan & Korea,return,side,Torpor Orb,"Torpor Orb appears for the first time, 2 of 156 lists (1%)"
+2026-10-05,2026-10-18,95,the fortnight to 2026-10-04,return,side,Annul,"Annul returns after 12 weeks away, 2 of 95 lists (2%)"
+2026-10-05,2026-10-18,95,the fortnight to 2026-10-04,adoption,side,Murktide Regent,"Murktide Regent climbed in the sideboard, 19/156 to 34/95 lists (12% to 36%)"
+2026-10-05,2026-10-18,95,the fortnight to 2026-10-04,adoption,main,Pompous Battlemage,"Pompous Battlemage climbed in the mainboard, 23/156 to 46/95 lists (15% to 48%)"
+2026-10-05,2026-10-18,95,the fortnight to 2026-10-04,return,main,Secret Identity,"Secret Identity appears for the first time, 3 of 95 lists (3%)"
+2026-10-05,2026-10-18,95,the fortnight to 2026-10-04,adoption,side,Surgical Extraction,"Surgical Extraction fell in the sideboard, 81/156 to 19/95 lists (52% to 20%)"
+2026-10-05,2026-10-18,95,the fortnight to 2026-10-04,adoption,main,Unholy Heat,"Unholy Heat fell in the mainboard, 73/156 to 22/95 lists (47% to 23%)"
+2026-10-05,2026-10-18,95,the fortnight to 2026-10-04,adoption,side,Unholy Heat,"Unholy Heat climbed in the sideboard, 83/156 to 73/95 lists (53% to 77%)"
+2026-10-05,2026-10-18,95,the fortnight to 2026-10-04,copies,main,Mutagenic Growth,Mutagenic Growth down from 3.1 to 2.7 copies on average
+2026-10-05,2026-10-18,95,the fortnight to 2026-10-04,event,,,RC Europe
+2026-10-05,2026-10-18,95,the fortnight to 2026-10-04,event,,,RC Los Angeles
+2026-10-05,2026-10-18,95,the fortnight to 2026-10-04,event,,,RC South East Asia
+2026-10-05,2026-10-18,95,RC Europe,return,main,Secret Identity,"Secret Identity appears for the first time, 3 of 95 lists (3%)"
+2026-10-05,2026-10-18,95,RC Europe,copies,main,Bloodstained Mire,Bloodstained Mire up from 2.7 to 3.1 copies on average
+2026-10-05,2026-10-18,95,RC Los Angeles,return,side,Annul,"Annul returns after 12 weeks away, 2 of 95 lists (2%)"
+2026-10-05,2026-10-18,95,RC Los Angeles,adoption,main,Boomerang Basics,"Boomerang Basics climbed in the mainboard, 41/124 to 60/95 lists (33% to 63%)"
+2026-10-05,2026-10-18,95,RC Los Angeles,adoption,side,Into the Flood Maw,"Into the Flood Maw fell in the sideboard, 41/124 to 6/95 lists (33% to 6%)"
+2026-10-05,2026-10-18,95,RC Los Angeles,adoption,main,Stormchaser's Talent,"Stormchaser's Talent climbed in the mainboard, 26/124 to 42/95 lists (21% to 44%)"
+2026-10-05,2026-10-18,95,RC Los Angeles,adoption,main,Violent Urge,"Violent Urge fell in the mainboard, 86/124 to 38/95 lists (69% to 40%)"
+2026-10-05,2026-10-18,95,RC Los Angeles,copies,main,Bloodstained Mire,Bloodstained Mire up from 2.7 to 3.1 copies on average
+2026-10-05,2026-10-18,95,RC Los Angeles,copies,main,Expressive Iteration,Expressive Iteration down from 3.2 to 2.8 copies on average
+2026-10-05,2026-10-18,95,RC South East Asia,return,side,Annul,"Annul returns after 12 weeks away, 2 of 95 lists (2%)"
+2026-10-05,2026-10-18,95,RC South East Asia,adoption,side,Obsidian Charmaw,"Obsidian Charmaw climbed in the sideboard, 5/19 to 68/95 lists (26% to 72%)"
+2026-10-05,2026-10-18,95,RC South East Asia,adoption,main,Stormchaser's Talent,"Stormchaser's Talent climbed in the mainboard, 3/19 to 42/95 lists (16% to 44%)"
+2026-10-05,2026-10-18,95,RC South East Asia,adoption,main,Violent Urge,"Violent Urge fell in the mainboard, 14/19 to 38/95 lists (74% to 40%)"
+2026-10-05,2026-10-18,95,RC South East Asia,copies,main,Slickshot Show-Off,Slickshot Show-Off down from 3.7 to 3.1 copies on average

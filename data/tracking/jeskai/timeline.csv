@@ -91,3 +91,33 @@ start,end,lists,against,kind,zone,card,text
 2026-09-21,2026-10-04,67,RC Japan & Korea,adoption,main,"Teferi, Hero of Dominaria","Teferi, Hero of Dominaria fell in the mainboard, 7/22 to 6/67 lists (32% to 9%)"
 2026-09-21,2026-10-04,67,RC Japan & Korea,return,side,Temporary Lockdown,"Temporary Lockdown moves to the sideboard, 2 of 67 lists (3%)"
 2026-09-21,2026-10-04,67,RC Japan & Korea,adoption,main,"The Theorist, Jace Beleren","The Theorist, Jace Beleren fell in the mainboard, 6/22 to 3/67 lists (27% to 4%)"
+2026-10-05,2026-10-18,77,the fortnight to 2026-10-04,adoption,main,Counterspell,"Counterspell fell in the mainboard, 26/67 to 6/77 lists (39% to 8%)"
+2026-10-05,2026-10-18,77,the fortnight to 2026-10-04,adoption,main,Floodfarm Verge,"Floodfarm Verge climbed in the mainboard, 6/67 to 37/77 lists (9% to 48%)"
+2026-10-05,2026-10-18,77,the fortnight to 2026-10-04,adoption,main,Galvanic Discharge,"Galvanic Discharge fell in the mainboard, 28/67 to 11/77 lists (42% to 14%)"
+2026-10-05,2026-10-18,77,the fortnight to 2026-10-04,adoption,main,Lórien Revealed,"Lórien Revealed fell in the mainboard, 36/67 to 12/77 lists (54% to 16%)"
+2026-10-05,2026-10-18,77,the fortnight to 2026-10-04,adoption,main,March of Otherworldly Light,"March of Otherworldly Light climbed in the mainboard, 30/67 to 50/77 lists (45% to 65%)"
+2026-10-05,2026-10-18,77,the fortnight to 2026-10-04,adoption,main,"Otawara, Soaring City","Otawara, Soaring City climbed in the mainboard, 34/67 to 58/77 lists (51% to 75%)"
+2026-10-05,2026-10-18,77,the fortnight to 2026-10-04,adoption,main,Polluted Delta,"Polluted Delta climbed in the mainboard, 31/67 to 55/77 lists (46% to 71%)"
+2026-10-05,2026-10-18,77,the fortnight to 2026-10-04,return,main,Razorgrass Ambush,"Razorgrass Ambush returns after 18 weeks away, 9 of 77 lists (12%)"
+2026-10-05,2026-10-18,77,the fortnight to 2026-10-04,adoption,main,Sacred Foundry,"Sacred Foundry fell in the mainboard, 30/67 to 11/77 lists (45% to 14%)"
+2026-10-05,2026-10-18,77,the fortnight to 2026-10-04,return,side,Sanctifier en-Vec,"Sanctifier en-Vec appears for the first time, 7 of 77 lists (9%)"
+2026-10-05,2026-10-18,77,the fortnight to 2026-10-04,return,side,Sanctum Prelate,"Sanctum Prelate appears for the first time, 4 of 77 lists (5%)"
+2026-10-05,2026-10-18,77,the fortnight to 2026-10-04,adoption,main,Scalding Tarn,"Scalding Tarn fell in the mainboard, 31/67 to 17/77 lists (46% to 22%)"
+2026-10-05,2026-10-18,77,the fortnight to 2026-10-04,adoption,main,Silence,"Silence climbed in the mainboard, 35/67 to 71/77 lists (52% to 92%)"
+2026-10-05,2026-10-18,77,the fortnight to 2026-10-04,adoption,main,Sink into Stupor,"Sink into Stupor climbed in the mainboard, 36/67 to 67/77 lists (54% to 87%)"
+2026-10-05,2026-10-18,77,the fortnight to 2026-10-04,adoption,main,Steam Vents,"Steam Vents fell in the mainboard, 32/67 to 16/77 lists (48% to 21%)"
+2026-10-05,2026-10-18,77,the fortnight to 2026-10-04,adoption,side,The Wandering Emperor,"The Wandering Emperor climbed in the sideboard, 1/67 to 18/77 lists (1% to 23%)"
+2026-10-05,2026-10-18,77,the fortnight to 2026-10-04,adoption,main,Theorist's Sanctum,"Theorist's Sanctum climbed in the mainboard, 7/67 to 26/77 lists (10% to 34%)"
+2026-10-05,2026-10-18,77,the fortnight to 2026-10-04,copies,main,Consult the Star Charts,Consult the Star Charts down from 2.9 to 2.3 copies on average
+2026-10-05,2026-10-18,77,the fortnight to 2026-10-04,copies,main,Day's Undoing,Day's Undoing up from 2.3 to 3.0 copies on average
+2026-10-05,2026-10-18,77,the fortnight to 2026-10-04,copies,main,Supreme Verdict,Supreme Verdict down from 1.5 to 1.1 copies on average
+2026-10-05,2026-10-18,77,the fortnight to 2026-10-04,copies,main,"Teferi, Time Raveler","Teferi, Time Raveler up from 3.5 to 3.9 copies on average"
+2026-10-05,2026-10-18,77,the fortnight to 2026-10-04,event,,,RC Europe
+2026-10-05,2026-10-18,77,the fortnight to 2026-10-04,event,,,RC Los Angeles
+2026-10-05,2026-10-18,77,the fortnight to 2026-10-04,event,,,RC South East Asia
+2026-10-05,2026-10-18,77,RC Europe,adoption,main,Polluted Delta,"Polluted Delta climbed in the mainboard, 29/67 to 55/77 lists (43% to 71%)"
+2026-10-05,2026-10-18,77,RC Europe,return,side,Sanctifier en-Vec,"Sanctifier en-Vec appears for the first time, 7 of 77 lists (9%)"
+2026-10-05,2026-10-18,77,RC Europe,adoption,main,Scalding Tarn,"Scalding Tarn fell in the mainboard, 33/67 to 17/77 lists (49% to 22%)"
+2026-10-05,2026-10-18,77,RC Los Angeles,adoption,side,"Beza, the Bounding Spring","Beza, the Bounding Spring fell in the sideboard, 52/94 to 25/77 lists (55% to 32%)"
+2026-10-05,2026-10-18,77,RC Los Angeles,return,side,Sanctifier en-Vec,"Sanctifier en-Vec appears for the first time, 7 of 77 lists (9%)"
+2026-10-05,2026-10-18,77,RC South East Asia,stable,,,
